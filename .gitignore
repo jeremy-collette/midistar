@@ -1,0 +1,12 @@
+bin/
+build/
+data/*.mid
+doc/html
+doc/latex
+
+/config.cfg
+/debug
+/tags
+/TODO
+/make
+/run

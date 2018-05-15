@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Change to script directory
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [ $dir == 'scripts' ]; then
+    cd ..
+fi
+
+# Check for 'build' folder
+if [ ! -d build ]; then
+    echo "'build' folder does not exist!"
+    echo "Refer to BUILDING MIDISTAR in the README."
+    exit 1
+fi
+
+# Check for binary
+if [ ! -e ./build/bin/midistar ]; then
+    echo "Could not find './build/bin/midistar' binary!"
+    echo "Refer to BUILDING MIDISTAR in the README."
+    exit 2
+fi
+
+exit 0

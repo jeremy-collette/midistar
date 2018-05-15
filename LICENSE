@@ -1,0 +1,31 @@
+midistar Copyright (C) 2018 Jeremy Collette.
+
+1. MIDISTAR LICENSE
+midistar is free software that is released under the terms of the GNU General
+Public License (GPLv3) as published by the Free Software Foundation. You can
+find a copy of this license in the 'GPLv3' file, which should have been
+distributed alongside midistar. If it was not, you can find a copy at
+<http://www.gnu.org/licenses/>.
+
+All subfolders and files that are NOT in the 'external' folder are considered
+to be part of the midistar project, and are distributed under the terms of this
+license. For clarification, the license terms of files and/or folders that are
+referenced by a symbolic link are determined by the location of the target, not
+the location of the link itself.
+
+
+2. THIRD-PARTY LICENSES
+midistar uses third-party libraries that are NOT considered to be part of the
+midistar project, but are distributed with the midistar source for ease-of-
+access and completeness. Each subfolder in the 'external' folder contains a
+different third-party library that is used by midistar.
+
+These libraries are licensed under their own terms and ARE NOT subject to the
+terms of the 'GPLv3' file in the root directory of the midistar project. For
+licensing information about a specific third-party library, refer to the
+'LICENSE' and/or 'README' file in the folder that contains the library.
+
+See the midistar 'README' file for a list of third-party libraries that
+midistar uses, and their copyright holders. Each third-party library remains
+unmodified.
+

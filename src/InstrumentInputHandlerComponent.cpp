@@ -24,7 +24,7 @@
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
         : Component(Component::INSTRUMENT_INPUT_HANDLER_COMPONENT)
@@ -106,4 +106,4 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
     }
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

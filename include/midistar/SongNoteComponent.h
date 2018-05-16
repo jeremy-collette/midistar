@@ -21,7 +21,7 @@
 
 #include "midistar/Component.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The SongNoteComponent class identifies GameObjects that represent song 
@@ -40,6 +40,6 @@ class SongNoteComponent : public Component {
     virtual void Update(Game* g, GameObject* o);
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_SONGNOTECOMPONENT_H_

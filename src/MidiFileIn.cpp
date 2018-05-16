@@ -22,7 +22,7 @@
 
 #include "midistar/Config.h"
 
-namespace Midistar {
+namespace midistar {
 
 MidiFileIn::MidiFileIn()
         : index_{0}
@@ -69,4 +69,4 @@ void MidiFileIn::Tick() {
     }
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

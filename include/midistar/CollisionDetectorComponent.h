@@ -25,7 +25,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The CollisionDetectorComponent class detects collisions between the
@@ -63,6 +63,6 @@ class CollisionDetectorComponent : public Component {
      std::vector<GameObject*> colliding_with_;  //!< Holds colliding objects
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_COLLISIONDETECTORCOMPONENT_H_

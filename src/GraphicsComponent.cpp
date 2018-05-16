@@ -20,7 +20,7 @@
 
 #include "midistar/Game.h"
 
-namespace Midistar {
+namespace midistar {
 
 GraphicsComponent::GraphicsComponent(sf::RectangleShape* rect)
         : Component{Component::GRAPHICS_COMPONENT}
@@ -52,4 +52,4 @@ void GraphicsComponent::Update(Game* g, GameObject* o) {
     g->GetWindow().draw(*rect_);
 }
 
-}   // End namespace Midistar
+}   // End namespace midistar

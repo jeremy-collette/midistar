@@ -23,7 +23,7 @@
 #include "midistar/GraphicsComponent.h"
 #include "midistar/ResizeComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 AnchorComponent::AnchorComponent(
     double x_target
@@ -109,4 +109,4 @@ void AnchorComponent::Update(Game*, GameObject* o) {
             , flags});
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

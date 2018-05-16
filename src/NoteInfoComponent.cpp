@@ -18,7 +18,7 @@
 
 #include "midistar/NoteInfoComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 NoteInfoComponent::NoteInfoComponent(
     int track
@@ -57,4 +57,4 @@ int NoteInfoComponent::GetVelocity() {
 void NoteInfoComponent::Update(Game*, GameObject*) {
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

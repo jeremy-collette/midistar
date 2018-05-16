@@ -21,7 +21,7 @@
 
 #include "midistar/CollisionHandlerComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The SongNoteCollisionHandlerComponent class handles collisions between song
@@ -43,6 +43,6 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , GameObject* colliding_with);
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_

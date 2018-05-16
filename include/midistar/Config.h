@@ -23,7 +23,7 @@
 #include <CLI/CLI.hpp>
 #include <SFML/Graphics.hpp>
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The Config class provides an interface for reading and writing configurable
@@ -199,6 +199,6 @@ class Config {
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_CONFIG_H_

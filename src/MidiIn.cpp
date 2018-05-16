@@ -18,7 +18,7 @@
 
 #include "midistar/MidiIn.h"
 
-namespace Midistar {
+namespace midistar {
 
 bool MidiIn::GetEvent(smf::MidiEvent* mev) {
     if (buffer_.empty()) {
@@ -34,4 +34,4 @@ void MidiIn::AddEvent(smf::MidiEvent mev) {
     buffer_.push(mev);
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

@@ -22,7 +22,7 @@
 #include "midistar/Component.h"
 #include "midistar/GraphicsComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The InstrumentInputHandlerComponent handles input for instruments.
@@ -51,6 +51,6 @@ class InstrumentInputHandlerComponent : public Component {
      bool key_down_;  //!< Determines if the instrument is currently activated
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_INSTRUMENTINPUTHANDLERCOMPONENT_H_

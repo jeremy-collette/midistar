@@ -18,7 +18,7 @@
 
 #include "midistar/BarComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 BarComponent::BarComponent()
         : Component{Component::BAR_COMPONENT} {
@@ -27,4 +27,4 @@ BarComponent::BarComponent()
 void BarComponent::Update(Game*, GameObject*) {
 }
 
-}   // End namespace Midistar
+}   // End namespace midistar

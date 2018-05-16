@@ -21,7 +21,7 @@
 
 #include "midistar/Component.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The NoteInfoComponent class holds MIDI note information.
@@ -94,6 +94,6 @@ class NoteInfoComponent : public Component {
     int vel_;  //!< Holds MIDI velocity
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_NOTEINFOCOMPONENT_H_

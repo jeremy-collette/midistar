@@ -24,7 +24,7 @@
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The GraphicsComponent class draws a rectangle on the screen.
@@ -75,6 +75,6 @@ class GraphicsComponent : public Component {
     sf::RectangleShape* rect_;  //<! Underlying rectangle
 };
 
-}   // namespace Midistar
+}   // namespace midistar
 
 #endif  // MIDISTAR_GRAPHICSCOMPONENT_H_

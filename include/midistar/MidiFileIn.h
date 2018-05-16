@@ -24,7 +24,7 @@
 
 #include "midistar/MidiIn.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The MidiFileIn reads events from a MIDI file in a real-time fashion.
@@ -70,6 +70,6 @@ class MidiFileIn : public MidiIn {
     double time_;  //!< Real-time position in MIDI file
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_MIDIFILEIN_H_

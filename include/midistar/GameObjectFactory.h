@@ -21,7 +21,7 @@
 
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The GameObjectFactory class initialises GameObject instances and adds the
@@ -64,6 +64,6 @@ class GameObjectFactory {
             , int vel);
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_GAMEOBJECTFACTORY_H_

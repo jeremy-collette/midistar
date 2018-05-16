@@ -21,7 +21,7 @@
 
 #include <fluidsynth.h>
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The MidiOut class provides an interface for playing MIDI audio.
@@ -69,6 +69,6 @@ class MidiOut {
     fluid_synth_t* synth_;  //!< Stores fluidsynth synth instance
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_MIDIOUT_H_

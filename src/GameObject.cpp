@@ -18,7 +18,7 @@
 
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 GameObject::GameObject(double x_pos, double y_pos)
         : components_{0}
@@ -83,4 +83,4 @@ void GameObject::Update(Game* g) {
     to_delete_.clear();
 }
 
-}   // End namespace Midistar
+}   // End namespace midistar

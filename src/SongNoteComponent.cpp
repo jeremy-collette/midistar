@@ -18,7 +18,7 @@
 
 #include "midistar/SongNoteComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 SongNoteComponent::SongNoteComponent()
     : Component{Component::SONG_NOTE_COMPONENT} {
@@ -27,4 +27,4 @@ SongNoteComponent::SongNoteComponent()
 void SongNoteComponent::Update(Game*, GameObject*) {
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

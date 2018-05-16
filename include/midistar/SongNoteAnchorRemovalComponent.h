@@ -23,7 +23,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The SongNoteAnchorRemovalComponent is used by MIDI off notes to stop the
@@ -42,6 +42,6 @@ class SongNoteAnchorRemovalComponent : public Component {
     virtual void Update(Game* g, GameObject* o);
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_SONGNOTEANCHORREMOVALCOMPONENT_H_

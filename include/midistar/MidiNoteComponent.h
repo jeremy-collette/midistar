@@ -23,7 +23,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The MidiNoteComponent class holds MIDI note information.
@@ -52,6 +52,6 @@ class MidiNoteComponent : public Component {
     int vel_;  //!< Holds MIDI velocity
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_MIDINOTECOMPONENT_H_

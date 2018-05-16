@@ -26,7 +26,7 @@
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 Game::Game()
         : window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
@@ -197,4 +197,4 @@ void Game::FlushNewObjectQueue() {
     }
 }
 
-}   // namespace Midistar
+}   // namespace midistar

@@ -23,7 +23,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The DeleteOffscreenComponent class requests the deletion of its owner when
@@ -45,6 +45,6 @@ class DeleteOffscreenComponent : public Component {
     static const int THRESHOLD = 100;  //!< X/Y off-screen threshold
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_DELETEOFFSCREENCOMPONENT_H_

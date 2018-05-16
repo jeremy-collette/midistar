@@ -18,7 +18,7 @@
 
 #include "midistar/MidiNoteComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 MidiNoteComponent::MidiNoteComponent(bool on, int chan, int note, int vel)
         : Component{Component::MIDI_NOTE_COMPONENT}
@@ -37,4 +37,4 @@ void MidiNoteComponent::Update(Game* g, GameObject* o) {
     o->DeleteComponent(GetType());
 }
 
-}   // End namespace Midistar
+}   // End namespace midistar

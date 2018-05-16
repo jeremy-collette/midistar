@@ -22,7 +22,7 @@
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The PhysicsComponent class provides velocity functionality to its owner.
@@ -66,6 +66,6 @@ class PhysicsComponent : public Component {
     double y_vel_;  //!< Stores Y velocity
 };
 
-}   // namespace Midistar
+}   // namespace midistar
 
 #endif  // MIDISTAR_PHYSICSCOMPONENT_H_

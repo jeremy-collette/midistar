@@ -23,7 +23,7 @@
 
 #include "midistar/Component.h"
 
-namespace Midistar {
+namespace midistar {
 class Game;
 
 /**
@@ -139,6 +139,6 @@ class GameObject {
     double y_pos_;  //!< Holds Y position
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_GAMEOBJECT_H_

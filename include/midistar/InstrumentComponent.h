@@ -21,7 +21,7 @@
 
 #include "midistar/Component.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The InstrumentComponent class identifies GameObjects that represent 
@@ -40,6 +40,6 @@ class InstrumentComponent : public Component {
     virtual void Update(Game* g, GameObject* o);
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_INSTRUMENTCOMPONENT_H_

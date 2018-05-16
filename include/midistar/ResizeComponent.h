@@ -24,7 +24,7 @@
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The AnchorFlag typedef is used as the data type in the anchor flags enum.
@@ -98,6 +98,6 @@ class ResizeComponent : public Component {
     double new_width_;  //!< Target width
 };
 
-}  // namespace Midistar
+}  // namespace midistar
 
 #endif  // MIDISTAR_RESIZECOMPONENT_H_

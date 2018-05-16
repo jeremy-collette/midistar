@@ -26,7 +26,7 @@
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
         : CollisionHandlerComponent{
@@ -182,4 +182,4 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     }
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

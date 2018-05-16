@@ -23,7 +23,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 typedef char AnchorBehaviour;
 
@@ -89,6 +89,6 @@ class AnchorComponent : public Component {
     double y_target_;  //!< The Y coordinate
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_ANCHORCOMPONENT_H_

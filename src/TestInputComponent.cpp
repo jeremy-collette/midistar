@@ -20,7 +20,7 @@
 
 #include "midistar/PhysicsComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 TestInputComponent::TestInputComponent()
         : Component(Component::TEST_INPUT_COMPONENT) {
@@ -43,4 +43,4 @@ void TestInputComponent::Update(Game*, GameObject* o) {
     physics->SetVelocity(vel_x, vel_y);
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

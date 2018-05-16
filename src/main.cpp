@@ -33,11 +33,11 @@ int main(int argc, char** argv) {
 #endif
 
     int err;
-    if ((err = Midistar::Config::GetInstance().ParseOptions(argc, argv))) {
+    if ((err = midistar::Config::GetInstance().ParseOptions(argc, argv))) {
         return err;
     }
 
-    Midistar::Game g;
+    midistar::Game g;
     if ((err = g.Init())) {
         return err;
     }

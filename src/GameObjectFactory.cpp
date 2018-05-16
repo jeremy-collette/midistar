@@ -34,7 +34,7 @@
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 GameObject* GameObjectFactory::CreateInstrumentBar() {
     GameObject* bar = new GameObject{0, static_cast<double>(
@@ -104,4 +104,4 @@ GameObject* GameObjectFactory::CreateSongNote(
     return song_note;
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

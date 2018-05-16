@@ -18,7 +18,7 @@
 
 #include "midistar/Component.h"
 
-namespace Midistar {
+namespace midistar {
 
 Component::Component(ComponentType type)
         : type_{type} {
@@ -31,4 +31,4 @@ ComponentType Component::GetType() {
     return type_;
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

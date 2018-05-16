@@ -23,7 +23,7 @@
 
 #include "midistar/MidiIn.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The MidiPortIn class provides an interface for reading from a MIDI input 
@@ -52,6 +52,6 @@ class MidiPortIn : public MidiIn {
     RtMidiIn* midi_in_;  //!< MIDI port instance
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_MIDIPORTIN_H_

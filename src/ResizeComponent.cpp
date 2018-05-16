@@ -20,7 +20,7 @@
 
 #include "midistar/GraphicsComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 ResizeComponent::ResizeComponent(
     double new_width
@@ -97,4 +97,4 @@ void ResizeComponent::CalculateAnchorPosition(
     *anchor_y /= points;
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

@@ -20,7 +20,7 @@
 
 #include <vector>
 
-namespace Midistar {
+namespace midistar {
 
 MidiPortIn::MidiPortIn()
         : midi_in_{nullptr} {
@@ -58,4 +58,4 @@ void MidiPortIn::Tick() {
     }
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

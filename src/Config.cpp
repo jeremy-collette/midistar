@@ -20,7 +20,7 @@
 
 #include <iostream>
 
-namespace Midistar {
+namespace midistar {
 
 const sf::Keyboard::Key Config::MAPPED_KEYS[NUM_MAPPED_KEYS] {
         sf::Keyboard::Key::Num1, sf::Keyboard::Key::Num2
@@ -190,4 +190,4 @@ void Config::InitCliApp(CLI::App* app) {
             "to use for MIDI output.");
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

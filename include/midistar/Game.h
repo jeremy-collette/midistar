@@ -29,7 +29,7 @@
 #include "midistar/MidiOut.h"
 #include "midistar/MidiPortIn.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The Game class is the class that drives Midistar.
@@ -128,6 +128,6 @@ class Game {
     sf::RenderWindow window_;  //!< SFML window instance
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_GAME_H_

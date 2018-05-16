@@ -21,7 +21,7 @@
 #include "midistar/Config.h"
 #include "midistar/GraphicsComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 DeleteOffscreenComponent::DeleteOffscreenComponent()
         : Component{Component::DELETE_OFFSCREEN_COMPONENT} {
@@ -48,4 +48,4 @@ void DeleteOffscreenComponent::Update(Game*, GameObject* o) {
     }
 }
 
-}   // End namespace Midistar
+}   // End namespace midistar

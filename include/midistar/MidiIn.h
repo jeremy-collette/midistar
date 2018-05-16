@@ -22,7 +22,7 @@
 #include <midifile/MidiEvent.h>
 #include <queue>
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The MidiIn class provides an interface for MIDI stream readers.
@@ -55,6 +55,6 @@ class MidiIn {
     std::queue<smf::MidiEvent> buffer_;  //!< MIDI event buffer
 };
 
-}  // End namespace Midistar
+}  // End namespace midistar
 
 #endif  // MIDISTAR_MIDIIN_H_

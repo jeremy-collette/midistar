@@ -18,7 +18,7 @@
 
 #include "midistar/InstrumentComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 InstrumentComponent::InstrumentComponent()
         : Component{Component::INSTRUMENT_COMPONENT} {
@@ -27,4 +27,4 @@ InstrumentComponent::InstrumentComponent()
 void InstrumentComponent::Update(Game*, GameObject*) {
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

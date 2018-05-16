@@ -19,7 +19,7 @@
 #ifndef MIDISTAR_COMPONENT_H_
 #define MIDISTAR_COMPONENT_H_
 
-namespace Midistar {
+namespace midistar {
 class Game;
 class GameObject;
 
@@ -92,6 +92,6 @@ class Component {
     ComponentType type_;  //!< Holds the type of the component.
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_COMPONENT_H_

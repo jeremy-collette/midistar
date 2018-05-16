@@ -20,7 +20,7 @@
 
 #include "midistar/Config.h"
 
-namespace Midistar {
+namespace midistar {
 
 MidiOut::MidiOut()
         : a_driver_{nullptr}
@@ -73,5 +73,5 @@ void MidiOut::SendNoteOn(int note, int chan, int velocity) {
     fluid_synth_noteon(synth_, chan, note, velocity);
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar
 

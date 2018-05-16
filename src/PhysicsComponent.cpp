@@ -18,7 +18,7 @@
 
 #include "midistar/PhysicsComponent.h"
 
-namespace Midistar {
+namespace midistar {
 PhysicsComponent::PhysicsComponent(
     double x_vel
     , double y_vel)
@@ -45,4 +45,4 @@ void PhysicsComponent::Update(Game*, GameObject* o) {
     o->SetPosition(x, y);
 }
 
-}   // namespace Midistar
+}   // namespace midistar

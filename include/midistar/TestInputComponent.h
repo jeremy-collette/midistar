@@ -23,7 +23,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The TestInputComponent class can be used to controll the velocity of an
@@ -42,6 +42,6 @@ class TestInputComponent : public Component {
     virtual void Update(Game* g, GameObject* o);
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_TESTINPUTCOMPONENT_H_

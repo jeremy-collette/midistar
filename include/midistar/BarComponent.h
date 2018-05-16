@@ -23,7 +23,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
-namespace Midistar {
+namespace midistar {
 
 /**
  * The BarComponent class is a Component which represents the instrument bar at
@@ -42,6 +42,6 @@ class BarComponent : public Component {
     virtual void Update(Game* g, GameObject* o);
 };
 
-}   // End namespace Midistar
+}   // End namespace midistar
 
 #endif  // MIDISTAR_BARCOMPONENT_H_

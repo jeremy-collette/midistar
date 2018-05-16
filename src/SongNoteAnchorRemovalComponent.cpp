@@ -23,7 +23,7 @@
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 SongNoteAnchorRemovalComponent::SongNoteAnchorRemovalComponent()
         : Component(Component::SONG_NOTE_ANCHOR_REMOVAL_COMPONENT) {
@@ -115,4 +115,4 @@ void SongNoteAnchorRemovalComponent::Update(Game* g, GameObject* o) {
     }
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

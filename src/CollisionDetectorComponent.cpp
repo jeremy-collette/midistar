@@ -20,7 +20,7 @@
 
 #include "midistar/GraphicsComponent.h"
 
-namespace Midistar {
+namespace midistar {
 
 CollisionDetectorComponent::CollisionDetectorComponent()
         : Component{Component::COLLISION_DETECTOR_COMPONENT} {
@@ -62,4 +62,4 @@ void CollisionDetectorComponent::Update(Game* g, GameObject* o) {
     }
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

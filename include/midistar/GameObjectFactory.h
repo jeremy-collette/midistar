@@ -25,7 +25,7 @@ namespace Midistar {
 
 /**
  * The GameObjectFactory class initialises GameObject instances and adds the
- * appropriate Components to specialise them.
+ * appropriate Components to determine their behaviour.
  */
 class GameObjectFactory {
  public:
@@ -37,7 +37,7 @@ class GameObjectFactory {
     static GameObject* CreateInstrumentBar();
 
     /**
-     * Creates a MIDI  instrument note.
+     * Creates a MIDI instrument note.
      *
      * \param note The MIDI note of the instrument.
      *
@@ -48,7 +48,7 @@ class GameObjectFactory {
     /**
      * Creates a MIDI song note.
      *
-     * \param on True if MIDI on. False if MIDI off.
+     * \param on True if note on. False if note off.
      * \param chan MIDI channel.
      * \param note MIDI note.
      * \param vel MIDI velocity.

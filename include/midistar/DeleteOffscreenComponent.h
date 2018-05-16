@@ -27,7 +27,7 @@ namespace Midistar {
 
 /**
  * The DeleteOffscreenComponent class requests the deletion of its owner when
- * the owner's position is offscreen past some threshold.
+ * the owner's position is off-screen past some threshold.
  */
 class DeleteOffscreenComponent : public Component {
  public:
@@ -42,7 +42,7 @@ class DeleteOffscreenComponent : public Component {
     virtual void Update(Game* g, GameObject* o);
 
  private:
-    static const int THRESHOLD = 100;  //!< X/Y offscreen threshold
+    static const int THRESHOLD = 100;  //!< X/Y off-screen threshold
 };
 
 }   // End namespace Midistar

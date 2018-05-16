@@ -5,9 +5,9 @@ midistar is a free music game that challenges users play a MIDI file with their
 computer keyboard or a MIDI instrument, such as an electronic piano or drums.
 
 midistar uses third-party libraries that are not considered to be part of the
-midistar project, but are distributed with the midistar source for ease-of-
-access and completeness. Each subfolder in the 'external' folder contains a
-different third-party library that is used by midistar.
+midistar project, but are distributed with midistar for ease-of-access and
+completeness. Each subfolder in the 'external' folder contains a different
+third-party library that is used by midistar.
 
 The following third-party libraries are used by (and distributed with)
 midistar:
@@ -49,12 +49,12 @@ This should install a SoundFont file at the following location:
     '/usr/share/sounds/sf2/FluidR3_GM.sf2'
 
 Configure midistar so that the 'soundfont_path' configuration option points to
-the location of the newly installed SoundFont file. On Linux, it will point to
-the above location by default.
+the location of the newly installed SoundFont file. On Linux, the default
+configuration will point to the above location by default.
 
 2.3 STARTING FROM TERMINAL
 If you have downloaded a midistar release with pre-built binaries for your
-platform, you can start midistar with the `./run' command from a terminal that
+platform, you can start midistar with the './run' command from a terminal that
 is in the midistar directory. This executes a wrapper script that calls the
 actual binary (in the 'build' folder). It is recommended to always use this
 script instead of calling the binary directly. This allows the configuration
@@ -65,14 +65,24 @@ If there is not a midistar release with pre-built binaries for your platform,
 or you have cloned the midistar repository, you will have to build midistar
 from scratch before running. See the BUILDING section in this README.
 
-2.4 PLAYING MIDISTAR
+2.4 DEBUGGING MIDISTAR
+If you would like to run midistar in debugging mode, you can run the './debug'
+command to start midistar in gdb. You may have to install gdb before running
+the './debug' command. Note that you should only debug a midistar binary that
+has been built in debug mode. Binaries that are provided with releases have
+been built in release mode, and are not suitable for debugging. As such, if you
+would like to debug midistar, you will have to build a debug build from
+scratch. For information on building midistar in debug mode, see the BUILDING
+section in this README.
+
+2.5 PLAYING MIDISTAR
 midistar will load the MIDI file supplied using the '--midi_file' command line
 argument. The MIDI notes from this file will be rendered on the game screen in
-real-time, falling from top to the bottom. During its fall, each MIDI note will
+real-time, falling from top to bottom. During its fall, each MIDI note will
 collide with the instrument bar near the bottom of the screen. During
-collision, the MIDI note may be played by activating the corresponding note on
-the instrument bar. The aim of midistar is to play each MIDI note as it
-collides with the instrument bar, as precisely as possible.
+collision, MIDI notes may be played by activating the corresponding note on the
+instrument bar. The aim of midistar is to play each MIDI note as it collides
+with the instrument bar, as precisely as possible.
 
 The instrument bar can be activated in two ways. The first way is by using the
 computer keyboard. The A-Z, 0-9, and some punctuation keys (dash, equals,
@@ -97,24 +107,31 @@ activated by playing the correlating note on the MIDI instrument.
 you are on Debian or Ubuntu, you can install cmake by using the command:
     sudo apt-get install cmake
 
+On OSX, you can install cmake by first installing Homebrew and then using the
+command:
+    brew install cmake
+
 The command will vary for other distributions and platforms.
 
 3.2 BUILDING THIRD-PARTY LIBRARIES AUTOMATICALLY
-Before building midistar, its third-party dependencies must be built. If you
-are on Linux or OSX, you can try running the './scripts/build_setup' command
-from a terminal in the midistar directory.
+Before building midistar, the third-party libraries that it uses must be built.
+If you are on Linux or OSX, you can try running the './scripts/build_setup'
+command from a terminal in the midistar directory.
 
 Please note that this command does not install prerequisites for the third-
-party libraries (as the package names and managers differ between
-distributions). As such, they may fail to build. When a build failure occurs,
+party libraries. As such, they may fail to build. When a build failure occurs,
 read the console output and install any missing prerequisites before trying
 again.
 
-If you are on Linux using Debian or Ubuntu, you can install SFML prerequisites
-with the following command:
+If you are on Linux using Debian or Ubuntu, you can install prerequisites for
+the SFML library with the following command:
     sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
 libxrandr-dev libfreetype6-dev libglew1.5-dev libjpeg8-dev libsndfile1-dev
 libopenal-dev libudev-dev libxcb-image0-dev libjpeg-dev libflac-dev
+
+On OSX, prerequisites for SFML are provided with the source. You should be able
+to build the source out of the box.
+
 
 3.3 BUILDING THIRD-PARTY LIBRARIES MANUALLY
 If you cannot build the third-party libraries automatically, you can also build
@@ -152,11 +169,12 @@ you would like to build a Debug build, change the -DCMAKE_BUILD_TYPE option to
 -DCMAKE_BUILD_TYPE=Debug. If the build type option is omitted completely, a
 Debug build should be built by default.
 
-If the build is successful, the 'make' and 'run' scripts will be copied to the
-midistar folder (the parent folder of the 'build' folder). The 'make' script
-will rebuild midistar from the project folder, and the 'run' script will start
-midistar. See the RUNNING MIDISTAR section for information on configuring and
-running midistar.
+If the build is successful, the 'make', 'run' and 'debug' scripts will be
+copied to the midistar folder (the parent folder of the 'build' folder). The
+'make' script will rebuild midistar from the project folder. The 'run' script
+will start midistar. The 'debug' script will start midistar in debugging mode.
+See the RUNNING MIDISTAR section for information on configuring, running, and
+debugging midistar.
 
 
 4. LICENSE

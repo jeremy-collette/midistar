@@ -54,18 +54,18 @@ class Game {
     void AddGameObject(GameObject* obj);
 
     /**
-     * Gets MIDI port in events for the last tick.
-     *
-     * \return MIDI events.
-     */
-    const std::vector<smf::MidiEvent>& GetMidiPortInEvents();
-
-    /**
      * Gets all GameObjects.
      *
      * \return All GameObjects.
      */
     const std::vector<GameObject*>& GetGameObjects();
+
+    /**
+     * Gets MIDI port in events for the last tick.
+     *
+     * \return MIDI events.
+     */
+    const std::vector<smf::MidiEvent>& GetMidiPortInEvents();
 
     /**
      * Gets SFML events for the last tick.

@@ -22,8 +22,7 @@
 
 namespace Midistar {
 
-GraphicsComponent::GraphicsComponent(
-    sf::RectangleShape* rect)
+GraphicsComponent::GraphicsComponent(sf::RectangleShape* rect)
         : Component{Component::GRAPHICS_COMPONENT}
         , rect_{rect} {
 }

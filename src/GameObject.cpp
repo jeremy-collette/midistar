@@ -21,12 +21,11 @@
 namespace Midistar {
 
 GameObject::GameObject(double x_pos, double y_pos)
-    : x_pos_{x_pos}
-    , y_pos_{y_pos}
-    , components_{0}
-    , request_delete_{false}
-    , to_delete_{}
-{
+        : components_{0}
+        , request_delete_{false}
+        , to_delete_{}
+        , x_pos_{x_pos}
+        , y_pos_{y_pos} {
     for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
         components_[i] = nullptr;
     }

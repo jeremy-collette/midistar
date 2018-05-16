@@ -96,9 +96,8 @@ int Game::Run() {
 
         smf::MidiEvent mev;
         while (midi_file_in_.GetEvent(&mev)) {
-            if (Config::GetInstance().GetPlayerMidiTrack() != -1
-                    && mev.track !=
-                        Config::GetInstance().GetPlayerMidiTrack()) {
+            if (Config::GetInstance().GetPlayerMidiTrack() != -1 && mev.track
+                    != Config::GetInstance().GetPlayerMidiTrack()) {
                 continue;
             }
             objects_.push_back(GameObjectFactory::CreateSongNote(

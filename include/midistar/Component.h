@@ -88,7 +88,7 @@ class Component {
     virtual void Update(Game* g, GameObject* o) = 0;
 
  private:
-    int type_;  //!< Holds the type of the component.
+    ComponentType type_;  //!< Holds the type of the component.
 };
 
 }   // End namespace Midistar

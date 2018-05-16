@@ -26,7 +26,7 @@
 namespace Midistar {
 
 /**
- * The MidiNoteComponent class holds MIDI information.
+ * The MidiNoteComponent class holds MIDI note information.
  */
 class MidiNoteComponent : public Component {
  public:

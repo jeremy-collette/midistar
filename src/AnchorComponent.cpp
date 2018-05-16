@@ -44,7 +44,9 @@ void AnchorComponent::Update(Game*, GameObject* o) {
     double x, y;
     o->GetPosition(&x, &y);
 
-    if (behaviour_ == SIMPLE && x >= x_target_ && y >= y_target_) {
+    // If we're in FALLING mode and we've fallen to our target, we've done
+    // our job!
+    if (behaviour_ == FALLING && x >= x_target_ && y >= y_target_) {
         o->SetComponent(new ResizeComponent{0, 0});
         o->RemoveComponent(GetType());
         return;
@@ -52,7 +54,6 @@ void AnchorComponent::Update(Game*, GameObject* o) {
 
     auto graphics = o->GetComponent<GraphicsComponent>(
             Component::GRAPHICS_COMPONENT);
-
     if (!graphics) {
         return;
     }
@@ -94,6 +95,9 @@ void AnchorComponent::Update(Game*, GameObject* o) {
         flags = ResizeComponent::TOP_LEFT;
     }
 
+    // Resize our owner so that our position is back on the target.
+    // Use AnchorFlags to anchor our edge(s) that are furthrest away from the
+    // target, thus stretching closest edge(s) towards / away from target.
     o->SetComponent(new ResizeComponent{
             fabs(new_width)
             , fabs(new_height)

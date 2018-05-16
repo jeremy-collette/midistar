@@ -27,14 +27,14 @@ PhysicsComponent::PhysicsComponent(
         , y_vel_{y_vel} {
 }
 
-void PhysicsComponent::SetVelocity(double x_vel, double y_vel) {
-    x_vel_ = x_vel;
-    y_vel_ = y_vel;
-}
-
 void PhysicsComponent::GetVelocity(double* x_vel, double* y_vel) {
     *x_vel = x_vel_;
     *y_vel = y_vel_;
+}
+
+void PhysicsComponent::SetVelocity(double x_vel, double y_vel) {
+    x_vel_ = x_vel;
+    y_vel_ = y_vel;
 }
 
 void PhysicsComponent::Update(Game*, GameObject* o) {

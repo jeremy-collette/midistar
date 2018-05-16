@@ -11,3 +11,4 @@ fi
 
 cpplint --root=include include/midistar/*.h
 cpplint src/*.cpp
+

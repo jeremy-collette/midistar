@@ -16,17 +16,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/ArrowsInputComponent.h"
+#include "midistar/TestInputComponent.h"
 
 #include "midistar/PhysicsComponent.h"
 
 namespace Midistar {
 
-ArrowsInputComponent::ArrowsInputComponent()
+TestInputComponent::TestInputComponent()
         : Component(Component::TEST_INPUT_COMPONENT) {
 }
 
-void ArrowsInputComponent::Update(Game*, GameObject* o) {
+void TestInputComponent::Update(Game*, GameObject* o) {
     auto physics = o->GetComponent<PhysicsComponent>(
             Component::PHYSICS_COMPONENT);
     if (!physics) {

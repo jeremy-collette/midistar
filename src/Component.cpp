@@ -20,14 +20,14 @@
 
 namespace Midistar {
 
-Component::Component(int type)
+Component::Component(ComponentType type)
         : type_{type} {
 }
 
 Component::~Component() {
 }
 
-int Component::GetType() {
+ComponentType Component::GetType() {
     return type_;
 }
 

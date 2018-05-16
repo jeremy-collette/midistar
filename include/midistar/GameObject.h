@@ -102,9 +102,9 @@ class GameObject {
     void RemoveComponent(ComponentType type);
 
     /**
-     * Sets the Component slot.
+     * Sets the Component in slot determined by the ComponentType.
      *
-     * \param c The Component to set in slot c->GetType().
+     * \param c The Component to set.
      */
     void SetComponent(Component* c);
 
@@ -120,7 +120,7 @@ class GameObject {
      * Sets the request deletion status.
      *
      * \param del The request deletion status. Setting this to true will delete
-     * the GameObject (and all its Components) at the end of the next tick.
+     * the GameObject (and all its Components) at the end of this tick.
      */
     void SetRequestDelete(bool del);
 
@@ -132,10 +132,11 @@ class GameObject {
     void Update(Game* g);
 
  private:
-    double x_pos_, y_pos_;  //!< Holds X and Y position
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
     bool request_delete_;  //!< Holds deletion request status
     std::vector<Component*> to_delete_;  //!< Holds components to delete
+    double x_pos_;  //!< Holds X position
+    double y_pos_;  //!< Holds Y position
 };
 
 }   // End namespace Midistar

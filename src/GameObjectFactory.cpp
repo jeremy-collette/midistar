@@ -28,10 +28,10 @@
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/NoteInfoComponent.h"
-#include "midistar/SongNoteCollisionHandlerComponent.h"
-#include "midistar/SongNoteComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/SongNoteCollisionHandlerComponent.h"
+#include "midistar/SongNoteComponent.h"
 
 namespace Midistar {
 
@@ -86,7 +86,7 @@ GameObject* GameObjectFactory::CreateSongNote(
         song_note->SetComponent(new AnchorComponent{x_pos, -1.0});
     } else {
         song_note = new GameObject{x_pos, -rect_size};
-        rect = new sf::RectangleShape{{rect_size, rect_size}};
+        rect = new sf::RectangleShape{{1.0, rect_size}};
         rect->setFillColor(sf::Color::Transparent);
     }
 

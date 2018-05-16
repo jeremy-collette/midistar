@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_ARROWSINPUTCOMPONENT_H_
-#define MIDISTAR_ARROWSINPUTCOMPONENT_H_
+#ifndef MIDISTAR_TESTINPUTCOMPONENT_H_
+#define MIDISTAR_TESTINPUTCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/Game.h"
@@ -26,15 +26,15 @@
 namespace Midistar {
 
 /**
- * The ArrowsInputComponent class can be used to controll the velocity of an
+ * The TestInputComponent class can be used to controll the velocity of an
  * object using keyboard arrows. 
  */
-class ArrowsInputComponent : public Component {
+class TestInputComponent : public Component {
  public:
     /**
      * Constructor. 
      */
-    ArrowsInputComponent();
+    TestInputComponent();
 
     /**
      * \copydoc Component::Update()
@@ -44,4 +44,4 @@ class ArrowsInputComponent : public Component {
 
 }   // End namespace Midistar
 
-#endif  // MIDISTAR_ARROWSINPUTCOMPONENT_H_
+#endif  // MIDISTAR_TESTINPUTCOMPONENT_H_

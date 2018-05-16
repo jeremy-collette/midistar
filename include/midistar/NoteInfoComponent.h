@@ -39,7 +39,7 @@ class NoteInfoComponent : public Component {
     NoteInfoComponent(bool on, int chan, int note, int vel);
 
     /**
-     * Gets notes MIDI channel.
+     * Gets MIDI channel.
      *
      * \return MIDI channel.
      */
@@ -53,14 +53,14 @@ class NoteInfoComponent : public Component {
     bool GetIsOn();
 
     /**
-     * Gets notes MIDI note.
+     * Gets MIDI note.
      *
      * \return MIDI note.
      */
     int GetKey();
 
     /**
-     * Gets notes MIDI velocity.
+     * Gets MIDI velocity.
      *
      * \return MIDI velocity.
      */

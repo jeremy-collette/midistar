@@ -27,7 +27,6 @@ link_directories(${CMAKE_SOURCE_DIR}/external/fluidsynth/src
 # Create executable
 add_executable(midistar
     src/AnchorComponent.cpp
-    src/ArrowsInputComponent.cpp
     src/BarComponent.cpp
     src/CollisionDetectorComponent.cpp
     src/CollisionHandlerComponent.cpp
@@ -51,6 +50,7 @@ add_executable(midistar
     src/ResizeComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
+    src/TestInputComponent.cpp
     )
 
 # Link midistar
@@ -101,6 +101,7 @@ if (${APPLE})
             ${CMAKE_SOURCE_DIR}/data/osx.cfg
             ${CMAKE_SOURCE_DIR}/.)
 
+        # Rename to 'config.cfg'
         add_custom_command(TARGET midistar POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E rename
             ${CMAKE_SOURCE_DIR}/osx.cfg
@@ -142,6 +143,7 @@ else() # Assuming Linux
             ${CMAKE_SOURCE_DIR}/data/linux.cfg
             ${CMAKE_SOURCE_DIR}/.)
 
+        # Rename to 'config.cfg'
         add_custom_command(TARGET midistar POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E rename
             ${CMAKE_SOURCE_DIR}/linux.cfg

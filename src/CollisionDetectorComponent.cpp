@@ -51,7 +51,6 @@ void CollisionDetectorComponent::Update(Game* g, GameObject* o) {
 
         auto other_graphics = other_obj->GetComponent<GraphicsComponent>(
                 Component::GRAPHICS_COMPONENT);
-
         if (!other_graphics) {
             continue;
         }

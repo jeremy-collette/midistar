@@ -24,7 +24,7 @@
 namespace Midistar {
 
 /**
- * The MidiOut class provides an interface for controlling MIDI audio.
+ * The MidiOut class provides an interface for playing MIDI audio.
  */    
 class MidiOut {
  public:

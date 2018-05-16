@@ -42,12 +42,12 @@ class AnchorComponent : public Component {
      * AnchorComponent.
      *
      * DEFAULT will behave as expected, as described in the class overview.
-     * SIMPLE will remove the AnchorComponent when the owner's position reaches
-     * the anchor point.
+     * FALLING will remove the AnchorComponent when the owner's position 
+     * reaches the anchor point.
      */
     enum : AnchorBehaviour {
         DEFAULT = 0
-        , SIMPLE
+        , FALLING
     };
 
     /**

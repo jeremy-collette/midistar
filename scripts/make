@@ -18,3 +18,4 @@ fi
 
 # Call make
 exec make -C build "$@"
+

@@ -27,7 +27,7 @@
 namespace Midistar {
 
 /**
- * The MidiFileIn class provides real-time MIDI events from a MIDI file.
+ * The MidiFileIn reads events from a MIDI file in a real-time fashion.
  */
 class MidiFileIn : public MidiIn {
  public:
@@ -58,14 +58,14 @@ class MidiFileIn : public MidiIn {
     bool IsEof();
 
     /**
-     * Advances the reader at the speed equivalent to one tick of Midistar.
+     * Advances the reader at the speed equivalent to one tick of midistar.
      */
     virtual void Tick();
 
  private:
     smf::MidiFile file_;  //!< Underlying MIDI file instance
     int index_;  //!< Index of event in track
-    double time_;  //!< Real-time position of reader
+    double time_;  //!< Real-time position in MIDI file
 };
 
 }  // End namespace Midistar

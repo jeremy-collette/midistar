@@ -147,7 +147,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
                 g->AddGameObject(half);
             }
 
-            // Now we are guaranteed to have a note that ends at the
+            // Now we are guaranteed to have a note that ends before the
             // bottom of the bar (see above).
             //
             // If the top of the note is before the bar:
@@ -159,7 +159,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
                 o->SetComponent(new AnchorComponent{
                         x
                         , bar_y
-                        , AnchorComponent::SIMPLE});
+                        , AnchorComponent::FALLING});
             } else { // Otherwise 'o' is now purely within the bar and
                      // can be removed.
                 o->SetComponent(new ResizeComponent{0, 0});

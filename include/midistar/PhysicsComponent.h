@@ -27,7 +27,7 @@ namespace Midistar {
 /**
  * The PhysicsComponent class provides velocity functionality to its owner.
  *
- * Each tick, the X and Y position of the owner are changed by the X velocity
+ * Each tick, the X and Y position of the owner are updated by the X velocity
  * and Y velocity respectively.
  */
 class PhysicsComponent : public Component {

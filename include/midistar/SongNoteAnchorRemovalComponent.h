@@ -16,45 +16,32 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/NoteInfoComponent.h"
+#ifndef MIDISTAR_SONGNOTEANCHORREMOVALCOMPONENT_H_
+#define MIDISTAR_SONGNOTEANCHORREMOVALCOMPONENT_H_
+
+#include "midistar/Component.h"
+#include "midistar/Game.h"
+#include "midistar/GameObject.h"
 
 namespace Midistar {
 
-NoteInfoComponent::NoteInfoComponent(
-    int track
-    , bool on
-    , int chan
-    , int note
-    , int vel)
-        : Component{Component::NOTE_INFO_COMPONENT}
-        , chan_{chan}
-        , note_{note}
-        , on_{on}
-        , track_{track}
-        , vel_{vel} {
-}
+/**
+ * The SongNoteAnchorRemovalComponent is used by MIDI off notes to stop the
+ * note expansion of MIDI on notes that have the same MIDI key (note).
+ */
+class SongNoteAnchorRemovalComponent : public Component {
+ public:
+    /**
+     * Constructor.
+     */
+    SongNoteAnchorRemovalComponent();
 
-int NoteInfoComponent::GetChannel() {
-    return chan_;
-}
+    /**
+     * \copydoc Component::Update()
+     */
+    virtual void Update(Game* g, GameObject* o);
+};
 
-bool NoteInfoComponent::GetIsOn() {
-    return on_;
-}
+}   // End namespace Midistar
 
-int NoteInfoComponent::GetKey() {
-    return note_;
-}
-
-int NoteInfoComponent::GetTrack() {
-    return track_;
-}
-
-int NoteInfoComponent::GetVelocity() {
-    return vel_;
-}
-
-void NoteInfoComponent::Update(Game*, GameObject*) {
-}
-
-}  // End namespace Midistar
+#endif  // MIDISTAR_SONGNOTEANCHORREMOVALCOMPONENT_H_

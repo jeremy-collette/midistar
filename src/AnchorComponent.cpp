@@ -40,6 +40,11 @@ AnchorComponent::AnchorComponent(double x_target, double y_target)
         : AnchorComponent{x_target, y_target, AnchorComponent::DEFAULT} {
 }
 
+void AnchorComponent::GetTarget(double* x_target, double* y_target) {
+    *x_target = x_target_;
+    *y_target = y_target_;
+}
+
 void AnchorComponent::Update(Game*, GameObject* o) {
     double x, y;
     o->GetPosition(&x, &y);

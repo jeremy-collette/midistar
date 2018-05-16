@@ -65,6 +65,8 @@ class MidiFileIn : public MidiIn {
  private:
     smf::MidiFile file_;  //!< Underlying MIDI file instance
     int index_;  //!< Index of event in track
+    int player_channel_;  //!< MIDI channel to play
+    int player_track_;  //!< MIDI track to play
     double time_;  //!< Real-time position in MIDI file
 };
 

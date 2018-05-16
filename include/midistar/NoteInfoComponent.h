@@ -31,12 +31,13 @@ class NoteInfoComponent : public Component {
     /**
      * Constructor.
      *
+     * \param track MIDI track.
      * \param on True indicates MIDI note on. False indicates MIDI note off.
      * \param chan MIDI channel.
      * \param note MIDI note.
      * \param vel MIDI velocity.
      */
-    NoteInfoComponent(bool on, int chan, int note, int vel);
+    NoteInfoComponent(int track, bool on, int chan, int note, int vel);
 
     /**
      * Gets MIDI channel.
@@ -60,11 +61,25 @@ class NoteInfoComponent : public Component {
     int GetKey();
 
     /**
+     * Gets MIDI track.
+     *
+     * \return MIDI track. If no track exists, returns NO_TRACK.
+     */
+    int GetTrack();
+
+    /**
      * Gets MIDI velocity.
      *
      * \return MIDI velocity.
      */
     int GetVelocity();
+
+    /**
+     * Determines whether or not the note has a MIDI track.
+     *
+     * \return True if the note has a track. False otherwise.
+     */
+    bool HasTrack();
 
     /**
      * \copydoc Component::Update()
@@ -75,6 +90,7 @@ class NoteInfoComponent : public Component {
     int chan_;  //!< Holds MIDI channel
     int note_;  //!< Holds MIDI note
     bool on_;  //!< Holds MIDI note on / off status
+    int track_;  //!< Holds MIDI track
     int vel_;  //!< Holds MIDI velocity
 };
 

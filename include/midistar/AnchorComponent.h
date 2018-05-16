@@ -71,6 +71,14 @@ class AnchorComponent : public Component {
     AnchorComponent(double x_target, double y_target);
 
     /**
+     * Gets the point to anchor to.
+     *
+     * \param x_target The X coordinate to anchor to.
+     * \param y_target The Y coordinate to anchor to.
+     */
+    void GetTarget(double* x_target, double* y_target);
+
+    /**
      * \copydoc Component::Update()
      */
     virtual void Update(Game* g, GameObject* o);

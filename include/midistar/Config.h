@@ -69,6 +69,13 @@ class Config {
     int GetMaximumMidiNote();
 
     /**
+     * Gets the MIDI channel to play.
+     *
+     * \return MIDI channel.
+     */
+    int GetMidiChannel();
+
+    /**
      * Gets the MIDI file name to be played by the player.
      *
      * \return MIDI file name.
@@ -91,6 +98,13 @@ class Config {
     int GetMidiOutVelocity();
 
     /**
+     * Gets the MIDI track to play.
+     *
+     * \return MIDI file track.
+     */
+    int GetMidiTrack();
+
+    /**
      * Gets the minimum MIDI note to be displayed on the screen.
      *
      * \return Minimum MIDI note.
@@ -104,20 +118,6 @@ class Config {
      * \return Number of MIDI notes.
      */
     int GetNumMidiNotes();
-
-    /**
-     * Gets the MIDI channel of the player's instrument.
-     *
-     * \return Player MIDI channel.
-     */
-    int GetPlayerMidiChannel();
-
-    /**
-     * Gets the track of the MIDI file that the player is playing.
-     *
-     * \return MIDI file track.
-     */
-    int GetPlayerMidiTrack();
 
     /**
      * Gets the height of the screen.
@@ -188,12 +188,12 @@ class Config {
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
+    int midi_channel_;  //!< MIDI channel to play
     std::string midi_file_name_;  //!< MIDI file being played by user
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     int midi_highest_note_;  //!< The highest MIDI note to support
     int midi_lowest_note_;  //!< The lowest MIDI note to support
-    int player_midi_channel_;  //!< Instrument MIDI out channel
-    int player_midi_track_;  //!< MIDI track being played by user
+    int midi_track_;  //!< MIDI track to play
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes

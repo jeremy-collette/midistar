@@ -48,6 +48,7 @@ add_executable(midistar
     src/NoteInfoComponent.cpp
     src/PhysicsComponent.cpp
     src/ResizeComponent.cpp
+    src/SongNoteAnchorRemovalComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
     src/TestInputComponent.cpp

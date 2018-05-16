@@ -57,12 +57,12 @@ Config::Config()
         : audio_driver_{""}
         , auto_play_{false}
         , keyboard_first_note_{-1}
+        , midi_channel_{-1}
         , midi_file_name_{""}
         , midi_file_repeat_{false}
         , midi_highest_note_{-1}
         , midi_lowest_note_{-1}
-        , player_midi_channel_{-1}
-        , player_midi_track_{-1}
+        , midi_track_{-1}
         , screen_height_{-1}
         , screen_width_{-1}
         , soundfont_path_{""} {
@@ -84,6 +84,10 @@ int Config::GetMaximumMidiNote() {
     return midi_highest_note_;
 }
 
+int Config::GetMidiChannel() {
+    return midi_channel_;
+}
+
 const std::string Config::GetMidiFileName() {
     return midi_file_name_;
 }
@@ -96,6 +100,10 @@ int Config::GetMidiOutVelocity() {
     return MIDI_OUT_VELOCITY;
 }
 
+int Config::GetMidiTrack() {
+    return midi_track_;
+}
+
 int Config::GetMinimumMidiNote() {
     return midi_lowest_note_;
 }
@@ -104,14 +112,6 @@ int Config::GetNumMidiNotes() {
     // We have to add 1 here because 0 is actually a MIDI note (ergo, the range
     // is inclusive).
     return GetMaximumMidiNote() - GetMinimumMidiNote() + 1;
-}
-
-int Config::GetPlayerMidiChannel() {
-    return player_midi_channel_;
-}
-
-int Config::GetPlayerMidiTrack() {
-    return player_midi_track_;
 }
 
 int Config::GetScreenHeight() {
@@ -173,6 +173,8 @@ void Config::InitCliApp(CLI::App* app) {
             false);
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
+    app->add_option("--midi_channel", midi_channel_, "The MIDI "
+            "channel read notes from.");
     app->add_option("--midi_file", midi_file_name_, "The MIDI file to play.");
     app->add_option("--midi_file_repeat", midi_file_repeat_, "Determines "
             "whether or not to continuously repeat the MIDI file.");
@@ -180,10 +182,8 @@ void Config::InitCliApp(CLI::App* app) {
             "MIDI note to display and play.");
     app->add_option("--midi_lowest_note", midi_lowest_note_, "The lowest MIDI "
             "note to display and play.");
-    app->add_option("--midi_track", player_midi_track_, "The MIDI track to "
+    app->add_option("--midi_track", midi_track_, "The MIDI track to "
             "read notes from.");
-    app->add_option("--player_channel", player_midi_channel_, "The MIDI "
-            "channel for instrument MIDI events.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "

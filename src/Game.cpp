@@ -24,6 +24,7 @@
 
 #include "midistar/GameObjectFactory.h"
 #include "midistar/Config.h"
+#include "midistar/NoteInfoComponent.h"
 
 namespace Midistar {
 
@@ -96,12 +97,9 @@ int Game::Run() {
 
         smf::MidiEvent mev;
         while (midi_file_in_.GetEvent(&mev)) {
-            if (Config::GetInstance().GetPlayerMidiTrack() != -1 && mev.track
-                    != Config::GetInstance().GetPlayerMidiTrack()) {
-                continue;
-            }
             objects_.push_back(GameObjectFactory::CreateSongNote(
-                        mev.isNoteOn()
+                        mev.track
+                        , mev.isNoteOn()
                         , mev.getChannelNibble()
                         , mev[1]
                         , mev[2]));
@@ -129,7 +127,7 @@ int Game::Run() {
 
         // If we're done playing the file and have no song notes to be played,
         // we're done!
-        if (midi_file_in_.IsEof() && !HasSongNote()) {
+        if (midi_file_in_.IsEof() && !CheckSongNotes()) {
             window_.close();
         }
         ++t;
@@ -144,6 +142,35 @@ void Game::TurnMidiNoteOff(int chan, int note) {
 
 void Game::TurnMidiNoteOn(int chan, int note, int vel) {
     midi_out_.SendNoteOn(note, chan, vel);
+}
+
+bool Game::CheckSongNotes() {
+    for (const auto& obj : objects_) {
+        if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
+            // If there's no anchor we know it's a valid note
+            if (!obj->HasComponent(Component::ANCHOR_COMPONENT)) {
+                return true;
+            }
+
+            // We can still have an anchor if we're anchored to the bar
+            double x, y;
+            obj->GetPosition(&x, &y);
+            if (y > 0) {
+                return true;
+            }
+
+            auto note = obj->GetComponent<NoteInfoComponent>(
+                    Component::NOTE_INFO_COMPONENT);
+            if (!note) {
+                continue;
+            }
+            std::cerr << "Warning: could not find MIDI note off event for"
+                << " key " << note->GetKey() << ". Track: "
+                << note->GetTrack() << ". Channel: " << note->GetChannel()
+                << ".\n";
+        }
+    }
+    return false;
 }
 
 void Game::CleanUpObjects() {
@@ -168,15 +195,6 @@ void Game::FlushNewObjectQueue() {
         objects_.push_back(new_objects_.front());
         new_objects_.pop();
     }
-}
-
-bool Game::HasSongNote() {
-    for (const auto& obj : objects_) {
-        if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
-            return true;
-        }
-    }
-    return false;
 }
 
 }   // namespace Midistar

@@ -30,6 +30,7 @@
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/SongNoteAnchorRemovalComponent.h"
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 
@@ -56,8 +57,9 @@ GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
 
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{
-            true
-            , Config::GetInstance().GetPlayerMidiChannel()
+            -1
+            , true
+            , Config::GetInstance().GetMidiChannel()
             , note
             , Config::GetInstance().GetMidiOutVelocity()});
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
@@ -69,7 +71,8 @@ GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
 }
 
 GameObject* GameObjectFactory::CreateSongNote(
-        bool on
+        int track
+        , bool on
         , int chan
         , int note
         , int vel) {
@@ -88,10 +91,11 @@ GameObject* GameObjectFactory::CreateSongNote(
         song_note = new GameObject{x_pos, -rect_size};
         rect = new sf::RectangleShape{{1.0, rect_size}};
         rect->setFillColor(sf::Color::Transparent);
+        song_note->SetComponent(new SongNoteAnchorRemovalComponent{});
     }
 
     song_note->SetComponent(new SongNoteComponent{});
-    song_note->SetComponent(new NoteInfoComponent{on, chan, note, vel});
+    song_note->SetComponent(new NoteInfoComponent{track, on, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, 1});
     song_note->SetComponent(new DeleteOffscreenComponent{});

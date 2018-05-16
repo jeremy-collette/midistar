@@ -113,11 +113,10 @@ class Game {
     void TurnMidiNoteOn(int chan, int note, int vel);
 
  private:
+    bool CheckSongNotes();  //!< Determines if the Game has valid song notes
     void CleanUpObjects();  //!< Deletes all GameObjects and their components
     void DeleteObject(GameObject* o);  //!< Deletes a GameObject
     void FlushNewObjectQueue();  //!< Adds new objects to object buffer
-    bool HasSongNote();  //!< Determines if the Game has any GameObjects
-                                                  //!< representing a song note
 
     MidiFileIn midi_file_in_;  //!< MIDI file in instance
     MidiOut midi_out_;  //!< MIDI port out instance

@@ -52,25 +52,6 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
         return;
     }
 
-    // Here we handle the note expansion phase. When the note first spawns, we
-    // don't know how long it is going to be, so we anchor the top edge above
-    // the screen until we collide with the off note.
-    if (colliding_with->HasComponent(Component::SONG_NOTE_COMPONENT)) {
-        if (!other_note || other_note->GetIsOn()
-                || other_note->GetKey() != note->GetKey()) {
-            return;
-        }
-
-        o->DeleteComponent(Component::ANCHOR_COMPONENT);
-
-        // We're actually intersecting with the note off object here. We really
-        // want to be 1 pixel down.
-        double width, height;
-        graphics->GetSize(&width, &height);
-        o->SetComponent(new ResizeComponent{width, height-1
-            , ResizeComponent::BOT_LEFT | ResizeComponent::BOT_RIGHT});
-    }
-
     // Get the bar object, for later use.
     GameObject* bar = nullptr;
     for (auto& obj : g->GetGameObjects()) {
@@ -123,7 +104,8 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
                 }
 
                 GameObject* half = GameObjectFactory::CreateSongNote(
-                            note->GetIsOn()
+                            note->GetTrack()
+                            , note->GetIsOn()
                             , note->GetChannel()
                             , note->GetKey()
                             , note->GetVelocity());

@@ -26,6 +26,8 @@ namespace Midistar {
 
 MidiFileIn::MidiFileIn()
         : index_{0}
+        , player_channel_{Config::GetInstance().GetMidiChannel()}
+        , player_track_{Config::GetInstance().GetMidiTrack()}
         , time_{0} {
 }
 
@@ -51,7 +53,9 @@ void MidiFileIn::Tick() {
     smf::MidiEvent* mev;
     while (!IsEof() && file_.getTimeInSeconds((mev = &file_[0][index_])->tick)
                 <= time_) {
-        if (mev->isNoteOn() || mev->isNoteOff()) {
+        if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
+            && (player_track_ == -1 || mev->track == player_track_)
+            && (mev->isNoteOn() || mev->isNoteOff())) {
             AddEvent(*mev);
         }
         ++index_;

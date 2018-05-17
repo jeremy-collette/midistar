@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Change to script dir
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [ $dir == 'scripts' ]; then
+    cd ..
+fi
+
+# Find binary
+./scripts/find_binary
+
+# If we found the binary...
+if [ $? -eq 0 ]; then
+    # Dynamic library search path hack
+    export DYLD_LIBRARY_PATH="external/midifile/lib:external/rtmidi/.libs"
+    # Run executable
+    exec ./build/bin/midistar "$@"
+fi
+

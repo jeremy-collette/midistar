@@ -1,0 +1,67 @@
+#!/bin/bash
+set -e
+
+# Text colours
+col="[34m"  # Blue
+def="[0m"   # Default
+
+# Coloured echo function
+cecho() {
+    echo -e "\x1B$col$1\x1B$def"
+    sleep 1
+}
+
+# Platform detection
+if [ "$(uname)" == "Darwin" ]; then
+    echo "OSX detected."
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    echo "Linux detected."
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+    echo "Windows not supported."
+    exit
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    echo "Windows not supported."
+    exit
+fi
+
+# Change to script dir
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [ $dir == 'scripts' ]; then
+    cd ..
+fi
+
+# Building...
+midistar_dir=$PWD
+ext_dir=$PWD/external
+
+cecho "Setting up git submodules..."
+git submodule init
+git submodule update
+
+cecho "\nBuilding fluidsynth..."
+cd $ext_dir/fluidsynth
+cmake .
+make
+
+cecho "\nBuilding midifile..."
+cd $ext_dir/midifile
+make library
+
+cecho "\nBuilding rtmidi..."
+cd $ext_dir/rtmidi
+./autogen.sh
+make
+
+cecho "\nBuilding SFML..."
+cd $ext_dir/SFML
+mkdir build
+cd build
+cmake ..
+make
+
+cd $midistar_dir
+cecho "\nFinished! Refer to the README file for instructions on building midistar."
+

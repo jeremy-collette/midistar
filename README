@@ -1,0 +1,181 @@
+midistar Copyright (C) 2018 Jeremy Collette.
+
+1. ABOUT MIDISTAR
+midistar is a free music game that challenges users play a MIDI file with their
+computer keyboard or a MIDI instrument, such as an electronic piano or drums.
+
+midistar uses third-party libraries that are not considered to be part of the
+midistar project, but are distributed with midistar for ease-of-access and
+completeness. Each subfolder in the 'external' folder contains a different
+third-party library that is used by midistar.
+
+The following third-party libraries are used by (and distributed with)
+midistar:
+    * CLI11: Copyright (c) 2017-2018 University of Cincinnati.
+    * fluidsynth: Copyright (C) 2003  Peter Hanappe and others.
+    * midifile: Copyright (c) 1999-2018, Craig Stuart Sapp.
+    * RtMidi: Copyright (c) 2003-2017 Gary P. Scavone.
+    * SFML: Copyright (C) 2007-2017 Laurent Gomila.
+
+Thanks to the developers and supporters of these libraries!
+
+midistar is written in C++ using code (and shared libraries) that are
+compatible with Linux, OSX, and Windows. However, at the current time, building
+is only supported on Linux and OSX. That being said, building on Windows should
+be possible.
+
+Releases may not contain binaries for all (if any) platforms. Furthermore, the
+instructions in this README are mainly written for Linux. However, they should
+still be relevant for OSX, with minor differences.
+
+
+2. RUNNING MIDISTAR
+2.1 CONFIGURING MIDISTAR
+midistar has configuration options that can be configured for varying levels of
+customisation. Run midistar with the '--help' option to see a list of
+configuration options. These can be set in the 'config.cfg' file, which can be
+found in the midistar folder, or provided as command line arguments. Note that
+the 'config.cfg' file will not be created until midistar has been built. It is
+recommended to use absolute paths instead of relative paths in configuration
+settings.
+
+2.2 INSTALLING A SOUNDFONT FILE
+Before running midistar, you will need to install a SoundFont file to use for
+playing MIDI sounds. If you are using Debian or Ubuntu, you can run the
+following command to install the FluidSynth general SoundFont:
+    sudo apt-get install fluid-soundfont-gm
+
+This should install a SoundFont file at the following location:
+    '/usr/share/sounds/sf2/FluidR3_GM.sf2'
+
+Configure midistar so that the 'soundfont_path' configuration option points to
+the location of the newly installed SoundFont file. On Linux, the default
+configuration will point to the above location by default.
+
+2.3 STARTING FROM TERMINAL
+If you have downloaded a midistar release with pre-built binaries for your
+platform, you can start midistar with the './run' command from a terminal that
+is in the midistar directory. This executes a wrapper script that calls the
+actual binary (in the 'build' folder). It is recommended to always use this
+script instead of calling the binary directly. This allows the configuration
+file to be found, ensures consistency of the working directory, and allows
+environment variables to be set if required.
+
+If there is not a midistar release with pre-built binaries for your platform,
+or you have cloned the midistar repository, you will have to build midistar
+from scratch before running. See the BUILDING section in this README.
+
+2.4 DEBUGGING MIDISTAR
+If you would like to run midistar in debugging mode, you can run the './debug'
+command to start midistar in gdb. You may have to install gdb before running
+the './debug' command. Note that you should only debug a midistar binary that
+has been built in debug mode. Binaries that are provided with releases have
+been built in release mode, and are not suitable for debugging. As such, if you
+would like to debug midistar, you will have to build a debug build from
+scratch. For information on building midistar in debug mode, see the BUILDING
+section in this README.
+
+2.5 PLAYING MIDISTAR
+midistar will load the MIDI file supplied using the '--midi_file' command line
+argument. The MIDI notes from this file will be rendered on the game screen in
+real-time, falling from top to bottom. During its fall, each MIDI note will
+collide with the instrument bar near the bottom of the screen. During
+collision, MIDI notes may be played by activating the corresponding note on the
+instrument bar. The aim of midistar is to play each MIDI note as it collides
+with the instrument bar, as precisely as possible.
+
+The instrument bar can be activated in two ways. The first way is by using the
+computer keyboard. The A-Z, 0-9, and some punctuation keys (dash, equals,
+square brackets, semi-colon, quote, comma, period, and forward slash) are all
+bound to activate different notes on the instrument bar. The note that is
+activated can be shifted up by pressing the SHIFT key, or shifted down by
+pressing the CONTROL key. This allows all possible MIDI notes to be played with
+the keyboard.
+
+The instrument bar can also be activated by using a MIDI instrument, which is
+the recommended way to play midistar. Connect your MIDI instrument to the
+computer running midistar using a MIDI to USB connection cable. You may have to
+virtually 'attach' the MIDI input port to the midistar 'RtMidi' MIDI port,
+depending on which platform and/or MIDI software you are using. Once you have
+connected and attached a MIDI instrument, the midistar instrument bar can be
+activated by playing the correlating note on the MIDI instrument.
+
+
+3. BUILDING
+3.1 CMAKE
+'cmake' is required to build midistar and some of its third-party libraries. If
+you are on Debian or Ubuntu, you can install cmake by using the command:
+    sudo apt-get install cmake
+
+On OSX, you can install cmake by first installing Homebrew and then using the
+command:
+    brew install cmake
+
+The command will vary for other distributions and platforms.
+
+3.2 BUILDING THIRD-PARTY LIBRARIES AUTOMATICALLY
+Before building midistar, the third-party libraries that it uses must be built.
+If you are on Linux or OSX, you can try running the './scripts/build_setup'
+command from a terminal in the midistar directory.
+
+Please note that this command does not install prerequisites for the third-
+party libraries. As such, they may fail to build. When a build failure occurs,
+read the console output and install any missing prerequisites before trying
+again.
+
+If you are on Linux using Debian or Ubuntu, you can install prerequisites for
+the SFML library with the following command:
+    sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
+libxrandr-dev libfreetype6-dev libglew1.5-dev libjpeg8-dev libsndfile1-dev
+libopenal-dev libudev-dev libxcb-image0-dev libjpeg-dev libflac-dev
+
+On OSX, prerequisites for SFML are provided with the source. You should be able
+to build the source out of the box.
+
+3.3 BUILDING THIRD-PARTY LIBRARIES MANUALLY
+If you cannot build the third-party libraries automatically, you can also build
+them manually. Run the following commands to initialise and download the third-
+party libraries:
+    git submodule init
+    git submodule update
+
+Now, navigate to the 'external' folder. Each subfolder here is a separate
+third-party library that must be successfully built before midistar can be
+built and run. Refer to the instructions contained in each subfolder (likely in
+a 'README' file) for how to build that specific library. Note that each library
+may have their own prerequisites which you will have to resolve yourself.
+
+When building third-party libraries, leave the folder structure as is. midistar
+resolves third-party dependencies using the default locations for the header
+and binary files for each library.
+
+You can change which version of third-party libraries to use by changing which
+commit the git submodule points to. Furthermore, if you want to use system-wide
+installations of third-party libraries, you may do so. This may require further
+build configuration.
+
+3.4 BUILDING MIDISTAR
+Once the required third-party libraries have been built, midistar can be built
+using cmake. In the midistar directory, run the following commands:
+    mkdir build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    cd ..
+    make -C build
+
+This will build midistar. Note that this builds a release build of midistar. If
+you would like to build a debug build, change the -DCMAKE_BUILD_TYPE option to
+-DCMAKE_BUILD_TYPE=Debug. If the build type option is omitted completely, a
+debug build should be built by default.
+
+If the build is successful, the 'make', 'run' and 'debug' scripts will be
+copied to the midistar folder (the parent folder of the 'build' folder). The
+'make' script will rebuild midistar from the project folder. The 'run' script
+will start midistar. The 'debug' script will start midistar in debugging mode.
+See the RUNNING MIDISTAR section for information on configuring, running, and
+debugging midistar.
+
+
+4. LICENSE
+Refer to the 'LICENSE' file for more information.
+

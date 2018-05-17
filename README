@@ -132,7 +132,6 @@ libopenal-dev libudev-dev libxcb-image0-dev libjpeg-dev libflac-dev
 On OSX, prerequisites for SFML are provided with the source. You should be able
 to build the source out of the box.
 
-
 3.3 BUILDING THIRD-PARTY LIBRARIES MANUALLY
 If you cannot build the third-party libraries automatically, you can also build
 them manually. Run the following commands to initialise and download the third-
@@ -164,10 +163,10 @@ using cmake. In the midistar directory, run the following commands:
     cd ..
     make -C build
 
-This will build midistar. Note that this builds a Release build of midistar. If
-you would like to build a Debug build, change the -DCMAKE_BUILD_TYPE option to
+This will build midistar. Note that this builds a release build of midistar. If
+you would like to build a debug build, change the -DCMAKE_BUILD_TYPE option to
 -DCMAKE_BUILD_TYPE=Debug. If the build type option is omitted completely, a
-Debug build should be built by default.
+debug build should be built by default.
 
 If the build is successful, the 'make', 'run' and 'debug' scripts will be
 copied to the midistar folder (the parent folder of the 'build' folder). The

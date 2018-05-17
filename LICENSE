@@ -2,9 +2,9 @@ midistar Copyright (C) 2018 Jeremy Collette.
 
 1. MIDISTAR LICENSE
 midistar is free software that is released under the terms of the GNU General
-Public License (GPLv3) as published by the Free Software Foundation. You can
-find a copy of this license in the 'GPLv3' file, which should have been
-distributed with midistar. If not, you can find a copy at
+Public License, version 3 (GPLv3), as published by the Free Software
+Foundation. You can find a copy of this license in the 'GPLv3' file, which
+should have been distributed with midistar. If not, you can find a copy at
 <http://www.gnu.org/licenses/>.
 
 All subfolders and files that are NOT in the 'external' folder are considered

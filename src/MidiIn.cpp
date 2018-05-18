@@ -20,7 +20,7 @@
 
 namespace midistar {
 
-bool MidiIn::GetNote(MidiNote* note) {
+bool MidiIn::GetNote(MidiNoteEvent* note) {
     if (buffer_.empty()) {
         return false;
     }
@@ -30,7 +30,7 @@ bool MidiIn::GetNote(MidiNote* note) {
     return true;
 }
 
-void MidiIn::AddNote(MidiNote note) {
+void MidiIn::AddNote(MidiNoteEvent note) {
     buffer_.push(note);
 }
 

@@ -51,7 +51,7 @@ void Game::AddGameObject(GameObject* obj) {
     new_objects_.push(obj);
 }
 
-const std::vector<MidiNote>& Game::GetMidiInNotes() {
+const std::vector<MidiNoteEvent>& Game::GetMidiInNotes() {
     return midi_in_buf_;
 }
 
@@ -95,9 +95,8 @@ int Game::Run() {
         } while (num_objects != objects_.size());
         window_.display();
 
-        MidiNote note;
+        MidiNoteEvent note;
         while (midi_file_in_.GetNote(&note)) {
-            std::cout << "duration: " << note.duration << "\n";
             objects_.push_back(GameObjectFactory::CreateSongNote(
                         note.track
                         , note.on

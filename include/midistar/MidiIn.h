@@ -21,7 +21,7 @@
 
 #include <queue>
 
-#include "midistar/MidiNote.h"
+#include "midistar/MidiNoteEvent.h"
 
 namespace midistar {
 
@@ -37,7 +37,7 @@ class MidiIn {
      *
      * \return True for success. False if an event is not available.
      */
-    bool GetNote(MidiNote* note);
+    bool GetNote(MidiNoteEvent* note);
 
     /**
      * Reads the next available MIDI data in the stream.
@@ -50,10 +50,10 @@ class MidiIn {
      *
      * \param note The note to add.
      */
-    void AddNote(MidiNote note);
+    void AddNote(MidiNoteEvent note);
 
  private:
-    std::queue<MidiNote> buffer_;  //!< MIDI note buffer
+    std::queue<MidiNoteEvent> buffer_;  //!< MIDI note buffer
 };
 
 }  // End namespace midistar

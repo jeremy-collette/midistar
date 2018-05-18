@@ -42,7 +42,7 @@ add_executable(midistar
     src/main.cpp
     src/MidiFileIn.cpp
     src/MidiIn.cpp
-    src/MidiNote.cpp
+    src/MidiNoteEvent.cpp
     src/MidiNoteComponent.cpp
     src/MidiOut.cpp
     src/MidiPortIn.cpp

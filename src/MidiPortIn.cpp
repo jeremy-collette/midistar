@@ -56,7 +56,7 @@ void MidiPortIn::Tick() {
             continue;
         }
 
-        MidiNote note {
+        MidiNoteEvent note {
             message[0] & 0x0f
             , -1
             , message[1]

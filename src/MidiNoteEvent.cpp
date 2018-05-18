@@ -16,24 +16,28 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/CollisionHandlerComponent.h"
-
-#include "midistar/CollisionDetectorComponent.h"
+#include "midistar/MidiNoteEvent.h"
 
 namespace midistar {
 
-CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
-        : Component{type} {
+MidiNoteEvent::MidiNoteEvent() {
 }
 
-void CollisionHandlerComponent::Update(Game* g, GameObject* o) {
-    auto detector = o->GetComponent<CollisionDetectorComponent>(
-            Component::COLLISION_DETECTOR_COMPONENT);
-    if (!detector) {
-        return;
-    }
-
-    HandleCollisions(g, o, detector->GetCollidingWith());
+MidiNoteEvent::MidiNoteEvent(
+    int channel
+    , double duration
+    , int key
+    , bool on
+    , double time
+    , int track
+    , int velocity)
+        : channel{channel}
+        , duration{duration}
+        , key{key}
+        , on{on}
+        , time{time}
+        , track{track}
+        , velocity{velocity} {
 }
 
-}  // End namespace midistar
+}  // End namespace Midistar

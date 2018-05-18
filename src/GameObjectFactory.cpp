@@ -72,32 +72,29 @@ GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
 
 GameObject* GameObjectFactory::CreateSongNote(
         int track
-        , bool on
         , int chan
         , int note
-        , int vel) {
+        , int vel
+        , double duration) {
+    const double speed = 1.0;
     double width = Config::GetInstance().GetScreenWidth() /
         static_cast<double>(Config::GetInstance().GetNumMidiNotes());
+    std::cout << "note: " << note << "\n";
     double x_pos = (note - Config::GetInstance().GetMinimumMidiNote()) * width;
+    std::cout << "xpos: " << x_pos << "\n";
+    double height = duration * (Config::GetInstance().GetFramesPerSecond() 
+            * speed); 
+    std::cout << "height: " << height << "\n";
 
-    const float rect_size = width;
     GameObject* song_note;
     sf::RectangleShape* rect;
-    if (on) {
-        song_note = new GameObject{x_pos, -1.0};
-        rect = new sf::RectangleShape{{rect_size, 1.0}};
-        song_note->SetComponent(new AnchorComponent{x_pos, -1.0});
-    } else {
-        song_note = new GameObject{x_pos, -rect_size};
-        rect = new sf::RectangleShape{{1.0, rect_size}};
-        rect->setFillColor(sf::Color::Transparent);
-        song_note->SetComponent(new SongNoteAnchorRemovalComponent{});
-    }
-
+    song_note = new GameObject{x_pos, -height};
+    rect = new sf::RectangleShape{{static_cast<float>(width), 
+        static_cast<float>(height)}};
     song_note->SetComponent(new SongNoteComponent{});
-    song_note->SetComponent(new NoteInfoComponent{track, on, chan, note, vel});
+    song_note->SetComponent(new NoteInfoComponent{track, true, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
-    song_note->SetComponent(new PhysicsComponent{0, 1});
+    song_note->SetComponent(new PhysicsComponent{0, speed});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});

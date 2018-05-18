@@ -18,6 +18,8 @@
 
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 
+#include <algorithm>
+
 #include "midistar/AnchorComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
@@ -30,22 +32,21 @@ namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
         : CollisionHandlerComponent{
-            Component::NOTE_COLLISION_HANDLER_COMPONENT} {
+            Component::NOTE_COLLISION_HANDLER_COMPONENT}
+        , auto_playing_{false} {
 }
 
-void SongNoteCollisionHandlerComponent::HandleCollision(
+void SongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
-        , GameObject* colliding_with) {
+        , std::vector<GameObject*> colliding_with) {
+ 
     auto note = o->GetComponent<NoteInfoComponent>(
             Component::NOTE_INFO_COMPONENT);
     if (!note) {
         return;
     }
-
-    auto other_note = colliding_with->GetComponent<NoteInfoComponent>(
-            Component::NOTE_INFO_COMPONENT);
-
+ 
     auto graphics = o->GetComponent<GraphicsComponent>(
         Component::GRAPHICS_COMPONENT);
     if (!graphics) {
@@ -61,122 +62,132 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
         }
     }
 
-    // Here we check if the note is being played. If the note is colliding with
-    // an instrument, it's being played. Once it is being played, we anchor the
-    // note to the bar so that it shrinks during play.
-    if (colliding_with->HasComponent(Component::INSTRUMENT_COMPONENT)) {
-        // Check it's the correct instrument - we may collide with neighbouring
-        // instruments if they overlap on the screen.
-        if (!other_note || other_note->GetKey() != note->GetKey()) {
-            return;
-        }
+    // If we're not colliding with the bar but we're auto-playing, then stop
+    // playing.
+    if (std::find(colliding_with.begin(), colliding_with.end(), bar) == 
+           colliding_with.end() && auto_playing_) {
+        o->SetComponent(new MidiNoteComponent{
+                        false 
+                        , note->GetChannel()
+                        , note->GetKey()
+                        , note->GetVelocity()});
+        auto_playing_ = false;
+    }
+ 
+    for (auto& collider : colliding_with) {
+        auto other_note = collider->GetComponent<NoteInfoComponent>(
+                Component::NOTE_INFO_COMPONENT);
 
-        // Anchor the note to the bar.
-        // If we already have an anchor component, we've already anchored
-        // to something (likely the bar)
-        if (!o->HasComponent(Component::ANCHOR_COMPONENT)) {
-            double x, y;
-            o->GetPosition(&x, &y);
-
-            double width, height;
-            graphics->GetSize(&width, &height);
-
-            double bar_x, bar_y;
-            bar->GetPosition(&bar_x, &bar_y);
-
-            auto bar_graphics = bar->GetComponent<GraphicsComponent>(
-                    Component::GRAPHICS_COMPONENT);
-            if (!bar_graphics) {
-                return;
-            }
-            double bar_width, bar_height;
-            bar_graphics->GetSize(&bar_width, &bar_height);
-
-            // If the bottom of the note is past the bottom of the bar,
-            // separate the part below the bar in to a different
-            // (unplayable) note. This section of the note has been
-            // missed.
-            if (y + height > bar_y + bar_height) {
-                auto note = o->GetComponent<NoteInfoComponent>(
-                        Component::NOTE_INFO_COMPONENT);
-                if (!note) {
-                    return;
-                }
-
-                GameObject* half = GameObjectFactory::CreateSongNote(
-                            note->GetTrack()
-                            , note->GetIsOn()
-                            , note->GetChannel()
-                            , note->GetKey()
-                            , note->GetVelocity());
-
-                // We don't want complete note behaviour - this is an
-                // unplayable note
-                half->DeleteComponent(Component::ANCHOR_COMPONENT);
-                half->DeleteComponent(
-                        Component::NOTE_COLLISION_HANDLER_COMPONENT);
-                half->SetPosition(x, bar_y + bar_height);
-
-                auto half_graphics = half->GetComponent<
-                    GraphicsComponent>(Component::GRAPHICS_COMPONENT);
-                if (!half_graphics) {
-                    return;
-                }
-
-                half_graphics->SetSize(
-                        width
-                        , (y + height) - (bar_y + bar_height));
-                g->AddGameObject(half);
-            }
-
-            // Now we are guaranteed to have a note that ends before the
-            // bottom of the bar (see above).
-            //
-            // If the top of the note is before the bar:
-            if (y < bar_y) {
-                // Resize the note so that it is not intersecting the
-                // bar and add an anchor component anchored to the top
-                // of the bar.
-                o->SetComponent(new ResizeComponent{width, bar_y-y});
-                o->SetComponent(new AnchorComponent{
-                        x
-                        , bar_y
-                        , AnchorComponent::FALLING});
-            } else { // Otherwise 'o' is now purely within the bar and
-                     // can be removed.
-                o->SetComponent(new ResizeComponent{0, 0});
-            }
-        }
-    } else if (colliding_with == bar) {
-        if (Config::GetInstance().GetAutomaticallyPlay()) {  // Auto play plays
-                                                                    // the note
-            o->SetComponent(new MidiNoteComponent{
-                    note->GetIsOn()
-                    , note->GetChannel()
-                    , note->GetKey()
-                    , note->GetVelocity()});
-            o->DeleteComponent(GetType());
-        } else {
-            // If we're colliding with the bar, but we're not colliding with an
-            // instrument, we should delete our anchor component. If we're not
-            // colliding the bar, we might be using an anchor component for
-            // other purposes (e.g. note expansion).
-            auto detector = o->GetComponent<CollisionDetectorComponent>(
-                    Component::COLLISION_DETECTOR_COMPONENT);
-            if (!detector) {
+        // Here we check if the note is being played. If the note is colliding 
+        // with an instrument, it's being played. Once it is being played, we 
+        // anchor the note to the bar so that it shrinks during play.
+        if (collider->HasComponent(Component::INSTRUMENT_COMPONENT)) {
+            // Check it's the correct instrument - we may collide with 
+            // neighbouring instruments if they overlap on the screen.
+            if (!other_note || other_note->GetKey() != note->GetKey()) {
                 return;
             }
 
-            bool found_inst = false;
-            auto collisions = detector->GetCollidingWith();
-            for (const auto& obj : collisions) {
-                if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
-                    found_inst = true;
-                    break;
+            // Anchor the note to the bar.
+            // If we already have an anchor component, we've already anchored
+            // to something (likely the bar)
+            if (!o->HasComponent(Component::ANCHOR_COMPONENT)) {
+                double x, y;
+                o->GetPosition(&x, &y);
+
+                double width, height;
+                graphics->GetSize(&width, &height);
+
+                double bar_x, bar_y;
+                bar->GetPosition(&bar_x, &bar_y);
+
+                auto bar_graphics = bar->GetComponent<GraphicsComponent>(
+                        Component::GRAPHICS_COMPONENT);
+                if (!bar_graphics) {
+                    return;
+                }
+                double bar_width, bar_height;
+                bar_graphics->GetSize(&bar_width, &bar_height);
+
+                // If the bottom of the note is past the bottom of the bar,
+                // separate the part below the bar in to a different
+                // (unplayable) note. This section of the note has been
+                // missed.
+                if (y + height > bar_y + bar_height) {
+                    auto note = o->GetComponent<NoteInfoComponent>(
+                            Component::NOTE_INFO_COMPONENT);
+                    if (!note) {
+                        return;
+                    }
+
+                    GameObject* half = GameObjectFactory::CreateSongNote(
+                                note->GetTrack()
+                                , note->GetIsOn()
+                                , note->GetChannel()
+                                , note->GetKey()
+                                , note->GetVelocity());
+
+                    // We don't want complete note behaviour - this is an
+                    // unplayable note
+                    half->DeleteComponent(Component::ANCHOR_COMPONENT);
+                    half->DeleteComponent(
+                            Component::NOTE_COLLISION_HANDLER_COMPONENT);
+                    half->SetPosition(x, bar_y + bar_height);
+
+                    auto half_graphics = half->GetComponent<
+                        GraphicsComponent>(Component::GRAPHICS_COMPONENT);
+                    if (!half_graphics) {
+                        return;
+                    }
+
+                    half_graphics->SetSize(
+                            width
+                            , (y + height) - (bar_y + bar_height));
+                    g->AddGameObject(half);
+                }
+
+                // Now we are guaranteed to have a note that ends before the
+                // bottom of the bar (see above).
+                //
+                // If the top of the note is before the bar:
+                if (y < bar_y) {
+                    // Resize the note so that it is not intersecting the
+                    // bar and add an anchor component anchored to the top
+                    // of the bar.
+                    o->SetComponent(new ResizeComponent{width, bar_y-y});
+                    o->SetComponent(new AnchorComponent{
+                            x
+                            , bar_y
+                            , AnchorComponent::FALLING});
+                } else { // Otherwise 'o' is now purely within the bar and
+                         // can be removed.
+                    o->SetComponent(new ResizeComponent{0, 0});
                 }
             }
-            if (!found_inst) {
-                o->DeleteComponent(Component::ANCHOR_COMPONENT);
+        } else if (collider == bar) {
+            if (Config::GetInstance().GetAutomaticallyPlay()
+                    && !auto_playing_) {  // Auto play plays the note
+                o->SetComponent(new MidiNoteComponent{
+                        true
+                        , note->GetChannel()
+                        , note->GetKey()
+                        , note->GetVelocity()});
+                auto_playing_ = true;
+            } else {
+                // If we're colliding with the bar, but we're not colliding 
+                // with an instrument, we should delete our anchor component. 
+                // If we're not colliding the bar, we might be using an anchor
+                // component for other purposes (e.g. note expansion).
+                bool found_inst = false;
+                for (const auto& obj : colliding_with) {
+                    if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
+                        found_inst = true;
+                        break;
+                    }
+                }
+                if (!found_inst) {
+                    o->DeleteComponent(Component::ANCHOR_COMPONENT);
+                }
             }
         }
     }

@@ -38,7 +38,7 @@ int MidiFileIn::Init(const std::string& file_name) {
     file_.read(file_name);
     bool success = file_.status();
     file_.joinTracks();
-    std::cout << "pairs: " << file_.linkNotePairs() << "\n";
+    file_.linkNotePairs();
     if (!success) {
         std::cerr << "Error! Could not load MIDI file \"" << file_name << "\""
         << ".\n";

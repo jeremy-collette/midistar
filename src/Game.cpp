@@ -97,12 +97,14 @@ int Game::Run() {
 
         MidiNoteEvent note;
         while (midi_file_in_.GetNote(&note)) {
-            objects_.push_back(GameObjectFactory::CreateSongNote(
-                        note.track
-                        , note.on
-                        , note.channel
-                        , note.key
-                        , note.velocity));
+            if (note.on) {
+                objects_.push_back(GameObjectFactory::CreateSongNote(
+                            note.track
+                            , note.channel
+                            , note.key
+                            , note.velocity
+                            , note.duration));
+            }
         }
 
         midi_in_buf_.clear();

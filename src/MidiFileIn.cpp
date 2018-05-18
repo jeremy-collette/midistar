@@ -38,6 +38,7 @@ int MidiFileIn::Init(const std::string& file_name) {
     file_.read(file_name);
     bool success = file_.status();
     file_.joinTracks();
+    std::cout << "pairs: " << file_.linkNotePairs() << "\n";
     if (!success) {
         std::cerr << "Error! Could not load MIDI file \"" << file_name << "\""
         << ".\n";
@@ -55,8 +56,16 @@ void MidiFileIn::Tick() {
                 <= time_) {
         if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
             && (player_track_ == -1 || mev->track == player_track_)
-            && (mev->isNoteOn() || mev->isNoteOff())) {
-            AddEvent(*mev);
+            && mev->isNoteOn()) {            
+            MidiNote note {
+                mev->getChannel()
+                , mev->getDurationInSeconds()
+                , (*mev)[1]
+                , true
+                , static_cast<double>(mev->tick)
+                , mev->track
+                , (*mev)[2] };
+            AddNote(note);
         }
         ++index_;
     }

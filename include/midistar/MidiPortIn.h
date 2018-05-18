@@ -49,6 +49,9 @@ class MidiPortIn : public MidiIn {
     virtual void Tick();
 
  private:
+    const static char NOTE_OFF_COMMAND = 0x80;  //!< MIDI command for note off
+    const static char NOTE_ON_COMMAND = 0x90;  //!< MIDI command for note on
+
     RtMidiIn* midi_in_;  //!< MIDI port instance
 };
 

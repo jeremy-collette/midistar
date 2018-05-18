@@ -16,22 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/MidiIn.h"
+#include "midistar/MidiNote.h"
 
 namespace midistar {
 
-bool MidiIn::GetNote(MidiNote* note) {
-    if (buffer_.empty()) {
-        return false;
-    }
-
-    *note = buffer_.front();
-    buffer_.pop();
-    return true;
+MidiNote::MidiNote() {
 }
 
-void MidiIn::AddNote(MidiNote note) {
-    buffer_.push(note);
+MidiNote::MidiNote(
+    int channel
+    , double duration
+    , int key
+    , bool on
+    , double time
+    , int track
+    , int velocity)
+        : channel{channel}
+        , duration{duration}
+        , key{key}
+        , on{on}
+        , time{time}
+        , track{track}
+        , velocity{velocity} {
 }
 
-}  // End namespace midistar
+
+
+
+}  // End namespace Midistar

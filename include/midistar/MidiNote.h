@@ -16,46 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIIN_H_
-#define MIDISTAR_MIDIIN_H_
-
-#include <queue>
-
-#include "midistar/MidiNote.h"
+#ifndef MIDISTAR_MIDINOTE_H_
+#define MIDISTAR_MIDINOTE_H_
 
 namespace midistar {
 
-/**
- * The MidiIn class provides an interface for MIDI stream readers.
- */
-class MidiIn {
- public:
-    /**
-     * Gets the next MIDI note.
-     *
-     * \param[out] mev Stores the MIDI note.
-     *
-     * \return True for success. False if an event is not available.
-     */
-    bool GetNote(MidiNote* note);
+struct MidiNote {
+    MidiNote();
+    MidiNote(
+            int channel
+            , double duration
+            , int key
+            , bool on
+            , double time
+            , int track
+            , int velocity);
 
-    /**
-     * Reads the next available MIDI data in the stream.
-     */
-    virtual void Tick() = 0;
-
- protected:
-    /**
-     * Adds a MIDI note to the note queue.
-     *
-     * \param note The note to add.
-     */
-    void AddNote(MidiNote note);
-
- private:
-    std::queue<MidiNote> buffer_;  //!< MIDI note buffer
+    int channel;
+    double duration; 
+    int key;
+    bool on;
+    double time;
+    int track;
+    int velocity;
 };
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_MIDIIN_H_
+#endif  // MIDISTAR_MIDINOTE_H_

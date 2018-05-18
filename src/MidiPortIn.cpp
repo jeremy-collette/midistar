@@ -51,10 +51,21 @@ void MidiPortIn::Tick() {
             break;
         }
 
-        auto mev = smf::MidiEvent{static_cast<int>(stamp), 0, message};
-        if (mev.isNoteOn() || mev.isNoteOff()) {
-            AddEvent(mev);
+        char command = message[0] & 0xf0;
+        if (command != NOTE_ON_COMMAND && command != NOTE_OFF_COMMAND) {
+            continue;
         }
+
+        MidiNote note {
+            message[0] & 0x0f
+            , -1
+            , message[1]
+            , command == NOTE_ON_COMMAND
+            , stamp 
+            , -1
+            , message[2]};  
+
+        AddNote(note);
     }
 }
 

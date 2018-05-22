@@ -55,9 +55,9 @@ GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
 
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{
-            -1 
+            -1
             , true
-            , 0 
+            , 0
             , note
             , Config::GetInstance().GetMidiOutVelocity()});
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(

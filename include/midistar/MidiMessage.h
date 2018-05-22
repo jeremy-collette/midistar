@@ -77,15 +77,70 @@ class MidiMessage {
      */
     explicit MidiMessage(std::vector<unsigned char> data);
 
+    /**
+     * Gets the MIDI channel (if applicable).
+     *
+     * \return If applicable, returns MIDI channel. Otherwise -1.
+     */
     int GetChannel() const;
+
+    /**
+     * Gets underlying MIDI message data.
+     *
+     * \return Underlying MIDI data.
+     */
     const std::vector<unsigned char>& GetData() const;
+
+    /**
+     * Gets the duration if this MIDI message is a note-on event and the
+     * duration is available.
+     *
+     * \return Note duration if available. Otherwise -1.
+     */
     double GetDuration() const;
+
+    /**
+     * Gets the MIDI key if this MIDI message is a note event.
+     *
+     * \return MIDI key if available. Otherwise -1.
+     */
     int GetKey() const;
+
+    /**
+     * Gets the MIDI track if it is available.
+     *
+     * \return MIDI track if available. Otherwise -1.
+     */
     int GetTrack() const;
+
+    /**
+     * Gets the MIDI velocity if this MIDI message is a note-on event.
+     *
+     * \return MIDI velocity if available. Otherwise -1.
+     */
     int GetVelocity() const;
 
+    /**
+     * Determines whether or not this MIDI message is a note-on / note-off
+     * event.
+     *
+     * \return True if the MIDI message is a note-on / note-off event. False
+     * otherwise.
+     */
     bool IsNote() const;
+
+    /**
+     * Determines whether or not this MIDI message is a note-off event.
+     *
+     * \return True if the MIDI message is a note-on event. False otherwise.
+     */
     bool IsNoteOff() const;
+
+    /**
+     * Determines whether or not this MIDI message is a note-on event.
+     *
+     * \return True if the MIDI message is a note-off event. False otherwise.
+     */
     bool IsNoteOn() const;
 
  private:

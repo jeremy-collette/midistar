@@ -60,7 +60,7 @@ void MidiFileIn::Tick() {
             MidiMessage msg{
                 *mev
                 , mev->getDurationInSeconds()
-                , mev->tick
+                , static_cast<double>(mev->tick)
                 , mev->track};
             AddMessage(msg);
         }

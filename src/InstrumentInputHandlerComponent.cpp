@@ -77,8 +77,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
     // If we find a note on event that matches this instruments MIDI note,
     // activate this instrument!
     for (const auto& msg : g->GetMidiInMessages()) {
-        if ((msg.IsNoteOn() || msg.IsNoteOff()) 
-                && msg.GetKey() == note->GetKey()) {
+        if (msg.IsNote() && msg.GetKey() == note->GetKey()) {
             key_down_ = msg.IsNoteOn();
         }
     }

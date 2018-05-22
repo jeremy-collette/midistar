@@ -56,6 +56,10 @@ int MidiMessage::GetChannel() const {
     return data_[0] & CHANNEL_MASK;
 }
 
+const std::vector<unsigned char>& MidiMessage::GetData() const {
+    return data_;
+}
+
 double MidiMessage::GetDuration() const {
     return duration_;
 }

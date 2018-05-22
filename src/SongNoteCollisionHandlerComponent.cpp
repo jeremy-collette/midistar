@@ -39,6 +39,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
+    // Get some info about owner
     auto note = o->GetComponent<NoteInfoComponent>(
             Component::NOTE_INFO_COMPONENT);
     if (!note) {
@@ -55,7 +56,6 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
 
     double width, height;
     graphics->GetSize(&width, &height);
-
 
     // Get the bar object, for later use.
     GameObject* bar = nullptr;
@@ -76,6 +76,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
     double bar_width, bar_height;
     bar_graphics->GetSize(&bar_width, &bar_height);
 
+    // Handle each collision
     for (auto& collider : colliding_with) {
         auto other_note = collider->GetComponent<NoteInfoComponent>(
                 Component::NOTE_INFO_COMPONENT);
@@ -90,10 +91,9 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                 return;
             }
 
-            // If the bottom of the note is past the bottom of the bar,
-            // separate the part below the bar in to a different
-            // (unplayable) note. This section of the note has been
-            // missed.
+            // If the bottom of the note is past the bottom of the bar, 
+            // separate the part below the bar in to a different (unplayable) 
+            // note. This section of the note has been missed.
             if (y + height > bar_y + bar_height) {
                 auto note = o->GetComponent<NoteInfoComponent>(
                         Component::NOTE_INFO_COMPONENT);
@@ -124,20 +124,19 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                         width
                         , (y + height) - (bar_y + bar_height));
                 g->AddGameObject(half);
-
-                // Now we are guaranteed to have a note that ends before the
-                // bottom of the bar (see above).
-                //
-                // If the top of the note is before the bar:
-                if (y < bar_y) {
-                    // Resize the note so that it is not intersecting the
-                    // bar and add an anchor component anchored to the top
-                    // of the bar.
-                    o->SetComponent(new ResizeComponent{width, bar_y-y});
-               } else {  // Otherwise 'o' is now purely within the bar and
-                         // can be removed.
-                    o->SetComponent(new ResizeComponent{0, 0});
-                }
+            }
+             
+            // Now we are guaranteed to have a note that ends before the bottom
+            // of the bar (see above).
+            //
+            // If the top of the note is before the bar:
+            if (y < bar_y) {
+                // Resize the note so that it is not intersecting the bar and 
+                // add an anchor component anchored to the top of the bar.
+                o->SetComponent(new ResizeComponent{width, bar_y-y});
+            } else {  // Otherwise 'o' is now purely within the bar and
+                     // can be removed.
+                o->SetComponent(new ResizeComponent{0, 0});
             }
         // Handle auto play
         } else if (collider == bar

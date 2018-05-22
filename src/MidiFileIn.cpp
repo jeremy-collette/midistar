@@ -56,16 +56,13 @@ void MidiFileIn::Tick() {
                 <= time_) {
         if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
             && (player_track_ == -1 || mev->track == player_track_)
-            && (mev->isNoteOn() || mev->isNoteOff())) {            
-            MidiNoteEvent note {
-                mev->getChannel()
+            && (mev->isNoteOn() || mev->isNoteOff())) {
+            MidiMessage msg( 
+                *mev
                 , mev->getDurationInSeconds()
-                , (*mev)[1]
-                , mev->isNoteOn()
-                , static_cast<double>(mev->tick)
-                , mev->track
-                , (*mev)[2]};
-            AddNote(note);
+                , mev->tick
+                , mev->track );            
+            AddMessage(msg);
         }
         ++index_;
     }

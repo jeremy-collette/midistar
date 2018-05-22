@@ -76,9 +76,10 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
     // Handle MIDI input port events.
     // If we find a note on event that matches this instruments MIDI note,
     // activate this instrument!
-    for (const auto& in_note : g->GetMidiInNotes()) {
-        if (in_note.key == note->GetKey()) {
-            key_down_ = in_note.on;
+    for (const auto& msg : g->GetMidiInMessages()) {
+        if ((msg.IsNoteOn() || msg.IsNoteOff()) 
+                && msg.GetKey() == note->GetKey()) {
+            key_down_ = msg.IsNoteOn();
         }
     }
 

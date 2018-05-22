@@ -51,7 +51,7 @@ void Game::AddGameObject(GameObject* obj) {
     new_objects_.push(obj);
 }
 
-const std::vector<MidiNoteEvent>& Game::GetMidiInNotes() {
+const std::vector<MidiMessage>& Game::GetMidiInMessages() {
     return midi_in_buf_;
 }
 
@@ -95,21 +95,21 @@ int Game::Run() {
         } while (num_objects != objects_.size());
         window_.display();
 
-        MidiNoteEvent note;
-        while (midi_file_in_.GetNote(&note)) {
-            if (note.on) {
+        MidiMessage msg;
+        while (midi_file_in_.GetMessage(&msg)) {
+            if (msg.IsNoteOn()) {
                 objects_.push_back(GameObjectFactory::CreateSongNote(
-                            note.track
-                            , note.channel
-                            , note.key
-                            , note.velocity
-                            , note.duration));
+                            msg.GetTrack()
+                            , msg.GetChannel()
+                            , msg.GetKey()
+                            , msg.GetVelocity()
+                            , msg.GetDuration()));
             }
         }
 
         midi_in_buf_.clear();
-        while (midi_port_in_.GetNote(&note)) {
-            midi_in_buf_.push_back(note);
+        while (midi_port_in_.GetMessage(&msg)) {
+            midi_in_buf_.push_back(msg);
         }
 
         sf_events_.clear();

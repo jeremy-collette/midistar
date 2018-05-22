@@ -26,7 +26,7 @@
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
 #include "midistar/MidiFileIn.h"
-#include "midistar/MidiNoteEvent.h"
+#include "midistar/MidiMessage.h"
 #include "midistar/MidiOut.h"
 #include "midistar/MidiPortIn.h"
 
@@ -62,11 +62,11 @@ class Game {
     const std::vector<GameObject*>& GetGameObjects();
 
     /**
-     * Gets MIDI input port notes for the last tick.
+     * Gets MIDI input port messages for the last tick.
      *
-     * \return MIDI events.
+     * \return MIDI messages.
      */
-    const std::vector<MidiNoteEvent>& GetMidiInNotes();
+    const std::vector<MidiMessage>& GetMidiInMessages();
 
     /**
      * Gets SFML events for the last tick.
@@ -120,7 +120,7 @@ class Game {
     void FlushNewObjectQueue();  //!< Adds new objects to object buffer
 
     MidiFileIn midi_file_in_;  //!< MIDI file in instance
-    std::vector<MidiNoteEvent> midi_in_buf_;  //!< MIDI input port notes buffer
+    std::vector<MidiMessage> midi_in_buf_;  //!< MIDI input port notes buffer
     MidiOut midi_out_;  //!< MIDI port out instance
     MidiPortIn midi_port_in_;  //!< MIDI input port instance
     std::queue<GameObject*> new_objects_;  //!< New GameObjects buffer

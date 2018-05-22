@@ -51,21 +51,8 @@ void MidiPortIn::Tick() {
             break;
         }
 
-        char command = message[0] & 0xf0;
-        if (command != NOTE_ON_COMMAND && command != NOTE_OFF_COMMAND) {
-            continue;
-        }
-
-        MidiNoteEvent note {
-            message[0] & 0x0f
-            , -1
-            , message[1]
-            , command == NOTE_ON_COMMAND
-            , stamp 
-            , -1
-            , message[2]};  
-
-        AddNote(note);
+        MidiMessage msg{message, stamp};
+        AddMessage(msg);
     }
 }
 

@@ -20,18 +20,18 @@
 
 namespace midistar {
 
-bool MidiIn::GetNote(MidiNoteEvent* note) {
+bool MidiIn::GetMessage(MidiMessage* message) {
     if (buffer_.empty()) {
         return false;
     }
 
-    *note = buffer_.front();
+    *message = buffer_.front();
     buffer_.pop();
     return true;
 }
 
-void MidiIn::AddNote(MidiNoteEvent note) {
-    buffer_.push(note);
+void MidiIn::AddMessage(MidiMessage message) {
+    buffer_.push(message);
 }
 
 }  // End namespace midistar

@@ -21,7 +21,7 @@
 
 #include <queue>
 
-#include "midistar/MidiNoteEvent.h"
+#include "midistar/MidiMessage.h"
 
 namespace midistar {
 
@@ -31,13 +31,13 @@ namespace midistar {
 class MidiIn {
  public:
     /**
-     * Gets the next MIDI note.
+     * Gets the next MIDI message.
      *
-     * \param[out] mev Stores the MIDI note.
+     * \param[out] mev Stores the MIDI message.
      *
      * \return True for success. False if an event is not available.
      */
-    bool GetNote(MidiNoteEvent* note);
+    bool GetMessage(MidiMessage* message);
 
     /**
      * Reads the next available MIDI data in the stream.
@@ -46,14 +46,14 @@ class MidiIn {
 
  protected:
     /**
-     * Adds a MIDI note to the note queue.
+     * Adds a MIDI message to the message queue.
      *
-     * \param note The note to add.
+     * \param message The message to add.
      */
-    void AddNote(MidiNoteEvent note);
+    void AddMessage(MidiMessage message);
 
  private:
-    std::queue<MidiNoteEvent> buffer_;  //!< MIDI note buffer
+    std::queue<MidiMessage> buffer_;  //!< MIDI message buffer
 };
 
 }  // End namespace midistar

@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIEVENT_H_
-#define MIDISTAR_MIDIEVENT_H_
+#ifndef MIDISTAR_MIDIMESSAGE_H_
+#define MIDISTAR_MIDIMESSAGE_H_
 
 #include <vector>
 
@@ -69,13 +69,13 @@ class MidiMessage {
     MidiMessage(
             std::vector<unsigned char> data
             , double time);
-   
+
     /**
      * Constructor for general MIDI messages.
      *
      * \param data The underlying MIDI message data.
      */
-    MidiMessage(std::vector<unsigned char> data);
+    explicit MidiMessage(std::vector<unsigned char> data);
 
     int GetChannel() const;
     const std::vector<unsigned char>& GetData() const;
@@ -89,10 +89,10 @@ class MidiMessage {
     bool IsNoteOn() const;
 
  private:
-    const static unsigned char CHANNEL_MASK = 0x0f;  //!< Mask for channel
-    const static unsigned char COMMAND_MASK = 0xf0;  //!< Mask for command
-    const static unsigned char NOTE_OFF_COMMAND = 0x80;  //!< MIDI note off
-    const static unsigned char NOTE_ON_COMMAND = 0x90;  //!< MIDI note on
+    static const unsigned char CHANNEL_MASK = 0x0f;  //!< Mask for channel
+    static const unsigned char COMMAND_MASK = 0xf0;  //!< Mask for command
+    static const unsigned char NOTE_OFF_COMMAND = 0x80;  //!< MIDI note off
+    static const unsigned char NOTE_ON_COMMAND = 0x90;  //!< MIDI note on
 
     std::vector<unsigned char> data_;  //!< MIDI data
     double duration_;  //!< Holds duration for MIDI note on messages
@@ -102,4 +102,4 @@ class MidiMessage {
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_MIDIEVENT_H_
+#endif  // MIDISTAR_MIDIMESSAGE_H_

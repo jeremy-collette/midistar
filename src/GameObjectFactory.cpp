@@ -77,20 +77,18 @@ GameObject* GameObjectFactory::CreateSongNote(
     const double speed = 1.0;
     double width = Config::GetInstance().GetScreenWidth() /
         static_cast<double>(Config::GetInstance().GetNumMidiNotes());
-    std::cout << "note: " << note << "\n";
     double x_pos = (note - Config::GetInstance().GetMinimumMidiNote()) * width;
-    std::cout << "xpos: " << x_pos << "\n";
-    double height = duration * (Config::GetInstance().GetFramesPerSecond() 
-            * speed); 
-    std::cout << "height: " << height << "\n";
+    double height = duration * (Config::GetInstance().GetFramesPerSecond()
+            * speed);
 
     GameObject* song_note;
     sf::RectangleShape* rect;
     song_note = new GameObject{x_pos, -height};
-    rect = new sf::RectangleShape{{static_cast<float>(width), 
+    rect = new sf::RectangleShape{{static_cast<float>(width),
         static_cast<float>(height)}};
     song_note->SetComponent(new SongNoteComponent{});
-    song_note->SetComponent(new NoteInfoComponent{track, true, chan, note, vel});
+    song_note->SetComponent(new NoteInfoComponent{track, true, chan, note
+            , vel});
     song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, speed});
     song_note->SetComponent(new DeleteOffscreenComponent{});

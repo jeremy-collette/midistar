@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
 #define MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
 
+#include <vector>
+
 #include "midistar/CollisionHandlerComponent.h"
 
 namespace midistar {

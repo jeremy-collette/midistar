@@ -42,7 +42,7 @@ MidiMessage::MidiMessage(
     std::vector<unsigned char> data
     , double time)
         : MidiMessage{data, time, -1} {
-} 
+}
 
 
 MidiMessage::MidiMessage(std::vector<unsigned char> data)
@@ -91,7 +91,7 @@ bool MidiMessage::IsNoteOff() const {
         return false;
     }
     return ((data_[0] & COMMAND_MASK) == NOTE_OFF_COMMAND)
-       || (IsNoteOn() && GetVelocity() == 0); 
+       || (IsNoteOn() && GetVelocity() == 0);
 }
 
 bool MidiMessage::IsNoteOn() const {
@@ -101,4 +101,4 @@ bool MidiMessage::IsNoteOn() const {
     return (data_[0] & COMMAND_MASK) == NOTE_ON_COMMAND;
 }
 
-}  // End namespace Midistar
+}  // End namespace midistar

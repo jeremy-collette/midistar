@@ -57,11 +57,11 @@ void MidiFileIn::Tick() {
         if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
             && (player_track_ == -1 || mev->track == player_track_)
             && (mev->isNoteOn() || mev->isNoteOff())) {
-            MidiMessage msg( 
+            MidiMessage msg{
                 *mev
                 , mev->getDurationInSeconds()
                 , mev->tick
-                , mev->track );            
+                , mev->track};
             AddMessage(msg);
         }
         ++index_;

@@ -39,13 +39,12 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
- 
     auto note = o->GetComponent<NoteInfoComponent>(
             Component::NOTE_INFO_COMPONENT);
     if (!note) {
         return;
     }
- 
+
     auto graphics = o->GetComponent<GraphicsComponent>(
         Component::GRAPHICS_COMPONENT);
     if (!graphics) {
@@ -81,16 +80,15 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         auto other_note = collider->GetComponent<NoteInfoComponent>(
                 Component::NOTE_INFO_COMPONENT);
 
-        // Here we check if the note is being played. If the note is colliding 
-        // with an instrument, it's being played. Once it is being played, we 
+        // Here we check if the note is being played. If the note is colliding
+        // with an instrument, it's being played. Once it is being played, we
         // anchor the note to the bar so that it shrinks during play.
         if (collider->HasComponent(Component::INSTRUMENT_COMPONENT)) {
-            // Check it's the correct instrument - we may collide with 
+            // Check it's the correct instrument - we may collide with
             // neighbouring instruments if they overlap on the screen.
             if (!other_note || other_note->GetKey() != note->GetKey()) {
                 return;
             }
-
 
             // If the bottom of the note is past the bottom of the bar,
             // separate the part below the bar in to a different
@@ -136,13 +134,13 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                     // bar and add an anchor component anchored to the top
                     // of the bar.
                     o->SetComponent(new ResizeComponent{width, bar_y-y});
-               } else { // Otherwise 'o' is now purely within the bar and
+               } else {  // Otherwise 'o' is now purely within the bar and
                          // can be removed.
                     o->SetComponent(new ResizeComponent{0, 0});
                 }
             }
         // Handle auto play
-        } else if (collider == bar 
+        } else if (collider == bar
                 && Config::GetInstance().GetAutomaticallyPlay()) {
             if (!auto_playing_) {  // Auto play plays the note
                 o->SetComponent(new MidiNoteComponent{
@@ -151,7 +149,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                         , note->GetKey()
                         , note->GetVelocity()});
                 auto_playing_ = true;
-            } else if (y > bar_y) {  // If our top is inside the bar, stop 
+            } else if (y > bar_y) {  // If our top is inside the bar, stop
                                                                     // playing
                 o->SetComponent(new MidiNoteComponent{
                         false
@@ -159,8 +157,8 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                         , note->GetKey()
                         , note->GetVelocity()});
 
-                o->DeleteComponent(GetType()); 
-            }            
+                o->DeleteComponent(GetType());
+            }
         }
     }
 }

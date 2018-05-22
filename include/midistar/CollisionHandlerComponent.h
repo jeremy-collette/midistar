@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
 #define MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
 
+#include <vector>
+
 #include "midistar/Component.h"
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"

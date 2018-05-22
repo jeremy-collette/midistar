@@ -71,6 +71,10 @@ int MidiMessage::GetKey() const {
     return data_[1];
 }
 
+double MidiMessage::GetTime() const {
+    return time_;
+}
+
 int MidiMessage::GetTrack() const {
     return track_;
 }

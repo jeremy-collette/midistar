@@ -107,6 +107,13 @@ class MidiMessage {
     int GetKey() const;
 
     /**
+     * Gets the MIDI timestamp if it is available.
+     *
+     * \return MIDI timestamp if available. Otherwise -1.
+     */
+    double GetTime() const;
+
+    /**
      * Gets the MIDI track if it is available.
      *
      * \return MIDI track if available. Otherwise -1.

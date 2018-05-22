@@ -26,7 +26,6 @@ link_directories(${CMAKE_SOURCE_DIR}/external/fluidsynth/src
 
 # Create executable
 add_executable(midistar
-    src/AnchorComponent.cpp
     src/BarComponent.cpp
     src/CollisionDetectorComponent.cpp
     src/CollisionHandlerComponent.cpp
@@ -49,7 +48,6 @@ add_executable(midistar
     src/NoteInfoComponent.cpp
     src/PhysicsComponent.cpp
     src/ResizeComponent.cpp
-    src/SongNoteAnchorRemovalComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
     src/TestInputComponent.cpp

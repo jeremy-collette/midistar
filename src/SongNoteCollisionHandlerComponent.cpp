@@ -20,7 +20,6 @@
 
 #include <algorithm>
 
-#include "midistar/AnchorComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/GraphicsComponent.h"
@@ -52,6 +51,12 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
     if (!graphics) {
         return;
     }
+    double x, y;
+    o->GetPosition(&x, &y);
+
+    double width, height;
+    graphics->GetSize(&width, &height);
+
 
     // Get the bar object, for later use.
     GameObject* bar = nullptr;
@@ -61,19 +66,17 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
             break;
         }
     }
+    double bar_x, bar_y;
+    bar->GetPosition(&bar_x, &bar_y);
 
-    // If we're not colliding with the bar but we're auto-playing, then stop
-    // playing.
-    if (std::find(colliding_with.begin(), colliding_with.end(), bar) == 
-           colliding_with.end() && auto_playing_) {
-        o->SetComponent(new MidiNoteComponent{
-                        false 
-                        , note->GetChannel()
-                        , note->GetKey()
-                        , note->GetVelocity()});
-        auto_playing_ = false;
+    auto bar_graphics = bar->GetComponent<GraphicsComponent>(
+            Component::GRAPHICS_COMPONENT);
+    if (!bar_graphics) {
+        return;
     }
- 
+    double bar_width, bar_height;
+    bar_graphics->GetSize(&bar_width, &bar_height);
+
     for (auto& collider : colliding_with) {
         auto other_note = collider->GetComponent<NoteInfoComponent>(
                 Component::NOTE_INFO_COMPONENT);
@@ -88,63 +91,41 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                 return;
             }
 
-            // Anchor the note to the bar.
-            // If we already have an anchor component, we've already anchored
-            // to something (likely the bar)
-            if (!o->HasComponent(Component::ANCHOR_COMPONENT)) {
-                double x, y;
-                o->GetPosition(&x, &y);
 
-                double width, height;
-                graphics->GetSize(&width, &height);
-
-                double bar_x, bar_y;
-                bar->GetPosition(&bar_x, &bar_y);
-
-                auto bar_graphics = bar->GetComponent<GraphicsComponent>(
-                        Component::GRAPHICS_COMPONENT);
-                if (!bar_graphics) {
+            // If the bottom of the note is past the bottom of the bar,
+            // separate the part below the bar in to a different
+            // (unplayable) note. This section of the note has been
+            // missed.
+            if (y + height > bar_y + bar_height) {
+                auto note = o->GetComponent<NoteInfoComponent>(
+                        Component::NOTE_INFO_COMPONENT);
+                if (!note) {
                     return;
                 }
-                double bar_width, bar_height;
-                bar_graphics->GetSize(&bar_width, &bar_height);
 
-                // If the bottom of the note is past the bottom of the bar,
-                // separate the part below the bar in to a different
-                // (unplayable) note. This section of the note has been
-                // missed.
-                if (y + height > bar_y + bar_height) {
-                    auto note = o->GetComponent<NoteInfoComponent>(
-                            Component::NOTE_INFO_COMPONENT);
-                    if (!note) {
-                        return;
-                    }
+                GameObject* half = GameObjectFactory::CreateSongNote(
+                            note->GetTrack()
+                            , note->GetIsOn()
+                            , note->GetChannel()
+                            , note->GetKey()
+                            , note->GetVelocity());
 
-                    GameObject* half = GameObjectFactory::CreateSongNote(
-                                note->GetTrack()
-                                , note->GetIsOn()
-                                , note->GetChannel()
-                                , note->GetKey()
-                                , note->GetVelocity());
+                // We don't want complete note behaviour - this is an
+                // unplayable note
+                half->DeleteComponent(
+                        Component::NOTE_COLLISION_HANDLER_COMPONENT);
+                half->SetPosition(x, bar_y + bar_height);
 
-                    // We don't want complete note behaviour - this is an
-                    // unplayable note
-                    half->DeleteComponent(Component::ANCHOR_COMPONENT);
-                    half->DeleteComponent(
-                            Component::NOTE_COLLISION_HANDLER_COMPONENT);
-                    half->SetPosition(x, bar_y + bar_height);
-
-                    auto half_graphics = half->GetComponent<
-                        GraphicsComponent>(Component::GRAPHICS_COMPONENT);
-                    if (!half_graphics) {
-                        return;
-                    }
-
-                    half_graphics->SetSize(
-                            width
-                            , (y + height) - (bar_y + bar_height));
-                    g->AddGameObject(half);
+                auto half_graphics = half->GetComponent<
+                    GraphicsComponent>(Component::GRAPHICS_COMPONENT);
+                if (!half_graphics) {
+                    return;
                 }
+
+                half_graphics->SetSize(
+                        width
+                        , (y + height) - (bar_y + bar_height));
+                g->AddGameObject(half);
 
                 // Now we are guaranteed to have a note that ends before the
                 // bottom of the bar (see above).
@@ -155,40 +136,31 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                     // bar and add an anchor component anchored to the top
                     // of the bar.
                     o->SetComponent(new ResizeComponent{width, bar_y-y});
-                    o->SetComponent(new AnchorComponent{
-                            x
-                            , bar_y
-                            , AnchorComponent::FALLING});
-                } else { // Otherwise 'o' is now purely within the bar and
+               } else { // Otherwise 'o' is now purely within the bar and
                          // can be removed.
                     o->SetComponent(new ResizeComponent{0, 0});
                 }
             }
-        } else if (collider == bar) {
-            if (Config::GetInstance().GetAutomaticallyPlay()
-                    && !auto_playing_) {  // Auto play plays the note
+        // Handle auto play
+        } else if (collider == bar 
+                && Config::GetInstance().GetAutomaticallyPlay()) {
+            if (!auto_playing_) {  // Auto play plays the note
                 o->SetComponent(new MidiNoteComponent{
                         true
                         , note->GetChannel()
                         , note->GetKey()
                         , note->GetVelocity()});
                 auto_playing_ = true;
-            } else {
-                // If we're colliding with the bar, but we're not colliding 
-                // with an instrument, we should delete our anchor component. 
-                // If we're not colliding the bar, we might be using an anchor
-                // component for other purposes (e.g. note expansion).
-                bool found_inst = false;
-                for (const auto& obj : colliding_with) {
-                    if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
-                        found_inst = true;
-                        break;
-                    }
-                }
-                if (!found_inst) {
-                    o->DeleteComponent(Component::ANCHOR_COMPONENT);
-                }
-            }
+            } else if (y > bar_y) {  // If our top is inside the bar, stop 
+                                                                    // playing
+                o->SetComponent(new MidiNoteComponent{
+                        false
+                        , note->GetChannel()
+                        , note->GetKey()
+                        , note->GetVelocity()});
+
+                o->DeleteComponent(GetType()); 
+            }            
         }
     }
 }

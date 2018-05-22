@@ -149,27 +149,7 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 bool Game::CheckSongNotes() {
     for (const auto& obj : objects_) {
         if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
-            // If there's no anchor we know it's a valid note
-            if (!obj->HasComponent(Component::ANCHOR_COMPONENT)) {
-                return true;
-            }
-
-            // We can still have an anchor if we're anchored to the bar
-            double x, y;
-            obj->GetPosition(&x, &y);
-            if (y > 0) {
-                return true;
-            }
-
-            auto note = obj->GetComponent<NoteInfoComponent>(
-                    Component::NOTE_INFO_COMPONENT);
-            if (!note) {
-                continue;
-            }
-            std::cerr << "Warning: could not find MIDI note off event for"
-                << " key " << note->GetKey() << ". Track: "
-                << note->GetTrack() << ". Channel: " << note->GetChannel()
-                << ".\n";
+            return true;
         }
     }
     return false;

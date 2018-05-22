@@ -18,7 +18,6 @@
 
 #include "midistar/GameObjectFactory.h"
 
-#include "midistar/AnchorComponent.h"
 #include "midistar/BarComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
@@ -30,7 +29,6 @@
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
-#include "midistar/SongNoteAnchorRemovalComponent.h"
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 

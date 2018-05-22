@@ -80,7 +80,7 @@ int MidiMessage::GetTrack() const {
 }
 
 int MidiMessage::GetVelocity() const {
-    if (!IsNote()) {
+    if (!IsNoteOn()) {
         return -1;
     }
     return data_[2];

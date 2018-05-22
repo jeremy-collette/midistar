@@ -91,18 +91,20 @@ bool MidiMessage::IsNote() const {
 }
 
 bool MidiMessage::IsNoteOff() const {
-    if (!data_.size()) {
+    if (data_.size() != 3) {
         return false;
     }
-    return ((data_[0] & COMMAND_MASK) == NOTE_OFF_COMMAND)
-       || (IsNoteOn() && GetVelocity() == 0);
+    unsigned char command = data_[0] & COMMAND_MASK;
+    return command == NOTE_OFF_COMMAND || (command == NOTE_ON_COMMAND 
+        && data_[2] == 0);
 }
 
 bool MidiMessage::IsNoteOn() const {
-    if (!data_.size()) {
+    if (data_.size() != 3) {
         return false;
     }
-    return (data_[0] & COMMAND_MASK) == NOTE_ON_COMMAND;
+    unsigned char command = data_[0] & COMMAND_MASK;
+    return command == NOTE_ON_COMMAND && data_[2] != 0;
 }
 
 }  // End namespace midistar

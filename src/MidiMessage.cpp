@@ -95,7 +95,7 @@ bool MidiMessage::IsNoteOff() const {
         return false;
     }
     unsigned char command = data_[0] & COMMAND_MASK;
-    return command == NOTE_OFF_COMMAND || (command == NOTE_ON_COMMAND 
+    return command == NOTE_OFF_COMMAND || (command == NOTE_ON_COMMAND
         && data_[2] == 0);
 }
 

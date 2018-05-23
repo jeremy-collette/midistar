@@ -50,9 +50,7 @@ void MidiPortIn::Tick() {
         if (message.size() == 0) {
             break;
         }
-
-        MidiMessage msg{message, stamp};
-        AddMessage(msg);
+        AddMessage({message, stamp});
     }
 }
 

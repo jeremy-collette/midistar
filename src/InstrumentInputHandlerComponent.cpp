@@ -27,7 +27,7 @@
 namespace midistar {
 
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
-        : Component(Component::INSTRUMENT_INPUT_HANDLER_COMPONENT)
+        : Component(Component::INSTRUMENT_INPUT_HANDLER)
         , graphics_{nullptr}
         , key_{sf::Keyboard::Key::Unknown}
         , key_down_{false} {
@@ -35,13 +35,13 @@ InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
 
 void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
     auto note = o->GetComponent<NoteInfoComponent>(
-            Component::NOTE_INFO_COMPONENT);
+            Component::NOTE_INFO);
     if (!note) {
         return;
     }
 
     auto other_graphics = o->GetComponent<GraphicsComponent>(
-                Component::GRAPHICS_COMPONENT);
+                Component::GRAPHICS);
 
     for (const auto& e : g->GetSfEvents()) {
         // We want to ignore Unknown keys as we use this as a sentinel value
@@ -97,7 +97,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
     } else if (other_graphics) {
         // Remove it and send a note off event
         graphics_ = other_graphics;
-        o->RemoveComponent(Component::GRAPHICS_COMPONENT);
+        o->RemoveComponent(Component::GRAPHICS);
         o->SetComponent(new MidiNoteComponent{
                 false
                 , note->GetChannel()

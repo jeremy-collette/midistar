@@ -26,7 +26,7 @@ NoteInfoComponent::NoteInfoComponent(
     , int chan
     , int note
     , int vel)
-        : Component{Component::NOTE_INFO_COMPONENT}
+        : Component{Component::NOTE_INFO}
         , chan_{chan}
         , note_{note}
         , on_{on}

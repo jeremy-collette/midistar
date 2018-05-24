@@ -24,12 +24,12 @@
 namespace midistar {
 
 DeleteOffscreenComponent::DeleteOffscreenComponent()
-        : Component{Component::DELETE_OFFSCREEN_COMPONENT} {
+        : Component{Component::DELETE_OFFSCREEN} {
 }
 
 void DeleteOffscreenComponent::Update(Game*, GameObject* o) {
     auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS_COMPONENT);
+            Component::GRAPHICS);
 
     double width = 0;
     double height = 0;

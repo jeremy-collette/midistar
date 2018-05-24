@@ -31,7 +31,7 @@ namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
         : CollisionHandlerComponent{
-            Component::NOTE_COLLISION_HANDLER_COMPONENT}
+            Component::NOTE_COLLISION_HANDLER}
         , auto_playing_{false} {
 }
 
@@ -41,13 +41,13 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         , std::vector<GameObject*> colliding_with) {
     // Get some info about owner
     auto note = o->GetComponent<NoteInfoComponent>(
-            Component::NOTE_INFO_COMPONENT);
+            Component::NOTE_INFO);
     if (!note) {
         return;
     }
 
     auto graphics = o->GetComponent<GraphicsComponent>(
-        Component::GRAPHICS_COMPONENT);
+        Component::GRAPHICS);
     if (!graphics) {
         return;
     }
@@ -63,7 +63,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
     bar->GetPosition(&bar_x, &bar_y);
 
     auto bar_graphics = bar->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS_COMPONENT);
+            Component::GRAPHICS);
     if (!bar_graphics) {
         return;
     }
@@ -73,12 +73,12 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
     // Handle each collision
     for (auto& collider : colliding_with) {
         auto other_note = collider->GetComponent<NoteInfoComponent>(
-                Component::NOTE_INFO_COMPONENT);
+                Component::NOTE_INFO);
 
         // Here we check if the note is being played. If the note is colliding
         // with an instrument, it's being played. Once it is being played, we
         // anchor the note to the bar so that it shrinks during play.
-        if (collider->HasComponent(Component::INSTRUMENT_COMPONENT)) {
+        if (collider->HasComponent(Component::INSTRUMENT)) {
             // Check it's the correct instrument - we may collide with
             // neighbouring instruments if they overlap on the screen.
             if (!other_note || other_note->GetKey() != note->GetKey()) {
@@ -90,7 +90,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
             // note. This section of the note has been missed.
             if (y + height > bar_y + bar_height) {
                 auto note = o->GetComponent<NoteInfoComponent>(
-                        Component::NOTE_INFO_COMPONENT);
+                        Component::NOTE_INFO);
                 if (!note) {
                     return;
                 }
@@ -105,11 +105,11 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                 // We don't want complete note behaviour - this is an
                 // unplayable note
                 half->DeleteComponent(
-                        Component::NOTE_COLLISION_HANDLER_COMPONENT);
+                        Component::NOTE_COLLISION_HANDLER);
                 half->SetPosition(x, bar_y + bar_height);
 
                 auto half_graphics = half->GetComponent<
-                    GraphicsComponent>(Component::GRAPHICS_COMPONENT);
+                    GraphicsComponent>(Component::GRAPHICS);
                 if (!half_graphics) {
                     return;
                 }

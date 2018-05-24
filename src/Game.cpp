@@ -154,7 +154,7 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 
 bool Game::CheckSongNotes() {
     for (const auto& obj : objects_) {
-        if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
+        if (obj->HasComponent(Component::SONG_NOTE)) {
             return true;
         }
     }

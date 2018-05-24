@@ -58,13 +58,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
     graphics->GetSize(&width, &height);
 
     // Get the bar object, for later use.
-    GameObject* bar = nullptr;
-    for (auto& obj : g->GetGameObjects()) {
-        if (obj->HasComponent(Component::BAR_COMPONENT)) {
-            bar = obj;
-            break;
-        }
-    }
+    GameObject* bar = g->GetInstrumentBar();
     double bar_x, bar_y;
     bar->GetPosition(&bar_x, &bar_y);
 

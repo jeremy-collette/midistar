@@ -29,10 +29,12 @@
 namespace midistar {
 
 Game::Game()
-        : window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
+        : bar_{GameObjectFactory::CreateInstrumentBar()}
+        , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight()), "midistar"} {
     window_.setFramerateLimit(Config::GetInstance().GetFramesPerSecond());
     objects_.push_back(GameObjectFactory::CreateInstrumentBar());
+
     if (!Config::GetInstance().GetAutomaticallyPlay()) {
         for (int note = Config::GetInstance().GetMinimumMidiNote();
                 note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
@@ -57,6 +59,10 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
     return objects_;
+}
+
+GameObject* Game::GetInstrumentBar() {
+    return bar_;
 }
 
 const std::vector<sf::Event>& Game::GetSfEvents() {

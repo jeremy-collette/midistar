@@ -20,18 +20,18 @@
 
 namespace midistar {
 
-bool MidiIn::GetEvent(smf::MidiEvent* mev) {
+bool MidiIn::GetMessage(MidiMessage* message) {
     if (buffer_.empty()) {
         return false;
     }
 
-    *mev = buffer_.front();
+    *message = buffer_.front();
     buffer_.pop();
     return true;
 }
 
-void MidiIn::AddEvent(smf::MidiEvent mev) {
-    buffer_.push(mev);
+void MidiIn::AddMessage(MidiMessage message) {
+    buffer_.push(message);
 }
 
 }  // End namespace midistar

@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
 #define MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
 
+#include <vector>
+
 #include "midistar/Component.h"
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
@@ -39,16 +41,16 @@ class CollisionHandlerComponent : public Component {
     explicit CollisionHandlerComponent(ComponentType type);
 
     /**
-     * Handles a collision. 
+     * Handles most recent collisions.
      *
      * \param[in,out] g The Game being played.
      * \param[in,out] o The owner of the component.
-     * \param[in,out] colliding_with The object colliding with the owner.
+     * \param[in,out] colliding_with The objects colliding with the owner.
      */
-    virtual void HandleCollision(
+    virtual void HandleCollisions(
             Game* g
             , GameObject* o
-            , GameObject* colliding_with) = 0;
+            , const std::vector<GameObject*> colliding_with) = 0;
 
     /**
      * \copydoc Component::Update()

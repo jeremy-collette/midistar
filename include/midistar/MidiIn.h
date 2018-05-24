@@ -19,8 +19,9 @@
 #ifndef MIDISTAR_MIDIIN_H_
 #define MIDISTAR_MIDIIN_H_
 
-#include <midifile/MidiEvent.h>
 #include <queue>
+
+#include "midistar/MidiMessage.h"
 
 namespace midistar {
 
@@ -30,13 +31,13 @@ namespace midistar {
 class MidiIn {
  public:
     /**
-     * Gets the next MIDI event.
+     * Gets the next MIDI message.
      *
-     * \param[out] mev Stores the MIDI event.
+     * \param[out] mev Stores the MIDI message.
      *
      * \return True for success. False if an event is not available.
      */
-    bool GetEvent(smf::MidiEvent* mev);
+    bool GetMessage(MidiMessage* message);
 
     /**
      * Reads the next available MIDI data in the stream.
@@ -45,14 +46,14 @@ class MidiIn {
 
  protected:
     /**
-     * Adds a MIDI event to the event queue.
+     * Adds a MIDI message to the message queue.
      *
-     * \param mev The event to add.
+     * \param message The message to add.
      */
-    void AddEvent(smf::MidiEvent mev);
+    void AddMessage(MidiMessage message);
 
  private:
-    std::queue<smf::MidiEvent> buffer_;  //!< MIDI event buffer
+    std::queue<MidiMessage> buffer_;  //!< MIDI message buffer
 };
 
 }  // End namespace midistar

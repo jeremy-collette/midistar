@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
 #define MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
 
+#include <vector>
+
 #include "midistar/CollisionHandlerComponent.h"
 
 namespace midistar {
@@ -35,12 +37,16 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
      SongNoteCollisionHandlerComponent();
 
      /**
-      * \copydoc CollisionHandlerComponent::HandleCollision()
+      * \copydoc CollisionHandlerComponent::HandleCollisions()
       */
-     virtual void HandleCollision(
+     virtual void HandleCollisions(
              Game* g
              , GameObject* o
-             , GameObject* colliding_with);
+             , std::vector<GameObject*> colliding_with);
+
+ private:
+     bool auto_playing_;  //!< Determines if we are currently auto playing a
+                                                                    //!< note
 };
 
 }  // End namespace midistar

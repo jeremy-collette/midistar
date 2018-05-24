@@ -33,9 +33,7 @@ void CollisionHandlerComponent::Update(Game* g, GameObject* o) {
         return;
     }
 
-    for (auto& other_obj : detector->GetCollidingWith()) {
-        HandleCollision(g, o, other_obj);
-    }
+    HandleCollisions(g, o, detector->GetCollidingWith());
 }
 
 }  // End namespace midistar

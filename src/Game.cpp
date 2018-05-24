@@ -51,8 +51,8 @@ void Game::AddGameObject(GameObject* obj) {
     new_objects_.push(obj);
 }
 
-const std::vector<smf::MidiEvent>& Game::GetMidiPortInEvents() {
-    return midi_port_events_;
+const std::vector<MidiMessage>& Game::GetMidiInMessages() {
+    return midi_in_buf_;
 }
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
@@ -95,19 +95,21 @@ int Game::Run() {
         } while (num_objects != objects_.size());
         window_.display();
 
-        smf::MidiEvent mev;
-        while (midi_file_in_.GetEvent(&mev)) {
-            objects_.push_back(GameObjectFactory::CreateSongNote(
-                        mev.track
-                        , mev.isNoteOn()
-                        , mev.getChannelNibble()
-                        , mev[1]
-                        , mev[2]));
+        MidiMessage msg;
+        while (midi_file_in_.GetMessage(&msg)) {
+            if (msg.IsNoteOn()) {
+                objects_.push_back(GameObjectFactory::CreateSongNote(
+                            msg.GetTrack()
+                            , msg.GetChannel()
+                            , msg.GetKey()
+                            , msg.GetVelocity()
+                            , msg.GetDuration()));
+            }
         }
 
-        midi_port_events_.clear();
-        while (midi_port_in_.GetEvent(&mev)) {
-            midi_port_events_.push_back(mev);
+        midi_in_buf_.clear();
+        while (midi_port_in_.GetMessage(&msg)) {
+            midi_in_buf_.push_back(msg);
         }
 
         sf_events_.clear();
@@ -147,27 +149,7 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 bool Game::CheckSongNotes() {
     for (const auto& obj : objects_) {
         if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
-            // If there's no anchor we know it's a valid note
-            if (!obj->HasComponent(Component::ANCHOR_COMPONENT)) {
-                return true;
-            }
-
-            // We can still have an anchor if we're anchored to the bar
-            double x, y;
-            obj->GetPosition(&x, &y);
-            if (y > 0) {
-                return true;
-            }
-
-            auto note = obj->GetComponent<NoteInfoComponent>(
-                    Component::NOTE_INFO_COMPONENT);
-            if (!note) {
-                continue;
-            }
-            std::cerr << "Warning: could not find MIDI note off event for"
-                << " key " << note->GetKey() << ". Track: "
-                << note->GetTrack() << ". Channel: " << note->GetChannel()
-                << ".\n";
+            return true;
         }
     }
     return false;

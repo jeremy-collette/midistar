@@ -50,11 +50,7 @@ void MidiPortIn::Tick() {
         if (message.size() == 0) {
             break;
         }
-
-        auto mev = smf::MidiEvent{static_cast<int>(stamp), 0, message};
-        if (mev.isNoteOn() || mev.isNoteOff()) {
-            AddEvent(mev);
-        }
+        AddMessage({message, stamp});
     }
 }
 

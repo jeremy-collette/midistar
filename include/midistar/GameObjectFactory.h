@@ -49,19 +49,19 @@ class GameObjectFactory {
      * Creates a MIDI song note.
      *
      * \param track The MIDI track of the note.
-     * \param on True if note on. False if note off.
      * \param chan MIDI channel.
      * \param note MIDI note.
      * \param vel MIDI velocity.
+     * \param duration The duration of the note.
      *
      * \return A GameObject which is a song note.
      */
     static GameObject* CreateSongNote(
             int track
-            , bool on
             , int chan
             , int note
-            , int vel);
+            , int vel
+            , double duration);
 };
 
 }  // End namespace midistar

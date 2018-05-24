@@ -89,6 +89,10 @@ const std::string Config::GetMidiFileName() {
     return midi_file_name_;
 }
 
+int Config::GetMidiFileTicksPerUnitOfSpeed() {
+    return MIDI_FILE_TICKS_PER_SPEED;
+}
+
 bool Config::GetMidiFileRepeat() {
     return midi_file_repeat_;
 }
@@ -103,6 +107,10 @@ int Config::GetMidiTrack() {
 
 int Config::GetMinimumMidiNote() {
     return midi_lowest_note_;
+}
+
+double Config::GetNoteFallSpeed() {
+    return note_fall_speed_;
 }
 
 int Config::GetNumMidiNotes() {
@@ -181,6 +189,8 @@ void Config::InitCliApp(CLI::App* app) {
             "note to display and play.");
     app->add_option("--midi_track", midi_track_, "The MIDI track to "
             "read notes from.");
+    app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
+            "falling speed of notes on the screen.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "

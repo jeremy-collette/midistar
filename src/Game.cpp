@@ -96,22 +96,23 @@ int Game::Run() {
     sf::Clock clock;
     while (window_.isOpen()) {
         FlushNewObjectQueue();
-
         window_.clear();
+
+        int delta = clock.getElapsedTime().asMilliseconds();
+        clock.restart();
+
         unsigned num_objects;
         unsigned i = 0;
         do {
             num_objects = objects_.size();
             while (i < objects_.size()) {
-                objects_[i++]->Update(this, clock.getElapsedTime().
-                        asMilliseconds());
+                objects_[i++]->Update(this, delta);
             }
             FlushNewObjectQueue();
         // If we've added new objects during updating, we will update them now.
         // NOTE: This could cause an infinite loop if new objects create new
         // objects.
         } while (num_objects != objects_.size());
-        clock.restart();
         window_.display();
 
         MidiMessage msg;

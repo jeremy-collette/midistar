@@ -80,8 +80,10 @@ GameObject* GameObjectFactory::CreateSongNote(
         , double duration) {
     double x = (note - Config::GetInstance().GetMinimumMidiNote())
         * note_width_;
-    double height = duration * (Config::GetInstance().GetFramesPerSecond()
-            * note_speed_);
+    // Height is equal to duration in milliseconds * pixels per millisecond
+    double actual_speed = note_speed_ / 10.0;
+    // TODO(jez): debug this - this should work at 1000
+    double height = duration * 950 * actual_speed;
 
     GameObject* song_note;
     sf::RectangleShape* rect;
@@ -92,7 +94,7 @@ GameObject* GameObjectFactory::CreateSongNote(
     song_note->SetComponent(new SongNoteComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
-    song_note->SetComponent(new PhysicsComponent{0, note_speed_});
+    song_note->SetComponent(new PhysicsComponent{0, actual_speed});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});

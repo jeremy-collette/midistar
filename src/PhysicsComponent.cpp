@@ -19,9 +19,7 @@
 #include "midistar/PhysicsComponent.h"
 
 namespace midistar {
-PhysicsComponent::PhysicsComponent(
-    double x_vel
-    , double y_vel)
+PhysicsComponent::PhysicsComponent(double x_vel, double y_vel)
         : Component{Component::PHYSICS}
         , x_vel_{x_vel}
         , y_vel_{y_vel} {
@@ -37,11 +35,11 @@ void PhysicsComponent::SetVelocity(double x_vel, double y_vel) {
     y_vel_ = y_vel;
 }
 
-void PhysicsComponent::Update(Game*, GameObject* o, int) {
+void PhysicsComponent::Update(Game*, GameObject* o, int delta) {
     double x, y;
     o->GetPosition(&x, &y);
-    x += x_vel_;
-    y += y_vel_;
+    x += x_vel_ * delta;
+    y += y_vel_ * delta;
     o->SetPosition(x, y);
 }
 

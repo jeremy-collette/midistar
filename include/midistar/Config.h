@@ -189,7 +189,7 @@ class Config {
     int ParseOptions(int argc, char** argv);
 
  private:
-    static const int FRAMES_PER_SECOND = 60;  //!< FPS setting
+    static const int FRAMES_PER_SECOND = 120;  //!< FPS setting
     static const int MIDI_OUT_VELOCITY = 127;  //!< MIDI out velocity
     static const int NUM_MAPPED_KEYS = 45;  //!< Number of keys mapped
     static const int MIDI_FILE_TICKS_PER_SPEED = 120;  //!< Number of MIDI file

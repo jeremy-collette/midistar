@@ -21,6 +21,7 @@
 
 #include <midifile/MidiFile.h>
 #include <string>
+#include <SFML/System.hpp>
 
 #include "midistar/MidiIn.h"
 
@@ -70,11 +71,11 @@ class MidiFileIn : public MidiIn {
     virtual void Tick();
 
  private:
+    sf::Clock clock_;  //!< Clock to keep track of time
     smf::MidiFile file_;  //!< Underlying MIDI file instance
     int index_;  //!< Index of event in track
     int player_channel_;  //!< MIDI channel to play
     int player_track_;  //!< MIDI track to play
-    double time_;  //!< Real-time position in MIDI file
 };
 
 }  // End namespace midistar

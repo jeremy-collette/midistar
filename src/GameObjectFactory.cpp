@@ -54,11 +54,7 @@ GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
     GameObject* ins_note = new GameObject{x, y};
 
     ins_note->SetComponent(new InstrumentComponent{});
-    ins_note->SetComponent(new NoteInfoComponent{
-            -1
-            , true
-            , 0
-            , note
+    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), 20}};
@@ -87,8 +83,7 @@ GameObject* GameObjectFactory::CreateSongNote(
     rect = new sf::RectangleShape{{static_cast<float>(width),
         static_cast<float>(height)}};
     song_note->SetComponent(new SongNoteComponent{});
-    song_note->SetComponent(new NoteInfoComponent{track, true, chan, note
-            , vel});
+    song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, speed});
     song_note->SetComponent(new DeleteOffscreenComponent{});

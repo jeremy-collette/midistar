@@ -22,24 +22,18 @@ namespace midistar {
 
 NoteInfoComponent::NoteInfoComponent(
     int track
-    , bool on
     , int chan
     , int note
     , int vel)
         : Component{Component::NOTE_INFO}
         , chan_{chan}
         , note_{note}
-        , on_{on}
         , track_{track}
         , vel_{vel} {
 }
 
 int NoteInfoComponent::GetChannel() {
     return chan_;
-}
-
-bool NoteInfoComponent::GetIsOn() {
-    return on_;
 }
 
 int NoteInfoComponent::GetKey() {

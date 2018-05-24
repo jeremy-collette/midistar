@@ -94,10 +94,10 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
 
                 GameObject* half = GameObjectFactory::CreateSongNote(
                             note->GetTrack()
-                            , note->GetIsOn()
                             , note->GetChannel()
                             , note->GetKey()
-                            , note->GetVelocity());
+                            , note->GetVelocity()
+                            , 0);
 
                 // We don't want complete note behaviour - this is an
                 // unplayable note

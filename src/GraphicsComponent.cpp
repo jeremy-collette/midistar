@@ -45,7 +45,7 @@ void GraphicsComponent::SetSize(double x, double y) {
     rect_->setSize({static_cast<float>(x), static_cast<float>(y)});
 }
 
-void GraphicsComponent::Update(Game* g, GameObject* o) {
+void GraphicsComponent::Update(Game* g, GameObject* o, int) {
     double x, y;
     o->GetPosition(&x, &y);
     rect_->setPosition({static_cast<float>(x), static_cast<float>(y)});

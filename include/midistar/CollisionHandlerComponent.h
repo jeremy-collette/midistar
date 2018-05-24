@@ -55,7 +55,7 @@ class CollisionHandlerComponent : public Component {
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject* o);
+    virtual void Update(Game* g, GameObject* o, int delta);
 };
 
 }   // End namespace midistar

@@ -24,7 +24,7 @@ BarComponent::BarComponent()
         : Component{Component::BAR} {
 }
 
-void BarComponent::Update(Game*, GameObject*) {
+void BarComponent::Update(Game*, GameObject*, int) {
 }
 
 }   // End namespace midistar

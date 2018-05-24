@@ -57,7 +57,7 @@ class CollisionDetectorComponent : public Component {
      /**
       * \copydoc Component::Update()
       */
-     virtual void Update(Game* g, GameObject* o);
+     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
      std::vector<GameObject*> colliding_with_;  //!< Holds colliding objects

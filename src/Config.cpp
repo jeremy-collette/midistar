@@ -77,10 +77,6 @@ int Config::GetFramesPerSecond() {
     return FRAMES_PER_SECOND;
 }
 
-double Config::GetGameSpeed() {
-    return game_speed_;
-}
-
 int Config::GetMaximumMidiNote() {
     return midi_highest_note_;
 }
@@ -111,6 +107,10 @@ int Config::GetMidiTrack() {
 
 int Config::GetMinimumMidiNote() {
     return midi_lowest_note_;
+}
+
+double Config::GetNoteFallSpeed() {
+    return note_fall_speed_;
 }
 
 int Config::GetNumMidiNotes() {
@@ -176,7 +176,6 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
-    app->add_option("--game_speed", game_speed_, "Determines game speed.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
     app->add_option("--midi_channel", midi_channel_, "The MIDI "
@@ -190,6 +189,8 @@ void Config::InitCliApp(CLI::App* app) {
             "note to display and play.");
     app->add_option("--midi_track", midi_track_, "The MIDI track to "
             "read notes from.");
+    app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
+            "falling speed of notes on the screen.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "

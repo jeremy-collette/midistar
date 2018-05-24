@@ -85,7 +85,7 @@ int Game::Init() {
 
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
-        Config::GetInstance().GetGameSpeed();
+        Config::GetInstance().GetNoteFallSpeed();
     GameObjectFactory::GetInstance().Init(note_speed);
 
     return midi_out_.Init();

@@ -22,7 +22,7 @@ namespace midistar {
 PhysicsComponent::PhysicsComponent(
     double x_vel
     , double y_vel)
-        : Component{Component::PHYSICS_COMPONENT}
+        : Component{Component::PHYSICS}
         , x_vel_{x_vel}
         , y_vel_{y_vel} {
 }

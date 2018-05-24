@@ -28,7 +28,7 @@ CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
 
 void CollisionHandlerComponent::Update(Game* g, GameObject* o) {
     auto detector = o->GetComponent<CollisionDetectorComponent>(
-            Component::COLLISION_DETECTOR_COMPONENT);
+            Component::COLLISION_DETECTOR);
     if (!detector) {
         return;
     }

@@ -21,7 +21,7 @@
 namespace midistar {
 
 InstrumentComponent::InstrumentComponent()
-        : Component{Component::INSTRUMENT_COMPONENT} {
+        : Component{Component::INSTRUMENT} {
 }
 
 void InstrumentComponent::Update(Game*, GameObject*) {

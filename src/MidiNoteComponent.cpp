@@ -21,7 +21,7 @@
 namespace midistar {
 
 MidiNoteComponent::MidiNoteComponent(bool on, int chan, int note, int vel)
-        : Component{Component::MIDI_NOTE_COMPONENT}
+        : Component{Component::MIDI_NOTE}
         , chan_{chan}
         , note_{note}
         , on_{on}

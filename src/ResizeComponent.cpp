@@ -37,8 +37,7 @@ ResizeComponent::ResizeComponent(double new_width, double new_height)
 }
 
 void ResizeComponent::Update(Game*, GameObject* o) {
-    auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS);
+    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;
     }

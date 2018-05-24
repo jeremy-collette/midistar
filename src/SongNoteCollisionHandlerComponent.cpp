@@ -30,8 +30,7 @@
 namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
-        : CollisionHandlerComponent{
-            Component::NOTE_COLLISION_HANDLER}
+        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
         , auto_playing_{false} {
 }
 
@@ -40,14 +39,12 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
     // Get some info about owner
-    auto note = o->GetComponent<NoteInfoComponent>(
-            Component::NOTE_INFO);
+    auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
         return;
     }
 
-    auto graphics = o->GetComponent<GraphicsComponent>(
-        Component::GRAPHICS);
+    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;
     }
@@ -104,12 +101,11 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
 
                 // We don't want complete note behaviour - this is an
                 // unplayable note
-                half->DeleteComponent(
-                        Component::NOTE_COLLISION_HANDLER);
+                half->DeleteComponent(Component::NOTE_COLLISION_HANDLER);
                 half->SetPosition(x, bar_y + bar_height);
 
-                auto half_graphics = half->GetComponent<
-                    GraphicsComponent>(Component::GRAPHICS);
+                auto half_graphics = half->GetComponent<GraphicsComponent>(
+                        Component::GRAPHICS);
                 if (!half_graphics) {
                     return;
                 }

@@ -27,21 +27,20 @@
 namespace midistar {
 
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
-        : Component(Component::INSTRUMENT_INPUT_HANDLER)
+        : Component{Component::INSTRUMENT_INPUT_HANDLER}
         , graphics_{nullptr}
         , key_{sf::Keyboard::Key::Unknown}
         , key_down_{false} {
 }
 
 void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
-    auto note = o->GetComponent<NoteInfoComponent>(
-            Component::NOTE_INFO);
+    auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
         return;
     }
 
     auto other_graphics = o->GetComponent<GraphicsComponent>(
-                Component::GRAPHICS);
+            Component::GRAPHICS);
 
     for (const auto& e : g->GetSfEvents()) {
         // We want to ignore Unknown keys as we use this as a sentinel value

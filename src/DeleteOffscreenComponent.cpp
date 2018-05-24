@@ -28,8 +28,7 @@ DeleteOffscreenComponent::DeleteOffscreenComponent()
 }
 
 void DeleteOffscreenComponent::Update(Game*, GameObject* o) {
-    auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS);
+    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
 
     double width = 0;
     double height = 0;

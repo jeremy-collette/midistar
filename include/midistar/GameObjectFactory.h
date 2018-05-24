@@ -35,7 +35,7 @@ class GameObjectFactory {
      * \return GameObjectFactory singleton.
      */
     static GameObjectFactory& GetInstance();
- 
+
      /**
      * Creates the instrument bar.
      *
@@ -71,8 +71,8 @@ class GameObjectFactory {
             , double duration);
 
  private:
-    static GameObjectFactory instance_;  //!< Holds singleton
-    
+    static GameObjectFactory* instance_;  //!< Holds singleton
+
     GameObjectFactory();  //!< Constructor
 
     double note_speed_;  //!< Holds the speed of song notes

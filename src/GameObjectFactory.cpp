@@ -34,10 +34,15 @@
 
 namespace midistar {
 
-GameObjectFactory GameObjectFactory::instance_;
+GameObjectFactory* GameObjectFactory::instance_;
 
-GameObjectFactory&  GameObjectFactory::GetInstance() {
-    return instance_;
+GameObjectFactory& GameObjectFactory::GetInstance() {
+    // We have to use lazy instantiation, otherwise Config will not be
+    // populated yet.
+    if (!instance_) {
+        instance_ = new GameObjectFactory{};
+    }
+    return *instance_;
 }
 
 GameObject* GameObjectFactory::CreateInstrumentBar() {

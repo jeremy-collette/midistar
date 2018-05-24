@@ -44,13 +44,10 @@ const sf::Keyboard::Key Config::MAPPED_KEYS[NUM_MAPPED_KEYS] {
         , sf::Keyboard::Key::Period, sf::Keyboard::Key::Slash
     };
 
-Config* Config::instance_ = nullptr;
+Config Config::instance_;
 
 Config& Config::GetInstance() {
-    if (!Config::instance_) {
-        Config::instance_ = new Config{};
-    }
-    return *Config::instance_;
+    return instance_;
 }
 
 Config::Config()

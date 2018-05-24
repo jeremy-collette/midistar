@@ -29,14 +29,17 @@
 namespace midistar {
 
 Game::Game()
-        : window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
+        : bar_{GameObjectFactory::GetInstance().CreateInstrumentBar()}
+        , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight()), "midistar"} {
+    objects_.push_back(bar_);
     window_.setFramerateLimit(Config::GetInstance().GetFramesPerSecond());
-    objects_.push_back(GameObjectFactory::CreateInstrumentBar());
+
     if (!Config::GetInstance().GetAutomaticallyPlay()) {
         for (int note = Config::GetInstance().GetMinimumMidiNote();
                 note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
-            objects_.push_back(GameObjectFactory::CreateInstrumentNote(note));
+            objects_.push_back(GameObjectFactory::GetInstance().
+                    CreateInstrumentNote(note));
         }
     }
 }
@@ -57,6 +60,10 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
     return objects_;
+}
+
+GameObject* Game::GetInstrumentBar() {
+    return bar_;
 }
 
 const std::vector<sf::Event>& Game::GetSfEvents() {
@@ -98,7 +105,8 @@ int Game::Run() {
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
-                objects_.push_back(GameObjectFactory::CreateSongNote(
+                objects_.push_back(GameObjectFactory::GetInstance().
+                        CreateSongNote(
                             msg.GetTrack()
                             , msg.GetChannel()
                             , msg.GetKey()
@@ -148,7 +156,7 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 
 bool Game::CheckSongNotes() {
     for (const auto& obj : objects_) {
-        if (obj->HasComponent(Component::SONG_NOTE_COMPONENT)) {
+        if (obj->HasComponent(Component::SONG_NOTE)) {
             return true;
         }
     }

@@ -26,7 +26,7 @@ ResizeComponent::ResizeComponent(
     double new_width
     , double new_height
     , AnchorFlag anchor_flags)
-        : Component{Component::RESIZE_COMPONENT}
+        : Component{Component::RESIZE}
         , anchor_flags_{anchor_flags}
         , new_height_{new_height}
         , new_width_{new_width} {
@@ -37,8 +37,7 @@ ResizeComponent::ResizeComponent(double new_width, double new_height)
 }
 
 void ResizeComponent::Update(Game*, GameObject* o) {
-    auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS_COMPONENT);
+    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;
     }

@@ -179,7 +179,7 @@ class Config {
     static const sf::Keyboard::Key MAPPED_KEYS[NUM_MAPPED_KEYS];
                                             //!< The mapped keys on a keyboard
 
-    static Config* instance_;  //!< Holds singleton instance of Config
+    static Config instance_;  //!< Holds singleton instance of Config
 
     Config();  //!< Constructor
     void InitCliApp(CLI::App* app);  //!< Sets up App instance for config /

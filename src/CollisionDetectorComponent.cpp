@@ -23,7 +23,7 @@
 namespace midistar {
 
 CollisionDetectorComponent::CollisionDetectorComponent()
-        : Component{Component::COLLISION_DETECTOR_COMPONENT} {
+        : Component{Component::COLLISION_DETECTOR} {
 }
 
 const std::vector<GameObject*>& CollisionDetectorComponent::GetCollidingWith() {
@@ -36,8 +36,7 @@ bool CollisionDetectorComponent::GetIsColliding() {
 }
 
 void CollisionDetectorComponent::Update(Game* g, GameObject* o) {
-    auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS_COMPONENT);
+    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;
     }
@@ -50,7 +49,7 @@ void CollisionDetectorComponent::Update(Game* g, GameObject* o) {
         }
 
         auto other_graphics = other_obj->GetComponent<GraphicsComponent>(
-                Component::GRAPHICS_COMPONENT);
+                Component::GRAPHICS);
         if (!other_graphics) {
             continue;
         }

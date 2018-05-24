@@ -30,11 +30,18 @@ namespace midistar {
 class GameObjectFactory {
  public:
     /**
+     * Gets the GameObjectFactory singleton.
+     *
+     * \return GameObjectFactory singleton.
+     */
+    static GameObjectFactory& GetInstance();
+ 
+     /**
      * Creates the instrument bar.
      *
      * \return A GameObject which is the instrument bar.
      */
-    static GameObject* CreateInstrumentBar();
+    GameObject* CreateInstrumentBar();
 
     /**
      * Creates a MIDI instrument note.
@@ -43,7 +50,7 @@ class GameObjectFactory {
      *
      * \return A GameObject which is an instrument.
      */
-    static GameObject* CreateInstrumentNote(int note);
+    GameObject* CreateInstrumentNote(int note);
 
     /**
      * Creates a MIDI song note.
@@ -56,12 +63,20 @@ class GameObjectFactory {
      *
      * \return A GameObject which is a song note.
      */
-    static GameObject* CreateSongNote(
+    GameObject* CreateSongNote(
             int track
             , int chan
             , int note
             , int vel
             , double duration);
+
+ private:
+    static GameObjectFactory instance_;  //!< Holds singleton
+    
+    GameObjectFactory();  //!< Constructor
+
+    double note_speed_;  //!< Holds the speed of song notes
+    double note_width_;  //!< Holds the width of song notes
 };
 
 }  // End namespace midistar

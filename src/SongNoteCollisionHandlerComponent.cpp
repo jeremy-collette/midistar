@@ -92,7 +92,8 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
                     return;
                 }
 
-                GameObject* half = GameObjectFactory::CreateSongNote(
+                GameObject* half = GameObjectFactory::GetInstance().
+                    CreateSongNote(
                             note->GetTrack()
                             , note->GetChannel()
                             , note->GetKey()

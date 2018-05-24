@@ -91,6 +91,15 @@ class Config {
     bool GetMidiFileRepeat();
 
     /**
+     * Gets the number of MIDI file ticks (per quarter note) per one unit of
+     * speed. The higher this value is set, the slower MIDI notes will fall.
+     * The lower the this value is set, the faster MIDI notes will fall.
+     *
+     * \return MIDI ticks (per quarter note) per unit of speed.
+     */
+    int GetMidiFileTicksPerUnitOfSpeed();
+
+    /**
      * Gets the velocity of MIDI notes output by the game.
      *
      * \return MIDI out velocity.
@@ -110,6 +119,13 @@ class Config {
      * \return Minimum MIDI note.
      */
     int GetMinimumMidiNote();
+
+    /**
+     * Gets the fall speed of song notes.
+     *
+     * \return Note fall speed.
+     */
+    double GetNoteFallSpeed();
 
     /**
      * Gets the number of MIDI notes between (inclusive) the minimum and
@@ -176,6 +192,8 @@ class Config {
     static const int FRAMES_PER_SECOND = 60;  //!< FPS setting
     static const int MIDI_OUT_VELOCITY = 127;  //!< MIDI out velocity
     static const int NUM_MAPPED_KEYS = 45;  //!< Number of keys mapped
+    static const int MIDI_FILE_TICKS_PER_SPEED = 120;  //!< Number of MIDI file
+                                               //!< ticks per one unit of speed
     static const sf::Keyboard::Key MAPPED_KEYS[NUM_MAPPED_KEYS];
                                             //!< The mapped keys on a keyboard
 
@@ -194,6 +212,7 @@ class Config {
     int midi_highest_note_;  //!< The highest MIDI note to support
     int midi_lowest_note_;  //!< The lowest MIDI note to support
     int midi_track_;  //!< MIDI track to play
+    double note_fall_speed_;  //!< Fall speed of notes on the screen
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes

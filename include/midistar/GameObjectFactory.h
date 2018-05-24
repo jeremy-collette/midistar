@@ -70,8 +70,15 @@ class GameObjectFactory {
             , int vel
             , double duration);
 
+    /**
+     * Initialises the GameObjectFactory.
+     *
+     * \param note_speed The falling speed of notes on the screen.
+     */
+    void Init(double note_speed);
+
  private:
-    static GameObjectFactory* instance_;  //!< Holds singleton
+    static GameObjectFactory instance_;  //!< Holds singleton
 
     GameObjectFactory();  //!< Constructor
 

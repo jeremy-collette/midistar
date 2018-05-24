@@ -42,6 +42,13 @@ class MidiFileIn : public MidiIn {
     ~MidiFileIn();
 
     /**
+     * Gets the ticks per quarter note of the MIDI file.
+     *
+     * \return Ticks per qurater note.
+     */
+    int GetTicksPerQuarterNote() const;
+
+    /**
      * Initialises the class.
      *
      * \param file_name MIDI file to open.

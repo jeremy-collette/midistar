@@ -78,8 +78,17 @@ int Game::Init() {
     window_.setKeyRepeatEnabled(false);
     midi_port_in_.Init();  // It is okay if this fails (player can be using
                                                         // computer keyboard)
-    return midi_file_in_.Init(Config::GetInstance().GetMidiFileName())
-        || midi_out_.Init();
+    int err = midi_file_in_.Init(Config::GetInstance().GetMidiFileName());
+    if (err) {
+        return err;
+    }
+
+    double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
+        Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
+        Config::GetInstance().GetGameSpeed();
+    GameObjectFactory::GetInstance().Init(note_speed);
+
+    return midi_out_.Init();
 }
 
 int Game::Run() {

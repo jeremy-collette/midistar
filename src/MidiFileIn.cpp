@@ -34,6 +34,10 @@ MidiFileIn::MidiFileIn()
 MidiFileIn::~MidiFileIn() {
 }
 
+int MidiFileIn::GetTicksPerQuarterNote() const {
+    return file_.getTicksPerQuarterNote();
+}
+
 int MidiFileIn::Init(const std::string& file_name) {
     file_.read(file_name);
     bool success = file_.status();

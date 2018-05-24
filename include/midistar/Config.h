@@ -62,6 +62,13 @@ class Config {
     int GetFramesPerSecond();
 
     /**
+     * Gets the game speed.
+     *
+     * \return Game speed.
+     */
+    double GetGameSpeed();
+
+    /**
      * Gets the maxmimum MIDI note to be displayed on the screen.
      *
      * \return Maximum MIDI note.
@@ -89,6 +96,15 @@ class Config {
      * \return Repeat MIDI file setting.
      */
     bool GetMidiFileRepeat();
+
+    /**
+     * Gets the number of MIDI file ticks (per quarter note) per one unit of
+     * speed. The higher this value is set, the slower MIDI notes will fall.
+     * The lower the this value is set, the faster MIDI notes will fall.
+     *
+     * \return MIDI ticks (per quarter note) per unit of speed.
+     */
+    int GetMidiFileTicksPerUnitOfSpeed();
 
     /**
      * Gets the velocity of MIDI notes output by the game.
@@ -176,6 +192,8 @@ class Config {
     static const int FRAMES_PER_SECOND = 60;  //!< FPS setting
     static const int MIDI_OUT_VELOCITY = 127;  //!< MIDI out velocity
     static const int NUM_MAPPED_KEYS = 45;  //!< Number of keys mapped
+    static const int MIDI_FILE_TICKS_PER_SPEED = 120;  //!< Number of MIDI file
+                                               //!< ticks per one unit of speed
     static const sf::Keyboard::Key MAPPED_KEYS[NUM_MAPPED_KEYS];
                                             //!< The mapped keys on a keyboard
 
@@ -187,6 +205,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    double game_speed_;  //!< Game speed setting
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int midi_channel_;  //!< MIDI channel to play
     std::string midi_file_name_;  //!< MIDI file being played by user

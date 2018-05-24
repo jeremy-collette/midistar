@@ -49,10 +49,10 @@ class Component {
         , NOTE_INFO
         , INSTRUMENT_INPUT_HANDLER
         , MIDI_NOTE
-        , COLLISION_DETECTOR
-        , NOTE_COLLISION_HANDLER
         , PHYSICS
         , DELETE_OFFSCREEN
+        , COLLISION_DETECTOR
+        , NOTE_COLLISION_HANDLER
         , RESIZE
         , GRAPHICS
         , NUM_COMPONENTS

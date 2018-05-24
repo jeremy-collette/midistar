@@ -77,6 +77,10 @@ int Config::GetFramesPerSecond() {
     return FRAMES_PER_SECOND;
 }
 
+double Config::GetGameSpeed() {
+    return game_speed_;
+}
+
 int Config::GetMaximumMidiNote() {
     return midi_highest_note_;
 }
@@ -87,6 +91,10 @@ int Config::GetMidiChannel() {
 
 const std::string Config::GetMidiFileName() {
     return midi_file_name_;
+}
+
+int Config::GetMidiFileTicksPerUnitOfSpeed() {
+    return MIDI_FILE_TICKS_PER_SPEED;
 }
 
 bool Config::GetMidiFileRepeat() {
@@ -168,6 +176,7 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
+    app->add_option("--game_speed", game_speed_, "Determines game speed.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
     app->add_option("--midi_channel", midi_channel_, "The MIDI "

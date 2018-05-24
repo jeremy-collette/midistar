@@ -34,6 +34,17 @@
 
 namespace midistar {
 
+GameObjectFactory* GameObjectFactory::instance_;
+
+GameObjectFactory& GameObjectFactory::GetInstance() {
+    // We have to use lazy instantiation, otherwise Config will not be
+    // populated yet.
+    if (!instance_) {
+        instance_ = new GameObjectFactory{};
+    }
+    return *instance_;
+}
+
 GameObject* GameObjectFactory::CreateInstrumentBar() {
     GameObject* bar = new GameObject{0, static_cast<double>(
             Config::GetInstance().GetScreenHeight()-100)};
@@ -47,21 +58,16 @@ GameObject* GameObjectFactory::CreateInstrumentBar() {
 }
 
 GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
-    double width = Config::GetInstance().GetScreenWidth() /
-        static_cast<double>(Config::GetInstance().GetNumMidiNotes());
-    double x = (note - Config::GetInstance().GetMinimumMidiNote()) * width;
+    double x = (note - Config::GetInstance().GetMinimumMidiNote())
+        * note_width_;
     double y = Config::GetInstance().GetScreenHeight()-100;
     GameObject* ins_note = new GameObject{x, y};
 
     ins_note->SetComponent(new InstrumentComponent{});
-    ins_note->SetComponent(new NoteInfoComponent{
-            -1
-            , true
-            , 0
-            , note
+    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            width), 20}};
+            note_width_), 20}};
     rect->setFillColor(sf::Color::Green);
     ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{});
@@ -74,27 +80,30 @@ GameObject* GameObjectFactory::CreateSongNote(
         , int note
         , int vel
         , double duration) {
-    const double speed = 1.0;
-    double width = Config::GetInstance().GetScreenWidth() /
-        static_cast<double>(Config::GetInstance().GetNumMidiNotes());
-    double x_pos = (note - Config::GetInstance().GetMinimumMidiNote()) * width;
+    double x_pos = (note - Config::GetInstance().GetMinimumMidiNote())
+        * note_width_;
     double height = duration * (Config::GetInstance().GetFramesPerSecond()
-            * speed);
+            * note_speed_);
 
     GameObject* song_note;
     sf::RectangleShape* rect;
     song_note = new GameObject{x_pos, -height};
-    rect = new sf::RectangleShape{{static_cast<float>(width),
-        static_cast<float>(height)}};
+    rect = new sf::RectangleShape{{static_cast<float>(note_width_)
+        , static_cast<float>(height)}};
     song_note->SetComponent(new SongNoteComponent{});
-    song_note->SetComponent(new NoteInfoComponent{track, true, chan, note
-            , vel});
+    song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
-    song_note->SetComponent(new PhysicsComponent{0, speed});
+    song_note->SetComponent(new PhysicsComponent{0, note_speed_});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
+}
+
+GameObjectFactory::GameObjectFactory()
+    : note_speed_{1.0}
+    , note_width_{Config::GetInstance().GetScreenWidth() / static_cast<double>(
+            Config::GetInstance().GetNumMidiNotes())} {
 }
 
 }  // End namespace midistar

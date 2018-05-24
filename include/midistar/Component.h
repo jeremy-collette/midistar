@@ -24,17 +24,17 @@ class Game;
 class GameObject;
 
 /**
- * The ComponentType typedef is used in an enum to uniquely identify each 
+ * The ComponentType typedef is used in an enum to uniquely identify each
  * component slot.
  */
 typedef int ComponentType;
 
 /**
- * The Component class is the building block for GameObjects. Each GameObject 
- * is made up of a collection of Components, that dictate its behaviour and 
- * functionality. 
+ * The Component class is the building block for GameObjects. Each GameObject
+ * is made up of a collection of Components, that dictate its behaviour and
+ * functionality.
  *
- * The Component class is an abstract base class, where deriving classes 
+ * The Component class is an abstract base class, where deriving classes
  * implement component behvaiour.
  */
 class Component {
@@ -43,24 +43,23 @@ class Component {
      * Defines the different components derived from the Component base class.
      */
     enum : ComponentType {
-        SONG_NOTE_COMPONENT = 0
-        , INSTRUMENT_COMPONENT
-        , BAR_COMPONENT
-        , NOTE_INFO_COMPONENT
-        , TEST_INPUT_COMPONENT
-        , INSTRUMENT_INPUT_HANDLER_COMPONENT
-        , MIDI_NOTE_COMPONENT
-        , COLLISION_DETECTOR_COMPONENT
-        , NOTE_COLLISION_HANDLER_COMPONENT
-        , PHYSICS_COMPONENT
-        , DELETE_OFFSCREEN_COMPONENT
-        , RESIZE_COMPONENT
-        , GRAPHICS_COMPONENT
+        SONG_NOTE = 0
+        , INSTRUMENT
+        , BAR
+        , NOTE_INFO
+        , INSTRUMENT_INPUT_HANDLER
+        , MIDI_NOTE
+        , COLLISION_DETECTOR
+        , NOTE_COLLISION_HANDLER
+        , PHYSICS
+        , DELETE_OFFSCREEN
+        , RESIZE
+        , GRAPHICS
         , NUM_COMPONENTS
     };
 
     /**
-     * Constructor. 
+     * Constructor.
      *
      * \param type The ComponentType of the dervied class.
      */

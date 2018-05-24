@@ -21,7 +21,7 @@
 namespace midistar {
 
 BarComponent::BarComponent()
-        : Component{Component::BAR_COMPONENT} {
+        : Component{Component::BAR} {
 }
 
 void BarComponent::Update(Game*, GameObject*) {

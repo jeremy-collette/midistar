@@ -23,7 +23,7 @@
 namespace midistar {
 
 GraphicsComponent::GraphicsComponent(sf::RectangleShape* rect)
-        : Component{Component::GRAPHICS_COMPONENT}
+        : Component{Component::GRAPHICS}
         , rect_{rect} {
 }
 

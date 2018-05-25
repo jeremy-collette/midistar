@@ -20,6 +20,7 @@
 #define MIDISTAR_CONFIG_H_
 
 #include <string>
+#include <vector>
 #include <CLI/CLI.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -68,11 +69,11 @@ class Config {
     int GetMaximumMidiNote();
 
     /**
-     * Gets the MIDI channel to play.
+     * Gets the MIDI file channels to play.
      *
-     * \return MIDI channel.
+     * \return MIDI file channels.
      */
-    int GetMidiChannel();
+    std::vector<int> GetMidiFileChannels();
 
     /**
      * Gets the MIDI file name to be played by the player.
@@ -99,18 +100,18 @@ class Config {
     int GetMidiFileTicksPerUnitOfSpeed();
 
     /**
+     * Gets the MIDI file tracks to play.
+     *
+     * \return MIDI file tracks.
+     */
+    std::vector<int> GetMidiFileTracks();
+
+    /**
      * Gets the velocity of MIDI notes output by the game.
      *
      * \return MIDI out velocity.
      */
     int GetMidiOutVelocity();
-
-    /**
-     * Gets the MIDI track to play.
-     *
-     * \return MIDI file track.
-     */
-    int GetMidiTrack();
 
     /**
      * Gets the minimum MIDI note to be displayed on the screen.
@@ -205,12 +206,12 @@ class Config {
     bool auto_play_;  //!< Auto play setting
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
-    int midi_channel_;  //!< MIDI channel to play
+    std::vector<int> midi_file_channels_;  //!< MIDI file channels to play
     std::string midi_file_name_;  //!< MIDI file being played by user
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
+    std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
     int midi_highest_note_;  //!< The highest MIDI note to support
     int midi_lowest_note_;  //!< The lowest MIDI note to support
-    int midi_track_;  //!< MIDI track to play
     double note_fall_speed_;  //!< Fall speed of notes on the screen
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width

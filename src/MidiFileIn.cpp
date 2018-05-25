@@ -25,10 +25,10 @@
 namespace midistar {
 
 MidiFileIn::MidiFileIn()
-        : index_{0}
-        , player_channel_{Config::GetInstance().GetMidiChannel()}
-        , player_track_{Config::GetInstance().GetMidiTrack()}
-        , time_{0} {
+        : channels_{0}
+        , index_{0}
+        , time_{0}
+        , tracks_{0} {
 }
 
 MidiFileIn::~MidiFileIn() {
@@ -39,6 +39,32 @@ int MidiFileIn::GetTicksPerQuarterNote() const {
 }
 
 int MidiFileIn::Init(const std::string& file_name) {
+    // We use a bool array to turn on channels / tracks
+    for (int c : Config::GetInstance().GetMidiFileChannels()) {
+        if (c == -1) {
+            for (bool& b : channels_) {
+                b = true;
+            }
+            break;
+        }
+
+        if (c >= 0 && c < MAX_MIDI_CHANNELS) {
+            channels_[c] = true;
+        }
+    }
+    for (int t : Config::GetInstance().GetMidiFileTracks()) {
+        if (t == -1) {
+            for (bool& b : tracks_) {
+                b = true;
+            }
+            break;
+        }
+
+        if (t >= 0 && t < MAX_MIDI_TRACKS) {
+            tracks_[t] = true;
+        }
+    }
+
     file_.read(file_name);
     bool success = file_.status();
     file_.joinTracks();
@@ -60,9 +86,7 @@ void MidiFileIn::Tick(int delta) {
     smf::MidiEvent* mev;
     while (!IsEof() && file_.getTimeInSeconds((mev = &file_[0][index_])->tick)
                 * 1000 <= time_) {
-        if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
-            && (player_track_ == -1 || mev->track == player_track_)
-            && (mev->isNoteOn() || mev->isNoteOff())) {
+        if (IsWanted(mev)) {
             MidiMessage msg{
                 *mev
                 , mev->getDurationInSeconds()
@@ -78,6 +102,25 @@ void MidiFileIn::Tick(int delta) {
         index_ = 0;
         time_ = 0;
     }
+}
+
+bool MidiFileIn::IsWanted(smf::MidiEvent* mev) {
+    if (!mev->isNoteOn() && !mev->isNoteOff()) {
+        return false;
+    }
+
+    // We can lookup wanted tracks in the tracks_ bool array
+    int track = mev->track;
+    if (track < 0 || track >= MAX_MIDI_TRACKS || !tracks_[track]) {
+        return false;
+    }
+
+    // We can lookup wanted channels in the channels_ bool array
+    int channel = mev->getChannel();
+    if (channel < 0 || channel >= MAX_MIDI_CHANNELS || !channels_[channel]) {
+        return false;
+    }
+    return true;
 }
 
 }  // End namespace midistar

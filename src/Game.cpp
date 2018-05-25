@@ -33,7 +33,8 @@ Game::Game()
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight()), "midistar"} {
     objects_.push_back(bar_);
-    window_.setFramerateLimit(Config::GetInstance().GetFramesPerSecond());
+    window_.setFramerateLimit(Config::GetInstance().
+            GetMaximumFramesPerSecond());
 
     if (!Config::GetInstance().GetAutomaticallyPlay()) {
         for (int note = Config::GetInstance().GetMinimumMidiNote();

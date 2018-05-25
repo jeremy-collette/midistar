@@ -59,7 +59,7 @@ class MidiFileIn : public MidiIn {
     int Init(const std::string& file_name);
 
     /**
-     * Determines whether or not the reader is at the end of the MIDI file. 
+     * Determines whether or not the reader is at the end of the MIDI file.
      *
      * \return True if the reader is at EOF. False otherwise.
      */
@@ -73,11 +73,19 @@ class MidiFileIn : public MidiIn {
     void Tick(int delta);
 
  private:
+    static const int MAX_MIDI_CHANNELS = 16;
+    static const int MAX_MIDI_TRACKS = 128;
+
+    bool IsWanted(smf::MidiEvent* mev);  //!< Determines if we want to store a
+                                                             //!< MIDI message
+
+    bool channels_[MAX_MIDI_CHANNELS];  //!< The channels to read from. Each
+            //!< index represents a channel. Only read from channels with true.
     smf::MidiFile file_;  //!< Underlying MIDI file instance
     int index_;  //!< Index of event in track
-    int player_channel_;  //!< MIDI channel to play
-    int player_track_;  //!< MIDI track to play
-    int time_;  //!< The time index of the reader
+    int time_;  //!< The time index of the reade
+    bool tracks_[MAX_MIDI_TRACKS];  //!< The tracks to read from. Each index
+                      //!< represents a track. Only read from tracks with true.
 };
 
 }  // End namespace midistar

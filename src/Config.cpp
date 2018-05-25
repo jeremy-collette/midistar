@@ -55,12 +55,12 @@ Config::Config()
         , auto_play_{false}
         , keyboard_first_note_{-1}
         , max_frames_per_second_{-1}
-        , midi_channel_{-1}
+        , midi_file_channels_{}
         , midi_file_name_{""}
         , midi_file_repeat_{false}
+        , midi_file_tracks_{}
         , midi_highest_note_{-1}
         , midi_lowest_note_{-1}
-        , midi_track_{-1}
         , screen_height_{-1}
         , screen_width_{-1}
         , soundfont_path_{""} {
@@ -82,28 +82,28 @@ int Config::GetMaximumMidiNote() {
     return midi_highest_note_;
 }
 
-int Config::GetMidiChannel() {
-    return midi_channel_;
+std::vector<int> Config::GetMidiFileChannels() {
+    return midi_file_channels_;
 }
 
 const std::string Config::GetMidiFileName() {
     return midi_file_name_;
 }
 
-int Config::GetMidiFileTicksPerUnitOfSpeed() {
-    return MIDI_FILE_TICKS_PER_SPEED;
-}
-
 bool Config::GetMidiFileRepeat() {
     return midi_file_repeat_;
 }
 
-int Config::GetMidiOutVelocity() {
-    return MIDI_OUT_VELOCITY;
+int Config::GetMidiFileTicksPerUnitOfSpeed() {
+    return MIDI_FILE_TICKS_PER_SPEED;
 }
 
-int Config::GetMidiTrack() {
-    return midi_track_;
+std::vector<int> Config::GetMidiFileTracks() {
+    return midi_file_tracks_;
+}
+
+int Config::GetMidiOutVelocity() {
+    return MIDI_OUT_VELOCITY;
 }
 
 int Config::GetMinimumMidiNote() {
@@ -181,17 +181,17 @@ void Config::InitCliApp(CLI::App* app) {
             "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
             "of times the game will update in one second.");
-    app->add_option("--midi_channel", midi_channel_, "The MIDI "
-            "channel read notes from.");
     app->add_option("--midi_file", midi_file_name_, "The MIDI file to play.");
+    app->add_option("--midi_file_channels", midi_file_channels_, "The MIDI "
+            "channels to read notes from. -1 will enable all channels.");
     app->add_option("--midi_file_repeat", midi_file_repeat_, "Determines "
             "whether or not to continuously repeat the MIDI file.");
+    app->add_option("--midi_file_tracks", midi_file_tracks_, "The MIDI tracks "
+            "to read notes from. -1 will enable all tracks.");
     app->add_option("--midi_highest_note", midi_highest_note_, "The highest "
             "MIDI note to display and play.");
     app->add_option("--midi_lowest_note", midi_lowest_note_, "The lowest MIDI "
             "note to display and play.");
-    app->add_option("--midi_track", midi_track_, "The MIDI track to "
-            "read notes from.");
     app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
             "falling speed of notes on the screen. Fall speed is also "
             "dependent on the speed of the MIDI file being played.");

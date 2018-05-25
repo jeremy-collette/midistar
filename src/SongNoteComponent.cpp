@@ -24,7 +24,7 @@ SongNoteComponent::SongNoteComponent()
     : Component{Component::SONG_NOTE} {
 }
 
-void SongNoteComponent::Update(Game*, GameObject*) {
+void SongNoteComponent::Update(Game*, GameObject*, int) {
 }
 
 }  // End namespace midistar

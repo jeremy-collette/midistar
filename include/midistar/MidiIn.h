@@ -39,11 +39,6 @@ class MidiIn {
      */
     bool GetMessage(MidiMessage* message);
 
-    /**
-     * Reads the next available MIDI data in the stream.
-     */
-    virtual void Tick() = 0;
-
  protected:
     /**
      * Adds a MIDI message to the message queue.

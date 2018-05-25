@@ -70,10 +70,10 @@ void GameObject::SetRequestDelete(bool del) {
     request_delete_ = del;
 }
 
-void GameObject::Update(Game* g) {
+void GameObject::Update(Game* g, int delta) {
     for (const auto& c : components_) {
         if (c) {
-            c->Update(g, this);
+            c->Update(g, this, delta);
         }
     }
 

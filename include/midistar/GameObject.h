@@ -128,8 +128,9 @@ class GameObject {
      * Updates the GameObject by updating each of its Components.
      *
      * \param g A reference to the current Game instance.
+     * \param delta The time in milliseconds since the end of last tick.
      */
-    void Update(Game* g);
+    void Update(Game* g, int delta);
 
  private:
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components

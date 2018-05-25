@@ -24,7 +24,7 @@ InstrumentComponent::InstrumentComponent()
         : Component{Component::INSTRUMENT} {
 }
 
-void InstrumentComponent::Update(Game*, GameObject*) {
+void InstrumentComponent::Update(Game*, GameObject*, int) {
 }
 
 }  // End namespace midistar

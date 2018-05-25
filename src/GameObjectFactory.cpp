@@ -80,8 +80,8 @@ GameObject* GameObjectFactory::CreateSongNote(
         , double duration) {
     double x = (note - Config::GetInstance().GetMinimumMidiNote())
         * note_width_;
-    double height = duration * (Config::GetInstance().GetFramesPerSecond()
-            * note_speed_);
+    // Height is equal to duration in milliseconds * pixels per millisecond
+    double height = duration * 1000 * note_speed_;
 
     GameObject* song_note;
     sf::RectangleShape* rect;

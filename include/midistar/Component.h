@@ -82,8 +82,9 @@ class Component {
      *
      * \param[in,out] g The Game object in use.
      * \param[in,out] o The GameObject that owns the component.
+     * \param delta Time since last game tick.
      */
-    virtual void Update(Game* g, GameObject* o) = 0;
+    virtual void Update(Game* g, GameObject* o, int delta) = 0;
 
  private:
     ComponentType type_;  //!< Holds the type of the component.

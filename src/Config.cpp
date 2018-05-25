@@ -54,6 +54,7 @@ Config::Config()
         : audio_driver_{""}
         , auto_play_{false}
         , keyboard_first_note_{-1}
+        , max_frames_per_second_{-1}
         , midi_channel_{-1}
         , midi_file_name_{""}
         , midi_file_repeat_{false}
@@ -73,8 +74,8 @@ bool Config::GetAutomaticallyPlay() {
     return auto_play_;
 }
 
-int Config::GetFramesPerSecond() {
-    return FRAMES_PER_SECOND;
+int Config::GetMaximumFramesPerSecond() {
+    return max_frames_per_second_;
 }
 
 int Config::GetMaximumMidiNote() {
@@ -178,6 +179,8 @@ void Config::InitCliApp(CLI::App* app) {
             false);
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
+    app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
+            "of times the game will update in one second.");
     app->add_option("--midi_channel", midi_channel_, "The MIDI "
             "channel read notes from.");
     app->add_option("--midi_file", midi_file_name_, "The MIDI file to play.");
@@ -190,7 +193,8 @@ void Config::InitCliApp(CLI::App* app) {
     app->add_option("--midi_track", midi_track_, "The MIDI track to "
             "read notes from.");
     app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
-            "falling speed of notes on the screen.");
+            "falling speed of notes on the screen. Fall speed is also "
+            "dependent on the speed of the MIDI file being played.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "

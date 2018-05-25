@@ -144,7 +144,7 @@ int Game::Run() {
             }
         }
 
-        midi_file_in_.Tick();
+        midi_file_in_.Tick(delta);
         midi_port_in_.Tick();
         CleanUpObjects();
 

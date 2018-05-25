@@ -83,7 +83,7 @@ GameObject* GameObjectFactory::CreateSongNote(
     // Height is equal to duration in milliseconds * pixels per millisecond
     double actual_speed = note_speed_ / 10.0;
     // TODO(jez): debug this - this should work at 1000
-    double height = duration * 950 * actual_speed;
+    double height = duration * 1000 * actual_speed;
 
     GameObject* song_note;
     sf::RectangleShape* rect;

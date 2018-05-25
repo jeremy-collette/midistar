@@ -46,7 +46,7 @@ class MidiPortIn : public MidiIn {
     /**
      * Checks the MIDI port for events and reads them.
      */
-    virtual void Tick();
+    void Tick();
 
  private:
     RtMidiIn* midi_in_;  //!< MIDI port instance

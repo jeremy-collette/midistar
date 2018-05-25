@@ -66,16 +66,18 @@ class MidiFileIn : public MidiIn {
     bool IsEof();
 
     /**
-     * Advances the reader at the speed equivalent to one tick of midistar.
+     * Advances the reader by the time difference specified.
+     *
+     * \param delta The time difference to advance the reader by.
      */
-    virtual void Tick();
+    void Tick(int delta);
 
  private:
-    sf::Clock clock_;  //!< Clock to keep track of time
     smf::MidiFile file_;  //!< Underlying MIDI file instance
     int index_;  //!< Index of event in track
     int player_channel_;  //!< MIDI channel to play
     int player_track_;  //!< MIDI track to play
+    int time_;  //!< The time index of the reader
 };
 
 }  // End namespace midistar

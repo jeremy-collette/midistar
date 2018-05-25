@@ -25,9 +25,10 @@
 namespace midistar {
 
 MidiFileIn::MidiFileIn()
-        : index_{-1}
+        : index_{0}
         , player_channel_{Config::GetInstance().GetMidiChannel()}
-        , player_track_{Config::GetInstance().GetMidiTrack()} {
+        , player_track_{Config::GetInstance().GetMidiTrack()}
+        , time_{0} {
 }
 
 MidiFileIn::~MidiFileIn() {
@@ -53,16 +54,12 @@ bool MidiFileIn::IsEof() {
     return index_ >= file_[0].size();
 }
 
-void MidiFileIn::Tick() {
-    // TODO(jez): reconsider using clock here
-    if (index_ == -1) {
-        index_ = 0;
-        clock_.restart();
-    }
+void MidiFileIn::Tick(int delta) {
+    time_ += delta;
 
     smf::MidiEvent* mev;
     while (!IsEof() && file_.getTimeInSeconds((mev = &file_[0][index_])->tick)
-                <= clock_.getElapsedTime().asSeconds()) {
+                * 1000 <= time_) {
         if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
             && (player_track_ == -1 || mev->track == player_track_)
             && (mev->isNoteOn() || mev->isNoteOff())) {
@@ -78,7 +75,8 @@ void MidiFileIn::Tick() {
 
     // If MIDI file repeat is enabled, reset index when we encounter EOF
     if (IsEof() && Config::GetInstance().GetMidiFileRepeat()) {
-        index_ = -1;
+        index_ = 0;
+        time_ = 0;
     }
 }
 

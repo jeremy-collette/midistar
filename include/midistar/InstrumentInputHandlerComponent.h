@@ -41,7 +41,7 @@ class InstrumentInputHandlerComponent : public Component {
      /**
       * \copydoc Component::Update()
       */
-     virtual void Update(Game* g, GameObject* o);
+     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
      GraphicsComponent* graphics_;  //!< Holds the GraphicsComponent for the

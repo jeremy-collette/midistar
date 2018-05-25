@@ -35,7 +35,7 @@ bool CollisionDetectorComponent::GetIsColliding() {
     return GetCollidingWith().size();
 }
 
-void CollisionDetectorComponent::Update(Game* g, GameObject* o) {
+void CollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
     auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;

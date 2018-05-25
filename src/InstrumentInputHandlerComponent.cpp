@@ -33,7 +33,7 @@ InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
         , key_down_{false} {
 }
 
-void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o) {
+void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
         return;

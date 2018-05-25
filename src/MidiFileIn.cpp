@@ -54,10 +54,12 @@ bool MidiFileIn::IsEof() {
     return index_ >= file_[0].size();
 }
 
-void MidiFileIn::Tick() {
+void MidiFileIn::Tick(int delta) {
+    time_ += delta;
+
     smf::MidiEvent* mev;
     while (!IsEof() && file_.getTimeInSeconds((mev = &file_[0][index_])->tick)
-                <= time_) {
+                * 1000 <= time_) {
         if ((player_channel_ == -1 || mev->getChannel() == player_channel_)
             && (player_track_ == -1 || mev->track == player_track_)
             && (mev->isNoteOn() || mev->isNoteOff())) {
@@ -70,7 +72,6 @@ void MidiFileIn::Tick() {
         }
         ++index_;
     }
-    time_ += 1.0 / Config::GetInstance().GetFramesPerSecond();
 
     // If MIDI file repeat is enabled, reset index when we encounter EOF
     if (IsEof() && Config::GetInstance().GetMidiFileRepeat()) {

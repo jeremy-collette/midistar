@@ -29,20 +29,9 @@
 namespace midistar {
 
 Game::Game()
-        : bar_{GameObjectFactory::GetInstance().CreateInstrumentBar()}
+        : bar_{0}
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight()), "midistar"} {
-    objects_.push_back(bar_);
-    window_.setFramerateLimit(Config::GetInstance().
-            GetMaximumFramesPerSecond());
-
-    if (!Config::GetInstance().GetAutomaticallyPlay()) {
-        for (int note = Config::GetInstance().GetMinimumMidiNote();
-                note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
-            objects_.push_back(GameObjectFactory::GetInstance().
-                    CreateInstrumentNote(note));
-        }
-    }
 }
 
 Game::~Game() {
@@ -76,20 +65,38 @@ sf::RenderWindow& Game::GetWindow() {
 }
 
 int Game::Init() {
+    // Setup SFML window
+    window_.setFramerateLimit(Config::GetInstance().
+            GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
+
+    // Setup MIDI input / outputs
     midi_port_in_.Init();  // It is okay if this fails (player can be using
                                                         // computer keyboard)
-    int err = midi_file_in_.Init(Config::GetInstance().GetMidiFileName());
-    if (err) {
+    int err;
+    if ((err = midi_file_in_.Init(Config::GetInstance().GetMidiFileName()))) {
+        return err;
+    }
+    if ((err = midi_out_.Init())) {
         return err;
     }
 
+    // Setup GameObject factory and create GameObjects
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetNoteFallSpeed();
     GameObjectFactory::GetInstance().Init(note_speed);
 
-    return midi_out_.Init();
+    bar_ = GameObjectFactory::GetInstance().CreateInstrumentBar();
+    objects_.push_back(bar_);
+    if (!Config::GetInstance().GetAutomaticallyPlay()) {
+        for (int note = Config::GetInstance().GetMinimumMidiNote();
+                note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
+            objects_.push_back(GameObjectFactory::GetInstance().
+                    CreateInstrumentNote(note));
+        }
+    }
+    return 0;
 }
 
 int Game::Run() {

@@ -22,26 +22,37 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "midistar/GameObjectFactory.h"
+#include "midistar/DefaultGameObjectFactory.h"
+#include "midistar/PianoGameObjectFactory.h"
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
 
 namespace midistar {
 
 Game::Game()
-        : bar_{0}
+        : object_factory_{nullptr}
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
-                 , Config::GetInstance().GetScreenHeight()), "midistar"} {
+                 , Config::GetInstance().GetScreenHeight())
+                 , "midistar"
+                 , Config::GetInstance().GetFullScreen() ?
+                 sf::Style::Fullscreen : sf::Style::Default} {
 }
 
 Game::~Game() {
     for (auto& o : objects_) {
         delete o;
     }
+    if (object_factory_) {
+        delete object_factory_;
+    }
 }
 
 void Game::AddGameObject(GameObject* obj) {
     new_objects_.push(obj);
+}
+
+GameObjectFactory& Game::GetGameObjectFactory() {
+    return *object_factory_;
 }
 
 const std::vector<MidiMessage>& Game::GetMidiInMessages() {
@@ -52,10 +63,6 @@ const std::vector<GameObject*>& Game::GetGameObjects() {
     return objects_;
 }
 
-GameObject* Game::GetInstrumentBar() {
-    return bar_;
-}
-
 const std::vector<sf::Event>& Game::GetSfEvents() {
     return sf_events_;
 }
@@ -64,7 +71,7 @@ sf::RenderWindow& Game::GetWindow() {
     return window_;
 }
 
-int Game::Init() {
+bool Game::Init() {
     // Setup SFML window
     window_.setFramerateLimit(Config::GetInstance().
             GetMaximumFramesPerSecond());
@@ -73,42 +80,44 @@ int Game::Init() {
     // Setup MIDI input / outputs
     midi_port_in_.Init();  // It is okay if this fails (player can be using
                                                         // computer keyboard)
-    int err;
-    if ((err = midi_file_in_.Init(Config::GetInstance().GetMidiFileName()))) {
-        return err;
+    if (!midi_file_in_.Init(Config::GetInstance().GetMidiFileName())) {
+        return false;
     }
-    if ((err = midi_out_.Init())) {
-        return err;
+    if (!midi_out_.Init()) {
+        return false;
     }
 
     // Setup GameObject factory and create GameObjects
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
-        Config::GetInstance().GetNoteFallSpeed();
-    GameObjectFactory::GetInstance().Init(note_speed);
+        Config::GetInstance().GetFallSpeedMultiplier();
 
-    bar_ = GameObjectFactory::GetInstance().CreateInstrumentBar();
-    objects_.push_back(bar_);
-    if (!Config::GetInstance().GetAutomaticallyPlay()) {
-        for (int note = Config::GetInstance().GetMinimumMidiNote();
-                note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
-            objects_.push_back(GameObjectFactory::GetInstance().
-                    CreateInstrumentNote(note));
-        }
+    auto mode = Config::GetInstance().GetGameMode();
+    if (mode == "piano") {
+            object_factory_ = new PianoGameObjectFactory(note_speed);
+    } else {
+            object_factory_ = new DefaultGameObjectFactory(note_speed);
     }
-    return 0;
+    if (!object_factory_->Init()) {
+        return false;
+    }
+
+    auto instrument = object_factory_->CreateInstrument();
+    objects_.insert(objects_.end(), instrument.begin(), instrument.end());
+    return true;
 }
 
-int Game::Run() {
+void Game::Run() {
     unsigned int t = 0;
     sf::Clock clock;
     while (window_.isOpen()) {
+        // Clean up from last tick
         FlushNewObjectQueue();
-        window_.clear();
-
+        window_.clear(object_factory_->GetBackgroundColour());
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
+        // Handle updating
         unsigned num_objects;
         unsigned i = 0;
         do {
@@ -121,12 +130,18 @@ int Game::Run() {
         // NOTE: This could cause an infinite loop if new objects create new
         // objects.
         } while (num_objects != objects_.size());
+
+        // Handle drawing
+        for (auto obj : objects_) {
+            obj->Draw(&window_);
+        }
         window_.display();
 
+        // Handle MIDI file events
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
-                objects_.push_back(GameObjectFactory::GetInstance().
+                objects_.push_back(object_factory_->
                         CreateSongNote(
                             msg.GetTrack()
                             , msg.GetChannel()
@@ -136,11 +151,13 @@ int Game::Run() {
             }
         }
 
+        // Handle MIDI port input events
         midi_in_buf_.clear();
         while (midi_port_in_.GetMessage(&msg)) {
             midi_in_buf_.push_back(msg);
         }
 
+        // Handle SFML events
         sf_events_.clear();
         sf::Event event;
         while (window_.pollEvent(event)) {
@@ -152,8 +169,11 @@ int Game::Run() {
             }
         }
 
+        // Update MIDI file and port
         midi_file_in_.Tick(delta);
         midi_port_in_.Tick();
+
+        // Clean up!
         CleanUpObjects();
 
         // If we're done playing the file and have no song notes to be played,
@@ -163,8 +183,6 @@ int Game::Run() {
         }
         ++t;
     }
-
-    return 0;
 }
 
 void Game::TurnMidiNoteOff(int chan, int note) {

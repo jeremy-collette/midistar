@@ -16,27 +16,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/DeleteOffscreenComponent.h"
-
-#include "midistar/Config.h"
+#include "midistar/CollidableComponent.h"
 
 namespace midistar {
 
-DeleteOffscreenComponent::DeleteOffscreenComponent()
-        : Component{Component::DELETE_OFFSCREEN} {
+CollidableComponent::CollidableComponent()
+        : Component{Component::COLLIDABLE} {
 }
 
-void DeleteOffscreenComponent::Update(Game*, GameObject* o, int) {
-    double width, height, x, y;
-    o->GetSize(&width, &height);
-    o->GetPosition(&x, &y);
-
-    double max_x = Config::GetInstance().GetScreenWidth() + THRESHOLD;
-    double max_y = Config::GetInstance().GetScreenHeight() + THRESHOLD;
-    if ((x + width < -THRESHOLD || x > max_x)
-            || (y + height < -THRESHOLD || y > max_y)) {
-       o->SetRequestDelete(true);
-    }
+void CollidableComponent::Update(Game*, GameObject*, int) {
 }
 
 }   // End namespace midistar

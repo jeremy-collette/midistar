@@ -18,8 +18,6 @@
 
 #include "midistar/ResizeComponent.h"
 
-#include "midistar/GraphicsComponent.h"
-
 namespace midistar {
 
 ResizeComponent::ResizeComponent(
@@ -37,14 +35,9 @@ ResizeComponent::ResizeComponent(double new_width, double new_height)
 }
 
 void ResizeComponent::Update(Game*, GameObject* o, int) {
-    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
-    if (!graphics) {
-        return;
-    }
-
     double width, height;
-    graphics->GetSize(&width, &height);
-    graphics->SetSize(new_width_, new_height_);
+    o->GetSize(&width, &height);
+    o->SetSize(new_width_, new_height_);
 
     double anchor_x, anchor_y;
     CalculateAnchorPosition(&anchor_x, &anchor_y);

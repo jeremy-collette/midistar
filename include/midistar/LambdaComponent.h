@@ -16,41 +16,40 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIIN_H_
-#define MIDISTAR_MIDIIN_H_
+#ifndef MIDISTAR_LAMBDACOMPONENT_H_
+#define MIDISTAR_LAMBDACOMPONENT_H_
 
-#include <queue>
+#include <functional>
 
-#include "midistar/MidiMessage.h"
+#include "midistar/Component.h"
+#include "midistar/Game.h"
+#include "midistar/GameObject.h"
 
 namespace midistar {
 
 /**
- * The MidiIn class provides an interface for MIDI stream readers.
+ * The LambdaComponent allows for lambda functions to be used as a Component.
  */
-class MidiIn {
+class LambdaComponent : public Component {
  public:
     /**
-     * Gets the next MIDI message.
+     * Constructor.
      *
-     * \param[out] message Stores the MIDI message.
-     *
-     * \return True for success. False if an event is not available.
+     * \param func The lambda function to call.
      */
-    bool GetMessage(MidiMessage* message);
+    explicit LambdaComponent(
+            std::function<void(Game*, GameObject*, int)> func);
 
- protected:
     /**
-     * Adds a MIDI message to the message queue.
-     *
-     * \param message The message to add.
+     * \copydoc Component::Update()
      */
-    void AddMessage(MidiMessage message);
+    virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    std::queue<MidiMessage> buffer_;  //!< MIDI message buffer
+    std::function<void(Game*, GameObject*, int)> func_;  //!< The lambda to
+                                                                //!< invoke
 };
 
-}  // End namespace midistar
+}   // End namespace midistar
 
-#endif  // MIDISTAR_MIDIIN_H_
+#endif  // MIDISTAR_LAMBDACOMPONENT_H_

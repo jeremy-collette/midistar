@@ -26,7 +26,7 @@
 namespace midistar {
 
 /**
- * The MidiPortIn class provides an interface for reading from a MIDI input 
+ * The MidiPortIn class provides an interface for reading from a MIDI input
  * port.
  */
 class MidiPortIn : public MidiIn {
@@ -39,9 +39,9 @@ class MidiPortIn : public MidiIn {
     /**
      * Initialises class.
      *
-     * \return 0 for success. Non-zero indicates failure.
+     * \return true for success. false indicates failure.
      */
-    int Init();
+    bool Init();
 
     /**
      * Checks the MIDI port for events and reads them.

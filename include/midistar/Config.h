@@ -55,18 +55,25 @@ class Config {
     bool GetAutomaticallyPlay();
 
     /**
+     * Gets a bool indicating whether or not full-screen mode is enabled.
+     *
+     * \return Full-screen mode.
+     */
+    bool GetFullScreen();
+
+    /**
+     * Gets the game mode name.
+     *
+     * \return Game mode.
+     */
+    const std::string GetGameMode();
+
+    /**
      * Gets the maximum number of frames per second (FPS) for the SFML window.
      *
      * \return Maximum FPS.
      */
     int GetMaximumFramesPerSecond();
-
-    /**
-     * Gets the maxmimum MIDI note to be displayed on the screen.
-     *
-     * \return Maximum MIDI note.
-     */
-    int GetMaximumMidiNote();
 
     /**
      * Gets the MIDI file channels to play.
@@ -114,26 +121,12 @@ class Config {
     int GetMidiOutVelocity();
 
     /**
-     * Gets the minimum MIDI note to be displayed on the screen.
+     * Gets the fall speed multiplier. This affects the fall speed of song
+     * notes.
      *
-     * \return Minimum MIDI note.
+     * \return Fall speed multiplier.
      */
-    int GetMinimumMidiNote();
-
-    /**
-     * Gets the fall speed of song notes.
-     *
-     * \return Note fall speed.
-     */
-    double GetNoteFallSpeed();
-
-    /**
-     * Gets the number of MIDI notes between (inclusive) the minimum and
-     * maximum.
-     *
-     * \return Number of MIDI notes.
-     */
-    int GetNumMidiNotes();
+    double GetFallSpeedMultiplier();
 
     /**
      * Gets the height of the screen.
@@ -165,36 +158,19 @@ class Config {
     const std::string GetSoundFontPath();
 
     /**
-     * Converts a MIDI note to the instrument mapping on the keyboard.
-     *
-     * \param midi_note The MIDI note.
-     * \param control Determines whether or not CONTROL is being pressed.
-     * \param shift Determines whether or not SHIFT is being pressed.
-     *
-     * \return A keyboard note mapping.
-     */
-    sf::Keyboard::Key MidiNoteToKeyboardKey(
-            int midi_note
-            , bool control
-            , bool shift);
-
-    /**
      * Parses commandline arguments.
      *
      * \param argc Number of arguments.
      * \param argv Arguments.
      *
-     * \return 0 for success. Other values for failure.
+     * \return true for success. false for failure.
      */
-    int ParseOptions(int argc, char** argv);
+    bool ParseOptions(int argc, char** argv);
 
  private:
     static const int MIDI_OUT_VELOCITY = 127;  //!< MIDI out velocity
-    static const int NUM_MAPPED_KEYS = 45;  //!< Number of keys mapped
     static const int MIDI_FILE_TICKS_PER_SPEED = 120;  //!< Number of MIDI file
                                                //!< ticks per one unit of speed
-    static const sf::Keyboard::Key MAPPED_KEYS[NUM_MAPPED_KEYS];
-                                            //!< The mapped keys on a keyboard
 
     static Config instance_;  //!< Holds singleton instance of Config
 
@@ -204,15 +180,15 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    double fall_speed_multiplier_;  //!< Affects fall speed of notes
+    bool full_screen_;  //!< Full-screen setting
+    std::string game_mode_;  //!< Game mode name
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play
     std::string midi_file_name_;  //!< MIDI file being played by user
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
-    int midi_highest_note_;  //!< The highest MIDI note to support
-    int midi_lowest_note_;  //!< The lowest MIDI note to support
-    double note_fall_speed_;  //!< Fall speed of notes on the screen
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes

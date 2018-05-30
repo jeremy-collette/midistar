@@ -19,38 +19,48 @@
 #ifndef MIDISTAR_GAMEOBJECTFACTORY_H_
 #define MIDISTAR_GAMEOBJECTFACTORY_H_
 
+#include <vector>
+#include <SFML/Graphics.hpp>
+
 #include "midistar/GameObject.h"
 
 namespace midistar {
 
 /**
- * The GameObjectFactory class initialises GameObject instances and adds the
- * appropriate Components to determine their behaviour.
+ * The GameObjectFactory class provides an interface to create GameObject
+ * instances. Deriving classes specify the 'look and feel' and behaviour of
+ * GameObjects, allowing for different game themes and/or modes.
  */
 class GameObjectFactory {
  public:
     /**
-     * Gets the GameObjectFactory singleton.
-     *
-     * \return GameObjectFactory singleton.
+     * Constructor.
      */
-    static GameObjectFactory& GetInstance();
-
-     /**
-     * Creates the instrument bar.
-     *
-     * \return A GameObject which is the instrument bar.
-     */
-    GameObject* CreateInstrumentBar();
+    explicit GameObjectFactory(
+            double note_speed
+            , const sf::Color& backround_colour);
 
     /**
-     * Creates a MIDI instrument note.
-     *
-     * \param note The MIDI note of the instrument.
-     *
-     * \return A GameObject which is an instrument.
+     * Destructor.
      */
-    GameObject* CreateInstrumentNote(int note);
+    virtual ~GameObjectFactory() = default;
+
+    /**
+     * Creates a grinding effect to indicate a note is being played.
+     *
+     * \param note The GameObject which represents the note that is being
+     * played.
+     *
+     * \return A GameObject that represents a grinding effect.
+     */
+    virtual GameObject* CreateNotePlayEffect(GameObject* note) = 0;
+
+    /**
+     * Creates the instrument to play.
+     *
+     * \return A collection of GameObjects representing an instrument.
+     */
+    virtual std::vector<GameObject*> CreateInstrument() = 0;
 
     /**
      * Creates a MIDI song note.
@@ -63,27 +73,33 @@ class GameObjectFactory {
      *
      * \return A GameObject which is a song note.
      */
-    GameObject* CreateSongNote(
+    virtual GameObject* CreateSongNote(
             int track
             , int chan
             , int note
             , int vel
-            , double duration);
+            , double duration) = 0;
+
+    /**
+     * Gets the recommended background colour for the GameObjectFactory.
+     *
+     * \return Background colour.
+     */
+    const sf::Color& GetBackgroundColour();
 
     /**
      * Initialises the GameObjectFactory.
      *
-     * \param note_speed The falling speed of notes on the screen.
+     * \return true indicates success. false indicates failure.
      */
-    void Init(double note_speed);
+    virtual bool Init() = 0;
+
+ protected:
+    double GetNoteSpeed();  //!< Gets note speed
 
  private:
-    static GameObjectFactory instance_;  //!< Holds singleton
-
-    GameObjectFactory();  //!< Constructor
-
-    double note_speed_;  //!< Holds the speed of song notes
-    double note_width_;  //!< Holds the width of song notes
+    const sf::Color background_colour_;  //!< Holds background colour
+    double note_speed_;  //!< Holds note speed
 };
 
 }  // End namespace midistar

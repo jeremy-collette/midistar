@@ -16,27 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/DeleteOffscreenComponent.h"
-
-#include "midistar/Config.h"
+#include "midistar/InvertColourComponent.h"
 
 namespace midistar {
 
-DeleteOffscreenComponent::DeleteOffscreenComponent()
-        : Component{Component::DELETE_OFFSCREEN} {
+InvertColourComponent::InvertColourComponent(char inv)
+        : Component{INVERT_COLOUR}
+        , inv_{inv} {
 }
 
-void DeleteOffscreenComponent::Update(Game*, GameObject* o, int) {
-    double width, height, x, y;
-    o->GetSize(&width, &height);
-    o->GetPosition(&x, &y);
+InvertColourComponent::InvertColourComponent()
+        : InvertColourComponent{DEFAULT_INVERSION} {
+}
 
-    double max_x = Config::GetInstance().GetScreenWidth() + THRESHOLD;
-    double max_y = Config::GetInstance().GetScreenHeight() + THRESHOLD;
-    if ((x + width < -THRESHOLD || x > max_x)
-            || (y + height < -THRESHOLD || y > max_y)) {
-       o->SetRequestDelete(true);
+void InvertColourComponent::Update(Game*, GameObject* o, int) {
+    auto* rect = o->GetDrawformable<sf::RectangleShape>();
+    if (!rect) {
+        return;
     }
+
+    auto colour = rect->getFillColor();
+    for (auto &b : {&colour.r, &colour.g, &colour.b}) {
+        *b ^= inv_;
+    }
+    rect->setFillColor(colour);
+    o->DeleteComponent(GetType());
 }
 
 }   // End namespace midistar

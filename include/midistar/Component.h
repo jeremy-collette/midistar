@@ -46,15 +46,19 @@ class Component {
         SONG_NOTE = 0
         , INSTRUMENT
         , BAR
+        , COLLIDABLE
         , NOTE_INFO
         , INSTRUMENT_INPUT_HANDLER
+        , INSTRUMENT_COLLISION_HANDLER
+        , TRANSFORMATION
+        , INVERT_COLOUR
         , MIDI_NOTE
         , PHYSICS
         , DELETE_OFFSCREEN
-        , COLLISION_DETECTOR
+        , VERTICAL_COLLISION_DETECTOR
         , NOTE_COLLISION_HANDLER
         , RESIZE
-        , GRAPHICS
+        , SPRITE_ANIMATOR
         , NUM_COMPONENTS
     };
 

@@ -26,7 +26,7 @@ MidiPortIn::MidiPortIn()
         : midi_in_{nullptr} {
 }
 
-int MidiPortIn::Init() {
+bool MidiPortIn::Init() {
     midi_in_ = new RtMidiIn();
 
     try {
@@ -36,7 +36,7 @@ int MidiPortIn::Init() {
             << "disabled.\n";
     }
     midi_in_->ignoreTypes(false, false, false);
-    return !midi_in_;
+    return midi_in_;
 }
 
 void MidiPortIn::Tick() {

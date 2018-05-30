@@ -11,10 +11,10 @@ endif(NOT CMAKE_BUILD_TYPE)
 # Set compiler flags
 if(CMAKE_BUILD_TYPE MATCHES Release)
     message("-- Release mode")
-    set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra")
+    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 else()
     message("-- Debug mode")
-    set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra -Werror -DDEBUG -g -O0")
+    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
 endif()
 
 # Find external libraries
@@ -27,17 +27,20 @@ link_directories(${CMAKE_SOURCE_DIR}/external/fluidsynth/src
 # Create executable
 add_executable(midistar
     src/BarComponent.cpp
-    src/CollisionDetectorComponent.cpp
+    src/CollidableComponent.cpp
     src/CollisionHandlerComponent.cpp
     src/Component.cpp
     src/Config.cpp
+    src/DefaultGameObjectFactory.cpp
     src/DeleteOffscreenComponent.cpp
     src/Game.cpp
     src/GameObject.cpp
     src/GameObjectFactory.cpp
-    src/GraphicsComponent.cpp
+    src/InstrumentCollisionHandlerComponent.cpp
     src/InstrumentComponent.cpp
     src/InstrumentInputHandlerComponent.cpp
+    src/InvertColourComponent.cpp
+    src/LambdaComponent.cpp
     src/main.cpp
     src/MidiFileIn.cpp
     src/MidiIn.cpp
@@ -47,9 +50,13 @@ add_executable(midistar
     src/MidiPortIn.cpp
     src/NoteInfoComponent.cpp
     src/PhysicsComponent.cpp
+    src/PianoGameObjectFactory.cpp
     src/ResizeComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
+    src/SpriteAnimatorComponent.cpp
+    src/Utility.cpp
+    src/VerticalCollisionDetectorComponent.cpp
     )
 
 # Link midistar

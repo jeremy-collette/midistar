@@ -25,7 +25,7 @@ namespace midistar {
 
 /**
  * The MidiOut class provides an interface for playing MIDI audio.
- */    
+ */
 class MidiOut {
  public:
     /**
@@ -41,9 +41,9 @@ class MidiOut {
     /**
      * Initialises the class.
      *
-     * \return 0 for success. Non-zero indicates failure.
+     * \return true for success. false indicates failure.
      */
-    int Init();
+    bool Init();
 
     /**
      * Sends a MIDI note off event.

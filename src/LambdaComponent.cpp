@@ -16,27 +16,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/DeleteOffscreenComponent.h"
-
-#include "midistar/Config.h"
+#include "midistar/LambdaComponent.h"
 
 namespace midistar {
 
-DeleteOffscreenComponent::DeleteOffscreenComponent()
-        : Component{Component::DELETE_OFFSCREEN} {
+LambdaComponent::LambdaComponent(
+    std::function<void(Game*, GameObject*, int)> func)
+        : Component{Component::TRANSFORMATION}
+        , func_{func} {
 }
 
-void DeleteOffscreenComponent::Update(Game*, GameObject* o, int) {
-    double width, height, x, y;
-    o->GetSize(&width, &height);
-    o->GetPosition(&x, &y);
-
-    double max_x = Config::GetInstance().GetScreenWidth() + THRESHOLD;
-    double max_y = Config::GetInstance().GetScreenHeight() + THRESHOLD;
-    if ((x + width < -THRESHOLD || x > max_x)
-            || (y + height < -THRESHOLD || y > max_y)) {
-       o->SetRequestDelete(true);
-    }
+void LambdaComponent::Update(Game* g, GameObject* o, int delta) {
+    func_(g, o, delta);
 }
 
 }   // End namespace midistar

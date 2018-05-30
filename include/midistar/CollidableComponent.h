@@ -16,40 +16,32 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/GraphicsComponent.h"
+#ifndef MIDISTAR_COLLIDABLECOMPONENT_H_
+#define MIDISTAR_COLLIDABLECOMPONENT_H_
 
+#include "midistar/Component.h"
 #include "midistar/Game.h"
+#include "midistar/GameObject.h"
 
 namespace midistar {
 
-GraphicsComponent::GraphicsComponent(sf::RectangleShape* rect)
-        : Component{Component::GRAPHICS}
-        , rect_{rect} {
-}
+/**
+ * The CollidableComponent class indicates that an object is collidable and
+ * can be part of a collision.
+ */
+class CollidableComponent : public Component {
+ public:
+    /**
+     * Constructor
+     */
+    CollidableComponent();
 
-GraphicsComponent::~GraphicsComponent() {
-    delete rect_;
-}
-
-sf::RectangleShape& GraphicsComponent::GetShape() {
-    return *rect_;
-}
-
-void GraphicsComponent::GetSize(double* x, double* y) {
-    auto size = rect_->getSize();
-    *x = size.x;
-    *y = size.y;
-}
-
-void GraphicsComponent::SetSize(double x, double y) {
-    rect_->setSize({static_cast<float>(x), static_cast<float>(y)});
-}
-
-void GraphicsComponent::Update(Game* g, GameObject* o, int) {
-    double x, y;
-    o->GetPosition(&x, &y);
-    rect_->setPosition({static_cast<float>(x), static_cast<float>(y)});
-    g->GetWindow().draw(*rect_);
-}
+    /**
+     * \copydoc Component::Update()
+     */
+    virtual void Update(Game* g, GameObject* o, int delta);
+};
 
 }   // End namespace midistar
+
+#endif  // MIDISTAR_COLLIDABLECOMPONENT_H_

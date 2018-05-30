@@ -20,137 +20,118 @@
 
 #include <algorithm>
 
-#include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
-#include "midistar/GraphicsComponent.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
         : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
-        , auto_playing_{false} {
+        , grinding_{nullptr} {
 }
 
 void SongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
-    // Get some info about owner
-    auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
-    if (!note) {
-        return;
-    }
-
-    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
-    if (!graphics) {
-        return;
-    }
-    double x, y;
-    o->GetPosition(&x, &y);
-
-    double width, height;
-    graphics->GetSize(&width, &height);
-
-    // Get the bar object, for later use.
-    GameObject* bar = g->GetInstrumentBar();
-    double bar_x, bar_y;
-    bar->GetPosition(&bar_x, &bar_y);
-
-    auto bar_graphics = bar->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS);
-    if (!bar_graphics) {
-        return;
-    }
-    double bar_width, bar_height;
-    bar_graphics->GetSize(&bar_width, &bar_height);
-
     // Handle each collision
+    GameObject* valid_collider = nullptr;
     for (auto& collider : colliding_with) {
-        auto other_note = collider->GetComponent<NoteInfoComponent>(
-                Component::NOTE_INFO);
-
-        // Here we check if the note is being played. If the note is colliding
-        // with an instrument, it's being played. Once it is being played, we
-        // anchor the note to the bar so that it shrinks during play.
-        if (collider->HasComponent(Component::INSTRUMENT)) {
-            // Check it's the correct instrument - we may collide with
-            // neighbouring instruments if they overlap on the screen.
-            if (!other_note || other_note->GetKey() != note->GetKey()) {
-                return;
-            }
-
-            // If the bottom of the note is past the bottom of the bar,
-            // separate the part below the bar in to a different (unplayable)
-            // note. This section of the note has been missed.
-            if (y + height > bar_y + bar_height) {
-                auto note = o->GetComponent<NoteInfoComponent>(
-                        Component::NOTE_INFO);
-                if (!note) {
-                    return;
-                }
-
-                GameObject* half = GameObjectFactory::GetInstance().
-                    CreateSongNote(
-                            note->GetTrack()
-                            , note->GetChannel()
-                            , note->GetKey()
-                            , note->GetVelocity()
-                            , 0);
-
-                // We don't want complete note behaviour - this is an
-                // unplayable note
-                half->DeleteComponent(Component::NOTE_COLLISION_HANDLER);
-                half->SetPosition(x, bar_y + bar_height);
-
-                auto half_graphics = half->GetComponent<GraphicsComponent>(
-                        Component::GRAPHICS);
-                if (!half_graphics) {
-                    return;
-                }
-
-                half_graphics->SetSize(
-                        width
-                        , (y + height) - (bar_y + bar_height));
-                g->AddGameObject(half);
-            }
-
-            // Now we are guaranteed to have a note that ends before the bottom
-            // of the bar (see above).
-            //
-            // If the top of the note is before the bar:
-            if (y < bar_y) {
-                // Resize the note so that it is not intersecting the bar and
-                // add an anchor component anchored to the top of the bar.
-                o->SetComponent(new ResizeComponent{width, bar_y-y});
-            } else {  // Otherwise 'o' is now purely within the bar and
-                     // can be removed.
-                o->SetComponent(new ResizeComponent{0, 0});
-            }
-        // Handle auto play
-        } else if (collider == bar
-                && Config::GetInstance().GetAutomaticallyPlay()) {
-            if (!auto_playing_) {  // Auto play plays the note
-                o->SetComponent(new MidiNoteComponent{
-                        true
-                        , note->GetChannel()
-                        , note->GetKey()
-                        , note->GetVelocity()});
-                auto_playing_ = true;
-            } else if (y > bar_y) {  // If our top is inside the bar, stop
-                                                                    // playing
-                o->SetComponent(new MidiNoteComponent{
-                        false
-                        , note->GetChannel()
-                        , note->GetKey()
-                        , note->GetVelocity()});
-
-                o->DeleteComponent(GetType());
-            }
+         if (HandleCollision(g, o, collider)) {
+            valid_collider = collider;
         }
     }
+
+    // If we are being played, let's add a grinding effect
+    if (valid_collider) {
+        if (grinding_) {
+            return;
+        }
+        grinding_ = g->GetGameObjectFactory().CreateNotePlayEffect(
+                valid_collider);
+        g->AddGameObject(grinding_);
+    } else if (grinding_) {  // Otherwise remove the grinding effect
+        grinding_->SetRequestDelete(true);
+        grinding_ = nullptr;
+    }
+}
+
+bool SongNoteCollisionHandlerComponent::HandleCollision(
+        Game* g
+        , GameObject* o
+        , GameObject* collider) {
+    // We only want to handle collisions with instruments
+    if (!collider->HasComponent(Component::INSTRUMENT)) {
+        return false;
+    }
+
+    auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
+    if (!note) {
+        return false;
+    }
+    auto other_note = collider->GetComponent<NoteInfoComponent>(
+            Component::NOTE_INFO);
+    // Check it's the correct instrument - we may collide with
+    // neighbouring instruments if they overlap on the screen.
+    if (!other_note || other_note->GetKey() != note->GetKey()) {
+        return false;
+    }
+
+    // Get position and size info
+    double x, y, width, height;
+    o->GetPosition(&x, &y);
+    o->GetSize(&width, &height);
+    double inst_x, inst_y, inst_w, inst_h;
+    collider->GetPosition(&inst_x, &inst_y);
+    collider->GetSize(&inst_w, &inst_h);
+
+    // Check if the note is in the playable part of the insrtument.
+    if (y > inst_y + NOTE_COLLISION_CUTOFF) {
+        return false;
+    }
+
+    // If the bottom of the note is outside the playable part, separate the
+    // part below the cutoff in to a different (unplayable) note. This section
+    // of the note has been missed.
+    if (y + height > inst_y + NOTE_COLLISION_CUTOFF) {
+        auto note = o->GetComponent<NoteInfoComponent>(
+                Component::NOTE_INFO);
+        if (!note) {
+            return true;
+        }
+
+        GameObject* half = g->GetGameObjectFactory().CreateSongNote(
+                    note->GetTrack()
+                    , note->GetChannel()
+                    , note->GetKey()
+                    , note->GetVelocity()
+                    , 0.1);
+
+        // We don't want complete note behaviour - this is an
+        // unplayable note
+        half->DeleteComponent(Component::NOTE_COLLISION_HANDLER);
+        half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
+        half->SetSize(width, (y + height) - (inst_y
+                    + NOTE_COLLISION_CUTOFF));
+        g->AddGameObject(half);
+    }
+
+    // Now we are guaranteed to have a note that ends before the bottom
+    // of the instrument (see above).
+    //
+    // If the top of the note is before the instrument:
+    if (y < inst_y) {
+        // Resize the note so that it is intersecting with the instrument by
+        // one pixel
+        o->SetComponent(new ResizeComponent{width, inst_y-y + 1});
+    } else {  // Otherwise 'o' is now purely within the instrument and
+             // can be removed.
+        o->SetComponent(new ResizeComponent{0, 0});
+    }
+    return true;
 }
 
 }  // End namespace midistar

@@ -18,7 +18,7 @@
 
 #include "midistar/CollisionHandlerComponent.h"
 
-#include "midistar/CollisionDetectorComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 
@@ -27,8 +27,8 @@ CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
 }
 
 void CollisionHandlerComponent::Update(Game* g, GameObject* o, int) {
-    auto detector = o->GetComponent<CollisionDetectorComponent>(
-            Component::COLLISION_DETECTOR);
+    auto detector = o->GetComponent<VerticalCollisionDetectorComponent>(
+            Component::VERTICAL_COLLISION_DETECTOR);
     if (!detector) {
         return;
     }

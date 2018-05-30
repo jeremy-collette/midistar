@@ -22,28 +22,6 @@
 
 namespace midistar {
 
-const sf::Keyboard::Key Config::MAPPED_KEYS[NUM_MAPPED_KEYS] {
-        sf::Keyboard::Key::Num1, sf::Keyboard::Key::Num2
-        , sf::Keyboard::Key::Num3, sf::Keyboard::Key::Num4
-        , sf::Keyboard::Key::Num5, sf::Keyboard::Key::Num6
-        , sf::Keyboard::Key::Num7, sf::Keyboard::Key::Num8
-        , sf::Keyboard::Key::Num9, sf::Keyboard::Key::Num0
-        , sf::Keyboard::Key::Dash, sf::Keyboard::Key::Equal
-        , sf::Keyboard::Key::Q, sf::Keyboard::Key::W, sf::Keyboard::Key::E
-        , sf::Keyboard::Key::R, sf::Keyboard::Key::T, sf::Keyboard::Key::Y
-        , sf::Keyboard::Key::U, sf::Keyboard::Key::I, sf::Keyboard::Key::O
-        , sf::Keyboard::Key::P, sf::Keyboard::Key::LBracket
-        , sf::Keyboard::Key::RBracket, sf::Keyboard::Key::A
-        , sf::Keyboard::Key::S, sf::Keyboard::Key::D, sf::Keyboard::Key::F
-        , sf::Keyboard::Key::G, sf::Keyboard::Key::H, sf::Keyboard::Key::J
-        , sf::Keyboard::Key::K, sf::Keyboard::Key::L
-        , sf::Keyboard::Key::SemiColon, sf::Keyboard::Key::Quote
-        , sf::Keyboard::Key::Z, sf::Keyboard::Key::X, sf::Keyboard::Key::C
-        , sf::Keyboard::Key::V, sf::Keyboard::Key::B, sf::Keyboard::Key::N
-        , sf::Keyboard::Key::M, sf::Keyboard::Key::Comma
-        , sf::Keyboard::Key::Period, sf::Keyboard::Key::Slash
-    };
-
 Config Config::instance_;
 
 Config& Config::GetInstance() {
@@ -53,14 +31,15 @@ Config& Config::GetInstance() {
 Config::Config()
         : audio_driver_{""}
         , auto_play_{false}
+        , fall_speed_multiplier_{0}
+        , full_screen_{false}
+        , game_mode_{""}
         , keyboard_first_note_{-1}
         , max_frames_per_second_{-1}
         , midi_file_channels_{}
         , midi_file_name_{""}
         , midi_file_repeat_{false}
         , midi_file_tracks_{}
-        , midi_highest_note_{-1}
-        , midi_lowest_note_{-1}
         , screen_height_{-1}
         , screen_width_{-1}
         , soundfont_path_{""} {
@@ -74,12 +53,16 @@ bool Config::GetAutomaticallyPlay() {
     return auto_play_;
 }
 
-int Config::GetMaximumFramesPerSecond() {
-    return max_frames_per_second_;
+bool Config::GetFullScreen() {
+    return full_screen_;
 }
 
-int Config::GetMaximumMidiNote() {
-    return midi_highest_note_;
+const std::string Config::GetGameMode() {
+    return game_mode_;
+}
+
+int Config::GetMaximumFramesPerSecond() {
+    return max_frames_per_second_;
 }
 
 std::vector<int> Config::GetMidiFileChannels() {
@@ -106,18 +89,8 @@ int Config::GetMidiOutVelocity() {
     return MIDI_OUT_VELOCITY;
 }
 
-int Config::GetMinimumMidiNote() {
-    return midi_lowest_note_;
-}
-
-double Config::GetNoteFallSpeed() {
-    return note_fall_speed_;
-}
-
-int Config::GetNumMidiNotes() {
-    // We have to add 1 here because 0 is actually a MIDI note (ergo, the range
-    // is inclusive).
-    return GetMaximumMidiNote() - GetMinimumMidiNote() + 1;
+double Config::GetFallSpeedMultiplier() {
+    return fall_speed_multiplier_;
 }
 
 int Config::GetScreenHeight() {
@@ -137,26 +110,7 @@ const std::string Config::GetSoundFontPath() {
     return soundfont_path_;
 }
 
-sf::Keyboard::Key Config::MidiNoteToKeyboardKey(
-        int midi_note
-        , bool control
-        , bool shift) {
-    // If the user is pressing CONTROL, we shift the MIDI note down by the
-    // number of mapped keys. If the user is pressing SHIFT, we shift the MIDI
-    // key up.
-    //
-    // This might look counter-intuitive, but we actually shift the MIDI note
-    // down by changing the which key activates the relevant MIDI instrument.
-    // As such, LOWERING the keyboard key index will play a higher MIDI note
-    // on the same keyboard key, and INCREASING the keyboard key index will
-    // play a lower MIDI note on the same keyboard key.
-    int index = midi_note - keyboard_first_note_ + control * NUM_MAPPED_KEYS
-        - shift * NUM_MAPPED_KEYS;
-    return (index < 0 || index > NUM_MAPPED_KEYS-1) ?
-        sf::Keyboard::Key::Unknown : MAPPED_KEYS[index];
-}
-
-int Config::ParseOptions(int argc, char** argv) {
+bool Config::ParseOptions(int argc, char** argv) {
     CLI::App app {};
     InitCliApp(&app);
 
@@ -164,9 +118,9 @@ int Config::ParseOptions(int argc, char** argv) {
         app.parse(argc, argv);
     } catch(const CLI::ParseError &e) {
         app.exit(e);
-        return 1;
+        return false;
     }
-    return 0;
+    return true;
 }
 
 void Config::InitCliApp(CLI::App* app) {
@@ -177,6 +131,9 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
+    app->add_option("--game_mode", game_mode_, "Determines the game mode.");
+    app->add_option("--full_screen", full_screen_, "Determines whether or not "
+           "to enable full-screen mode.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
@@ -188,13 +145,9 @@ void Config::InitCliApp(CLI::App* app) {
             "whether or not to continuously repeat the MIDI file.");
     app->add_option("--midi_file_tracks", midi_file_tracks_, "The MIDI tracks "
             "to read notes from. -1 will enable all tracks.");
-    app->add_option("--midi_highest_note", midi_highest_note_, "The highest "
-            "MIDI note to display and play.");
-    app->add_option("--midi_lowest_note", midi_lowest_note_, "The lowest MIDI "
-            "note to display and play.");
-    app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
-            "falling speed of notes on the screen. Fall speed is also "
-            "dependent on the speed of the MIDI file being played.");
+    app->add_option("--fall_speed_multiplier", fall_speed_multiplier_,
+            "Affects the falling speed of notes on the screen. Fall speed "
+            "is also dependent on the speed of the MIDI file being played.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "

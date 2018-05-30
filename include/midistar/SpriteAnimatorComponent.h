@@ -16,10 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
-#define MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
-
-#include <vector>
+#ifndef MIDISTAR_SPRITEANIMATORCOMPONENT_H_
+#define MIDISTAR_SPRITEANIMATORCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/Game.h"
@@ -28,36 +26,29 @@
 namespace midistar {
 
 /**
- * The CollisionHandlerComponent class polls the owner's 
- * VerticalCollisionDetectorComponent and handles collisions when they occur. 
+ * The SpriteAnimatorComponent class animates GameObjects that contain an
+ * sf::Sprite instance which uses a spritesheet.
  */
-class CollisionHandlerComponent : public Component {
+class SpriteAnimatorComponent : public Component {
  public:
     /**
-     * Constructor. 
-     *
-     * \param type The ComponetType of the derived class.
+     * Constructor
      */
-    explicit CollisionHandlerComponent(ComponentType type);
-
-    /**
-     * Handles most recent collisions.
-     *
-     * \param[in,out] g The Game being played.
-     * \param[in,out] o The owner of the component.
-     * \param[in,out] colliding_with The objects colliding with the owner.
-     */
-    virtual void HandleCollisions(
-            Game* g
-            , GameObject* o
-            , const std::vector<GameObject*> colliding_with) = 0;
+    SpriteAnimatorComponent(int sprite_size, int row, int col, int fps);
 
     /**
      * \copydoc Component::Update()
      */
     virtual void Update(Game* g, GameObject* o, int delta);
+
+ private:
+    int col_;  //!< The column in the sprite sheet
+    int last_frame_delta_;  //!< The time since last frame
+    const int ms_per_frame_;  //!< Milliseconds per frame
+    int row_;  //!< The row in the sprite sheet
+    const int sprite_size_;  //!< The size of each sprite
 };
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
+#endif  // MIDISTAR_SPRITEANIMATORCOMPONENT_H_

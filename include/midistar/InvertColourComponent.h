@@ -16,48 +16,45 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
-#define MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
-
-#include <vector>
+#ifndef MIDISTAR_INVERTCOLOURCOMPONENT_H_
+#define MIDISTAR_INVERTCOLOURCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
+#include "midistar/LambdaComponent.h"
 
 namespace midistar {
 
 /**
- * The CollisionHandlerComponent class polls the owner's 
- * VerticalCollisionDetectorComponent and handles collisions when they occur. 
+ * The InvertColourComponent inverts the colour of the owner's
+ * GraphicsComponent.
  */
-class CollisionHandlerComponent : public Component {
+class InvertColourComponent : public Component {
  public:
     /**
-     * Constructor. 
+     * Constructor.
      *
-     * \param type The ComponetType of the derived class.
+     * \param inv The value to XOR with each RGB value for inversion.
      */
-    explicit CollisionHandlerComponent(ComponentType type);
+    explicit InvertColourComponent(char inv);
 
     /**
-     * Handles most recent collisions.
-     *
-     * \param[in,out] g The Game being played.
-     * \param[in,out] o The owner of the component.
-     * \param[in,out] colliding_with The objects colliding with the owner.
+     * Default constructor.
      */
-    virtual void HandleCollisions(
-            Game* g
-            , GameObject* o
-            , const std::vector<GameObject*> colliding_with) = 0;
+    InvertColourComponent();
 
     /**
      * \copydoc Component::Update()
      */
     virtual void Update(Game* g, GameObject* o, int delta);
+
+ private:
+    static const char DEFAULT_INVERSION = 0xff;  //!< Default XOR inversion val
+
+    char inv_;  //!< Value to invert with (using XOR)
 };
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
+#endif  // MIDISTAR_INVERTCOLOURCOMPONENT_H_

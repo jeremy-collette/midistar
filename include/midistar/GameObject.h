@@ -20,6 +20,7 @@
 #define MIDISTAR_GAMEOBJECT_H_
 
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 #include "midistar/Component.h"
 
@@ -40,10 +41,36 @@ class GameObject {
     /**
      * Constructor.
      *
-     * \param x_pos The X on-screen position of the GameObject
-     * \param y_pos The Y on-screen position of the GameObject
+     * \tparam T The type of the drawformable being supplied. Note that
+     * 'drawformable' means an object that derives from both the sf::Drawable
+     * and sf::Transformable classes. T must derive from these classes.
+     * \param drawformable Underlying drawformable.
+     * \param x_pos The X on-screen position of the GameObject.
+     * \param y_pos The Y on-screen position of the GameObject.
+     * \param width The current width of the underlying drawformable.
+     * \param height The current height of the underlying drawformable.
+     *
+     * \note The width and height arguments must be the actual size of the
+     * underlying drawformable, and they must be non-zero. Failure to comply
+     * with either of these requirements will result in undefined behaviour
+     * for the the GameObject::SetSize() and GameObject::GetSize() methods. If
+     * you want a GameObject with zero width / height, create the underlying
+     * drawformable with some non-zero with and height and then use the
+     * GameObject::SetSize() method to set the width / height to zero after
+     * instantiation.
      */
-    GameObject(double x_pos, double y_pos);
+    template<typename T>
+    GameObject(
+            T* drawformable
+            , double x_pos
+            , double y_pos
+            , double width
+            , double height);
+
+    /**
+     * Destructor.
+     */
+    ~GameObject();
 
     /**
      * Removes and deletes the Component with the specified ComponentType from
@@ -55,6 +82,13 @@ class GameObject {
     void DeleteComponent(ComponentType type);
 
     /**
+     * Draws the GameObject.
+     *
+     * \param[in] window The window to draw the GameObject in.
+     */
+    void Draw(sf::RenderWindow* window);
+
+    /**
      * Gets the Component with the specified ComponentType.
      *
      * \tparam T The derived Component class.
@@ -62,9 +96,21 @@ class GameObject {
      *
      * \return A pointer to the Component with the specified ComponentType.
      */
-    template <typename T> T* GetComponent(ComponentType type) {
-        return static_cast<T*>(components_[type]);
-    }
+    template <typename T>
+    T* GetComponent(ComponentType type);
+
+    /**
+     * Gets the drawformable object contained in the GameObject, casted to the
+     * provided template type. If the conversion fails, nullptr is returned.
+     * Note that 'drawformable' means an object that derives from both the
+     * sf::Drawable and sf::Transformable classes.
+     *
+     * \tparam T The type to cast the drawable component to.
+     * \return If the conversion to type T is successful, returns a T* pointer
+     * to the drawable contained in the GameObject. Otherwise returns nullptr.
+     */
+    template <typename T>
+    T* GetDrawformable();
 
     /**
      * Gets the position of the GameObject.
@@ -82,6 +128,14 @@ class GameObject {
     bool GetRequestDelete();
 
     /**
+     * Gets the size of the GameObject.
+     *
+     * \param[out] w Stores the width.
+     * \param[out] h Stores the height.
+     */
+    void GetSize(double* w, double* h);
+
+    /**
      * Determines whether or not the GameObject has a Component with the
      * ComponentType type.
      *
@@ -91,15 +145,6 @@ class GameObject {
      * False otherwise.
      */
     bool HasComponent(ComponentType type);
-
-    /**
-     * Removes the Component with the specified ComponentType from the
-     * GameObject. This DOES NOT delete the Component, so be careful of memory
-     * leaks.
-     *
-     * \param type Specifies the type of the Component to remove.
-     */
-    void RemoveComponent(ComponentType type);
 
     /**
      * Sets the Component in slot determined by the ComponentType.
@@ -125,6 +170,14 @@ class GameObject {
     void SetRequestDelete(bool del);
 
     /**
+     * Sets the size of the GameObject.
+     *
+     * \param w The new width.
+     * \param h The new height.
+     */
+    void SetSize(double w, double h);
+
+    /**
      * Updates the GameObject by updating each of its Components.
      *
      * \param g A reference to the current Game instance.
@@ -134,12 +187,16 @@ class GameObject {
 
  private:
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
+    sf::Drawable* drawable_;  //!< Holds drawable part of object
+    double original_height_;  //!< Height at creation
+    double original_width_;  //!< Width at creation
     bool request_delete_;  //!< Holds deletion request status
     std::vector<Component*> to_delete_;  //!< Holds components to delete
-    double x_pos_;  //!< Holds X position
-    double y_pos_;  //!< Holds Y position
+    sf::Transformable* transformable_;  //!< Holds transformable part of object
 };
 
 }   // End namespace midistar
+
+#include "GameObject.tpp"
 
 #endif  // MIDISTAR_GAMEOBJECT_H_

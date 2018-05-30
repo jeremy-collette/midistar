@@ -16,41 +16,33 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIIN_H_
-#define MIDISTAR_MIDIIN_H_
+#ifndef MIDISTAR_UTILITY_H_
+#define MIDISTAR_UTILITY_H_
 
-#include <queue>
-
-#include "midistar/MidiMessage.h"
+#include <vector>
+#include <SFML/Window.hpp>
 
 namespace midistar {
 
 /**
- * The MidiIn class provides an interface for MIDI stream readers.
+ * The Utility class provides static functionality that may be useful to
+ * multiple classes or does not belong anywhere else.
  */
-class MidiIn {
+class Utility {
  public:
     /**
-     * Gets the next MIDI message.
+     * Gets a list of keyboard keys in QWERTY order.
      *
-     * \param[out] message Stores the MIDI message.
-     *
-     * \return True for success. False if an event is not available.
+     * \return Keyboard keys in QWERTY order.
      */
-    bool GetMessage(MidiMessage* message);
-
- protected:
-    /**
-     * Adds a MIDI message to the message queue.
-     *
-     * \param message The message to add.
-     */
-    void AddMessage(MidiMessage message);
+    static const std::vector<sf::Keyboard::Key>& GetQwertyKeys();
 
  private:
-    std::queue<MidiMessage> buffer_;  //!< MIDI message buffer
+    static const std::vector<sf::Keyboard::Key> qwerty_keys_;  //!< Holds a list
+                                                   //!< of keys in QWERTY order
 };
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_MIDIIN_H_
+
+#endif   // MIDISTAR_UTILITY_H_

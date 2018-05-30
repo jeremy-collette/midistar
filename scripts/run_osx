@@ -14,8 +14,9 @@ fi
 
 # If we found the binary...
 if [ $? -eq 0 ]; then
-    # Dynamic library search path hack
-    export DYLD_LIBRARY_PATH="external/midifile/lib:external/rtmidi/.libs"
+    # Set environment variables
+    . ./scripts/set_env_osx
+
     # Run executable
     exec ./build/bin/midistar "$@"
 fi

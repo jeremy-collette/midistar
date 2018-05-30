@@ -14,6 +14,9 @@ fi
 
 # If we found the binary...
 if [ $? -eq 0 ]; then
+    # Set environment variables
+    . ./scripts/set_env_linux
+
     # Run gdb
     exec gdb ./build/bin/midistar "$@"
 fi

@@ -44,8 +44,6 @@ class InvertColourComponent : public TransformComponent {
      */
     InvertColourComponent();
 
- private:
-    char xor_;  //!< Value used for inversion
 };
 
 }   // End namespace midistar

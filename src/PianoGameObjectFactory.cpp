@@ -36,11 +36,11 @@
 namespace midistar {
 
 const bool PianoGameObjectFactory::OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE] {
-    0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0
+    0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1
 };
 
 const char PianoGameObjectFactory::OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE] {
-    0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6
+    0, 0, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6
 };
 
 PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)

@@ -16,36 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_GAMEOBJECTFACTORY_H_
-#define MIDISTAR_GAMEOBJECTFACTORY_H_
+#ifndef MIDISTAR_DEFAULTGAMEOBJECTFACTORY_H_
+#define MIDISTAR_DEFAULTGAMEOBJECTFACTORY_H_
 
 #include "midistar/GameObject.h"
+#include "midistar/GameObjectFactory.h"
 
 namespace midistar {
 
 /**
- * The GameObjectFactory class provides an interface to create GameObject 
- * instances. Deriving classes specify the 'look and feel' and behaviour of
- * GameObjects, allowing for different game themes and/or modes. 
+ * The DefaultGameObjectFactory class creates GameObjects with default
+ * behaviours.
  */
-class GameObjectFactory {
+class DefaultGameObjectFactory : public GameObjectFactory {
  public:
-    /**
-     * Constructor.
-     */
-    GameObjectFactory() = default;
-
-    /**
-     * Destructor.
-     */
-    virtual ~GameObjectFactory() = default;
+   /**
+    * Constructor
+    */
+    explicit DefaultGameObjectFactory(double note_speed);
 
     /**
      * Creates the instrument bar.
      *
      * \return A GameObject which is the instrument bar.
      */
-    virtual GameObject* CreateInstrumentBar() = 0;
+    virtual GameObject* CreateInstrumentBar();
 
     /**
      * Creates a MIDI instrument note.
@@ -54,7 +49,7 @@ class GameObjectFactory {
      *
      * \return A GameObject which is an instrument.
      */
-    virtual GameObject* CreateInstrumentNote(int note) = 0;
+    virtual GameObject* CreateInstrumentNote(int note);
 
     /**
      * Creates a MIDI song note.
@@ -72,9 +67,13 @@ class GameObjectFactory {
             , int chan
             , int note
             , int vel
-            , double duration) = 0;
+            , double duration);
+
+ private:
+    double note_speed_;  //!< Holds the speed of song notes
+    double note_width_;  //!< Holds the width of song notes
 };
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_GAMEOBJECTFACTORY_H_
+#endif  // MIDISTAR_DEFAULTGAMEOBJECTFACTORY_H_

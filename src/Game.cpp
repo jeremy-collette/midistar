@@ -22,7 +22,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "midistar/GameObjectFactory.h"
+#include "midistar/DefaultGameObjectFactory.h"
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
 
@@ -42,6 +42,10 @@ Game::~Game() {
 
 void Game::AddGameObject(GameObject* obj) {
     new_objects_.push(obj);
+}
+
+GameObjectFactory& Game::GetGameObjectFactory() {
+    return *object_factory_;
 }
 
 const std::vector<MidiMessage>& Game::GetMidiInMessages() {
@@ -85,15 +89,14 @@ int Game::Init() {
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetNoteFallSpeed();
-    GameObjectFactory::GetInstance().Init(note_speed);
+    object_factory_ = new DefaultGameObjectFactory(note_speed);
 
-    bar_ = GameObjectFactory::GetInstance().CreateInstrumentBar();
+    bar_ = object_factory_->CreateInstrumentBar();
     objects_.push_back(bar_);
     if (!Config::GetInstance().GetAutomaticallyPlay()) {
         for (int note = Config::GetInstance().GetMinimumMidiNote();
                 note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
-            objects_.push_back(GameObjectFactory::GetInstance().
-                    CreateInstrumentNote(note));
+            objects_.push_back(object_factory_->CreateInstrumentNote(note));
         }
     }
     return 0;
@@ -126,7 +129,7 @@ int Game::Run() {
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
-                objects_.push_back(GameObjectFactory::GetInstance().
+                objects_.push_back(object_factory_->
                         CreateSongNote(
                             msg.GetTrack()
                             , msg.GetChannel()

@@ -55,6 +55,13 @@ class Game {
     void AddGameObject(GameObject* obj);
 
     /**
+     * Gets the GameObjectFactory instance in use.
+     *
+     * \return GameObjectFactory instance.
+     */
+    GameObjectFactory& GetGameObjectFactory();
+
+    /**
      * Gets all GameObjects.
      *
      * \return All GameObjects.
@@ -127,6 +134,7 @@ class Game {
     void FlushNewObjectQueue();  //!< Adds new objects to object buffer
 
     GameObject* bar_;  //!< Holds the instrument bar
+    GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
     MidiFileIn midi_file_in_;  //!< MIDI file in instance
     std::vector<MidiMessage> midi_in_buf_;  //!< MIDI input port notes buffer
     MidiOut midi_out_;  //!< MIDI port out instance

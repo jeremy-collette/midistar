@@ -31,10 +31,10 @@ add_executable(midistar
     src/CollisionHandlerComponent.cpp
     src/Component.cpp
     src/Config.cpp
+    src/DefaultGameObjectFactory.cpp
     src/DeleteOffscreenComponent.cpp
     src/Game.cpp
     src/GameObject.cpp
-    src/GameObjectFactory.cpp
     src/GraphicsComponent.cpp
     src/InstrumentComponent.cpp
     src/InstrumentInputHandlerComponent.cpp

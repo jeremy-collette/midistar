@@ -16,7 +16,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/GameObjectFactory.h"
+#include "midistar/DefaultGameObjectFactory.h"
 
 #include "midistar/BarComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
@@ -34,13 +34,14 @@
 
 namespace midistar {
 
-GameObjectFactory GameObjectFactory::instance_;
-
-GameObjectFactory& GameObjectFactory::GetInstance() {
-    return instance_;
+DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
+        : GameObjectFactory{}
+        , note_speed_{note_speed}
+        , note_width_{Config::GetInstance().GetScreenWidth() /
+            static_cast<double>(Config::GetInstance().GetNumMidiNotes())} {
 }
 
-GameObject* GameObjectFactory::CreateInstrumentBar() {
+GameObject* DefaultGameObjectFactory::CreateInstrumentBar() {
     double x = 0;
     double y = Config::GetInstance().GetScreenHeight()-100.0;
     GameObject* bar = new GameObject{x, y};
@@ -54,7 +55,7 @@ GameObject* GameObjectFactory::CreateInstrumentBar() {
     return bar;
 }
 
-GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
+GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     double x = (note - Config::GetInstance().GetMinimumMidiNote())
         * note_width_;
     double y = Config::GetInstance().GetScreenHeight()-100;
@@ -72,7 +73,7 @@ GameObject* GameObjectFactory::CreateInstrumentNote(int note) {
     return ins_note;
 }
 
-GameObject* GameObjectFactory::CreateSongNote(
+GameObject* DefaultGameObjectFactory::CreateSongNote(
         int track
         , int chan
         , int note
@@ -97,17 +98,6 @@ GameObject* GameObjectFactory::CreateSongNote(
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
-}
-
-void GameObjectFactory::Init(double note_speed) {
-    note_speed_ = note_speed;
-    note_width_ = Config::GetInstance().GetScreenWidth() / static_cast<double>(
-            Config::GetInstance().GetNumMidiNotes());
-}
-
-GameObjectFactory::GameObjectFactory()
-    : note_speed_{0}
-    , note_width_{0} {
 }
 
 }  // End namespace midistar

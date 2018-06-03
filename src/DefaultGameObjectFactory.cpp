@@ -35,8 +35,7 @@
 namespace midistar {
 
 DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
-        : GameObjectFactory{}
-        , note_speed_{note_speed}
+        : GameObjectFactory{note_speed}
         , note_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(Config::GetInstance().GetNumMidiNotes())} {
 }
@@ -82,7 +81,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
     double x = (note - Config::GetInstance().GetMinimumMidiNote())
         * note_width_;
     // Height is equal to duration in milliseconds * pixels per millisecond
-    double height = duration * 1000 * note_speed_;
+    double height = duration * 1000 * GetNoteSpeed();
 
     GameObject* song_note;
     sf::RectangleShape* rect;
@@ -93,7 +92,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new SongNoteComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
-    song_note->SetComponent(new PhysicsComponent{0, note_speed_});
+    song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});

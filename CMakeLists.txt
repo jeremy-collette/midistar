@@ -35,6 +35,7 @@ add_executable(midistar
     src/DeleteOffscreenComponent.cpp
     src/Game.cpp
     src/GameObject.cpp
+    src/GameObjectFactory.cpp
     src/GraphicsComponent.cpp
     src/InstrumentComponent.cpp
     src/InstrumentInputHandlerComponent.cpp
@@ -47,6 +48,7 @@ add_executable(midistar
     src/MidiPortIn.cpp
     src/NoteInfoComponent.cpp
     src/PhysicsComponent.cpp
+    src/PianoGameObjectFactory.cpp
     src/ResizeComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp

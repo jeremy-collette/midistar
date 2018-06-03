@@ -23,13 +23,15 @@
 #include <SFML/Graphics.hpp>
 
 #include "midistar/DefaultGameObjectFactory.h"
+#include "midistar/PianoGameObjectFactory.h"
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
 
 namespace midistar {
 
 Game::Game()
-        : bar_{0}
+        : bar_{nullptr}
+        , object_factory_{nullptr}
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight()), "midistar"} {
 }
@@ -37,6 +39,9 @@ Game::Game()
 Game::~Game() {
     for (auto& o : objects_) {
         delete o;
+    }
+    if (object_factory_) {
+        delete object_factory_;
     }
 }
 
@@ -89,7 +94,9 @@ int Game::Init() {
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetNoteFallSpeed();
-    object_factory_ = new DefaultGameObjectFactory(note_speed);
+    // TODO(@jez): remove debug code
+    //object_factory_ = new DefaultGameObjectFactory(note_speed);
+    object_factory_ = new PianoGameObjectFactory(note_speed);
 
     bar_ = object_factory_->CreateInstrumentBar();
     objects_.push_back(bar_);

@@ -33,7 +33,7 @@ class GameObjectFactory {
     /**
      * Constructor.
      */
-    GameObjectFactory() = default;
+    GameObjectFactory(double note_speed);
 
     /**
      * Destructor.
@@ -73,6 +73,12 @@ class GameObjectFactory {
             , int note
             , int vel
             , double duration) = 0;
+
+ protected:
+    double GetNoteSpeed();  //!< Gets note speed
+
+ private:
+    double note_speed_;  //!< Holds note speed
 };
 
 }  // End namespace midistar

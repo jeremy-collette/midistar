@@ -70,7 +70,6 @@ class DefaultGameObjectFactory : public GameObjectFactory {
             , double duration);
 
  private:
-    double note_speed_;  //!< Holds the speed of song notes
     double note_width_;  //!< Holds the width of song notes
 };
 

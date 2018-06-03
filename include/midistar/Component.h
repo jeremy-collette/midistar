@@ -46,8 +46,10 @@ class Component {
         SONG_NOTE = 0
         , INSTRUMENT
         , BAR
+        , COLLIDABLE
         , NOTE_INFO
         , INSTRUMENT_INPUT_HANDLER
+        , TRANSFORM
         , MIDI_NOTE
         , PHYSICS
         , DELETE_OFFSCREEN

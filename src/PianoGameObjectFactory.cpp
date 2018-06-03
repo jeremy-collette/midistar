@@ -19,6 +19,7 @@
 #include "midistar/PianoGameObjectFactory.h"
 
 #include "midistar/BarComponent.h"
+#include "midistar/CollidableComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
@@ -55,9 +56,11 @@ GameObject* PianoGameObjectFactory::CreateInstrumentBar() {
     bar->SetComponent(new BarComponent{});
 
     sf::RectangleShape* rect = new sf::RectangleShape{
-        {static_cast<float>(Config::GetInstance().GetScreenWidth()), 20.0f}};
+        {static_cast<float>(Config::GetInstance().GetScreenWidth())
+        , WHITE_KEY_HEIGHT}};
     rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
     rect->setFillColor(sf::Color::Red);
+    bar->SetComponent(new CollidableComponent{});
     bar->SetComponent(new GraphicsComponent{rect});
     return bar;
 }
@@ -91,8 +94,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
     rect->setFillColor(colour);
     ins_note->SetComponent(new GraphicsComponent{rect});
-    // TODO(@jez): fix this
-    //ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
     return ins_note;
 }
 
@@ -113,10 +115,12 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
         return song_note;
     }
 
-    sf::Color colour = sf::Color::Blue;
+    // TODO(@jez): constant for colours
+    sf::Color colour = sf::Color{50, 50, 200};
     double width = note_width_;
     if (IsBlackKey(note)) {
-        colour = sf::Color::Green;
+        // TODO(@jez): use constant
+        colour = sf::Color{50, 200, 50};
         width /= 2;
     }
 
@@ -125,6 +129,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
     rect->setFillColor(colour);
     song_note->SetComponent(new SongNoteComponent{});
+    song_note->SetComponent(new CollidableComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
@@ -139,13 +144,16 @@ int PianoGameObjectFactory::GetWhiteKeyIndex(int midi_key) {
     int octave_num = key_index / NOTES_PER_OCTAVE;
     int prev_white_keys = octave_num * WHITE_KEYS_PER_OCTAVE;
     int octave_index = key_index % NOTES_PER_OCTAVE; 
-    
+   
+    // TODO(@jez): remove debugging code
+   /* 
     std::cout << "key_index: " << key_index << "\n";
     std::cout << "octave_num: " << octave_num << "\n";
     std::cout << "prev_white_keys: " << prev_white_keys << "\n";
     std::cout << "octave_index: " << octave_index << "\n";
     std::cout << "white_key_index: " << prev_white_keys + OCTAVE_KEY_TO_WHITE_KEY[octave_index] << "\n";
     std::cout << "***************\n";
+    */
     return prev_white_keys + OCTAVE_KEY_TO_WHITE_KEY[octave_index];
     
     }

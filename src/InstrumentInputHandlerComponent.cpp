@@ -18,9 +18,10 @@
 
 #include "midistar/InstrumentInputHandlerComponent.h"
 
+#include "midistar/CollidableComponent.h"
 #include "midistar/Config.h"
 #include "midistar/Game.h"
-#include "midistar/GraphicsComponent.h"
+#include "midistar/InvertColourComponent.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 
@@ -28,7 +29,6 @@ namespace midistar {
 
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
         : Component{Component::INSTRUMENT_INPUT_HANDLER}
-        , graphics_{nullptr}
         , key_{sf::Keyboard::Key::Unknown}
         , key_down_{false} {
 }
@@ -38,9 +38,6 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     if (!note) {
         return;
     }
-
-    auto other_graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS);
 
     for (const auto& e : g->GetSfEvents()) {
         // We want to ignore Unknown keys as we use this as a sentinel value
@@ -84,8 +81,9 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     // If this instrument is activated...
     if (key_down_) {
         // Set the GraphicsComponent and send a note on event
-        if (!other_graphics && graphics_) {
-            o->SetComponent(graphics_);
+        if (!o->HasComponent(Component::COLLIDABLE)) {
+            o->SetComponent(new CollidableComponent{});
+            o->SetComponent(new InvertColourComponent{static_cast<char>(0xa0)});
             o->SetComponent(new MidiNoteComponent{
                     true
                     , note->GetChannel()
@@ -93,10 +91,10 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
                     , note->GetVelocity()});
        }
     // If it's not activated but the GraphicsComponent is set...
-    } else if (other_graphics) {
+    } else if (o->HasComponent(Component::COLLIDABLE)) {
         // Remove it and send a note off event
-        graphics_ = other_graphics;
-        o->RemoveComponent(Component::GRAPHICS);
+        o->RemoveComponent(Component::COLLIDABLE);
+        o->SetComponent(new InvertColourComponent{static_cast<char>(0xa0)});
         o->SetComponent(new MidiNoteComponent{
                 false
                 , note->GetChannel()

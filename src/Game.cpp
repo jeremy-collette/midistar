@@ -114,7 +114,7 @@ int Game::Run() {
     sf::Clock clock;
     while (window_.isOpen()) {
         FlushNewObjectQueue();
-        window_.clear();
+        window_.clear(sf::Color{40, 40, 40});
 
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();

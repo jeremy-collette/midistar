@@ -55,29 +55,31 @@ class PianoGameObjectFactory : public GameObjectFactory {
             , double duration);
 
  private:
-    static const char BLACK_KEY_HEIGHT = 80;  //!< Black key height in pixels
     static const char NOTES_PER_OCTAVE = 12;  //!< Notes in an octave
     static const char NUM_BLACK_KEYS = 36;  //!< Num black keys on a piano
     static const char NUM_PIANO_KEYS = 88;  //!< Total num keys on a piano
-    static const char NUM_WHITE_KEYS = NUM_PIANO_KEYS - NUM_BLACK_KEYS; 
+    static const char NUM_WHITE_KEYS = NUM_PIANO_KEYS - NUM_BLACK_KEYS;
                                                 //!< Num white keys on a piano
-    static const bool OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE];  //!< Black key 
+    static const bool OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE];  //!< Black key
                                                       //!< lookup in an octave
     static const char OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE];  //!< Converts
                                       //!< a key index to the closest white key
-    static const char PIANO_FIRST_MIDI_KEY = 21;  //!< First MIDI key on a 
+    static const char PIANO_FIRST_MIDI_KEY = 21;  //!< First MIDI key on a
                                                                     //!< piano
-    static const char WHITE_KEY_HEIGHT = 120;  //!< White key height in pixels
+    static const int WHITE_KEY_HEIGHT = 150; //!< White key height
     static const char WHITE_KEYS_PER_OCTAVE = 7;  //!< White keys in an octave
-    
-    static int GetWhiteKeyIndex(int midi_key);  //!< Gets the index of the 
+    static const int BLACK_KEY_HEIGHT = WHITE_KEY_HEIGHT * 0.65f;  //!< Black
+                                                      //!< key height in pixels
+    static const int KEY_HOVER_HEIGHT = WHITE_KEY_HEIGHT + 100;  //!< Dist from                                                      //!< key top to screen bot
+
+    static int GetWhiteKeyIndex(int midi_key);  //!< Gets the index of the
                                     //!< closest white piano key to a MIDI key
     static bool IsBlackKey(int midi_key);  //!< Determines if a MIDI key
                                         //!< correlates with a black piano key
 
     double CalculateXPosition(int midi_key);  //!< Calculates note / instrument
                                                                 //!< X position
-    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for 
+    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                                                  //!< the piano
 
     double note_width_;  //!< Holds the width of song notes

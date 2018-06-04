@@ -130,13 +130,6 @@ double PianoGameObjectFactory::CalculateXPosition(int midi_key) {
 } 
 
 GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
-    double x = CalculateXPosition(note);
-    double y = Config::GetInstance().GetScreenHeight()-200;
-    GameObject* ins_note = new GameObject{x, y};
-    ins_note->SetComponent(new InstrumentComponent{});
-    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
-            , Config::GetInstance().GetMidiOutVelocity()});
-
     bool is_black = IsBlackKey(note);   
     double height, width, outline_thickness;
     sf::Color colour;
@@ -151,6 +144,13 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
         colour = sf::Color::White;
         outline_thickness = -0.5;
     }
+
+    double x = CalculateXPosition(note);
+    double y = Config::GetInstance().GetScreenHeight() - KEY_HOVER_HEIGHT;
+    GameObject* ins_note = new GameObject{x, y};
+    ins_note->SetComponent(new InstrumentComponent{});
+    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
+            , Config::GetInstance().GetMidiOutVelocity()});
 
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), static_cast<float>(height)}};

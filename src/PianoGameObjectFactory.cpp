@@ -28,6 +28,7 @@
 #include "midistar/GraphicsComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
+#include "midistar/InvertColourComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
@@ -35,6 +36,11 @@
 #include "midistar/SongNoteComponent.h"
 
 namespace midistar {
+
+const sf::Color PianoGameObjectFactory::MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS] {
+    sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
+    , sf::Color::Magenta, sf::Color::Cyan
+};
 
 const bool PianoGameObjectFactory::OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE] {
     0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1
@@ -70,22 +76,24 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     double x = CalculateXPosition(note);
     // Height is equal to duration in milliseconds * pixels per millisecond
     double height = duration * 1000 * GetNoteSpeed();
-
     GameObject* song_note = new GameObject{x, -height};
     
-    // TODO(@jez): constant for colours
-    sf::Color colour = sf::Color{50, 50, 200};
-    double width = note_width_;
+    double width;
+    sf::Color colour = GetTrackColour(track);
     if (IsBlackKey(note)) {
-        // TODO(@jez): use constant
-        colour = sf::Color{50, 200, 50};
-        width /= 2;
+        // Slightly darken sharp notes and change width
+        colour = DarkenColour(colour);
+        width = note_width_ * BLACK_WIDTH_MULTIPLIER;
+    } else {
+        width = note_width_;
     }
 
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), static_cast<float>(height)}};
     rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
     rect->setFillColor(colour);
+    rect->setOutlineThickness(NOTE_OUTLINE_THICKNESS);
+    rect->setOutlineColor(sf::Color::Black);
     song_note->SetComponent(new SongNoteComponent{});
     song_note->SetComponent(new CollidableComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
@@ -95,6 +103,17 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
+}
+
+sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {
+    c.r *= COLOUR_DARKEN_MULTIPLIER;
+    c.g *= COLOUR_DARKEN_MULTIPLIER;
+    c.b *= COLOUR_DARKEN_MULTIPLIER;
+    return c;
+}
+
+sf::Color PianoGameObjectFactory::GetTrackColour(int midi_track) {
+    return MIDI_TRACK_COLOURS[midi_track % NUM_TRACK_COLOURS];
 }
 
 int PianoGameObjectFactory::GetWhiteKeyIndex(int midi_key) {
@@ -124,7 +143,9 @@ double PianoGameObjectFactory::CalculateXPosition(int midi_key) {
     double white_key_index = GetWhiteKeyIndex(midi_key);
     double x = white_key_index * note_width_;
     if (IsBlackKey(midi_key)) {
-        x += note_width_ / 2.0 + note_width_ / 4.0;
+        double black_width = note_width_ * BLACK_WIDTH_MULTIPLIER;
+        // Move the black key/note so that it is in between two white keys
+        x += note_width_ / 2.0  + black_width / 2.0;
     }
     return x;
 } 
@@ -136,13 +157,13 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     if (is_black) {
         height = BLACK_KEY_HEIGHT;
         colour = sf::Color::Black; 
-        width = note_width_ / 2.0;
-        outline_thickness = 0;
+        width = note_width_ * BLACK_WIDTH_MULTIPLIER;
+        outline_thickness = WHITE_KEY_OUTLINE_THICKNESS;
     } else {
         height = WHITE_KEY_HEIGHT;
         width = note_width_;
         colour = sf::Color::White;
-        outline_thickness = -0.5;
+        outline_thickness = BLACK_KEY_OUTLINE_THICKNESS;
     }
 
     double x = CalculateXPosition(note);

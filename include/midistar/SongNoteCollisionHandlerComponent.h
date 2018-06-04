@@ -45,7 +45,7 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , std::vector<GameObject*> colliding_with);
 
  private:
-    const static char NOTE_COLLISION_CUTOFF = 5;  //!< Notes must be within 
+    const static char NOTE_COLLISION_CUTOFF = 20;  //!< Notes must be within 
         //!< this many pixels from the top of the instrument to be completely
         //!< played.
 

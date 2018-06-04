@@ -32,7 +32,10 @@ namespace midistar {
 Game::Game()
         : object_factory_{nullptr}
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
-                 , Config::GetInstance().GetScreenHeight()), "midistar"} {
+                 , Config::GetInstance().GetScreenHeight())
+                 , "midistar"
+                 , Config::GetInstance().GetFullScreen() ? 
+                 sf::Style::Fullscreen : sf::Style::None} {
 }
 
 Game::~Game() {

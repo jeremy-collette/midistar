@@ -55,6 +55,13 @@ class Config {
     bool GetAutomaticallyPlay();
 
     /**
+     * Gets a bool indicating whether or not full-screen mode is enabled.
+     *
+     * \return Full-screen mode.
+     */
+    bool GetFullScreen();
+    
+    /**
      * Gets the maximum number of frames per second (FPS) for the SFML window.
      *
      * \return Maximum FPS.
@@ -204,6 +211,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    bool full_screen_; //!< Full-screen setting
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play

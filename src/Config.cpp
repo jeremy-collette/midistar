@@ -74,6 +74,10 @@ bool Config::GetAutomaticallyPlay() {
     return auto_play_;
 }
 
+bool Config::GetFullScreen() {
+    return full_screen_;
+}
+
 int Config::GetMaximumFramesPerSecond() {
     return max_frames_per_second_;
 }
@@ -177,6 +181,8 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
+    app->add_option("--full_screen", full_screen_, "Determines whether or not "
+           "to enable full-screen mode."); 
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "

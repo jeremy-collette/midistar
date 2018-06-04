@@ -55,7 +55,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
             , double duration);
 
  private:
-    static const char BLACK_KEY_HEIGHT = 50;  //!< Black key height in pixels
+    static const char BLACK_KEY_HEIGHT = 80;  //!< Black key height in pixels
     static const char NOTES_PER_OCTAVE = 12;  //!< Notes in an octave
     static const char NUM_BLACK_KEYS = 36;  //!< Num black keys on a piano
     static const char NUM_PIANO_KEYS = 88;  //!< Total num keys on a piano
@@ -67,7 +67,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
                                       //!< a key index to the closest white key
     static const char PIANO_FIRST_MIDI_KEY = 21;  //!< First MIDI key on a 
                                                                     //!< piano
-    static const char WHITE_KEY_HEIGHT = 80;  //!< White key height in pixels
+    static const char WHITE_KEY_HEIGHT = 120;  //!< White key height in pixels
     static const char WHITE_KEYS_PER_OCTAVE = 7;  //!< White keys in an octave
     
     static int GetWhiteKeyIndex(int midi_key);  //!< Gets the index of the 

@@ -131,25 +131,33 @@ double PianoGameObjectFactory::CalculateXPosition(int midi_key) {
 
 GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     double x = CalculateXPosition(note);
-    double y = Config::GetInstance().GetScreenHeight()-100;
+    double y = Config::GetInstance().GetScreenHeight()-200;
     GameObject* ins_note = new GameObject{x, y};
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
 
-    double height = WHITE_KEY_HEIGHT;
-    double width = note_width_;
-    sf::Color colour = sf::Color::White;
-    if (IsBlackKey(note)) {
+    bool is_black = IsBlackKey(note);   
+    double height, width, outline_thickness;
+    sf::Color colour;
+    if (is_black) {
         height = BLACK_KEY_HEIGHT;
         colour = sf::Color::Black; 
-        width /= 2;
+        width = note_width_ / 2.0;
+        outline_thickness = 0;
+    } else {
+        height = WHITE_KEY_HEIGHT;
+        width = note_width_;
+        colour = sf::Color::White;
+        outline_thickness = -0.5;
     }
 
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), static_cast<float>(height)}};
     rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
     rect->setFillColor(colour);
+    rect->setOutlineColor(sf::Color::Black);
+    rect->setOutlineThickness(outline_thickness);
     ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{});
     return ins_note;

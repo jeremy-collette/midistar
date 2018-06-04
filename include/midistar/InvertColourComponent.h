@@ -22,7 +22,7 @@
 #include "midistar/Component.h"
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
-#include "midistar/TransformComponent.h"
+#include "midistar/LambdaComponent.h"
 
 namespace midistar {
 

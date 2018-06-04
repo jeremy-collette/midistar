@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_TRANSFORMCOMPONENT_H_
-#define MIDISTAR_TRANSFORMCOMPONENT_H_
+#ifndef MIDISTAR_LAMBDACOMPONENT_H_
+#define MIDISTAR_LAMBDACOMPONENT_H_
 
 #include <functional>
 
@@ -28,16 +28,16 @@
 namespace midistar {
 
 /*
- * The TransformComponent makes a once-off transformation to its owner. 
+ * The LambdaComponent allows for once-off lambda functions to be called. 
  */
-class TransformComponent : public Component {
+class LambdaComponent : public Component {
  public:
     /**
      * Constructor. 
      *
-     * \param func The once-off transformation to apply.
+     * \param func The lambda function to call.
      */
-    explicit TransformComponent(
+    explicit LambdaComponent(
             std::function<void(Game*, GameObject*, int)> func);
 
     /**
@@ -52,4 +52,4 @@ class TransformComponent : public Component {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_TRANSFORMCOMPONENT_H_
+#endif  // MIDISTAR_LAMBDACOMPONENT_H_

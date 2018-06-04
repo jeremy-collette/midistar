@@ -16,17 +16,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/TransformComponent.h"
+#include "midistar/LambdaComponent.h"
 
 namespace midistar {
 
-TransformComponent::TransformComponent(
+LambdaComponent::LambdaComponent(
     std::function<void(Game*, GameObject*, int)> func)
-        : Component{Component::TRANSFORM}
+        : Component{Component::TRANSFORMATION}
         , func_{func} {
 }
 
-void TransformComponent::Update(Game* g, GameObject* o, int delta) {
+void LambdaComponent::Update(Game* g, GameObject* o, int delta) {
     func_(g, o, delta);
     o->DeleteComponent(GetType());
 }

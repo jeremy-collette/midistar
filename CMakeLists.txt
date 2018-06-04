@@ -41,6 +41,7 @@ add_executable(midistar
     src/InstrumentComponent.cpp
     src/InstrumentInputHandlerComponent.cpp
     src/InvertColourComponent.cpp
+    src/LambdaComponent.cpp
     src/main.cpp
     src/MidiFileIn.cpp
     src/MidiIn.cpp
@@ -54,7 +55,6 @@ add_executable(midistar
     src/ResizeComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
-    src/TransformComponent.cpp
     )
 
 # Link midistar

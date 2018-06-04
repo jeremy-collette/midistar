@@ -51,8 +51,9 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
 
     void HandleCollision(Game* g, GameObject* o, GameObject* collider);
                                                      //!< Handles a collision
-                                                      
-    bool auto_playing_;  //!< Determines if we are currently auto playing a
+      
+    //TODO(@jez): fix autoplay    
+    //bool auto_playing_;  //!< Determines if we are currently auto playing a
                                                                     //!< note
 };
 

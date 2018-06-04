@@ -18,7 +18,6 @@
 
 #include "midistar/DefaultGameObjectFactory.h"
 
-#include "midistar/BarComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
@@ -38,20 +37,6 @@ DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
         , note_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(Config::GetInstance().GetNumMidiNotes())} {
-}
-
-GameObject* DefaultGameObjectFactory::CreateInstrumentBar() {
-    double x = 0;
-    double y = Config::GetInstance().GetScreenHeight()-100.0;
-    GameObject* bar = new GameObject{x, y};
-    bar->SetComponent(new BarComponent{});
-
-    sf::RectangleShape* rect = new sf::RectangleShape{
-        {static_cast<float>(Config::GetInstance().GetScreenWidth()), 20.0f}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
-    rect->setFillColor(sf::Color::Red);
-    bar->SetComponent(new GraphicsComponent{rect});
-    return bar;
 }
 
 std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {

@@ -43,13 +43,6 @@ class GameObjectFactory {
     virtual ~GameObjectFactory() = default;
 
     /**
-     * Creates the instrument bar.
-     *
-     * \return A GameObject which is the instrument bar.
-     */
-    virtual GameObject* CreateInstrumentBar() = 0;
-
-    /**
      * Creates the instrument to play.
      *
      * \return A collection of GameObjects representing an instrument.

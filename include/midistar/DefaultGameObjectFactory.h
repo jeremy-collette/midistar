@@ -32,15 +32,10 @@ namespace midistar {
  */
 class DefaultGameObjectFactory : public GameObjectFactory {
  public:
-   /**
-    * Constructor
-    */
-    explicit DefaultGameObjectFactory(double note_speed);
-
     /**
-     * \copydoc GameObjectFactory::CreateInstrumentBar() 
+     * Constructor
      */
-    virtual GameObject* CreateInstrumentBar();
+    explicit DefaultGameObjectFactory(double note_speed);
 
     /**
      * \copydoc GameObjectFactory::CreateInstrument() 

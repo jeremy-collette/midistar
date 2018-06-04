@@ -34,13 +34,10 @@ class PianoGameObjectFactory : public GameObjectFactory {
  public:
    /**
     * Constructor
+    *
+    * \param note_speed Used to calculate the falling speed of notes.
     */
     explicit PianoGameObjectFactory(double note_speed);
-
-    /**
-     * \copydoc GameObjectFactory::CreateInstrumentBar()
-     */
-    virtual GameObject* CreateInstrumentBar();
 
     /**
      * \copydoc GameObjectFactory::CreateInstrument()

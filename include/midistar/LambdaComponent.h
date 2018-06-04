@@ -46,8 +46,8 @@ class LambdaComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    std::function<void(Game*, GameObject*, int)> func_;  //!< The 
-                                                //!< transformation to apply
+    std::function<void(Game*, GameObject*, int)> func_;  //!< The lambda to
+                                                                //!< invoke
 };
 
 }   // End namespace midistar

@@ -20,7 +20,6 @@
 
 #include "midistar/PianoGameObjectFactory.h"
 
-#include "midistar/BarComponent.h"
 #include "midistar/CollidableComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
@@ -49,22 +48,6 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
         , note_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_WHITE_KEYS)} {
-}
-
-GameObject* PianoGameObjectFactory::CreateInstrumentBar() {
-    double x = 0;
-    double y = Config::GetInstance().GetScreenHeight()-100.0;
-    GameObject* bar = new GameObject{x, y};
-    bar->SetComponent(new BarComponent{});
-
-    sf::RectangleShape* rect = new sf::RectangleShape{
-        {static_cast<float>(Config::GetInstance().GetScreenWidth())
-        , WHITE_KEY_HEIGHT}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
-    rect->setFillColor(sf::Color::Red);
-    bar->SetComponent(new CollidableComponent{});
-    bar->SetComponent(new GraphicsComponent{rect});
-    return bar;
 }
 
 std::vector<GameObject*> PianoGameObjectFactory::CreateInstrument() {

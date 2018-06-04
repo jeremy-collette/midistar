@@ -69,13 +69,6 @@ class Game {
     const std::vector<GameObject*>& GetGameObjects();
 
     /**
-     * Gets the instrument bar.
-     *
-     * \return The instrument bar.
-     */
-    GameObject* GetInstrumentBar();
-
-     /**
      * Gets MIDI input port messages for the last tick.
      *
      * \return MIDI messages.
@@ -133,7 +126,6 @@ class Game {
     void DeleteObject(GameObject* o);  //!< Deletes a GameObject
     void FlushNewObjectQueue();  //!< Adds new objects to object buffer
 
-    GameObject* bar_;  //!< Holds the instrument bar
     GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
     MidiFileIn midi_file_in_;  //!< MIDI file in instance
     std::vector<MidiMessage> midi_in_buf_;  //!< MIDI input port notes buffer

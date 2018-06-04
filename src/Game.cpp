@@ -30,8 +30,7 @@
 namespace midistar {
 
 Game::Game()
-        : bar_{nullptr}
-        , object_factory_{nullptr}
+        : object_factory_{nullptr}
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight()), "midistar"} {
 }
@@ -59,10 +58,6 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
     return objects_;
-}
-
-GameObject* Game::GetInstrumentBar() {
-    return bar_;
 }
 
 const std::vector<sf::Event>& Game::GetSfEvents() {
@@ -98,8 +93,6 @@ int Game::Init() {
     //object_factory_ = new DefaultGameObjectFactory(note_speed);
     object_factory_ = new PianoGameObjectFactory(note_speed);
 
-    bar_ = object_factory_->CreateInstrumentBar();
-    objects_.push_back(bar_);
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
 
@@ -133,8 +126,7 @@ int Game::Run() {
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
-                // TODO(@jez): change to O(1)
-                objects_.insert(objects_.begin(), object_factory_->
+                objects_.push_back(object_factory_->
                         CreateSongNote(
                             msg.GetTrack()
                             , msg.GetChannel()

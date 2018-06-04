@@ -30,19 +30,29 @@ namespace midistar {
  * The InvertColourComponent inverts the colour of the owner's 
  * GraphicsComponent. 
  */
-class InvertColourComponent : public TransformComponent {
+class InvertColourComponent : public Component {
  public:
     /**
      * Constructor. 
      *
-     * \param x The value to XOR with each RGB value for inversion.
+     * \param inv The value to XOR with each RGB value for inversion.
      */
-    InvertColourComponent(char x);
+    InvertColourComponent(char inv);
 
     /**
      * Default constructor.
      */
     InvertColourComponent();
+
+    /**
+     * \copydoc Component::Update()
+     */
+    virtual void Update(Game* g, GameObject* o, int delta);
+
+ private:
+    const static char DEFAULT_INVERSION = 0xff;
+
+    char inv_;  //!< Value to invert with (using XOR)
 
 };
 

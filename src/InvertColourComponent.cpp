@@ -21,24 +21,27 @@
 
 namespace midistar {
 
-InvertColourComponent::InvertColourComponent(char x)
-        : TransformComponent{
-            [x](Game*,  GameObject* o, int) {
-                auto graphics = o->GetComponent<GraphicsComponent>(
-                        Component::GRAPHICS); 
-                if (!graphics) {
-                    return;
-                }
-                auto colour = graphics->GetShape().getFillColor();
-                colour.r ^= x;
-                colour.g ^= x;
-                colour.b ^= x;
-                graphics->GetShape().setFillColor(colour);
-            }} {
+InvertColourComponent::InvertColourComponent(char inv)
+        : Component{INVERT_COLOUR}
+        , inv_{inv} {
 }
 
 InvertColourComponent::InvertColourComponent() 
-        : InvertColourComponent{static_cast<char>(0xff)} {
+        : InvertColourComponent{DEFAULT_INVERSION} {
+}
+
+void InvertColourComponent::Update(Game*, GameObject* o, int) {
+    auto graphics = o->GetComponent<GraphicsComponent>(
+            Component::GRAPHICS); 
+    if (!graphics) {
+        return;
+    }
+    auto colour = graphics->GetShape().getFillColor();
+    for (auto &b : {&colour.r, &colour.g, &colour.b}) {
+        *b ^= inv_;
+    }
+    graphics->GetShape().setFillColor(colour);
+    o->DeleteComponent(GetType());
 }
 
 }   // End namespace midistar

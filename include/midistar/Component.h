@@ -50,6 +50,7 @@ class Component {
         , NOTE_INFO
         , INSTRUMENT_INPUT_HANDLER
         , TRANSFORM
+        , INVERT_COLOUR
         , MIDI_NOTE
         , PHYSICS
         , DELETE_OFFSCREEN

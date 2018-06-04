@@ -30,8 +30,9 @@
 namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
-        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
-        , auto_playing_{false} {
+        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER} {
+        //TODO(@jez): fix autoplay
+        //, auto_playing_{false} {
 }
 
 void SongNoteCollisionHandlerComponent::HandleCollisions(

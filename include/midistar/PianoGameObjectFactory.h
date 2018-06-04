@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_PIANOGAMEOBJECTFACTORY_H_
 #define MIDISTAR_PIANOGAMEOBJECTFACTORY_H_
 
+#include <vector>
+
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
 
@@ -36,31 +38,17 @@ class PianoGameObjectFactory : public GameObjectFactory {
     explicit PianoGameObjectFactory(double note_speed);
 
     /**
-     * Creates the instrument bar.
-     *
-     * \return A GameObject which is the instrument bar.
+     * \copydoc GameObjectFactory::CreateInstrumentBar()
      */
     virtual GameObject* CreateInstrumentBar();
 
     /**
-     * Creates a MIDI instrument note.
-     *
-     * \param note The MIDI note of the instrument.
-     *
-     * \return A GameObject which is an instrument.
+     * \copydoc GameObjectFactory::CreateInstrument()
      */
-    virtual GameObject* CreateInstrumentNote(int note);
+    virtual std::vector<GameObject*> CreateInstrument();
 
     /**
-     * Creates a MIDI song note.
-     *
-     * \param track The MIDI track of the note.
-     * \param chan MIDI channel.
-     * \param note MIDI note.
-     * \param vel MIDI velocity.
-     * \param duration The duration of the note.
-     *
-     * \return A GameObject which is a song note.
+     * \copydoc GameObjectFactory::CreateSongNote()
      */
     virtual GameObject* CreateSongNote(
             int track
@@ -92,7 +80,9 @@ class PianoGameObjectFactory : public GameObjectFactory {
 
     double CalculateXPosition(int midi_key);  //!< Calculates note / instrument
                                                                 //!< X position
-    
+    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for 
+                                                                 //!< the piano
+
     double note_width_;  //!< Holds the width of song notes
 };
 

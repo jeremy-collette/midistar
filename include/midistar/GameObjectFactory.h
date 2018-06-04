@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_GAMEOBJECTFACTORY_H_
 #define MIDISTAR_GAMEOBJECTFACTORY_H_
 
+#include <vector>
+
 #include "midistar/GameObject.h"
 
 namespace midistar {
@@ -48,13 +50,11 @@ class GameObjectFactory {
     virtual GameObject* CreateInstrumentBar() = 0;
 
     /**
-     * Creates a MIDI instrument note.
+     * Creates the instrument to play.
      *
-     * \param note The MIDI note of the instrument.
-     *
-     * \return A GameObject which is an instrument.
+     * \return A collection of GameObjects representing an instrument.
      */
-    virtual GameObject* CreateInstrumentNote(int note) = 0;
+    virtual std::vector<GameObject*> CreateInstrument() = 0;
 
     /**
      * Creates a MIDI song note.

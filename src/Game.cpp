@@ -100,12 +100,9 @@ int Game::Init() {
 
     bar_ = object_factory_->CreateInstrumentBar();
     objects_.push_back(bar_);
-    if (!Config::GetInstance().GetAutomaticallyPlay()) {
-        for (int note = Config::GetInstance().GetMinimumMidiNote();
-                note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
-            objects_.push_back(object_factory_->CreateInstrumentNote(note));
-        }
-    }
+    auto instrument = object_factory_->CreateInstrument();
+    objects_.insert(objects_.end(), instrument.begin(), instrument.end());
+
     return 0;
 }
 
@@ -136,7 +133,8 @@ int Game::Run() {
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
-                objects_.push_back(object_factory_->
+                // TODO(@jez): change to O(1)
+                objects_.insert(objects_.begin(), object_factory_->
                         CreateSongNote(
                             msg.GetTrack()
                             , msg.GetChannel()

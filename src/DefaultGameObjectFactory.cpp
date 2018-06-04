@@ -54,22 +54,13 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentBar() {
     return bar;
 }
 
-GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
-    double x = (note - Config::GetInstance().GetMinimumMidiNote())
-        * note_width_;
-    double y = Config::GetInstance().GetScreenHeight()-100;
-    GameObject* ins_note = new GameObject{x, y};
-
-    ins_note->SetComponent(new InstrumentComponent{});
-    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
-            , Config::GetInstance().GetMidiOutVelocity()});
-    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            note_width_), 20}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
-    rect->setFillColor(sf::Color::Green);
-    ins_note->SetComponent(new GraphicsComponent{rect});
-    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
-    return ins_note;
+std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {
+    std::vector<GameObject*> result;
+    for (int key = Config::GetInstance().GetMinimumMidiNote(); key <=
+            Config::GetInstance().GetMaximumMidiNote(); ++key) {
+        result.push_back(CreateInstrumentNote(key));
+    }
+    return result;
 }
 
 GameObject* DefaultGameObjectFactory::CreateSongNote(
@@ -97,6 +88,24 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
+}
+
+GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
+    double x = (note - Config::GetInstance().GetMinimumMidiNote())
+        * note_width_;
+    double y = Config::GetInstance().GetScreenHeight()-100;
+    GameObject* ins_note = new GameObject{x, y};
+
+    ins_note->SetComponent(new InstrumentComponent{});
+    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
+            , Config::GetInstance().GetMidiOutVelocity()});
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            note_width_), 20}};
+    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
+    rect->setFillColor(sf::Color::Green);
+    ins_note->SetComponent(new GraphicsComponent{rect});
+    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    return ins_note;
 }
 
 }  // End namespace midistar

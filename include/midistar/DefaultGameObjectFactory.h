@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_DEFAULTGAMEOBJECTFACTORY_H_
 #define MIDISTAR_DEFAULTGAMEOBJECTFACTORY_H_
 
+#include <vector>
+
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
 
@@ -36,31 +38,17 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     explicit DefaultGameObjectFactory(double note_speed);
 
     /**
-     * Creates the instrument bar.
-     *
-     * \return A GameObject which is the instrument bar.
+     * \copydoc GameObjectFactory::CreateInstrumentBar() 
      */
     virtual GameObject* CreateInstrumentBar();
 
     /**
-     * Creates a MIDI instrument note.
-     *
-     * \param note The MIDI note of the instrument.
-     *
-     * \return A GameObject which is an instrument.
+     * \copydoc GameObjectFactory::CreateInstrument() 
      */
-    virtual GameObject* CreateInstrumentNote(int note);
+    virtual std::vector<GameObject*> CreateInstrument();
 
     /**
-     * Creates a MIDI song note.
-     *
-     * \param track The MIDI track of the note.
-     * \param chan MIDI channel.
-     * \param note MIDI note.
-     * \param vel MIDI velocity.
-     * \param duration The duration of the note.
-     *
-     * \return A GameObject which is a song note.
+     * \copydoc GameObjectFactory::CreateSongNote() 
      */
     virtual GameObject* CreateSongNote(
             int track
@@ -70,6 +58,9 @@ class DefaultGameObjectFactory : public GameObjectFactory {
             , double duration);
 
  private:
+    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for 
+                                 //!< the instrument with the given MIDI key
+
     double note_width_;  //!< Holds the width of song notes
 };
 

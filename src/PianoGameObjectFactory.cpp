@@ -16,6 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
+
 #include "midistar/PianoGameObjectFactory.h"
 
 #include "midistar/BarComponent.h"
@@ -65,37 +67,15 @@ GameObject* PianoGameObjectFactory::CreateInstrumentBar() {
     return bar;
 }
 
-GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
-    double x = CalculateXPosition(note);
-    double y = Config::GetInstance().GetScreenHeight()-100;
-    GameObject* ins_note = new GameObject{x, y};
-
-    // TODO(@jez): fix this
-    if (x == -1.0) {
-        std::cerr << "Error: invalid instrument!\n";
-        return ins_note;
+std::vector<GameObject*> PianoGameObjectFactory::CreateInstrument() {
+    std::vector<GameObject*> result;
+    for (int key = PIANO_FIRST_MIDI_KEY; key < PIANO_FIRST_MIDI_KEY + 
+            NUM_PIANO_KEYS; ++key) {
+        GameObject* note = CreateInstrumentNote(key);
+        // We put black keys after white keys so they are displayed on top
+        result.insert(IsBlackKey(key) ? result.end() : result.begin(), note);
     }
-
-    ins_note->SetComponent(new InstrumentComponent{});
-    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
-            , Config::GetInstance().GetMidiOutVelocity()});
-
-    double height = WHITE_KEY_HEIGHT;
-    double width = note_width_;
-    sf::Color colour = sf::Color::White;
-    if (IsBlackKey(note)) {
-        height = BLACK_KEY_HEIGHT;
-        colour = sf::Color::Black; 
-        width /= 2;
-    }
-
-    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            width), static_cast<float>(height)}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
-    rect->setFillColor(colour);
-    ins_note->SetComponent(new GraphicsComponent{rect});
-    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
-    return ins_note;
+    return result;
 }
 
 GameObject* PianoGameObjectFactory::CreateSongNote(
@@ -109,12 +89,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     double height = duration * 1000 * GetNoteSpeed();
 
     GameObject* song_note = new GameObject{x, -height};
-    // TODO(@jez): fix this
-    if (x == -1.0) {
-        std::cerr << "Error: invalid note!\n";
-        return song_note;
-    }
-
+    
     // TODO(@jez): constant for colours
     sf::Color colour = sf::Color{50, 50, 200};
     double width = note_width_;
@@ -144,19 +119,10 @@ int PianoGameObjectFactory::GetWhiteKeyIndex(int midi_key) {
     int octave_num = key_index / NOTES_PER_OCTAVE;
     int prev_white_keys = octave_num * WHITE_KEYS_PER_OCTAVE;
     int octave_index = key_index % NOTES_PER_OCTAVE; 
-   
-    // TODO(@jez): remove debugging code
-   /* 
-    std::cout << "key_index: " << key_index << "\n";
-    std::cout << "octave_num: " << octave_num << "\n";
-    std::cout << "prev_white_keys: " << prev_white_keys << "\n";
-    std::cout << "octave_index: " << octave_index << "\n";
-    std::cout << "white_key_index: " << prev_white_keys + OCTAVE_KEY_TO_WHITE_KEY[octave_index] << "\n";
-    std::cout << "***************\n";
-    */
-    return prev_white_keys + OCTAVE_KEY_TO_WHITE_KEY[octave_index];
-    
-    }
+    int result =  prev_white_keys + OCTAVE_KEY_TO_WHITE_KEY[octave_index];
+    assert(result >= 0 && result < NUM_WHITE_KEYS);
+    return result;
+}
 
 bool PianoGameObjectFactory::IsBlackKey(int midi_key) {
     // The OCTAVE_BLACK_KEYS array indicates black keys in a typical octave.
@@ -173,15 +139,37 @@ bool PianoGameObjectFactory::IsBlackKey(int midi_key) {
 
 double PianoGameObjectFactory::CalculateXPosition(int midi_key) {
     double white_key_index = GetWhiteKeyIndex(midi_key);
-    if (white_key_index < 0 || white_key_index >= NUM_WHITE_KEYS) {
-        return -1.0;
-    }
-
     double x = white_key_index * note_width_;
     if (IsBlackKey(midi_key)) {
-        x += note_width_ / 2;
+        x += note_width_ / 2.0 + note_width_ / 4.0;
     }
     return x;
 } 
+
+GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
+    double x = CalculateXPosition(note);
+    double y = Config::GetInstance().GetScreenHeight()-100;
+    GameObject* ins_note = new GameObject{x, y};
+    ins_note->SetComponent(new InstrumentComponent{});
+    ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
+            , Config::GetInstance().GetMidiOutVelocity()});
+
+    double height = WHITE_KEY_HEIGHT;
+    double width = note_width_;
+    sf::Color colour = sf::Color::White;
+    if (IsBlackKey(note)) {
+        height = BLACK_KEY_HEIGHT;
+        colour = sf::Color::Black; 
+        width /= 2;
+    }
+
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            width), static_cast<float>(height)}};
+    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
+    rect->setFillColor(colour);
+    ins_note->SetComponent(new GraphicsComponent{rect});
+    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    return ins_note;
+}
 
 }  // End namespace midistar

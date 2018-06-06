@@ -62,6 +62,13 @@ class Config {
     bool GetFullScreen();
     
     /**
+     * Gets the game mode name.
+     *
+     * \return Game mode.
+     */
+    const std::string GetGameMode();
+
+    /**
      * Gets the maximum number of frames per second (FPS) for the SFML window.
      *
      * \return Maximum FPS.
@@ -190,6 +197,7 @@ class Config {
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
     bool full_screen_; //!< Full-screen setting
+    std::string game_mode_;  //!< Game mode name
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play

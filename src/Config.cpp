@@ -53,6 +53,8 @@ Config& Config::GetInstance() {
 Config::Config()
         : audio_driver_{""}
         , auto_play_{false}
+        , full_screen_{false}
+        , game_mode_{""}
         , keyboard_first_note_{-1}
         , max_frames_per_second_{-1}
         , midi_file_channels_{}
@@ -74,6 +76,10 @@ bool Config::GetAutomaticallyPlay() {
 
 bool Config::GetFullScreen() {
     return full_screen_;
+}
+
+const std::string Config::GetGameMode() {
+    return game_mode_;
 }
 
 int Config::GetMaximumFramesPerSecond() {
@@ -165,6 +171,7 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
+    app->add_option("--game_mode", game_mode_, "Determines the game mode.");
     app->add_option("--full_screen", full_screen_, "Determines whether or not "
            "to enable full-screen mode."); 
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "

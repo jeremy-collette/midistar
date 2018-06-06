@@ -85,7 +85,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
         WHITE_KEY_OUTLINE_THICKNESS / 2.0;  //!< Black key outline thickness
     static const int BLACK_KEY_HEIGHT = WHITE_KEY_HEIGHT * 0.65f;  //!< Black
                                                       //!< key height in pixels
-   static const sf::Color MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS];  //!< Holds
+    static const sf::Color MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS];  //!< Holds
                                                         //!< MIDI track colours
 
     static sf::Color DarkenColour(sf::Color c);  //! Darken a colour

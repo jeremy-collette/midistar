@@ -92,10 +92,13 @@ int Game::Init() {
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetNoteFallSpeed();
-    // TODO(@jez): remove debug code
-    //object_factory_ = new DefaultGameObjectFactory(note_speed);
-    object_factory_ = new PianoGameObjectFactory(note_speed);
 
+    auto mode = Config::GetInstance().GetGameMode();
+    if (mode == "piano") {
+            object_factory_ = new PianoGameObjectFactory(note_speed);
+    } else {
+            object_factory_ = new DefaultGameObjectFactory(note_speed);
+    }    
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
 

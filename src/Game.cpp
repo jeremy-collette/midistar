@@ -34,7 +34,7 @@ Game::Game()
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
-                 , Config::GetInstance().GetFullScreen() ? 
+                 , Config::GetInstance().GetFullScreen() ?
                  sf::Style::Fullscreen : sf::Style::None} {
 }
 
@@ -98,7 +98,7 @@ int Game::Init() {
             object_factory_ = new PianoGameObjectFactory(note_speed);
     } else {
             object_factory_ = new DefaultGameObjectFactory(note_speed);
-    }    
+    }
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
 

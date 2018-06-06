@@ -54,7 +54,10 @@ class DefaultGameObjectFactory : public GameObjectFactory {
 
  private:
     static const int MAX_MIDI_KEY = 128;  //!< Maximum MIDI key
-    
+    static const int INSTRUMENT_HEIGHT = 50;  //!< Instrument height
+    static constexpr float INSTRUMENT_HOVER_PERCENTAGE = 0.1f;  //!< The 
+             //!< percentage of the screen height that instruments will hover
+
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for 
                                  //!< the instrument with the given MIDI key
 

@@ -53,16 +53,19 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
         , int note
         , int vel
         , double duration) {
+    // Create GameObject
+    // height is derived by note duration and speed (note should move its 
+    // entire height over its duration).
     double x = note * note_width_;
-    // Height is equal to duration in milliseconds * pixels per millisecond
     double height = duration * 1000 * GetNoteSpeed();
+    GameObject* song_note = new GameObject{x, -height};
 
-    GameObject* song_note;
-    sf::RectangleShape* rect;
-    song_note = new GameObject{x, -height};
-    rect = new sf::RectangleShape{{static_cast<float>(note_width_)
-        , static_cast<float>(height)}};
+    // Create underlying shape
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            note_width_), static_cast<float>(height)}};
     rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
+
+    // Add components
     song_note->SetComponent(new SongNoteComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
@@ -74,17 +77,22 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
 }
 
 GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
+    // Create GameObject
     double x = note * note_width_;
-    double y = Config::GetInstance().GetScreenHeight()-100;
+    double y = Config::GetInstance().GetScreenHeight() - INSTRUMENT_HEIGHT -
+        (Config::GetInstance().GetScreenHeight() * INSTRUMENT_HOVER_PERCENTAGE);
     GameObject* ins_note = new GameObject{x, y};
 
+    // Create underlying shape
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            note_width_), INSTRUMENT_HEIGHT}};
+    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
+    rect->setFillColor(sf::Color::Red);
+
+    // Add components
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
-    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            note_width_), 20}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
-    rect->setFillColor(sf::Color::Green);
     ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{});
     return ins_note;

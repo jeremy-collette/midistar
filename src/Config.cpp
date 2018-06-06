@@ -59,8 +59,6 @@ Config::Config()
         , midi_file_name_{""}
         , midi_file_repeat_{false}
         , midi_file_tracks_{}
-        , midi_highest_note_{-1}
-        , midi_lowest_note_{-1}
         , screen_height_{-1}
         , screen_width_{-1}
         , soundfont_path_{""} {
@@ -80,10 +78,6 @@ bool Config::GetFullScreen() {
 
 int Config::GetMaximumFramesPerSecond() {
     return max_frames_per_second_;
-}
-
-int Config::GetMaximumMidiNote() {
-    return midi_highest_note_;
 }
 
 std::vector<int> Config::GetMidiFileChannels() {
@@ -110,18 +104,8 @@ int Config::GetMidiOutVelocity() {
     return MIDI_OUT_VELOCITY;
 }
 
-int Config::GetMinimumMidiNote() {
-    return midi_lowest_note_;
-}
-
 double Config::GetNoteFallSpeed() {
     return note_fall_speed_;
-}
-
-int Config::GetNumMidiNotes() {
-    // We have to add 1 here because 0 is actually a MIDI note (ergo, the range
-    // is inclusive).
-    return GetMaximumMidiNote() - GetMinimumMidiNote() + 1;
 }
 
 int Config::GetScreenHeight() {
@@ -194,10 +178,6 @@ void Config::InitCliApp(CLI::App* app) {
             "whether or not to continuously repeat the MIDI file.");
     app->add_option("--midi_file_tracks", midi_file_tracks_, "The MIDI tracks "
             "to read notes from. -1 will enable all tracks.");
-    app->add_option("--midi_highest_note", midi_highest_note_, "The highest "
-            "MIDI note to display and play.");
-    app->add_option("--midi_lowest_note", midi_lowest_note_, "The lowest MIDI "
-            "note to display and play.");
     app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
             "falling speed of notes on the screen. Fall speed is also "
             "dependent on the speed of the MIDI file being played.");

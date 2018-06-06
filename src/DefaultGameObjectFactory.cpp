@@ -36,13 +36,12 @@ namespace midistar {
 DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
         , note_width_{Config::GetInstance().GetScreenWidth() /
-            static_cast<double>(Config::GetInstance().GetNumMidiNotes())} {
+            static_cast<double>(MAX_MIDI_KEY)} {
 }
 
 std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {
     std::vector<GameObject*> result;
-    for (int key = Config::GetInstance().GetMinimumMidiNote(); key <=
-            Config::GetInstance().GetMaximumMidiNote(); ++key) {
+    for (int key = 0; key <= MAX_MIDI_KEY; ++key) {
         result.push_back(CreateInstrumentNote(key));
     }
     return result;
@@ -54,8 +53,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
         , int note
         , int vel
         , double duration) {
-    double x = (note - Config::GetInstance().GetMinimumMidiNote())
-        * note_width_;
+    double x = note * note_width_;
     // Height is equal to duration in milliseconds * pixels per millisecond
     double height = duration * 1000 * GetNoteSpeed();
 
@@ -76,8 +74,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
 }
 
 GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
-    double x = (note - Config::GetInstance().GetMinimumMidiNote())
-        * note_width_;
+    double x = note * note_width_;
     double y = Config::GetInstance().GetScreenHeight()-100;
     GameObject* ins_note = new GameObject{x, y};
 

@@ -69,13 +69,6 @@ class Config {
     int GetMaximumFramesPerSecond();
 
     /**
-     * Gets the maxmimum MIDI note to be displayed on the screen.
-     *
-     * \return Maximum MIDI note.
-     */
-    int GetMaximumMidiNote();
-
-    /**
      * Gets the MIDI file channels to play.
      *
      * \return MIDI file channels.
@@ -121,26 +114,11 @@ class Config {
     int GetMidiOutVelocity();
 
     /**
-     * Gets the minimum MIDI note to be displayed on the screen.
-     *
-     * \return Minimum MIDI note.
-     */
-    int GetMinimumMidiNote();
-
-    /**
      * Gets the fall speed of song notes.
      *
      * \return Note fall speed.
      */
     double GetNoteFallSpeed();
-
-    /**
-     * Gets the number of MIDI notes between (inclusive) the minimum and
-     * maximum.
-     *
-     * \return Number of MIDI notes.
-     */
-    int GetNumMidiNotes();
 
     /**
      * Gets the height of the screen.
@@ -218,8 +196,6 @@ class Config {
     std::string midi_file_name_;  //!< MIDI file being played by user
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
-    int midi_highest_note_;  //!< The highest MIDI note to support
-    int midi_lowest_note_;  //!< The lowest MIDI note to support
     double note_fall_speed_;  //!< Fall speed of notes on the screen
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width

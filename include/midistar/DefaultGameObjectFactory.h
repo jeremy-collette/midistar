@@ -53,6 +53,8 @@ class DefaultGameObjectFactory : public GameObjectFactory {
             , double duration);
 
  private:
+    static const int MAX_MIDI_KEY = 128;  //!< Maximum MIDI key
+    
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for 
                                  //!< the instrument with the given MIDI key
 

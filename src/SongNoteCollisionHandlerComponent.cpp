@@ -128,9 +128,9 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     //
     // If the top of the note is before the instrument:
     if (y < inst_y) {
-        // Resize the note so that it is not intersecting the instrument and
-        // add an anchor component anchored to the top of the instrument.
-        o->SetComponent(new ResizeComponent{width, inst_y-y});
+        // Resize the note so that it is intersecting with the instrument by 
+        // one pixel
+        o->SetComponent(new ResizeComponent{width, inst_y-y + 1});
     } else {  // Otherwise 'o' is now purely within the instrument and
              // can be removed.
         o->SetComponent(new ResizeComponent{0, 0});

@@ -30,7 +30,12 @@ namespace midistar {
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
         : Component{Component::INSTRUMENT_INPUT_HANDLER}
         , key_{sf::Keyboard::Key::Unknown}
-        , key_down_{false} {
+        , key_down_{false}
+        , set_active_{false} {
+}
+
+void InstrumentInputHandlerComponent::SetActive(bool active) {
+    set_active_ = active;
 }
 
 void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
@@ -79,7 +84,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     }
 
     // If this instrument is activated...
-    if (key_down_) {
+    if (key_down_ || set_active_) {
         // Set the GraphicsComponent and send a note on event
         if (!o->HasComponent(Component::COLLIDABLE)) {
             o->SetComponent(new CollidableComponent{});

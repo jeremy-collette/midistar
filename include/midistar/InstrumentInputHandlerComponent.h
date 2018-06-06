@@ -39,14 +39,25 @@ class InstrumentInputHandlerComponent : public Component {
      InstrumentInputHandlerComponent();
 
      /**
+      * Allows other components to activate instrument.
+      *
+      * \param active True activates instrument. False leaves instrument
+      * unchanged.
+      */
+     void SetActive(bool active);
+
+     /**
       * \copydoc Component::Update()
       */
      virtual void Update(Game* g, GameObject* o, int delta);
+
 
  private:
      sf::Keyboard::Key key_;  //!< Holds the key that was pressed to activate
                                                             //!< the instrument
      bool key_down_;  //!< Determines if the instrument is currently activated
+     bool set_active_;  //!< Determines if the instrument has been activated 
+                                                                //!< externally
 };
 
 }  // End namespace midistar

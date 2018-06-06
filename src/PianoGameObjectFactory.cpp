@@ -26,6 +26,7 @@
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
 #include "midistar/GraphicsComponent.h"
+#include "midistar/InstrumentCollisionHandlerComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/InvertColourComponent.h"
@@ -194,6 +195,8 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             , Config::GetInstance().GetMidiOutVelocity()});
     ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    ins_note->SetComponent(new CollisionDetectorComponent{});
+    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
     return ins_note;
 }
 

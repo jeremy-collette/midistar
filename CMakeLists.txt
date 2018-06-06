@@ -38,6 +38,7 @@ add_executable(midistar
     src/GameObject.cpp
     src/GameObjectFactory.cpp
     src/GraphicsComponent.cpp
+    src/InstrumentCollisionHandlerComponent.cpp
     src/InstrumentComponent.cpp
     src/InstrumentInputHandlerComponent.cpp
     src/InvertColourComponent.cpp

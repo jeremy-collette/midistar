@@ -18,11 +18,13 @@
 
 #include "midistar/DefaultGameObjectFactory.h"
 
+#include "midistar/CollidableComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
 #include "midistar/GraphicsComponent.h"
+#include "midistar/InstrumentCollisionHandlerComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/NoteInfoComponent.h"
@@ -67,6 +69,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});
+    song_note->SetComponent(new CollidableComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
     song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
@@ -95,6 +98,8 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
             , Config::GetInstance().GetMidiOutVelocity()});
     ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    ins_note->SetComponent(new CollisionDetectorComponent{});
+    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{}); 
     return ins_note;
 }
 

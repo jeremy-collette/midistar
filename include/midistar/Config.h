@@ -157,20 +157,6 @@ class Config {
     const std::string GetSoundFontPath();
 
     /**
-     * Converts a MIDI note to the instrument mapping on the keyboard.
-     *
-     * \param midi_note The MIDI note.
-     * \param control Determines whether or not CONTROL is being pressed.
-     * \param shift Determines whether or not SHIFT is being pressed.
-     *
-     * \return A keyboard note mapping.
-     */
-    sf::Keyboard::Key MidiNoteToKeyboardKey(
-            int midi_note
-            , bool control
-            , bool shift);
-
-    /**
      * Parses commandline arguments.
      *
      * \param argc Number of arguments.
@@ -182,11 +168,8 @@ class Config {
 
  private:
     static const int MIDI_OUT_VELOCITY = 127;  //!< MIDI out velocity
-    static const int NUM_MAPPED_KEYS = 45;  //!< Number of keys mapped
     static const int MIDI_FILE_TICKS_PER_SPEED = 120;  //!< Number of MIDI file
                                                //!< ticks per one unit of speed
-    static const sf::Keyboard::Key MAPPED_KEYS[NUM_MAPPED_KEYS];
-                                            //!< The mapped keys on a keyboard
 
     static Config instance_;  //!< Holds singleton instance of Config
 

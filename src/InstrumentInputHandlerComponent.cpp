@@ -29,12 +29,14 @@ namespace midistar {
 
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent(
     sf::Keyboard::Key key
+    , bool ctrl
     , bool shift)
         : Component{Component::INSTRUMENT_INPUT_HANDLER}
+        , ctrl_{ctrl}
         , key_{key}
         , key_down_{false}
-        , shift_{shift}
-        , set_active_{false} {
+        , set_active_{false}
+        , shift_{shift} {
 }
 
 void InstrumentInputHandlerComponent::SetActive(bool active) {
@@ -42,6 +44,7 @@ void InstrumentInputHandlerComponent::SetActive(bool active) {
 }
 
 void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
+    // Check for required component
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
         return;
@@ -50,13 +53,16 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     // Check SFML events for key presses
     for (const auto& e : g->GetSfEvents()) {
         // Check if its the right key and event type
-        if (e.key.code != key_ || (e.type != sf::Event::KeyPressed 
+        if (e.key.code != key_ || (e.type != sf::Event::KeyPressed
                     && e.type != sf::Event::KeyReleased)) {
-            continue;               
+            continue;
         }
-       
-        // Determine if the key is up or down 
-        key_down_ = e.type == sf::Event::KeyPressed;
+
+        // Determine if the key is up or down and the required modifiers are
+        // pressed
+        key_down_ = e.type == sf::Event::KeyPressed
+            && ctrl_ == e.key.control
+            && shift_ == e.key.shift;
     }
 
     // Handle MIDI input port events.

@@ -90,6 +90,8 @@ class PianoGameObjectFactory : public GameObjectFactory {
 
     static sf::Color DarkenColour(sf::Color c);  //! Darken a colour
     static sf::Color GetTrackColour(int midi_track);  //!< Get colour for track
+    static void GetInstrumentKeyBinding(int midi_key, sf::Keyboard::Key* key,
+            bool* ctrl, bool* shift);  //!< Gets instrument key binding
     static int GetWhiteKeyIndex(int midi_key);  //!< Gets the index of the
                                     //!< closest white piano key to a MIDI key
     static bool IsBlackKey(int midi_key);  //!< Determines if a MIDI key

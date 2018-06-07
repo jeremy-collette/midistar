@@ -50,7 +50,6 @@ class InstrumentCollisionHandlerComponent : public CollisionHandlerComponent {
 
     GameObject* colliding_note_;  //!< Holds the note we are colliding with. We
                      //!< need to keep track of this to play overlapping notes.
-                                                     
 };
 
 }  // End namespace midistar

@@ -67,7 +67,7 @@ void InstrumentCollisionHandlerComponent::HandleCollisions(
     }
 
     // Check that we are still colliding with the same note.
-    // If we don't differentiate between notes, we will ignore and not play 
+    // If we don't differentiate between notes, we will ignore and not play
     // overlapping notes.
     if (std::find(colliding_with.begin(), colliding_with.end()
                 , colliding_note_) == colliding_with.end()) {

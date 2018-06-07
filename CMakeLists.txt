@@ -56,6 +56,7 @@ add_executable(midistar
     src/ResizeComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
+    src/Utility.cpp
     )
 
 # Link midistar

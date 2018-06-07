@@ -35,8 +35,17 @@ class InstrumentInputHandlerComponent : public Component {
  public:
      /**
       * Constructor.
+      *
+      * \param key The keyboard key to bind this instrument to.
+      * \param ctrl Indicates whether or not the control key must be pressed
+      * in conjunction with the key binding.
+      * \param shift Indicates whether or not the shift key must be pressed
+      * in conjunction with the key binding.
       */
-     InstrumentInputHandlerComponent();
+     InstrumentInputHandlerComponent(
+             sf::Keyboard::Key key
+            , bool ctrl
+            , bool shift);
 
      /**
       * Allows other components to activate instrument.
@@ -53,12 +62,14 @@ class InstrumentInputHandlerComponent : public Component {
 
 
  private:
+     const bool ctrl_;  //!< Determines if the 'control' modifier has to be
+                                  //!< pressed in conjunction with key binding
      const sf::Keyboard::Key key_;  //!< The key bound to this instrument
      bool key_down_;  //!< Determines if the instrument is currently activated
      bool set_active_;  //!< Determines if the instrument has been activated
                                                                 //!< externally
-     bool shift_;  //!< Determines if 'shift' modifier has to be pressed to
-                                  //!< activate the instrument with the keybind
+     const bool shift_;  //!< Determines if the 'shift' modifier has to be
+                                  //!< pressed in conjunction with key binding
 };
 
 }  // End namespace midistar

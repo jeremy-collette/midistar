@@ -22,28 +22,6 @@
 
 namespace midistar {
 
-const sf::Keyboard::Key Config::MAPPED_KEYS[NUM_MAPPED_KEYS] {
-        sf::Keyboard::Key::Num1, sf::Keyboard::Key::Num2
-        , sf::Keyboard::Key::Num3, sf::Keyboard::Key::Num4
-        , sf::Keyboard::Key::Num5, sf::Keyboard::Key::Num6
-        , sf::Keyboard::Key::Num7, sf::Keyboard::Key::Num8
-        , sf::Keyboard::Key::Num9, sf::Keyboard::Key::Num0
-        , sf::Keyboard::Key::Dash, sf::Keyboard::Key::Equal
-        , sf::Keyboard::Key::Q, sf::Keyboard::Key::W, sf::Keyboard::Key::E
-        , sf::Keyboard::Key::R, sf::Keyboard::Key::T, sf::Keyboard::Key::Y
-        , sf::Keyboard::Key::U, sf::Keyboard::Key::I, sf::Keyboard::Key::O
-        , sf::Keyboard::Key::P, sf::Keyboard::Key::LBracket
-        , sf::Keyboard::Key::RBracket, sf::Keyboard::Key::A
-        , sf::Keyboard::Key::S, sf::Keyboard::Key::D, sf::Keyboard::Key::F
-        , sf::Keyboard::Key::G, sf::Keyboard::Key::H, sf::Keyboard::Key::J
-        , sf::Keyboard::Key::K, sf::Keyboard::Key::L
-        , sf::Keyboard::Key::SemiColon, sf::Keyboard::Key::Quote
-        , sf::Keyboard::Key::Z, sf::Keyboard::Key::X, sf::Keyboard::Key::C
-        , sf::Keyboard::Key::V, sf::Keyboard::Key::B, sf::Keyboard::Key::N
-        , sf::Keyboard::Key::M, sf::Keyboard::Key::Comma
-        , sf::Keyboard::Key::Period, sf::Keyboard::Key::Slash
-    };
-
 Config Config::instance_;
 
 Config& Config::GetInstance() {
@@ -129,25 +107,6 @@ int Config::GetScreenWidth() {
 
 const std::string Config::GetSoundFontPath() {
     return soundfont_path_;
-}
-
-sf::Keyboard::Key Config::MidiNoteToKeyboardKey(
-        int midi_note
-        , bool control
-        , bool shift) {
-    // If the user is pressing CONTROL, we shift the MIDI note down by the
-    // number of mapped keys. If the user is pressing SHIFT, we shift the MIDI
-    // key up.
-    //
-    // This might look counter-intuitive, but we actually shift the MIDI note
-    // down by changing the which key activates the relevant MIDI instrument.
-    // As such, LOWERING the keyboard key index will play a higher MIDI note
-    // on the same keyboard key, and INCREASING the keyboard key index will
-    // play a lower MIDI note on the same keyboard key.
-    int index = midi_note - keyboard_first_note_ + control * NUM_MAPPED_KEYS
-        - shift * NUM_MAPPED_KEYS;
-    return (index < 0 || index > NUM_MAPPED_KEYS-1) ?
-        sf::Keyboard::Key::Unknown : MAPPED_KEYS[index];
 }
 
 int Config::ParseOptions(int argc, char** argv) {

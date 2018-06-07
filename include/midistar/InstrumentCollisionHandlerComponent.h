@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
-#define MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
+#ifndef MIDISTAR_INSTRUMENTCOLLISIONHANDLERCOMPONENT_H_
+#define MIDISTAR_INSTRUMENTCOLLISIONHANDLERCOMPONENT_H_
 
 #include <vector>
 
@@ -26,15 +26,15 @@
 namespace midistar {
 
 /**
- * The SongNoteCollisionHandlerComponent class handles collisions between song
+ * The InstrumentCollisionHandlerComponent class handles collisions between song
  * notes and other GameObjects.
  */
-class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
+class InstrumentCollisionHandlerComponent : public CollisionHandlerComponent {
  public:
      /**
       * Constructor.
       */
-     SongNoteCollisionHandlerComponent();
+     InstrumentCollisionHandlerComponent();
 
      /**
       * \copydoc CollisionHandlerComponent::HandleCollisions()
@@ -45,14 +45,10 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , std::vector<GameObject*> colliding_with);
 
  private:
-    static const char NOTE_COLLISION_CUTOFF = 20;  //!< Notes must be within
-        //!< this many pixels from the top of the instrument to be completely
-        //!< played.
-
     void HandleCollision(Game* g, GameObject* o, GameObject* collider);
                                                      //!< Handles a collision
 };
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_SONGNOTECOLLISIONHANDLERCOMPONENT_H_
+#endif  // MIDISTAR_INSTRUMENTCOLLISIONHANDLERCOMPONENT_H_

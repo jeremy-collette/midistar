@@ -25,7 +25,8 @@
 namespace midistar {
 
 InstrumentCollisionHandlerComponent::InstrumentCollisionHandlerComponent()
-        : CollisionHandlerComponent{Component::INSTRUMENT_COLLISION_HANDLER} {
+        : CollisionHandlerComponent{Component::INSTRUMENT_COLLISION_HANDLER}
+        , colliding_note_{nullptr} {
 }
 
 void InstrumentCollisionHandlerComponent::HandleCollisions(
@@ -50,22 +51,31 @@ void InstrumentCollisionHandlerComponent::HandleCollisions(
     }
 
     // Check each collision for collision with a song note
-    bool colliding = false;
-    for (auto& collider : colliding_with) {
-        if (collider->HasComponent(Component::SONG_NOTE)) {
-            auto other_note = collider->GetComponent<NoteInfoComponent>(
-                    Component::NOTE_INFO);
-            if (!other_note) {
-                continue;
-            }
-            if (note->GetKey() == other_note->GetKey()) {
-                colliding = true;
+    if (!colliding_note_) {
+        for (auto& collider : colliding_with) {
+            if (collider->HasComponent(Component::SONG_NOTE)) {
+                auto other_note = collider->GetComponent<NoteInfoComponent>(
+                        Component::NOTE_INFO);
+                if (!other_note) {
+                    continue;
+                }
+                if (note->GetKey() == other_note->GetKey()) {
+                    colliding_note_ = collider;
+                }
             }
         }
     }
 
+    // Check that we are still colliding with the same note.
+    // If we don't differentiate between notes, we will ignore and not play 
+    // overlapping notes.
+    if (std::find(colliding_with.begin(), colliding_with.end()
+                , colliding_note_) == colliding_with.end()) {
+        colliding_note_ = nullptr;
+    }
+
     // If we have a collision with a note, activate instrument
-    inpt_handler->SetActive(colliding);
+    inpt_handler->SetActive(colliding_note_);
 }
 
 }  // End namespace midistar

@@ -20,6 +20,7 @@
 #define MIDISTAR_DEFAULTGAMEOBJECTFACTORY_H_
 
 #include <vector>
+#include <SFML/Window.hpp>
 
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
@@ -53,13 +54,15 @@ class DefaultGameObjectFactory : public GameObjectFactory {
             , double duration);
 
  private:
-    static const int MAX_MIDI_KEY = 128;  //!< Maximum MIDI key
+    static const int NUM_MIDI_KEYS = 128;  //!< Maximum MIDI key
     static const int INSTRUMENT_HEIGHT = 25;  //!< Instrument height
     static constexpr float INSTRUMENT_HOVER_PERCENTAGE = 0.1f;  //!< The
              //!< percentage of the screen height that instruments will hover
 
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                  //!< the instrument with the given MIDI key
+    static void GetInstrumentKeyBinding(int midi_key, sf::Keyboard::Key* key,
+            bool* ctrl, bool* shift);  //!< Gets instrument key binding
 
     double note_width_;  //!< Holds the width of song notes
 };

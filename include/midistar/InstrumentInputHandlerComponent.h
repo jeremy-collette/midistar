@@ -28,8 +28,8 @@ namespace midistar {
  * The InstrumentInputHandlerComponent handles input for instruments.
  *
  * More specifically, it polls keyboard and MIDI input port events and
- * activates the instrument when applicable. While active, the instrument is
- * visible and plays a MIDI note.
+ * activates the instrument when applicable. While active, the instrument
+ * plays a MIDI note and interacts with falling song notes on the screen.
  */
 class InstrumentInputHandlerComponent : public Component {
  public:
@@ -53,11 +53,12 @@ class InstrumentInputHandlerComponent : public Component {
 
 
  private:
-     sf::Keyboard::Key key_;  //!< Holds the key that was pressed to activate
-                                                            //!< the instrument
+     const sf::Keyboard::Key key_;  //!< The key bound to this instrument
      bool key_down_;  //!< Determines if the instrument is currently activated
      bool set_active_;  //!< Determines if the instrument has been activated
                                                                 //!< externally
+     bool shift_;  //!< Determines if 'shift' modifier has to be pressed to
+                                  //!< activate the instrument with the keybind
 };
 
 }  // End namespace midistar

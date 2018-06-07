@@ -27,10 +27,13 @@
 
 namespace midistar {
 
-InstrumentInputHandlerComponent::InstrumentInputHandlerComponent()
+InstrumentInputHandlerComponent::InstrumentInputHandlerComponent(
+    sf::Keyboard::Key key
+    , bool shift)
         : Component{Component::INSTRUMENT_INPUT_HANDLER}
-        , key_{sf::Keyboard::Key::Unknown}
+        , key_{key}
         , key_down_{false}
+        , shift_{shift}
         , set_active_{false} {
 }
 
@@ -44,34 +47,16 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
         return;
     }
 
+    // Check SFML events for key presses
     for (const auto& e : g->GetSfEvents()) {
-        // We want to ignore Unknown keys as we use this as a sentinel value
-        if (e.key.code == sf::Keyboard::Key::Unknown) {
-            continue;
+        // Check if its the right key and event type
+        if (e.key.code != key_ || (e.type != sf::Event::KeyPressed 
+                    && e.type != sf::Event::KeyReleased)) {
+            continue;               
         }
-
-        // If a key has been pressed and we're not currently activated...
-        if (e.type == sf::Event::KeyPressed
-                && key_ == sf::Keyboard::Key::Unknown) {
-            // Find our trigger key
-            sf::Keyboard::Key needed = Config::GetInstance().
-                MidiNoteToKeyboardKey(note->GetKey(), e.key.control
-                        , e.key.shift);
-
-            // If our trigger key has been pressed, save the key that was
-            // pressed (for handling key released) and note that we're
-            // activated
-            if (needed == e.key.code) {
-                key_ = e.key.code;
-                key_down_ = true;
-            }
-        // If a key has been released and it's our trigger key
-        // (we're activated)...
-        } else if (e.type == sf::Event::KeyReleased && e.key.code == key_) {
-            // Mark as not activated
-            key_ = sf::Keyboard::Key::Unknown;
-            key_down_ = false;
-        }
+       
+        // Determine if the key is up or down 
+        key_down_ = e.type == sf::Event::KeyPressed;
     }
 
     // Handle MIDI input port events.
@@ -95,7 +80,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
                     , note->GetKey()
                     , note->GetVelocity()});
        }
-    // If it's not activated but the GraphicsComponent is set...
+    // If it's not activated but the CollidableComponent is set...
     } else if (o->HasComponent(Component::COLLIDABLE)) {
         // Remove it and send a note off event
         o->RemoveComponent(Component::COLLIDABLE);

@@ -16,17 +16,32 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/GameObjectFactory.h"
+#ifndef MIDISTAR_COLLIDABLECOMPONENT_H_
+#define MIDISTAR_COLLIDABLECOMPONENT_H_
+
+#include "midistar/Component.h"
+#include "midistar/Game.h"
+#include "midistar/GameObject.h"
 
 namespace midistar {
 
-GameObjectFactory::GameObjectFactory(double note_speed)
-        : note_speed_{note_speed} {
-}
+/**
+ * The CollidableComponent class indicates that an object is collidable and
+ * can be part of a collision.
+ */
+class CollidableComponent : public Component {
+ public:
+    /**
+     * Constructor
+     */
+    CollidableComponent();
 
-double GameObjectFactory::GetNoteSpeed() {
-    return note_speed_;
-}
+    /**
+     * \copydoc Component::Update()
+     */
+    virtual void Update(Game* g, GameObject* o, int delta);
+};
 
-}  // End namespace midistar
+}   // End namespace midistar
 
+#endif  // MIDISTAR_COLLIDABLECOMPONENT_H_

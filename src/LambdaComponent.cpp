@@ -16,17 +16,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/GameObjectFactory.h"
+#include "midistar/LambdaComponent.h"
 
 namespace midistar {
 
-GameObjectFactory::GameObjectFactory(double note_speed)
-        : note_speed_{note_speed} {
+LambdaComponent::LambdaComponent(
+    std::function<void(Game*, GameObject*, int)> func)
+        : Component{Component::TRANSFORMATION}
+        , func_{func} {
 }
 
-double GameObjectFactory::GetNoteSpeed() {
-    return note_speed_;
+void LambdaComponent::Update(Game* g, GameObject* o, int delta) {
+    func_(g, o, delta);
+    o->DeleteComponent(GetType());
 }
 
-}  // End namespace midistar
-
+}   // End namespace midistar

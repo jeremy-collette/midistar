@@ -16,17 +16,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/GameObjectFactory.h"
+#include "midistar/CollidableComponent.h"
 
 namespace midistar {
 
-GameObjectFactory::GameObjectFactory(double note_speed)
-        : note_speed_{note_speed} {
+CollidableComponent::CollidableComponent()
+        : Component{Component::COLLIDABLE} {
 }
 
-double GameObjectFactory::GetNoteSpeed() {
-    return note_speed_;
+void CollidableComponent::Update(Game*, GameObject*, int) {
 }
 
-}  // End namespace midistar
-
+}   // End namespace midistar

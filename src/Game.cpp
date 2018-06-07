@@ -22,26 +22,37 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "midistar/GameObjectFactory.h"
+#include "midistar/DefaultGameObjectFactory.h"
+#include "midistar/PianoGameObjectFactory.h"
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
 
 namespace midistar {
 
 Game::Game()
-        : bar_{0}
+        : object_factory_{nullptr}
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
-                 , Config::GetInstance().GetScreenHeight()), "midistar"} {
+                 , Config::GetInstance().GetScreenHeight())
+                 , "midistar"
+                 , Config::GetInstance().GetFullScreen() ?
+                 sf::Style::Fullscreen : sf::Style::None} {
 }
 
 Game::~Game() {
     for (auto& o : objects_) {
         delete o;
     }
+    if (object_factory_) {
+        delete object_factory_;
+    }
 }
 
 void Game::AddGameObject(GameObject* obj) {
     new_objects_.push(obj);
+}
+
+GameObjectFactory& Game::GetGameObjectFactory() {
+    return *object_factory_;
 }
 
 const std::vector<MidiMessage>& Game::GetMidiInMessages() {
@@ -50,10 +61,6 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
     return objects_;
-}
-
-GameObject* Game::GetInstrumentBar() {
-    return bar_;
 }
 
 const std::vector<sf::Event>& Game::GetSfEvents() {
@@ -85,17 +92,16 @@ int Game::Init() {
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetNoteFallSpeed();
-    GameObjectFactory::GetInstance().Init(note_speed);
 
-    bar_ = GameObjectFactory::GetInstance().CreateInstrumentBar();
-    objects_.push_back(bar_);
-    if (!Config::GetInstance().GetAutomaticallyPlay()) {
-        for (int note = Config::GetInstance().GetMinimumMidiNote();
-                note <= Config::GetInstance().GetMaximumMidiNote(); ++note) {
-            objects_.push_back(GameObjectFactory::GetInstance().
-                    CreateInstrumentNote(note));
-        }
+    auto mode = Config::GetInstance().GetGameMode();
+    if (mode == "piano") {
+            object_factory_ = new PianoGameObjectFactory(note_speed);
+    } else {
+            object_factory_ = new DefaultGameObjectFactory(note_speed);
     }
+    auto instrument = object_factory_->CreateInstrument();
+    objects_.insert(objects_.end(), instrument.begin(), instrument.end());
+
     return 0;
 }
 
@@ -104,7 +110,7 @@ int Game::Run() {
     sf::Clock clock;
     while (window_.isOpen()) {
         FlushNewObjectQueue();
-        window_.clear();
+        window_.clear(sf::Color{40, 40, 40});
 
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
@@ -126,7 +132,7 @@ int Game::Run() {
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
-                objects_.push_back(GameObjectFactory::GetInstance().
+                objects_.push_back(object_factory_->
                         CreateSongNote(
                             msg.GetTrack()
                             , msg.GetChannel()

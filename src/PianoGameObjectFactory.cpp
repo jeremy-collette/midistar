@@ -35,6 +35,7 @@
 #include "midistar/ResizeComponent.h"
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/Utility.h"
 
 namespace midistar {
 
@@ -121,6 +122,27 @@ sf::Color PianoGameObjectFactory::GetTrackColour(int midi_track) {
     return MIDI_TRACK_COLOURS[midi_track % NUM_TRACK_COLOURS];
 }
 
+void PianoGameObjectFactory::GetInstrumentKeyBinding(
+        int midi_key
+        , sf::Keyboard::Key* key
+        , bool* ctrl
+        , bool* shift) {
+    const std::vector<sf::Keyboard::Key>& keys = Utility::GetQwertyKeys();
+    int num_keys = keys.size();
+
+    // We bind each white piano key to its own computer keyboard key. Black
+    // keys are played by pressing the key binding for the white key plus the
+    // shift modifier.
+    assert(num_keys >= NUM_WHITE_KEYS);
+
+    int white_index = GetWhiteKeyIndex(midi_key);
+    *key = keys[white_index];
+    if (IsBlackKey(midi_key)) {
+        *shift = true;
+    }
+    *ctrl = false;
+}
+
 int PianoGameObjectFactory::GetWhiteKeyIndex(int midi_key) {
     // Here we find the white key index for any given MIDI key. MIDI keys that
     // are assigned to a black key will return the previous white key.
@@ -189,12 +211,18 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     rect->setOutlineColor(sf::Color::Black);
     rect->setOutlineThickness(outline_thickness);
 
+    // Get the instrument key binding
+    sf::Keyboard::Key key;
+    bool ctrl, shift;
+    GetInstrumentKeyBinding(note, &key, &ctrl, &shift);
+
     // Add components
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
     ins_note->SetComponent(new GraphicsComponent{rect});
-    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl,
+            shift});
     ins_note->SetComponent(new CollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
     return ins_note;

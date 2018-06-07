@@ -18,6 +18,8 @@
 
 #include "midistar/DefaultGameObjectFactory.h"
 
+#include <cassert>
+
 #include "midistar/CollidableComponent.h"
 #include "midistar/CollisionDetectorComponent.h"
 #include "midistar/Config.h"
@@ -32,18 +34,19 @@
 #include "midistar/ResizeComponent.h"
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/Utility.h"
 
 namespace midistar {
 
 DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
         , note_width_{Config::GetInstance().GetScreenWidth() /
-            static_cast<double>(MAX_MIDI_KEY)} {
+            static_cast<double>(NUM_MIDI_KEYS)} {
 }
 
 std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {
     std::vector<GameObject*> result;
-    for (int key = 0; key <= MAX_MIDI_KEY; ++key) {
+    for (int key = 0; key < NUM_MIDI_KEYS; ++key) {
         result.push_back(CreateInstrumentNote(key));
     }
     return result;
@@ -92,15 +95,45 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
     rect->setFillColor(sf::Color::Red);
 
+    // Get key binding
+    sf::Keyboard::Key key;
+    bool ctrl, shift;
+    GetInstrumentKeyBinding(note, &key, &ctrl, &shift);
+
     // Add components
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
     ins_note->SetComponent(new GraphicsComponent{rect});
-    ins_note->SetComponent(new InstrumentInputHandlerComponent{});
+    ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl
+            , shift});
     ins_note->SetComponent(new CollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
     return ins_note;
+}
+
+void DefaultGameObjectFactory::GetInstrumentKeyBinding(
+        int midi_key
+        , sf::Keyboard::Key* key
+        , bool* ctrl
+        , bool* shift) {
+    const std::vector<sf::Keyboard::Key>& keys = Utility::GetQwertyKeys();
+    int num_keys = keys.size();
+
+    // We don't have enough unique keys to assign each instrument one key, so
+    // we break the key bindings up in to three equal sections. The first
+    // section bindings use a key plus the ctrl modifier. The second section 
+    // bindings use just a key. The third section bindings use a key plus the
+    // shift modifier. This way we can cover every single MIDI note with the
+    // QWERTY keys (alphanumeric and a few punctuation keys).
+    assert(num_keys * 3 >= NUM_MIDI_KEYS);
+
+    // Get the key
+    *key = keys[midi_key % num_keys];
+    // Determine if we are in the first section
+    *ctrl = midi_key < num_keys;
+    // Determine if we are in the third section
+    *shift = midi_key >= num_keys * 2;
 }
 
 }  // End namespace midistar

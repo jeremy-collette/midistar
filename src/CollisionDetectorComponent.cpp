@@ -43,7 +43,7 @@ void CollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
 
     colliding_with_.clear();
     for (auto& other_obj : g->GetGameObjects()) {
-        if (other_obj == o || 
+        if (other_obj == o ||
                 !other_obj->HasComponent(Component::COLLIDABLE)) {
              continue;
         }

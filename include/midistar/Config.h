@@ -60,7 +60,7 @@ class Config {
      * \return Full-screen mode.
      */
     bool GetFullScreen();
-    
+
     /**
      * Gets the game mode name.
      *
@@ -196,7 +196,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
-    bool full_screen_; //!< Full-screen setting
+    bool full_screen_;  //!< Full-screen setting
     std::string game_mode_;  //!< Game mode name
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS

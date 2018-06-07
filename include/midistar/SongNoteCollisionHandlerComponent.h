@@ -45,16 +45,12 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , std::vector<GameObject*> colliding_with);
 
  private:
-    const static char NOTE_COLLISION_CUTOFF = 20;  //!< Notes must be within 
+    static const char NOTE_COLLISION_CUTOFF = 20;  //!< Notes must be within
         //!< this many pixels from the top of the instrument to be completely
         //!< played.
 
     void HandleCollision(Game* g, GameObject* o, GameObject* collider);
                                                      //!< Handles a collision
-      
-    //TODO(@jez): fix autoplay    
-    //bool auto_playing_;  //!< Determines if we are currently auto playing a
-                                                                    //!< note
 };
 
 }  // End namespace midistar

@@ -31,31 +31,27 @@ namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
         : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER} {
-        //TODO(@jez): fix autoplay
-        //, auto_playing_{false} {
 }
 
 void SongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
-
     // Handle each collision
     for (auto& collider : colliding_with) {
         HandleCollision(g, o, collider);
-   }
+    }
 }
 
 void SongNoteCollisionHandlerComponent::HandleCollision(
         Game* g
         , GameObject* o
-        , GameObject* collider) {    
-  
+        , GameObject* collider) {
     // We only want to handle collisions with instruments
     if (!collider->HasComponent(Component::INSTRUMENT)) {
         return;
     }
-  
+
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
         return;
@@ -80,7 +76,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     // Get position and size info
     double x, y, width, height;
     o->GetPosition(&x, &y);
-    graphics->GetSize(&width, &height);    
+    graphics->GetSize(&width, &height);
     double inst_x, inst_y, inst_w, inst_h;
     collider->GetPosition(&inst_x, &inst_y);
     other_graphics->GetSize(&inst_w, &inst_h);
@@ -90,7 +86,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
         return;
     }
 
-    // If the bottom of the note is outside the playable part, separate the 
+    // If the bottom of the note is outside the playable part, separate the
     // part below the cutoff in to a different (unplayable) note. This section
     // of the note has been missed.
     if (y + height > inst_y + NOTE_COLLISION_CUTOFF) {
@@ -118,7 +114,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
             return;
         }
 
-        half_graphics->SetSize(width, (y + height) - (inst_y 
+        half_graphics->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));
         g->AddGameObject(half);
     }
@@ -128,7 +124,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     //
     // If the top of the note is before the instrument:
     if (y < inst_y) {
-        // Resize the note so that it is intersecting with the instrument by 
+        // Resize the note so that it is intersecting with the instrument by
         // one pixel
         o->SetComponent(new ResizeComponent{width, inst_y-y + 1});
     } else {  // Otherwise 'o' is now purely within the instrument and

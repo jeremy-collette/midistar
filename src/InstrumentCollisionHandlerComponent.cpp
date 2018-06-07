@@ -61,7 +61,7 @@ void InstrumentCollisionHandlerComponent::HandleCollisions(
             if (note->GetKey() == other_note->GetKey()) {
                 colliding = true;
             }
-        }                
+        }
     }
 
     // If we have a collision with a note, activate instrument

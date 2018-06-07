@@ -56,7 +56,7 @@ class InstrumentInputHandlerComponent : public Component {
      sf::Keyboard::Key key_;  //!< Holds the key that was pressed to activate
                                                             //!< the instrument
      bool key_down_;  //!< Determines if the instrument is currently activated
-     bool set_active_;  //!< Determines if the instrument has been activated 
+     bool set_active_;  //!< Determines if the instrument has been activated
                                                                 //!< externally
 };
 

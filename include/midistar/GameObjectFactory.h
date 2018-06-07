@@ -26,16 +26,16 @@
 namespace midistar {
 
 /**
- * The GameObjectFactory class provides an interface to create GameObject 
+ * The GameObjectFactory class provides an interface to create GameObject
  * instances. Deriving classes specify the 'look and feel' and behaviour of
- * GameObjects, allowing for different game themes and/or modes. 
+ * GameObjects, allowing for different game themes and/or modes.
  */
 class GameObjectFactory {
  public:
     /**
      * Constructor.
      */
-    GameObjectFactory(double note_speed);
+    explicit GameObjectFactory(double note_speed);
 
     /**
      * Destructor.

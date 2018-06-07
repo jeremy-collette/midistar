@@ -75,7 +75,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
                                       //!< a key index to the closest white key
     static const char PIANO_FIRST_MIDI_KEY = 21;  //!< First MIDI key on a
                                                                     //!< piano
-    static const int WHITE_KEY_HEIGHT = 150; //!< White key height
+    static const int WHITE_KEY_HEIGHT = 150;  //!< White key height
     static constexpr float WHITE_KEY_OUTLINE_THICKNESS = -1.0f;  //!< Key
                                                                   //!< outline
     static const char WHITE_KEYS_PER_OCTAVE = 7;  //!< White keys in an octave

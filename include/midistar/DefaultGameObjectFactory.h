@@ -38,12 +38,12 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     explicit DefaultGameObjectFactory(double note_speed);
 
     /**
-     * \copydoc GameObjectFactory::CreateInstrument() 
+     * \copydoc GameObjectFactory::CreateInstrument()
      */
     virtual std::vector<GameObject*> CreateInstrument();
 
     /**
-     * \copydoc GameObjectFactory::CreateSongNote() 
+     * \copydoc GameObjectFactory::CreateSongNote()
      */
     virtual GameObject* CreateSongNote(
             int track
@@ -55,10 +55,10 @@ class DefaultGameObjectFactory : public GameObjectFactory {
  private:
     static const int MAX_MIDI_KEY = 128;  //!< Maximum MIDI key
     static const int INSTRUMENT_HEIGHT = 25;  //!< Instrument height
-    static constexpr float INSTRUMENT_HOVER_PERCENTAGE = 0.1f;  //!< The 
+    static constexpr float INSTRUMENT_HOVER_PERCENTAGE = 0.1f;  //!< The
              //!< percentage of the screen height that instruments will hover
 
-    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for 
+    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                  //!< the instrument with the given MIDI key
 
     double note_width_;  //!< Holds the width of song notes

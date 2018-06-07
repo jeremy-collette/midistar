@@ -26,13 +26,13 @@ InvertColourComponent::InvertColourComponent(char inv)
         , inv_{inv} {
 }
 
-InvertColourComponent::InvertColourComponent() 
+InvertColourComponent::InvertColourComponent()
         : InvertColourComponent{DEFAULT_INVERSION} {
 }
 
 void InvertColourComponent::Update(Game*, GameObject* o, int) {
     auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS); 
+            Component::GRAPHICS);
     if (!graphics) {
         return;
     }

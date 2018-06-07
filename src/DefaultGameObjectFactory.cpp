@@ -56,7 +56,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
         , int vel
         , double duration) {
     // Create GameObject
-    // height is derived by note duration and speed (note should move its 
+    // height is derived by note duration and speed (note should move its
     // entire height over its duration).
     double x = note * note_width_;
     double height = duration * 1000 * GetNoteSpeed();
@@ -99,7 +99,7 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{});
     ins_note->SetComponent(new CollisionDetectorComponent{});
-    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{}); 
+    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
     return ins_note;
 }
 

@@ -36,7 +36,7 @@ void GameObject::DeleteComponent(ComponentType type) {
         return;
     }
     to_delete_.push_back(components_[type]);
-    RemoveComponent(type);
+    components_[type] = nullptr;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
@@ -50,10 +50,6 @@ bool GameObject::GetRequestDelete() {
 
 bool GameObject::HasComponent(ComponentType type) {
     return components_[type];
-}
-
-void GameObject::RemoveComponent(ComponentType type) {
-    components_[type] = nullptr;
 }
 
 void GameObject::SetComponent(Component* c) {

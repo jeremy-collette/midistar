@@ -93,15 +93,6 @@ class GameObject {
     bool HasComponent(ComponentType type);
 
     /**
-     * Removes the Component with the specified ComponentType from the
-     * GameObject. This DOES NOT delete the Component, so be careful of memory
-     * leaks.
-     *
-     * \param type Specifies the type of the Component to remove.
-     */
-    void RemoveComponent(ComponentType type);
-
-    /**
      * Sets the Component in slot determined by the ComponentType.
      *
      * \param c The Component to set.

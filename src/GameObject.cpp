@@ -20,15 +20,31 @@
 
 namespace midistar {
 
-GameObject::GameObject(double x_pos, double y_pos)
+GameObject::GameObject(
+    sf::RectangleShape* rect
+    , double x_pos
+    , double y_pos
+    , double width
+    , double height)
         : components_{0}
+        , drawable_{*rect}
+        , original_height_{height}
+        , original_width_{width}
         , request_delete_{false}
         , to_delete_{}
+        , transformable_{*rect}
         , x_pos_{x_pos}
         , y_pos_{y_pos} {
+    
+    rect->setPosition(x_pos, y_pos);
+    rect->setSize({static_cast<float>(width), static_cast<float>(height)});
     for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
         components_[i] = nullptr;
     }
+}
+
+GameObject::~GameObject() {
+    //TODO(@jez)
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -39,9 +55,23 @@ void GameObject::DeleteComponent(ComponentType type) {
     components_[type] = nullptr;
 }
 
+void GameObject::Draw(sf::RenderWindow& window) {
+    window.draw(drawable_);
+}
+
+sf::Drawable& GameObject::GetDrawable() {
+    return drawable_;
+}
+
 void GameObject::GetPosition(double* x, double* y) {
     *x = x_pos_;
     *y = y_pos_;
+}
+
+void GameObject::GetSize(double* w, double* h) {
+    auto scale = transformable_.getScale();
+    *w = original_width_ * scale.x;
+    *h = original_height_ * scale.y;
 }
 
 bool GameObject::GetRequestDelete() {
@@ -66,12 +96,22 @@ void GameObject::SetRequestDelete(bool del) {
     request_delete_ = del;
 }
 
+void GameObject::SetSize(double w, double h) {
+    transformable_.setScale(w / original_width_, h / original_height_);
+}
+
+sf::Transformable& GameObject::GetTransformable() {
+    return transformable_;
+}
+
 void GameObject::Update(Game* g, int delta) {
     for (const auto& c : components_) {
         if (c) {
             c->Update(g, this, delta);
         }
     }
+
+    transformable_.setPosition(x_pos_, y_pos_);
 
     for (const auto& c : to_delete_) {
         delete c;

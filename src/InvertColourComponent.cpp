@@ -16,7 +16,6 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/GraphicsComponent.h"
 #include "midistar/InvertColourComponent.h"
 
 namespace midistar {
@@ -31,16 +30,17 @@ InvertColourComponent::InvertColourComponent()
 }
 
 void InvertColourComponent::Update(Game*, GameObject* o, int) {
-    auto graphics = o->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS);
-    if (!graphics) {
+    sf::Drawable& drawable = o->GetDrawable();
+    auto* rect = static_cast<sf::RectangleShape*>(&drawable);
+    if (!rect) {
         return;
     }
-    auto colour = graphics->GetShape().getFillColor();
+
+    auto colour = rect->getFillColor();
     for (auto &b : {&colour.r, &colour.g, &colour.b}) {
         *b ^= inv_;
     }
-    graphics->GetShape().setFillColor(colour);
+    rect->setFillColor(colour);
     o->DeleteComponent(GetType());
 }
 

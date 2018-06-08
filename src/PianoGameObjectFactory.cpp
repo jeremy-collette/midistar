@@ -21,11 +21,10 @@
 #include "midistar/PianoGameObjectFactory.h"
 
 #include "midistar/CollidableComponent.h"
-#include "midistar/CollisionDetectorComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
-#include "midistar/GraphicsComponent.h"
 #include "midistar/InstrumentCollisionHandlerComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
@@ -75,11 +74,6 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
         , int note
         , int vel
         , double duration) {
-    // Create actual note
-    double x = CalculateXPosition(note);
-    double height = duration * 1000 * GetNoteSpeed();
-    GameObject* song_note = new GameObject{x, -height};
-
     // White notes VS black notes (sharp notes) are slightly different
     double width;
     sf::Color colour = GetTrackColour(track);
@@ -92,21 +86,23 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     }
 
     // Create underlying rectangle
-    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            width), static_cast<float>(height)}};
-    rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
+    double x = CalculateXPosition(note);
+    double height = duration * 1000 * GetNoteSpeed();
+    sf::RectangleShape* rect = new sf::RectangleShape{};
     rect->setFillColor(colour);
     rect->setOutlineThickness(NOTE_OUTLINE_THICKNESS);
     rect->setOutlineColor(sf::Color::Black);
+
+    // Create actual note
+    auto song_note = new GameObject{rect, x, -height, width, height};
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});
     song_note->SetComponent(new CollidableComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
-    song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
-    song_note->SetComponent(new CollisionDetectorComponent{});
+    song_note->SetComponent(new VerticalCollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
 }
@@ -197,19 +193,17 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
         outline_thickness = BLACK_KEY_OUTLINE_THICKNESS;
     }
 
-    // Create the actual note
+    // Create the underlying shape
     double x = CalculateXPosition(note);
     double y = Config::GetInstance().GetScreenHeight() - WHITE_KEY_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * KEY_HOVER_PERCENTAGE);
-    GameObject* ins_note = new GameObject{x, y};
-
-    // Create the underlying shape
-    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            width), static_cast<float>(height)}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
+    sf::RectangleShape* rect = new sf::RectangleShape{};
     rect->setFillColor(colour);
     rect->setOutlineColor(sf::Color::Black);
     rect->setOutlineThickness(outline_thickness);
+
+    // Create the actual note
+    auto ins_note = new GameObject{rect, x, y, width, height};
 
     // Get the instrument key binding
     sf::Keyboard::Key key;
@@ -220,10 +214,9 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
-    ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl,
             shift});
-    ins_note->SetComponent(new CollisionDetectorComponent{});
+    ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
     return ins_note;
 }

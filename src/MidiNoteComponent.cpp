@@ -28,7 +28,7 @@ MidiNoteComponent::MidiNoteComponent(bool on, int chan, int note, int vel)
         , vel_{vel} {
 }
 
-void MidiNoteComponent::Update(Game* g, GameObject* o, int) {
+void MidiNoteComponent::Update(Game* g, GameObject<sf::Transformable>* o, int) {
     if (on_) {
         g->TurnMidiNoteOn(chan_, note_, vel_);
     } else {

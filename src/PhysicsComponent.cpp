@@ -35,7 +35,7 @@ void PhysicsComponent::SetVelocity(double x_vel, double y_vel) {
     y_vel_ = y_vel;
 }
 
-void PhysicsComponent::Update(Game*, GameObject* o, int delta) {
+void PhysicsComponent::Update(Game*, GameObject<sf::Transformable>* o, int delta) {
     double x, y;
     o->GetPosition(&x, &y);
     x += x_vel_ * delta;

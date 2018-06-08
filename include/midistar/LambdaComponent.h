@@ -38,15 +38,15 @@ class LambdaComponent : public Component {
      * \param func The lambda function to call.
      */
     explicit LambdaComponent(
-            std::function<void(Game*, GameObject*, int)> func);
+            std::function<void(Game*, GameObject<sf::Transformable>*, int)> func);
 
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject* o, int delta);
+    virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
 
  private:
-    std::function<void(Game*, GameObject*, int)> func_;  //!< The lambda to
+    std::function<void(Game*, GameObject<sf::Transformable>*, int)> func_;  //!< The lambda to
                                                                 //!< invoke
 };
 

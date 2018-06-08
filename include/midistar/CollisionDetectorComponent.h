@@ -44,11 +44,11 @@ class CollisionDetectorComponent : public Component {
       *
       * \return Colliding GameObjects.
       */
-     const std::vector<GameObject*>& GetCollidingWith();
+     const std::vector<GameObject<sf::Transformable>*>& GetCollidingWith();
 
      /**
       * Determines whether or not the owner is currently colliding with another
-      * GameObject.
+      * GameObject<sf::Transformable>.
       *
       * \return True if a collision is occuring. False otherwise.
       */
@@ -57,10 +57,10 @@ class CollisionDetectorComponent : public Component {
      /**
       * \copydoc Component::Update()
       */
-     virtual void Update(Game* g, GameObject* o, int delta);
+     virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
 
  private:
-     std::vector<GameObject*> colliding_with_;  //!< Holds colliding objects
+     std::vector<GameObject<sf::Transformable>*> colliding_with_;  //!< Holds colliding objects
 };
 
 }   // End namespace midistar

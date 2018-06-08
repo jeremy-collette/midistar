@@ -35,8 +35,8 @@ SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
 
 void SongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
-        , GameObject* o
-        , std::vector<GameObject*> colliding_with) {
+        , GameObject<sf::Transformable>* o
+        , std::vector<GameObject<sf::Transformable>*> colliding_with) {
     // Handle each collision
     for (auto& collider : colliding_with) {
         HandleCollision(g, o, collider);
@@ -45,8 +45,8 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
 
 void SongNoteCollisionHandlerComponent::HandleCollision(
         Game* g
-        , GameObject* o
-        , GameObject* collider) {
+        , GameObject<sf::Transformable>* o
+        , GameObject<sf::Transformable>* collider) {
     // We only want to handle collisions with instruments
     if (!collider->HasComponent(Component::INSTRUMENT)) {
         return;
@@ -96,7 +96,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
             return;
         }
 
-        GameObject* half = g->GetGameObjectFactory().CreateSongNote(
+        GameObject<sf::Transformable>* half = g->GetGameObjectFactory().CreateSongNote(
                     note->GetTrack()
                     , note->GetChannel()
                     , note->GetKey()

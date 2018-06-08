@@ -26,7 +26,7 @@ CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
         : Component{type} {
 }
 
-void CollisionHandlerComponent::Update(Game* g, GameObject* o, int) {
+void CollisionHandlerComponent::Update(Game* g, GameObject<sf::Transformable>* o, int) {
     auto detector = o->GetComponent<CollisionDetectorComponent>(
             Component::COLLISION_DETECTOR);
     if (!detector) {

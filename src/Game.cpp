@@ -47,7 +47,7 @@ Game::~Game() {
     }
 }
 
-void Game::AddGameObject(GameObject* obj) {
+void Game::AddGameObject(GameObject<sf::Transformable>* obj) {
     new_objects_.push(obj);
 }
 
@@ -59,7 +59,7 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
     return midi_in_buf_;
 }
 
-const std::vector<GameObject*>& Game::GetGameObjects() {
+const std::vector<GameObject<sf::Transformable>*>& Game::GetGameObjects() {
     return objects_;
 }
 
@@ -199,7 +199,7 @@ void Game::CleanUpObjects() {
     }
 }
 
-void Game::DeleteObject(GameObject* o) {
+void Game::DeleteObject(GameObject<sf::Transformable>* o) {
     auto itr = std::find(objects_.begin(), objects_.end(), o);
     if (itr != objects_.end()) {
         objects_.erase(itr);

@@ -41,12 +41,12 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     /**
      * \copydoc GameObjectFactory::CreateInstrument()
      */
-    virtual std::vector<GameObject*> CreateInstrument();
+    virtual std::vector<GameObject<sf::Transformable>*> CreateInstrument();
 
     /**
      * \copydoc GameObjectFactory::CreateSongNote()
      */
-    virtual GameObject* CreateSongNote(
+    virtual GameObject<sf::Transformable>* CreateSongNote(
             int track
             , int chan
             , int note
@@ -59,7 +59,7 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     static constexpr float INSTRUMENT_HOVER_PERCENTAGE = 0.1f;  //!< The
              //!< percentage of the screen height that instruments will hover
 
-    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
+    GameObject<sf::Transformable>* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                  //!< the instrument with the given MIDI key
     static void GetInstrumentKeyBinding(int midi_key, sf::Keyboard::Key* key,
             bool* ctrl, bool* shift);  //!< Gets instrument key binding

@@ -31,8 +31,8 @@ InstrumentCollisionHandlerComponent::InstrumentCollisionHandlerComponent()
 
 void InstrumentCollisionHandlerComponent::HandleCollisions(
         Game*
-        , GameObject* o
-        , std::vector<GameObject*> colliding_with) {
+        , GameObject<sf::Transformable>* o
+        , std::vector<GameObject<sf::Transformable>*> colliding_with) {
     // We only use this component for handling AUTO PLAY, so check if it is
     // enabled
     if (!Config::GetInstance().GetAutomaticallyPlay()) {

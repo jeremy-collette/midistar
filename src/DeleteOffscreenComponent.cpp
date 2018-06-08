@@ -27,7 +27,7 @@ DeleteOffscreenComponent::DeleteOffscreenComponent()
         : Component{Component::DELETE_OFFSCREEN} {
 }
 
-void DeleteOffscreenComponent::Update(Game*, GameObject* o, int) {
+void DeleteOffscreenComponent::Update(Game*, GameObject<sf::Transformable>* o, int) {
     auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
 
     double width = 0;

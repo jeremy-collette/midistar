@@ -26,7 +26,7 @@ CollisionDetectorComponent::CollisionDetectorComponent()
         : Component{Component::COLLISION_DETECTOR} {
 }
 
-const std::vector<GameObject*>& CollisionDetectorComponent::GetCollidingWith() {
+const std::vector<GameObject<sf::Transformable>*>& CollisionDetectorComponent::GetCollidingWith() {
     return colliding_with_;
 }
 
@@ -35,7 +35,7 @@ bool CollisionDetectorComponent::GetIsColliding() {
     return GetCollidingWith().size();
 }
 
-void CollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
+void CollisionDetectorComponent::Update(Game* g, GameObject<sf::Transformable>* o, int) {
     auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;

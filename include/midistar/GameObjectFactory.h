@@ -47,7 +47,7 @@ class GameObjectFactory {
      *
      * \return A collection of GameObjects representing an instrument.
      */
-    virtual std::vector<GameObject*> CreateInstrument() = 0;
+    virtual std::vector<GameObject<sf::Transformable>*> CreateInstrument() = 0;
 
     /**
      * Creates a MIDI song note.
@@ -60,7 +60,7 @@ class GameObjectFactory {
      *
      * \return A GameObject which is a song note.
      */
-    virtual GameObject* CreateSongNote(
+    virtual GameObject<sf::Transformable>* CreateSongNote(
             int track
             , int chan
             , int note

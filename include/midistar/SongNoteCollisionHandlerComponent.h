@@ -41,15 +41,15 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
       */
      virtual void HandleCollisions(
              Game* g
-             , GameObject* o
-             , std::vector<GameObject*> colliding_with);
+             , GameObject<sf::Transformable>* o
+             , std::vector<GameObject<sf::Transformable>*> colliding_with);
 
  private:
     static const char NOTE_COLLISION_CUTOFF = 20;  //!< Notes must be within
         //!< this many pixels from the top of the instrument to be completely
         //!< played.
 
-    void HandleCollision(Game* g, GameObject* o, GameObject* collider);
+    void HandleCollision(Game* g, GameObject<sf::Transformable>* o, GameObject<sf::Transformable>* collider);
                                                      //!< Handles a collision
 };
 

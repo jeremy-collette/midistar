@@ -16,12 +16,16 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
+
 #include "midistar/GameObject.h"
 
 namespace midistar {
 
-GameObject::GameObject(double x_pos, double y_pos)
+template <typename T>
+GameObject<T>::GameObject(T* drawable, double x_pos, double y_pos)
         : components_{0}
+        , drawable_{drawable}     
         , request_delete_{false}
         , to_delete_{}
         , x_pos_{x_pos}
@@ -31,7 +35,30 @@ GameObject::GameObject(double x_pos, double y_pos)
     }
 }
 
-void GameObject::DeleteComponent(ComponentType type) {
+template <typename T>
+template <typename U>
+GameObject<T>::GameObject(GameObject<U>&& move) 
+        : GameObject{static_cast<T*>(move.drawable_), move.x_pos_
+            , move.y_pos_} {
+    for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
+        components_[i] = move.components_[i];
+        move.components_[i] = nullptr;
+    }
+    assert(drawable_);
+    move.drawable_ = nullptr;
+}
+
+template <typename T>
+GameObject<T>::~GameObject() {
+    delete drawable_;
+
+    for (Component* c : components_) {
+        delete c;
+    }
+}
+
+template <typename T>
+void GameObject<T>::DeleteComponent(ComponentType type) {
     if (!components_[type]) {
         return;
     }
@@ -39,34 +66,46 @@ void GameObject::DeleteComponent(ComponentType type) {
     components_[type] = nullptr;
 }
 
-void GameObject::GetPosition(double* x, double* y) {
+template <typename T>
+T& GameObject<T>::GetDrawableObject() {
+    return *drawable_;
+}
+
+template <typename T>
+void GameObject<T>::GetPosition(double* x, double* y) {
     *x = x_pos_;
     *y = y_pos_;
 }
 
-bool GameObject::GetRequestDelete() {
+template <typename T>
+bool GameObject<T>::GetRequestDelete() {
     return request_delete_;
 }
 
-bool GameObject::HasComponent(ComponentType type) {
+template <typename T>
+bool GameObject<T>::HasComponent(ComponentType type) {
     return components_[type];
 }
 
-void GameObject::SetComponent(Component* c) {
+template <typename T>
+void GameObject<T>::SetComponent(Component* c) {
     DeleteComponent(c->GetType());
     components_[c->GetType()] = c;
 }
 
-void GameObject::SetPosition(double x, double y) {
+template <typename T>
+void GameObject<T>::SetPosition(double x, double y) {
     x_pos_ = x;
     y_pos_ = y;
 }
 
-void GameObject::SetRequestDelete(bool del) {
+template <typename T>
+void GameObject<T>::SetRequestDelete(bool del) {
     request_delete_ = del;
 }
 
-void GameObject::Update(Game* g, int delta) {
+template <typename T>
+void GameObject<T>::Update(Game* g, int delta) {
     for (const auto& c : components_) {
         if (c) {
             c->Update(g, this, delta);

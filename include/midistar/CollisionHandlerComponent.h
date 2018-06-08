@@ -49,13 +49,13 @@ class CollisionHandlerComponent : public Component {
      */
     virtual void HandleCollisions(
             Game* g
-            , GameObject* o
-            , const std::vector<GameObject*> colliding_with) = 0;
+            , GameObject<sf::Transformable>* o
+            , const std::vector<GameObject<sf::Transformable>*> colliding_with) = 0;
 
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject* o, int delta);
+    virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
 };
 
 }   // End namespace midistar

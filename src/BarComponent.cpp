@@ -24,7 +24,7 @@ BarComponent::BarComponent()
         : Component{Component::BAR} {
 }
 
-void BarComponent::Update(Game*, GameObject*, int) {
+void BarComponent::Update(Game*, GameObject<sf::Transformable>*, int) {
 }
 
 }   // End namespace midistar

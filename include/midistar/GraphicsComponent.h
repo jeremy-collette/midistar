@@ -69,7 +69,7 @@ class GraphicsComponent : public Component {
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject* o, int delta);
+    virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
 
  private:
     sf::RectangleShape* rect_;  //<! Underlying rectangle

@@ -28,7 +28,7 @@ GraphicsComponent::GraphicsComponent(sf::RectangleShape* rect)
 }
 
 GraphicsComponent::~GraphicsComponent() {
-    delete rect_;
+    //delete rect_;
 }
 
 sf::RectangleShape& GraphicsComponent::GetShape() {
@@ -45,7 +45,7 @@ void GraphicsComponent::SetSize(double x, double y) {
     rect_->setSize({static_cast<float>(x), static_cast<float>(y)});
 }
 
-void GraphicsComponent::Update(Game* g, GameObject* o, int) {
+void GraphicsComponent::Update(Game* g, GameObject<sf::Transformable>* o, int) {
     double x, y;
     o->GetPosition(&x, &y);
     rect_->setPosition({static_cast<float>(x), static_cast<float>(y)});

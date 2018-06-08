@@ -20,6 +20,7 @@
 #define MIDISTAR_GAMEOBJECT_H_
 
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 #include "midistar/Component.h"
 
@@ -34,16 +35,33 @@ class Game;
  * A GameObject may own one Component of each ComponentType at any given time.
  * Components are added or removed dynamically, which changes the GameObject's
  * behaviour during runtime.
+ *
+ * \tparam An instance that implements sf::Drawable to use for drawing.
  */
+template <typename T>
 class GameObject {
  public:
     /**
      * Constructor.
      *
-     * \param x_pos The X on-screen position of the GameObject
-     * \param y_pos The Y on-screen position of the GameObject
+     * \param drawable Underlying drawable object.
+     * \param x_pos The X on-screen position of the GameObject.
+     * \param y_pos The Y on-screen position of the GameObject.
      */
-    GameObject(double x_pos, double y_pos);
+    GameObject(T* drawable, double x_pos, double y_pos);
+
+    /**
+     * Move constructor.
+     *
+     * \param move The GameObject to move from.
+     */
+    template <typename U>
+    GameObject(GameObject<U>&& move);
+
+    /**
+     * Destructor.
+     */
+    ~GameObject();
 
     /**
      * Removes and deletes the Component with the specified ComponentType from
@@ -62,9 +80,16 @@ class GameObject {
      *
      * \return A pointer to the Component with the specified ComponentType.
      */
-    template <typename T> T* GetComponent(ComponentType type) {
-        return static_cast<T*>(components_[type]);
+    template <typename U> U* GetComponent(ComponentType type) {
+        return static_cast<U*>(components_[type]);
     }
+
+    /**
+     * Gets the underlying drawable object.
+     *
+     * \return Underlying drawable object.
+     */
+    T& GetDrawableObject();
 
     /**
      * Gets the position of the GameObject.
@@ -124,13 +149,21 @@ class GameObject {
     void Update(Game* g, int delta);
 
  private:
+    template<typename U>
+    friend class GameObject;  //!< Friend defintion for move constructor    
+
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
+	T* drawable_;  //!< Holds underlying drawable object
     bool request_delete_;  //!< Holds deletion request status
     std::vector<Component*> to_delete_;  //!< Holds components to delete
+	sf::Transformable* transformable_;  //!< Holds underlying object to 
+																//!< transform
     double x_pos_;  //!< Holds X position
     double y_pos_;  //!< Holds Y position
 };
 
 }   // End namespace midistar
+
+#include "midistar/GameObject.tpp"
 
 #endif  // MIDISTAR_GAMEOBJECT_H_

@@ -76,7 +76,7 @@ class NoteInfoComponent : public Component {
     /**
      * \copydoc Component::Update()
      */
-    void Update(Game* g, GameObject* o, int delta);
+    void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
 
  private:
     int chan_;  //!< Holds MIDI channel

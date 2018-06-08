@@ -60,7 +60,8 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
     // Create underlying shape
     double x = note * note_width_;
     double height = duration * 1000 * GetNoteSpeed();
-    sf::RectangleShape* rect = new sf::RectangleShape{};
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            note_width_), static_cast<float>(height)}};
 
     // Create GameObject
     // Height is derived by note duration and speed (note should move its
@@ -83,7 +84,8 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     double x = note * note_width_;
     double y = Config::GetInstance().GetScreenHeight() - INSTRUMENT_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * INSTRUMENT_HOVER_PERCENTAGE);
-    sf::RectangleShape* rect = new sf::RectangleShape{};
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            note_width_), INSTRUMENT_HEIGHT}};;
     rect->setFillColor(sf::Color::Red);
 
     // Create GameObject

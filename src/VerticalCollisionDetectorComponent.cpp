@@ -50,7 +50,8 @@ void VerticalCollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
         other_obj->GetPosition(&other_x, &other_y);
         other_obj->GetSize(&other_w, &other_h);
         
-        if (y + h >= other_y && y + h <= other_y + other_h) {
+        if ((y >= other_y && y <= other_y + h)
+                || (y + h >= other_y && y + h <= other_y + h)) {
             colliding_with_.push_back(other_obj);
         }
     }

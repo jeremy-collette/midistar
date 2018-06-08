@@ -69,7 +69,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     o->GetSize(&width, &height);
     double inst_x, inst_y, inst_w, inst_h;
     collider->GetPosition(&inst_x, &inst_y);
-    o->GetSize(&inst_w, &inst_h);
+    collider->GetSize(&inst_w, &inst_h);
 
     // Check if the note is in the playable part of the insrtument.
     if (y > inst_y + NOTE_COLLISION_CUTOFF) {
@@ -91,7 +91,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
                     , note->GetChannel()
                     , note->GetKey()
                     , note->GetVelocity()
-                    , 0);
+                    , 0.1);
 
         // We don't want complete note behaviour - this is an
         // unplayable note

@@ -88,7 +88,8 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     // Create underlying rectangle
     double x = CalculateXPosition(note);
     double height = duration * 1000 * GetNoteSpeed();
-    sf::RectangleShape* rect = new sf::RectangleShape{};
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            width), static_cast<float>(height)}};
     rect->setFillColor(colour);
     rect->setOutlineThickness(NOTE_OUTLINE_THICKNESS);
     rect->setOutlineColor(sf::Color::Black);
@@ -197,7 +198,8 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     double x = CalculateXPosition(note);
     double y = Config::GetInstance().GetScreenHeight() - WHITE_KEY_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * KEY_HOVER_PERCENTAGE);
-    sf::RectangleShape* rect = new sf::RectangleShape{};
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+            width), static_cast<float>(height)}};
     rect->setFillColor(colour);
     rect->setOutlineColor(sf::Color::Black);
     rect->setOutlineThickness(outline_thickness);

@@ -41,14 +41,14 @@ class GameObject {
     /**
      * Constructor.
      *
-     * \param rect Underlying RectangleShape.
+     * \param shape Underlying shape.
      * \param x_pos The X on-screen position of the GameObject.
      * \param y_pos The Y on-screen position of the GameObject.
      * \param width The width of the GameObject.
      * \param height The height of the GameObject.
      */
     GameObject(
-            sf::RectangleShape* rect
+            sf::Shape* shape
             , double x_pos
             , double y_pos
             , double width
@@ -111,12 +111,33 @@ class GameObject {
     bool GetRequestDelete();
 
     /**
+     * Gets the underlying shape if it exists.
+     *
+     * \return Underlying shape if it exists. Otherwise nullptr.
+     */
+    sf::Shape* GetShape();
+
+    /**
      * Gets the size of the GameObject.
      *
      * \param[out] w Stores the width.
      * \param[out[ h Stores the height.
      */
     void GetSize(double* w, double* h);
+
+    /**
+     * Gets the underlying sprite if it exists.
+     *
+     * \return Underlying sprite if it exists. Otherwise nullptr.
+     */
+    sf::Sprite* GetSprite();
+
+    /**
+     * Gets the underlying text if it exists.
+     *
+     * \return Underlying text if it exists. Otherwise nullptr.
+     */
+    sf::Text* GetText();
 
     /**
      * Gets the transformable component of the GameObject.
@@ -176,11 +197,18 @@ class GameObject {
     void Update(Game* g, int delta);
 
  private:
+    GameObject(sf::Drawable* drawable, sf::Transformable* transformable, double 
+            x_pos, double y_pos, double width, double height);  //!< Private
+                                                             //!< constructor. 
+
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
     sf::Drawable& drawable_;  //!< Holds reference to drawable part of object
     double original_height_;  //!< Height at creation
     double original_width_;  //!< Width at creation
     bool request_delete_;  //!< Holds deletion request status
+    sf::Shape* shape_;  //!< Holds underlying shape (if it exists)
+    sf::Sprite* sprite_;  //!< Holds underlying sprite (if it exists)
+    sf::Text* text_;  //!< Holds underlying text (if it exists)
     std::vector<Component*> to_delete_;  //!< Holds components to delete
     sf::Transformable& transformable_;  //!< Holds transformable part of object
     double x_pos_;  //!< Holds X position

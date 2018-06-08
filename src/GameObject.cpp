@@ -16,31 +16,21 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+//TODO(@jez): remove
+#include <iostream>
+
 #include "midistar/GameObject.h"
 
 namespace midistar {
 
 GameObject::GameObject(
-    sf::RectangleShape* rect
+    sf::Shape* shape
     , double x_pos
     , double y_pos
     , double width
     , double height)
-        : components_{0}
-        , drawable_{*rect}
-        , original_height_{height}
-        , original_width_{width}
-        , request_delete_{false}
-        , to_delete_{}
-        , transformable_{*rect}
-        , x_pos_{x_pos}
-        , y_pos_{y_pos} {
-    
-    rect->setPosition(x_pos, y_pos);
-    rect->setSize({static_cast<float>(width), static_cast<float>(height)});
-    for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
-        components_[i] = nullptr;
-    }
+        : GameObject{shape, shape, x_pos, y_pos, width, height} {
+    shape_ = shape;    
 }
 
 GameObject::~GameObject() {
@@ -117,6 +107,31 @@ void GameObject::Update(Game* g, int delta) {
         delete c;
     }
     to_delete_.clear();
+}
+
+GameObject::GameObject(
+    sf::Drawable* drawable
+    , sf::Transformable* transformable
+    , double x_pos
+    , double y_pos
+    , double width
+    , double height)
+        : components_{0}
+        , drawable_{*drawable}
+        , original_height_{height}
+        , original_width_{width}
+        , request_delete_{false}
+        , shape_{nullptr}
+        , sprite_{nullptr}
+        , text_{nullptr}
+        , to_delete_{}
+        , transformable_{*transformable}
+        , x_pos_{x_pos}
+        , y_pos_{y_pos} {
+    transformable_.setPosition(x_pos, y_pos);
+    for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
+        components_[i] = nullptr;
+    }
 }
 
 }   // End namespace midistar

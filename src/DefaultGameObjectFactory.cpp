@@ -44,31 +44,31 @@ DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
             static_cast<double>(NUM_MIDI_KEYS)} {
 }
 
-std::vector<GameObject<sf::Transformable>*> DefaultGameObjectFactory::CreateInstrument() {
-    std::vector<GameObject<sf::Transformable>*> result;
+std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {
+    std::vector<GameObject*> result;
     for (int key = 0; key < NUM_MIDI_KEYS; ++key) {
         result.push_back(CreateInstrumentNote(key));
     }
     return result;
 }
 
-GameObject<sf::Transformable>* DefaultGameObjectFactory::CreateSongNote(
+GameObject* DefaultGameObjectFactory::CreateSongNote(
         int track
         , int chan
         , int note
         , int vel
         , double duration) {
-    // Create underlying shape
+    // Create GameObject
     // height is derived by note duration and speed (note should move its
     // entire height over its duration).
     double x = note * note_width_;
     double height = duration * 1000 * GetNoteSpeed();
-     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
+    GameObject* song_note = new GameObject{x, -height};
+
+    // Create underlying shape
+    sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             note_width_), static_cast<float>(height)}};
     rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
-
-    // Create GameObject
-    auto song_note = new GameObject<sf::RectangleShape>{rect, x, -height};
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});
@@ -79,25 +79,22 @@ GameObject<sf::Transformable>* DefaultGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
-
-    auto result = new GameObject<sf::Transformable>{std::move(*song_note)};
-    delete song_note;
-    return result;
+    return song_note;
 }
 
-GameObject<sf::Transformable>* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
-    // Create underlying shape
+GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
+    // Create GameObject
     double x = note * note_width_;
     double y = Config::GetInstance().GetScreenHeight() - INSTRUMENT_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * INSTRUMENT_HOVER_PERCENTAGE);
+    GameObject* ins_note = new GameObject{x, y};
+
+    // Create underlying shape
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             note_width_), INSTRUMENT_HEIGHT}};
     rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
     rect->setFillColor(sf::Color::Red);
 
-    // Create GameObject
-    auto ins_note = new GameObject<sf::RectangleShape>{rect, x, y};
-    
     // Get key binding
     sf::Keyboard::Key key;
     bool ctrl, shift;
@@ -112,10 +109,7 @@ GameObject<sf::Transformable>* DefaultGameObjectFactory::CreateInstrumentNote(in
             , shift});
     ins_note->SetComponent(new CollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
-    
-    auto result = new GameObject<sf::Transformable>{std::move(*ins_note)};
-    delete ins_note;
-    return result;
+    return ins_note;
 }
 
 void DefaultGameObjectFactory::GetInstrumentKeyBinding(

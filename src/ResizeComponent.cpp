@@ -36,7 +36,7 @@ ResizeComponent::ResizeComponent(double new_width, double new_height)
         : ResizeComponent{new_width, new_height, ResizeComponent::TOP_LEFT} {
 }
 
-void ResizeComponent::Update(Game*, GameObject<sf::Transformable>* o, int) {
+void ResizeComponent::Update(Game*, GameObject* o, int) {
     auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
     if (!graphics) {
         return;

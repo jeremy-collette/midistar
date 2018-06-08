@@ -43,7 +43,7 @@ class MidiNoteComponent : public Component {
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
+    virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
     int chan_;  //!< Holds MIDI channel

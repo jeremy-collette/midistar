@@ -43,7 +43,7 @@ void InstrumentInputHandlerComponent::SetActive(bool active) {
     set_active_ = active;
 }
 
-void InstrumentInputHandlerComponent::Update(Game* g, GameObject<sf::Transformable>* o, int) {
+void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     // Check for required component
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {

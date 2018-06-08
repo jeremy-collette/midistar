@@ -19,11 +19,8 @@
 #ifndef MIDISTAR_COMPONENT_H_
 #define MIDISTAR_COMPONENT_H_
 
-#include <SFML/Graphics.hpp>
-
 namespace midistar {
 class Game;
-template <typename T>
 class GameObject;
 
 /**
@@ -91,10 +88,7 @@ class Component {
      * \param[in,out] o The GameObject that owns the component.
      * \param delta Time since last game tick.
      */
-    virtual void Update(
-            Game* g
-            , GameObject<sf::Transformable>* o
-            , int delta) = 0;
+    virtual void Update(Game* g, GameObject* o, int delta) = 0;
 
  private:
     ComponentType type_;  //!< Holds the type of the component.

@@ -52,7 +52,7 @@ class Game {
      *
      * \param obj The object to add.
      */
-    void AddGameObject(GameObject<sf::Transformable>* obj);
+    void AddGameObject(GameObject* obj);
 
     /**
      * Gets the GameObjectFactory instance in use.
@@ -66,7 +66,7 @@ class Game {
      *
      * \return All GameObjects.
      */
-    const std::vector<GameObject<sf::Transformable>*>& GetGameObjects();
+    const std::vector<GameObject*>& GetGameObjects();
 
     /**
      * Gets MIDI input port messages for the last tick.
@@ -123,7 +123,7 @@ class Game {
  private:
     bool CheckSongNotes();  //!< Determines if the Game has valid song notes
     void CleanUpObjects();  //!< Deletes all GameObjects and their components
-    void DeleteObject(GameObject<sf::Transformable>* o);  //!< Deletes a GameObject
+    void DeleteObject(GameObject* o);  //!< Deletes a GameObject
     void FlushNewObjectQueue();  //!< Adds new objects to object buffer
 
     GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
@@ -131,8 +131,8 @@ class Game {
     std::vector<MidiMessage> midi_in_buf_;  //!< MIDI input port notes buffer
     MidiOut midi_out_;  //!< MIDI port out instance
     MidiPortIn midi_port_in_;  //!< MIDI input port instance
-    std::queue<GameObject<sf::Transformable>*> new_objects_;  //!< New GameObjects buffer
-    std::vector<GameObject<sf::Transformable>*> objects_;  //!< GameObjects buffer
+    std::queue<GameObject*> new_objects_;  //!< New GameObjects buffer
+    std::vector<GameObject*> objects_;  //!< GameObjects buffer
     std::vector<sf::Event> sf_events_;  //!< SFML events buffer
     sf::RenderWindow window_;  //!< SFML window instance
 };

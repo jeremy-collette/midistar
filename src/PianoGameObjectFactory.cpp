@@ -58,23 +58,28 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
             static_cast<double>(NUM_WHITE_KEYS)} {
 }
 
-std::vector<GameObject<sf::Transformable>*> PianoGameObjectFactory::CreateInstrument() {
-    std::vector<GameObject<sf::Transformable>*> result;
+std::vector<GameObject*> PianoGameObjectFactory::CreateInstrument() {
+    std::vector<GameObject*> result;
     for (int key = PIANO_FIRST_MIDI_KEY; key < PIANO_FIRST_MIDI_KEY +
             NUM_PIANO_KEYS; ++key) {
-        GameObject<sf::Transformable>* note = CreateInstrumentNote(key);
+        GameObject* note = CreateInstrumentNote(key);
         // We put black keys after white keys so they are displayed on top
         result.insert(IsBlackKey(key) ? result.end() : result.begin(), note);
     }
     return result;
 }
 
-GameObject<sf::Transformable>* PianoGameObjectFactory::CreateSongNote(
+GameObject* PianoGameObjectFactory::CreateSongNote(
         int track
         , int chan
         , int note
         , int vel
         , double duration) {
+    // Create actual note
+    double x = CalculateXPosition(note);
+    double height = duration * 1000 * GetNoteSpeed();
+    GameObject* song_note = new GameObject{x, -height};
+
     // White notes VS black notes (sharp notes) are slightly different
     double width;
     sf::Color colour = GetTrackColour(track);
@@ -87,17 +92,12 @@ GameObject<sf::Transformable>* PianoGameObjectFactory::CreateSongNote(
     }
 
     // Create underlying rectangle
-    double x = CalculateXPosition(note);
-    double height = duration * 1000 * GetNoteSpeed();
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), static_cast<float>(height)}};
     rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
     rect->setFillColor(colour);
     rect->setOutlineThickness(NOTE_OUTLINE_THICKNESS);
     rect->setOutlineColor(sf::Color::Black);
-
-    // Create actual note
-    auto song_note = new GameObject<sf::Transformable>{rect, x, -height};
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});
@@ -108,10 +108,7 @@ GameObject<sf::Transformable>* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new CollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
-    
-    auto result = new GameObject<sf::Transformable>{std::move(*song_note)};
-    delete song_note;
-    return result;
+    return song_note;
 }
 
 sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {
@@ -182,7 +179,7 @@ double PianoGameObjectFactory::CalculateXPosition(int midi_key) {
     return x;
 }
 
-GameObject<sf::Transformable>* PianoGameObjectFactory::CreateInstrumentNote(int note) {
+GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     bool is_black = IsBlackKey(note);
 
     // Black and white keys have slightly different atributes
@@ -200,19 +197,19 @@ GameObject<sf::Transformable>* PianoGameObjectFactory::CreateInstrumentNote(int 
         outline_thickness = BLACK_KEY_OUTLINE_THICKNESS;
     }
 
-    // Create the underlying shape
+    // Create the actual note
     double x = CalculateXPosition(note);
     double y = Config::GetInstance().GetScreenHeight() - WHITE_KEY_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * KEY_HOVER_PERCENTAGE);
+    GameObject* ins_note = new GameObject{x, y};
+
+    // Create the underlying shape
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), static_cast<float>(height)}};
     rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
     rect->setFillColor(colour);
     rect->setOutlineColor(sf::Color::Black);
     rect->setOutlineThickness(outline_thickness);
-
-    // Create the actual note
-    auto ins_note = new GameObject<sf::Transformable>{rect, x, y};
 
     // Get the instrument key binding
     sf::Keyboard::Key key;
@@ -228,10 +225,7 @@ GameObject<sf::Transformable>* PianoGameObjectFactory::CreateInstrumentNote(int 
             shift});
     ins_note->SetComponent(new CollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
-
-    auto result = new GameObject<sf::Transformable>{std::move(*ins_note)};
-    delete ins_note;
-    return result;
+    return ins_note;
 }
 
 }  // End namespace midistar

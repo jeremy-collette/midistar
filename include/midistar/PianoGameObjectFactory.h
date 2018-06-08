@@ -43,12 +43,12 @@ class PianoGameObjectFactory : public GameObjectFactory {
     /**
      * \copydoc GameObjectFactory::CreateInstrument()
      */
-    virtual std::vector<GameObject<sf::Transformable>*> CreateInstrument();
+    virtual std::vector<GameObject*> CreateInstrument();
 
     /**
      * \copydoc GameObjectFactory::CreateSongNote()
      */
-    virtual GameObject<sf::Transformable>* CreateSongNote(
+    virtual GameObject* CreateSongNote(
             int track
             , int chan
             , int note
@@ -99,7 +99,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
 
     double CalculateXPosition(int midi_key);  //!< Calculates note / instrument
                                                                 //!< X position
-    GameObject<sf::Transformable>* CreateInstrumentNote(int midi_key);  //!< Creates a note for
+    GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                                                  //!< the piano
 
     double white_width_;  //!< Holds the width of white keys and notes

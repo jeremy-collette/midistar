@@ -39,7 +39,7 @@ class DeleteOffscreenComponent : public Component {
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
+    virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
     static const int THRESHOLD = 100;  //!< X/Y off-screen threshold

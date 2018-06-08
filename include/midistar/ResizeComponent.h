@@ -87,7 +87,7 @@ class ResizeComponent : public Component {
     /**
      * \copydoc Component::Update()
      */
-    virtual void Update(Game* g, GameObject<sf::Transformable>* o, int delta);
+    virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
     void CalculateAnchorPosition(double* anchor_x, double* anchor_y);  //!<

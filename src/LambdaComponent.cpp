@@ -21,12 +21,12 @@
 namespace midistar {
 
 LambdaComponent::LambdaComponent(
-    std::function<void(Game*, GameObject<sf::Transformable>*, int)> func)
+    std::function<void(Game*, GameObject*, int)> func)
         : Component{Component::TRANSFORMATION}
         , func_{func} {
 }
 
-void LambdaComponent::Update(Game* g, GameObject<sf::Transformable>* o, int delta) {
+void LambdaComponent::Update(Game* g, GameObject* o, int delta) {
     func_(g, o, delta);
     o->DeleteComponent(GetType());
 }

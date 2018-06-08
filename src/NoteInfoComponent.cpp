@@ -48,7 +48,7 @@ int NoteInfoComponent::GetVelocity() {
     return vel_;
 }
 
-void NoteInfoComponent::Update(Game*, GameObject<sf::Transformable>*, int) {
+void NoteInfoComponent::Update(Game*, GameObject*, int) {
 }
 
 }  // End namespace midistar

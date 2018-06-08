@@ -24,7 +24,7 @@ CollidableComponent::CollidableComponent()
         : Component{Component::COLLIDABLE} {
 }
 
-void CollidableComponent::Update(Game*, GameObject<sf::Transformable>*, int) {
+void CollidableComponent::Update(Game*, GameObject*, int) {
 }
 
 }   // End namespace midistar

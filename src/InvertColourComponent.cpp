@@ -30,7 +30,7 @@ InvertColourComponent::InvertColourComponent()
         : InvertColourComponent{DEFAULT_INVERSION} {
 }
 
-void InvertColourComponent::Update(Game*, GameObject<sf::Transformable>* o, int) {
+void InvertColourComponent::Update(Game*, GameObject* o, int) {
     auto graphics = o->GetComponent<GraphicsComponent>(
             Component::GRAPHICS);
     if (!graphics) {

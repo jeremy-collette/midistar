@@ -41,14 +41,14 @@ class InstrumentCollisionHandlerComponent : public CollisionHandlerComponent {
       */
      virtual void HandleCollisions(
              Game* g
-             , GameObject<sf::Transformable>* o
-             , std::vector<GameObject<sf::Transformable>*> colliding_with);
+             , GameObject* o
+             , std::vector<GameObject*> colliding_with);
 
  private:
-    void HandleCollision(Game* g, GameObject<sf::Transformable>* o, GameObject<sf::Transformable>* collider);
+    void HandleCollision(Game* g, GameObject* o, GameObject* collider);
                                                      //!< Handles a collision
 
-    GameObject<sf::Transformable>* colliding_note_;  //!< Holds the note we are colliding with. We
+    GameObject* colliding_note_;  //!< Holds the note we are colliding with. We
                      //!< need to keep track of this to play overlapping notes.
 };
 

@@ -178,12 +178,12 @@ class GameObject {
 
  private:
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
-    sf::Drawable& drawable_;  //!< Holds drawable part of object
+    sf::Drawable* drawable_;  //!< Holds drawable part of object
     double original_height_;  //!< Height at creation
     double original_width_;  //!< Width at creation
     bool request_delete_;  //!< Holds deletion request status
     std::vector<Component*> to_delete_;  //!< Holds components to delete
-    sf::Transformable& transformable_;  //!< Holds transformable part of object
+    sf::Transformable* transformable_;  //!< Holds transformable part of object
     double x_pos_;  //!< Holds X position
     double y_pos_;  //!< Holds Y position
 };

@@ -29,15 +29,15 @@ GameObject::GameObject(
     , double width
     , double height)
         : components_{0}
-        , drawable_{*drawformable}
+        , drawable_{drawformable}
         , original_height_{height}
         , original_width_{width}
         , request_delete_{false}
         , to_delete_{}
-        , transformable_{*drawformable}
+        , transformable_{drawformable}
         , x_pos_{x_pos}
         , y_pos_{y_pos} {    
-    transformable_.setPosition(x_pos, y_pos);
+    transformable_->setPosition(x_pos, y_pos);
     for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
         components_[i] = nullptr;
     }
@@ -52,7 +52,7 @@ template <typename T>
 T* GameObject::GetDrawformable() {
     // We can use drawable_ or transformable_ interchangeably here, as they
     // both point to the same object.
-    return dynamic_cast<T*>(&drawable_);
+    return dynamic_cast<T*>(drawable_);
 }
 
 }  // End namespace midistar

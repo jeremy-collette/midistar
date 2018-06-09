@@ -24,7 +24,7 @@ GameObject::~GameObject() {
     for (auto c : components_) {
         delete c;
     }
-    delete &drawable_;
+    delete drawable_;
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -36,7 +36,7 @@ void GameObject::DeleteComponent(ComponentType type) {
 }
 
 void GameObject::Draw(sf::RenderWindow& window) {
-    window.draw(drawable_);
+    window.draw(*drawable_);
 }
 
 void GameObject::GetPosition(double* x, double* y) {
@@ -45,7 +45,7 @@ void GameObject::GetPosition(double* x, double* y) {
 }
 
 void GameObject::GetSize(double* w, double* h) {
-    auto scale = transformable_.getScale();
+    auto scale = transformable_->getScale();
     *w = original_width_ * scale.x;
     *h = original_height_ * scale.y;
 }
@@ -73,7 +73,7 @@ void GameObject::SetRequestDelete(bool del) {
 }
 
 void GameObject::SetSize(double w, double h) {
-    transformable_.setScale(w / original_width_, h / original_height_);
+    transformable_->setScale(w / original_width_, h / original_height_);
 }
 
 void GameObject::Update(Game* g, int delta) {
@@ -83,7 +83,7 @@ void GameObject::Update(Game* g, int delta) {
         }
     }
 
-    transformable_.setPosition(x_pos_, y_pos_);
+    transformable_->setPosition(x_pos_, y_pos_);
 
     for (const auto& c : to_delete_) {
         delete c;

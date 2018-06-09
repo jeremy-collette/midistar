@@ -29,12 +29,12 @@ GameObject::GameObject(
     , double width
     , double height)
         : components_{0}
-        , drawable_{*dynamic_cast<sf::Drawable*>(drawformable)}
+        , drawable_{*drawformable}
         , original_height_{height}
         , original_width_{width}
         , request_delete_{false}
         , to_delete_{}
-        , transformable_{*dynamic_cast<sf::Transformable*>(drawformable)}
+        , transformable_{*drawformable}
         , x_pos_{x_pos}
         , y_pos_{y_pos} {    
     transformable_.setPosition(x_pos, y_pos);

@@ -27,13 +27,6 @@
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
 
-// TODO(@jez): REMOVE THIS
-#ifdef DEBUG
-#include <cassert>
-#include "midistar/LambdaComponent.h"
-#include "midistar/PhysicsComponent.h"
-#endif
-
 namespace midistar {
 
 Game::Game()
@@ -108,39 +101,6 @@ int Game::Init() {
     }
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
-
-#ifdef DEBUG
-    // TODO(@jez:) REMOVE THIS DEBUG CODE
-    sf::Font& font = *new sf::Font{};
-    assert(font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeSans.ttf"));
-
-    auto& msg = *new std::string{"Hello, world!"};
-    auto text = new sf::Text{msg.c_str(), font, 48};
-    text->setFillColor(sf::Color::Red);
-    text->setStyle(sf::Text::Bold | sf::Text::Underlined);
-    text->setPosition(50, 200);
-    auto obj = new GameObject{text, 50, 200, 48, 25 * static_cast<double>(
-            msg.size())};
-    obj->SetComponent(new PhysicsComponent{0.3, 0.3});
-    obj->SetComponent(new LambdaComponent{
-            [](Game*, GameObject* o, int)            
-            {
-                int screen_width = Config::GetInstance().GetScreenWidth();
-                int screen_height = Config::GetInstance().GetScreenHeight();
-                double w, h, x, y;
-                o->GetSize(&w, &h);
-                o->GetPosition(&x, &y);
-                if (x + w < 0 || x >= screen_width) {
-                    x = x < 0 ? screen_width : -w;
-                }
-                if (y + h < 0 || y > screen_height) {
-                    y = y < 0 ? screen_height : -h;
-                }                
-                o->SetPosition(x, y);
-            }
-            });
-    objects_.push_back(obj);
-#endif
     return 0;
 }
 

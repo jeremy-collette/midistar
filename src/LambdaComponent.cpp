@@ -28,7 +28,6 @@ LambdaComponent::LambdaComponent(
 
 void LambdaComponent::Update(Game* g, GameObject* o, int delta) {
     func_(g, o, delta);
-    o->DeleteComponent(GetType());
 }
 
 }   // End namespace midistar

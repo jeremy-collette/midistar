@@ -16,25 +16,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-//TODO(@jez): remove
-#include <iostream>
-
 #include "midistar/GameObject.h"
 
 namespace midistar {
 
-GameObject::GameObject(
-    sf::Shape* shape
-    , double x_pos
-    , double y_pos
-    , double width
-    , double height)
-        : GameObject{shape, shape, x_pos, y_pos, width, height} {
-    shape_ = shape;    
-}
-
 GameObject::~GameObject() {
-    //TODO(@jez)
+    for (auto c : components_) {
+        delete c;
+    }
+    delete &drawable_;
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -47,10 +37,6 @@ void GameObject::DeleteComponent(ComponentType type) {
 
 void GameObject::Draw(sf::RenderWindow& window) {
     window.draw(drawable_);
-}
-
-sf::Drawable& GameObject::GetDrawable() {
-    return drawable_;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
@@ -90,10 +76,6 @@ void GameObject::SetSize(double w, double h) {
     transformable_.setScale(w / original_width_, h / original_height_);
 }
 
-sf::Transformable& GameObject::GetTransformable() {
-    return transformable_;
-}
-
 void GameObject::Update(Game* g, int delta) {
     for (const auto& c : components_) {
         if (c) {
@@ -107,31 +89,6 @@ void GameObject::Update(Game* g, int delta) {
         delete c;
     }
     to_delete_.clear();
-}
-
-GameObject::GameObject(
-    sf::Drawable* drawable
-    , sf::Transformable* transformable
-    , double x_pos
-    , double y_pos
-    , double width
-    , double height)
-        : components_{0}
-        , drawable_{*drawable}
-        , original_height_{height}
-        , original_width_{width}
-        , request_delete_{false}
-        , shape_{nullptr}
-        , sprite_{nullptr}
-        , text_{nullptr}
-        , to_delete_{}
-        , transformable_{*transformable}
-        , x_pos_{x_pos}
-        , y_pos_{y_pos} {
-    transformable_.setPosition(x_pos, y_pos);
-    for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
-        components_[i] = nullptr;
-    }
 }
 
 }   // End namespace midistar

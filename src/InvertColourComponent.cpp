@@ -30,8 +30,7 @@ InvertColourComponent::InvertColourComponent()
 }
 
 void InvertColourComponent::Update(Game*, GameObject* o, int) {
-    sf::Drawable& drawable = o->GetDrawable();
-    auto* rect = static_cast<sf::RectangleShape*>(&drawable);
+    auto* rect = o->GetDrawformable<sf::RectangleShape>();
     if (!rect) {
         return;
     }

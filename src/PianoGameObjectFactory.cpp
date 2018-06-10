@@ -34,6 +34,7 @@
 #include "midistar/ResizeComponent.h"
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
 
 namespace midistar {
@@ -71,18 +72,8 @@ GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* inst) {
     sprite->setScale(sprite_w / 64.0f, sprite_h / 64.0f);
     auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
         , y - sprite_h, sprite_w, sprite_h};
-    obj->SetComponent(new LambdaComponent{
-            [sprite](Game*, GameObject*, int) {
-                static int frame = 0;
-                if (frame++ % 10 == 0) {
-                    auto rect = sprite->getTextureRect();
-                    rect.left = (rect.left+64) % (64*6);
-                    sprite->setTextureRect(rect);
-                    std::cout << "grind rect x: " << sprite->getTextureRect()
-                        .left << "\n";
-                }
-                return;
-            }});
+    int frame = static_cast<int>(x) % 6;
+    obj->SetComponent(new SpriteAnimatorComponent{64, 0, frame, 24});
     return obj;
 }
 

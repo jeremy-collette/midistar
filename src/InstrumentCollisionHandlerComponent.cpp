@@ -63,11 +63,6 @@ void InstrumentCollisionHandlerComponent::HandleCollisions(
             }
             if (note->GetKey() == other_note->GetKey()) {
                 colliding_note_ = collider;
-#ifdef DEBUG
-                double x, y;
-                collider->GetPosition(&x, &y);
-                std::cout << "colliding with note @ " << x << ", " << y << "\n";
-#endif
             }
         }
     }

@@ -34,16 +34,14 @@ GameObject::GameObject(
         , original_width_{width}
         , request_delete_{false}
         , to_delete_{}
-        , transformable_{drawformable}
-        , x_pos_{x_pos}
-        , y_pos_{y_pos} {    
-    transformable_->setPosition(x_pos, y_pos);
+        , transformable_{drawformable} {
+    SetPosition(x_pos, y_pos);
     for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
         components_[i] = nullptr;
     }
 }
 
-template <typename T> 
+template <typename T>
 T* GameObject::GetComponent(ComponentType type) {
     return static_cast<T*>(components_[type]);
 }

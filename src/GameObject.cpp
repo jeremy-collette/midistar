@@ -45,9 +45,18 @@ void GameObject::GetPosition(double* x, double* y) {
 }
 
 void GameObject::GetSize(double* w, double* h) {
-    auto scale = transformable_->getScale();
-    *w = original_width_ * scale.x;
-    *h = original_height_ * scale.y;
+    // We use RectangleShape::setSize() in the SetSize() method, so we have to
+    // use RectangleShape::getSize() here.
+    auto* rect = GetDrawformable<sf::RectangleShape>();
+    if (rect) {
+        auto size = rect->getSize();
+        *w = size.x;
+        *h = size.y;
+    } else {
+        auto scale = transformable_->getScale();
+        *w = original_width_ * scale.x;
+        *h = original_height_ * scale.y;
+    }
 }
 
 bool GameObject::GetRequestDelete() {
@@ -73,7 +82,13 @@ void GameObject::SetRequestDelete(bool del) {
 }
 
 void GameObject::SetSize(double w, double h) {
-    transformable_->setScale(w / original_width_, h / original_height_);
+    // We use RectangleShape::setSize to stop the outline being stretched.
+    auto* rect = GetDrawformable<sf::RectangleShape>();
+    if (rect) {
+        rect->setSize({static_cast<float>(w), static_cast<float>(h)});
+    } else {
+        transformable_->setScale(w / original_width_, h / original_height_);
+    }
 }
 
 void GameObject::Update(Game* g, int delta) {

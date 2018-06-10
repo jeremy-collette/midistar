@@ -86,6 +86,9 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
             return;
         }
 
+#ifdef DEBUG
+        std::cout << "Created half note from " << note->GetKey() << "\n";
+#endif
         GameObject* half = g->GetGameObjectFactory().CreateSongNote(
                     note->GetTrack()
                     , note->GetChannel()

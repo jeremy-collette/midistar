@@ -53,15 +53,21 @@ void InstrumentCollisionHandlerComponent::HandleCollisions(
     // Check each collision for collision with a song note
     if (!colliding_note_) {
         for (auto& collider : colliding_with) {
-            if (collider->HasComponent(Component::SONG_NOTE)) {
-                auto other_note = collider->GetComponent<NoteInfoComponent>(
-                        Component::NOTE_INFO);
-                if (!other_note) {
-                    continue;
-                }
-                if (note->GetKey() == other_note->GetKey()) {
-                    colliding_note_ = collider;
-                }
+            if (!collider->HasComponent(Component::SONG_NOTE)) {
+                continue;
+            }
+            auto other_note = collider->GetComponent<NoteInfoComponent>(
+                    Component::NOTE_INFO);
+            if (!other_note) {
+                continue;
+            }
+            if (note->GetKey() == other_note->GetKey()) {
+                colliding_note_ = collider;
+#ifdef DEBUG
+                double x, y;
+                collider->GetPosition(&x, &y);
+                std::cout << "colliding with note @ " << x << ", " << y << "\n";
+#endif
             }
         }
     }

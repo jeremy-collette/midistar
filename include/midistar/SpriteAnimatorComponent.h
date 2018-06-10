@@ -43,7 +43,6 @@ class SpriteAnimatorComponent : public Component {
 
  private:
     int col_;
-    const int fps_;
     int last_frame_delta_;
     const int ms_per_frame_;
     int row_;

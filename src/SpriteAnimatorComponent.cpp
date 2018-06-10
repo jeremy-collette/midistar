@@ -27,7 +27,6 @@ SpriteAnimatorComponent::SpriteAnimatorComponent(
     , int fps)
         : Component{Component::SPRITE_ANIMATOR}
         , col_{col}
-        , fps_{fps}
         , last_frame_delta_{0}
         , ms_per_frame_{1000 / fps}
         , row_{row}

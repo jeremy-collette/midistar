@@ -58,15 +58,32 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
             static_cast<double>(NUM_WHITE_KEYS)} {
 }
 
-GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* note) {
-    auto* sprite = new sf::Sprite{grinding_texture_, {0, 0, 64, 64}};
+GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* inst) {
+    auto sprite = new sf::Sprite{grinding_texture_, {0, 0, 64, 64}};
     double x, y, w, h;
-    note->GetPosition(&x, &y);
-    note->GetSize(&w, &h);
+    inst->GetPosition(&x, &y);
+    inst->GetSize(&w, &h);
 #ifdef DEBUG
     std::cout << "new grinding effect @ " << x << ", " << y << "\n";
 #endif
-    return new GameObject{sprite, x, y + h - 64, 64, 64};
+    double sprite_w = w * 2;
+    double sprite_h = (w / 64.0f) * 64.0f;
+    sprite->setScale(sprite_w / 64.0f, sprite_h / 64.0f);
+    auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
+        , y - sprite_h, sprite_w, sprite_h};
+    obj->SetComponent(new LambdaComponent{
+            [sprite](Game*, GameObject*, int) {
+                static int frame = 0;
+                if (frame++ % 10 == 0) {
+                    auto rect = sprite->getTextureRect();
+                    rect.left = (rect.left+64) % (64*6);
+                    sprite->setTextureRect(rect);
+                    std::cout << "grind rect x: " << sprite->getTextureRect()
+                        .left << "\n";
+                }
+                return;
+            }});
+    return obj;
 }
 
 std::vector<GameObject*> PianoGameObjectFactory::CreateInstrument() {

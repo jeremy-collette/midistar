@@ -99,6 +99,10 @@ int Game::Init() {
     } else {
             object_factory_ = new DefaultGameObjectFactory(note_speed);
     }
+    if ((err = object_factory_->Init())) {
+        return err;
+    }
+
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
     return 0;

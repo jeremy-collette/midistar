@@ -29,7 +29,8 @@
 namespace midistar {
 
 SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
-        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER} {
+        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
+        , grinding_{nullptr} {
 }
 
 void SongNoteCollisionHandlerComponent::HandleCollisions(
@@ -37,30 +38,45 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
+    bool valid = false;
     for (auto& collider : colliding_with) {
-        HandleCollision(g, o, collider);
+         if (HandleCollision(g, o, collider)) {
+            valid = true;
+        }
+    }
+
+    // If we are being played, let's add a grinding effect
+    if (valid) {
+        if (grinding_) {
+            return;
+        }
+        grinding_ = g->GetGameObjectFactory().CreateGrindingEffect(o);
+        g->AddGameObject(grinding_);
+    } else if (grinding_) {  // Otherwise remove the grinding effect
+        grinding_->SetRequestDelete(true);
+        grinding_ = nullptr;
     }
 }
 
-void SongNoteCollisionHandlerComponent::HandleCollision(
+bool SongNoteCollisionHandlerComponent::HandleCollision(
         Game* g
         , GameObject* o
         , GameObject* collider) {
     // We only want to handle collisions with instruments
     if (!collider->HasComponent(Component::INSTRUMENT)) {
-        return;
+        return false;
     }
 
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
-        return;
+        return false;
     }
     auto other_note = collider->GetComponent<NoteInfoComponent>(
             Component::NOTE_INFO);
     // Check it's the correct instrument - we may collide with
     // neighbouring instruments if they overlap on the screen.
     if (!other_note || other_note->GetKey() != note->GetKey()) {
-        return;
+        return false;
     }
 
     // Get position and size info
@@ -73,7 +89,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
 
     // Check if the note is in the playable part of the insrtument.
     if (y > inst_y + NOTE_COLLISION_CUTOFF) {
-        return;
+        return false;
     }
 
     // If the bottom of the note is outside the playable part, separate the
@@ -83,7 +99,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
         auto note = o->GetComponent<NoteInfoComponent>(
                 Component::NOTE_INFO);
         if (!note) {
-            return;
+            return true;
         }
 
         GameObject* half = g->GetGameObjectFactory().CreateSongNote(
@@ -114,6 +130,7 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
              // can be removed.
         o->SetComponent(new ResizeComponent{0, 0});
     }
+    return true;
 }
 
 }  // End namespace midistar

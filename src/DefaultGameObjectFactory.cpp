@@ -43,6 +43,12 @@ DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
             static_cast<double>(NUM_MIDI_KEYS)} {
 }
 
+GameObject* DefaultGameObjectFactory::CreateGrindingEffect(GameObject*) {
+    // NOTE: This feature is not implemented for the DefaultGameObjectFactory.
+    auto* rect = new sf::RectangleShape{};
+    return new GameObject{rect, 0, 0, 0, 0};
+}
+
 std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {
     std::vector<GameObject*> result;
     for (int key = 0; key < NUM_MIDI_KEYS; ++key) {
@@ -129,6 +135,11 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
     *ctrl = midi_key < num_keys;
     // Determine if we are in the third section
     *shift = midi_key >= num_keys * 2;
+}
+
+int DefaultGameObjectFactory::Init() {
+    // We have nothing to initialise...
+    return 0;
 }
 
 }  // End namespace midistar

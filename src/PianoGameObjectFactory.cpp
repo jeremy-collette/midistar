@@ -53,8 +53,20 @@ const char PianoGameObjectFactory::OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE] {
 
 PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
+        , grinding_texture_{}
         , white_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_WHITE_KEYS)} {
+}
+
+GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* note) {
+    auto* sprite = new sf::Sprite{grinding_texture_, {0, 0, 64, 64}};
+    double x, y, w, h;
+    note->GetPosition(&x, &y);
+    note->GetSize(&w, &h);
+#ifdef DEBUG
+    std::cout << "new grinding effect @ " << x << ", " << y << "\n";
+#endif
+    return new GameObject{sprite, x, y + h - 64, 64, 64};
 }
 
 std::vector<GameObject*> PianoGameObjectFactory::CreateInstrument() {
@@ -106,6 +118,10 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
+}
+
+int PianoGameObjectFactory::Init() {
+    return !grinding_texture_.loadFromFile(GRINDING_TEXTURE_PATH);
 }
 
 sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {

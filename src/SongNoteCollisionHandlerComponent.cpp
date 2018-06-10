@@ -38,19 +38,20 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
-    bool valid = false;
+    GameObject* valid_collider = nullptr;
     for (auto& collider : colliding_with) {
          if (HandleCollision(g, o, collider)) {
-            valid = true;
+            valid_collider = collider;
         }
     }
 
     // If we are being played, let's add a grinding effect
-    if (valid) {
+    if (valid_collider) {
         if (grinding_) {
             return;
         }
-        grinding_ = g->GetGameObjectFactory().CreateGrindingEffect(o);
+        grinding_ = g->GetGameObjectFactory().CreateGrindingEffect(
+                valid_collider);
         g->AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect
         grinding_->SetRequestDelete(true);

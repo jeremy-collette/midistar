@@ -28,7 +28,6 @@ link_directories(${CMAKE_SOURCE_DIR}/external/fluidsynth/src
 add_executable(midistar
     src/BarComponent.cpp
     src/CollidableComponent.cpp
-    src/CollisionDetectorComponent.cpp
     src/CollisionHandlerComponent.cpp
     src/Component.cpp
     src/Config.cpp
@@ -37,7 +36,6 @@ add_executable(midistar
     src/Game.cpp
     src/GameObject.cpp
     src/GameObjectFactory.cpp
-    src/GraphicsComponent.cpp
     src/InstrumentCollisionHandlerComponent.cpp
     src/InstrumentComponent.cpp
     src/InstrumentInputHandlerComponent.cpp
@@ -57,7 +55,9 @@ add_executable(midistar
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
     src/Utility.cpp
+    src/VerticalCollisionDetectorComponent.cpp
     )
+   
 
 # Link midistar
 target_link_libraries(midistar

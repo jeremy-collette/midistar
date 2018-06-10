@@ -29,7 +29,7 @@ namespace midistar {
 
 /**
  * The CollisionHandlerComponent class polls the owner's 
- * CollisionDetectorComponent and handles collisions when they occur. 
+ * VerticalCollisionDetectorComponent and handles collisions when they occur. 
  */
 class CollisionHandlerComponent : public Component {
  public:

@@ -19,7 +19,6 @@
 #include "midistar/DeleteOffscreenComponent.h"
 
 #include "midistar/Config.h"
-#include "midistar/GraphicsComponent.h"
 
 namespace midistar {
 
@@ -28,15 +27,8 @@ DeleteOffscreenComponent::DeleteOffscreenComponent()
 }
 
 void DeleteOffscreenComponent::Update(Game*, GameObject* o, int) {
-    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
-
-    double width = 0;
-    double height = 0;
-    if (graphics) {
-        graphics->GetSize(&width, &height);
-    }
-
-    double x, y;
+    double width, height, x, y;
+    o->GetSize(&width, &height);
     o->GetPosition(&x, &y);
 
     double max_x = Config::GetInstance().GetScreenWidth() + THRESHOLD;

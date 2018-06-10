@@ -28,7 +28,7 @@
 namespace midistar {
 
 /*
- * The LambdaComponent allows for once-off lambda functions to be called. 
+ * The LambdaComponent allows for lambda functions to be used as a Component.
  */
 class LambdaComponent : public Component {
  public:

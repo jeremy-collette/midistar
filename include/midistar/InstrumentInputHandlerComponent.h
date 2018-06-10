@@ -19,8 +19,9 @@
 #ifndef MIDISTAR_INSTRUMENTINPUTHANDLERCOMPONENT_H_
 #define MIDISTAR_INSTRUMENTINPUTHANDLERCOMPONENT_H_
 
+#include <SFML/Graphics.hpp>
+
 #include "midistar/Component.h"
-#include "midistar/GraphicsComponent.h"
 
 namespace midistar {
 

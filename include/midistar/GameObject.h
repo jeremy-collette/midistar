@@ -19,8 +19,8 @@
 #ifndef MIDISTAR_GAMEOBJECT_H_
 #define MIDISTAR_GAMEOBJECT_H_
 
-#include <SFML/Graphics.hpp>
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 #include "midistar/Component.h"
 
@@ -41,8 +41,8 @@ class GameObject {
     /**
      * Constructor.
      *
-     * \tparam T The type of the drawformable being supplied. Note that 
-     * 'drawformable' means an object that derives from both the sf::Drawable 
+     * \tparam T The type of the drawformable being supplied. Note that
+     * 'drawformable' means an object that derives from both the sf::Drawable
      * and sf::Transformable classes. T must derive from these classes.
      * \param drawformable Underlying drawformable.
      * \param x_pos The X on-screen position of the GameObject.
@@ -75,9 +75,9 @@ class GameObject {
     /**
      * Draws the GameObject.
      *
-     * \param window The window to draw the GameObject in.
+     * \param[in] window The window to draw the GameObject in.
      */
-    void Draw(sf::RenderWindow& window);
+    void Draw(sf::RenderWindow* window);
 
     /**
      * Gets the Component with the specified ComponentType.
@@ -87,9 +87,9 @@ class GameObject {
      *
      * \return A pointer to the Component with the specified ComponentType.
      */
-    template <typename T> 
+    template <typename T>
     T* GetComponent(ComponentType type);
-    
+
     /**
      * Gets the drawformable object contained in the GameObject, casted to the
      * provided template type. If the conversion fails, nullptr is returned.
@@ -97,12 +97,12 @@ class GameObject {
      * sf::Drawable and sf::Transformable classes.
      *
      * \tparam T The type to cast the drawable component to.
-     * \return If the conversion to type T is successful, returns a T* pointer 
+     * \return If the conversion to type T is successful, returns a T* pointer
      * to the drawable contained in the GameObject. Otherwise returns nullptr.
      */
     template <typename T>
     T* GetDrawformable();
-   
+
     /**
      * Gets the position of the GameObject.
      *

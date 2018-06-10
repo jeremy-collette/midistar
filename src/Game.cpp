@@ -130,7 +130,7 @@ int Game::Run() {
 
         // Handle drawing
         for (auto obj : objects_) {
-            obj->Draw(window_);
+            obj->Draw(&window_);
         }
         window_.display();
 

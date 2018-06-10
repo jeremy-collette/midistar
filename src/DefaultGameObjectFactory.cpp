@@ -117,7 +117,7 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
 
     // We don't have enough unique keys to assign each instrument one key, so
     // we break the key bindings up in to three equal sections. The first
-    // section bindings use a key plus the ctrl modifier. The second section 
+    // section bindings use a key plus the ctrl modifier. The second section
     // bindings use just a key. The third section bindings use a key plus the
     // shift modifier. This way we can cover every single MIDI note with the
     // QWERTY keys (alphanumeric and a few punctuation keys).

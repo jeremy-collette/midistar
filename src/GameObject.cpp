@@ -35,8 +35,8 @@ void GameObject::DeleteComponent(ComponentType type) {
     components_[type] = nullptr;
 }
 
-void GameObject::Draw(sf::RenderWindow& window) {
-    window.draw(*drawable_);
+void GameObject::Draw(sf::RenderWindow* window) {
+    window->draw(*drawable_);
 }
 
 void GameObject::GetPosition(double* x, double* y) {

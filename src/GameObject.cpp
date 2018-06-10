@@ -40,8 +40,9 @@ void GameObject::Draw(sf::RenderWindow* window) {
 }
 
 void GameObject::GetPosition(double* x, double* y) {
-    *x = x_pos_;
-    *y = y_pos_;
+    auto pos = transformable_->getPosition();
+    *x = pos.x;
+    *y = pos.y;
 }
 
 void GameObject::GetSize(double* w, double* h) {
@@ -73,8 +74,7 @@ void GameObject::SetComponent(Component* c) {
 }
 
 void GameObject::SetPosition(double x, double y) {
-    x_pos_ = x;
-    y_pos_ = y;
+    transformable_->setPosition(x, y);
 }
 
 void GameObject::SetRequestDelete(bool del) {
@@ -97,8 +97,6 @@ void GameObject::Update(Game* g, int delta) {
             c->Update(g, this, delta);
         }
     }
-
-    transformable_->setPosition(x_pos_, y_pos_);
 
     for (const auto& c : to_delete_) {
         delete c;

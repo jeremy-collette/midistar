@@ -184,8 +184,6 @@ class GameObject {
     bool request_delete_;  //!< Holds deletion request status
     std::vector<Component*> to_delete_;  //!< Holds components to delete
     sf::Transformable* transformable_;  //!< Holds transformable part of object
-    double x_pos_;  //!< Holds X position
-    double y_pos_;  //!< Holds Y position
 };
 
 }   // End namespace midistar

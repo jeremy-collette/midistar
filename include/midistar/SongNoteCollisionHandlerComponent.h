@@ -49,8 +49,10 @@ class SongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
         //!< this many pixels from the top of the instrument to be completely
         //!< played.
 
-    void HandleCollision(Game* g, GameObject* o, GameObject* collider);
-                                                     //!< Handles a collision
+    bool HandleCollision(Game* g, GameObject* o, GameObject* collider);
+               //!< Handles a collision returns true if it's a valid collision
+
+    GameObject* grinding_;  //!< Holds GameObject display metal grinding effect
 };
 
 }  // End namespace midistar

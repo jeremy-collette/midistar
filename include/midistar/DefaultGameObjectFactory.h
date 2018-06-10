@@ -39,6 +39,11 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     explicit DefaultGameObjectFactory(double note_speed);
 
     /**
+     * \copydoc GameObjectFactory::CreateGrindingEffect()
+     */
+    virtual GameObject* CreateGrindingEffect(GameObject* note);
+
+    /**
      * \copydoc GameObjectFactory::CreateInstrument()
      */
     virtual std::vector<GameObject*> CreateInstrument();
@@ -52,6 +57,11 @@ class DefaultGameObjectFactory : public GameObjectFactory {
             , int note
             , int vel
             , double duration);
+
+    /**
+     * \copydoc GameObjectFactory::Init()
+     */
+    virtual int Init();
 
  private:
     static const int NUM_MIDI_KEYS = 128;  //!< Maximum MIDI key

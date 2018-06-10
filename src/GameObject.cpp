@@ -20,15 +20,11 @@
 
 namespace midistar {
 
-GameObject::GameObject(double x_pos, double y_pos)
-        : components_{0}
-        , request_delete_{false}
-        , to_delete_{}
-        , x_pos_{x_pos}
-        , y_pos_{y_pos} {
-    for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
-        components_[i] = nullptr;
+GameObject::~GameObject() {
+    for (auto c : components_) {
+        delete c;
     }
+    delete drawable_;
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -36,12 +32,31 @@ void GameObject::DeleteComponent(ComponentType type) {
         return;
     }
     to_delete_.push_back(components_[type]);
-    RemoveComponent(type);
+    components_[type] = nullptr;
+}
+
+void GameObject::Draw(sf::RenderWindow* window) {
+    window->draw(*drawable_);
 }
 
 void GameObject::GetPosition(double* x, double* y) {
     *x = x_pos_;
     *y = y_pos_;
+}
+
+void GameObject::GetSize(double* w, double* h) {
+    // We use RectangleShape::setSize() in the SetSize() method, so we have to
+    // use RectangleShape::getSize() here.
+    auto* rect = GetDrawformable<sf::RectangleShape>();
+    if (rect) {
+        auto size = rect->getSize();
+        *w = size.x;
+        *h = size.y;
+    } else {
+        auto scale = transformable_->getScale();
+        *w = original_width_ * scale.x;
+        *h = original_height_ * scale.y;
+    }
 }
 
 bool GameObject::GetRequestDelete() {
@@ -50,10 +65,6 @@ bool GameObject::GetRequestDelete() {
 
 bool GameObject::HasComponent(ComponentType type) {
     return components_[type];
-}
-
-void GameObject::RemoveComponent(ComponentType type) {
-    components_[type] = nullptr;
 }
 
 void GameObject::SetComponent(Component* c) {
@@ -70,12 +81,24 @@ void GameObject::SetRequestDelete(bool del) {
     request_delete_ = del;
 }
 
+void GameObject::SetSize(double w, double h) {
+    // We use RectangleShape::setSize to stop the outline being stretched.
+    auto* rect = GetDrawformable<sf::RectangleShape>();
+    if (rect) {
+        rect->setSize({static_cast<float>(w), static_cast<float>(h)});
+    } else {
+        transformable_->setScale(w / original_width_, h / original_height_);
+    }
+}
+
 void GameObject::Update(Game* g, int delta) {
     for (const auto& c : components_) {
         if (c) {
             c->Update(g, this, delta);
         }
     }
+
+    transformable_->setPosition(x_pos_, y_pos_);
 
     for (const auto& c : to_delete_) {
         delete c;

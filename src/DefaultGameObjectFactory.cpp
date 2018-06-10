@@ -21,11 +21,10 @@
 #include <cassert>
 
 #include "midistar/CollidableComponent.h"
-#include "midistar/CollisionDetectorComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
-#include "midistar/GraphicsComponent.h"
 #include "midistar/InstrumentCollisionHandlerComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
@@ -58,42 +57,39 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
         , int note
         , int vel
         , double duration) {
-    // Create GameObject
-    // height is derived by note duration and speed (note should move its
-    // entire height over its duration).
+    // Create underlying shape
     double x = note * note_width_;
     double height = duration * 1000 * GetNoteSpeed();
-    GameObject* song_note = new GameObject{x, -height};
-
-    // Create underlying shape
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             note_width_), static_cast<float>(height)}};
-    rect->setPosition({static_cast<float>(x), -static_cast<float>(height)});
+
+    // Create GameObject
+    // Height is derived by note duration and speed (note should move its
+    // entire height over its duration).
+    auto song_note = new GameObject{rect, x, -height, note_width_, height};
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});
     song_note->SetComponent(new CollidableComponent{});
     song_note->SetComponent(new NoteInfoComponent{track, chan, note, vel});
-    song_note->SetComponent(new GraphicsComponent{rect});
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
-    song_note->SetComponent(new CollisionDetectorComponent{});
+    song_note->SetComponent(new VerticalCollisionDetectorComponent{});
     song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
     return song_note;
 }
 
 GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
-    // Create GameObject
+    // Create underlying shape
     double x = note * note_width_;
     double y = Config::GetInstance().GetScreenHeight() - INSTRUMENT_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * INSTRUMENT_HOVER_PERCENTAGE);
-    GameObject* ins_note = new GameObject{x, y};
-
-    // Create underlying shape
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            note_width_), INSTRUMENT_HEIGHT}};
-    rect->setPosition({static_cast<float>(x), static_cast<float>(y)});
+            note_width_), INSTRUMENT_HEIGHT}};;
     rect->setFillColor(sf::Color::Red);
+
+    // Create GameObject
+    auto ins_note = new GameObject{rect, x, y, note_width_, INSTRUMENT_HEIGHT};
 
     // Get key binding
     sf::Keyboard::Key key;
@@ -104,10 +100,9 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 0, note
             , Config::GetInstance().GetMidiOutVelocity()});
-    ins_note->SetComponent(new GraphicsComponent{rect});
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl
             , shift});
-    ins_note->SetComponent(new CollisionDetectorComponent{});
+    ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
     return ins_note;
 }
@@ -122,7 +117,7 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
 
     // We don't have enough unique keys to assign each instrument one key, so
     // we break the key bindings up in to three equal sections. The first
-    // section bindings use a key plus the ctrl modifier. The second section 
+    // section bindings use a key plus the ctrl modifier. The second section
     // bindings use just a key. The third section bindings use a key plus the
     // shift modifier. This way we can cover every single MIDI note with the
     // QWERTY keys (alphanumeric and a few punctuation keys).

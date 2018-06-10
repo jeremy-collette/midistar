@@ -20,9 +20,8 @@
 
 #include <algorithm>
 
-#include "midistar/CollisionDetectorComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
-#include "midistar/GraphicsComponent.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
@@ -56,10 +55,6 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     if (!note) {
         return;
     }
-    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
-    if (!graphics) {
-        return;
-    }
     auto other_note = collider->GetComponent<NoteInfoComponent>(
             Component::NOTE_INFO);
     // Check it's the correct instrument - we may collide with
@@ -67,19 +62,14 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
     if (!other_note || other_note->GetKey() != note->GetKey()) {
         return;
     }
-    auto other_graphics = collider->GetComponent<GraphicsComponent>(
-            Component::GRAPHICS);
-    if (!other_graphics) {
-        return;
-    }
 
     // Get position and size info
     double x, y, width, height;
     o->GetPosition(&x, &y);
-    graphics->GetSize(&width, &height);
+    o->GetSize(&width, &height);
     double inst_x, inst_y, inst_w, inst_h;
     collider->GetPosition(&inst_x, &inst_y);
-    other_graphics->GetSize(&inst_w, &inst_h);
+    collider->GetSize(&inst_w, &inst_h);
 
     // Check if the note is in the playable part of the insrtument.
     if (y > inst_y + NOTE_COLLISION_CUTOFF) {
@@ -101,20 +91,13 @@ void SongNoteCollisionHandlerComponent::HandleCollision(
                     , note->GetChannel()
                     , note->GetKey()
                     , note->GetVelocity()
-                    , 0);
+                    , 0.1);
 
         // We don't want complete note behaviour - this is an
         // unplayable note
         half->DeleteComponent(Component::NOTE_COLLISION_HANDLER);
         half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
-
-        auto half_graphics = half->GetComponent<GraphicsComponent>(
-                Component::GRAPHICS);
-        if (!half_graphics) {
-            return;
-        }
-
-        half_graphics->SetSize(width, (y + height) - (inst_y
+        half->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));
         g->AddGameObject(half);
     }

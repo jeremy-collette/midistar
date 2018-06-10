@@ -89,7 +89,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     // If it's not activated but the CollidableComponent is set...
     } else if (o->HasComponent(Component::COLLIDABLE)) {
         // Remove it and send a note off event
-        o->RemoveComponent(Component::COLLIDABLE);
+        o->DeleteComponent(Component::COLLIDABLE);
         o->SetComponent(new InvertColourComponent{static_cast<char>(0xa0)});
         o->SetComponent(new MidiNoteComponent{
                 false

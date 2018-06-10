@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_COLLISIONDETECTORCOMPONENT_H_
-#define MIDISTAR_COLLISIONDETECTORCOMPONENT_H_
+#ifndef MIDISTAR_VERTICALCOLLISIONDETECTORCOMPONENT_H_
+#define MIDISTAR_VERTICALCOLLISIONDETECTORCOMPONENT_H_
 
 #include <vector>
 
@@ -28,16 +28,15 @@
 namespace midistar {
 
 /**
- * The CollisionDetectorComponent class detects collisions between the
- * GraphicsComponent of its owner and the GraphicsComponent of other
- * GameObjects.
+ * The VerticalCollisionDetectorComponent class detects collisions between the
+ * its owner and the other GameObjects on the Y axis.
  */
-class CollisionDetectorComponent : public Component {
+class VerticalCollisionDetectorComponent : public Component {
  public:
      /**
       * Constructor. 
       */
-     CollisionDetectorComponent();
+     VerticalCollisionDetectorComponent();
 
      /**
       * Finds GameObjects that are colliding with the owner. 
@@ -48,7 +47,7 @@ class CollisionDetectorComponent : public Component {
 
      /**
       * Determines whether or not the owner is currently colliding with another
-      * GameObject.
+      * GameObject on the Y axis.
       *
       * \return True if a collision is occuring. False otherwise.
       */
@@ -65,4 +64,4 @@ class CollisionDetectorComponent : public Component {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_COLLISIONDETECTORCOMPONENT_H_
+#endif  // MIDISTAR_VERTICALCOLLISIONDETECTORCOMPONENT_H_

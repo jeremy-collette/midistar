@@ -29,4 +29,3 @@ double GameObjectFactory::GetNoteSpeed() {
 }
 
 }  // End namespace midistar
-

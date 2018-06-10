@@ -101,7 +101,6 @@ int Game::Init() {
     }
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
-
     return 0;
 }
 
@@ -109,12 +108,13 @@ int Game::Run() {
     unsigned int t = 0;
     sf::Clock clock;
     while (window_.isOpen()) {
+        // Clean up from last tick
         FlushNewObjectQueue();
         window_.clear(sf::Color{40, 40, 40});
-
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
+        // Handle updating
         unsigned num_objects;
         unsigned i = 0;
         do {
@@ -127,8 +127,14 @@ int Game::Run() {
         // NOTE: This could cause an infinite loop if new objects create new
         // objects.
         } while (num_objects != objects_.size());
+
+        // Handle drawing
+        for (auto obj : objects_) {
+            obj->Draw(&window_);
+        }
         window_.display();
 
+        // Handle MIDI file events
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
@@ -142,11 +148,13 @@ int Game::Run() {
             }
         }
 
+        // Handle MIDI port input events
         midi_in_buf_.clear();
         while (midi_port_in_.GetMessage(&msg)) {
             midi_in_buf_.push_back(msg);
         }
 
+        // Handle SFML events
         sf_events_.clear();
         sf::Event event;
         while (window_.pollEvent(event)) {
@@ -158,8 +166,11 @@ int Game::Run() {
             }
         }
 
+        // Update MIDI file and port
         midi_file_in_.Tick(delta);
         midi_port_in_.Tick();
+
+        // Clean up!
         CleanUpObjects();
 
         // If we're done playing the file and have no song notes to be played,

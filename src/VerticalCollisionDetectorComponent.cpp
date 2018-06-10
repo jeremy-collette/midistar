@@ -16,31 +16,25 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/CollisionDetectorComponent.h"
-
-#include "midistar/GraphicsComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 
-CollisionDetectorComponent::CollisionDetectorComponent()
-        : Component{Component::COLLISION_DETECTOR} {
+VerticalCollisionDetectorComponent::VerticalCollisionDetectorComponent()
+        : Component{Component::VERTICAL_COLLISION_DETECTOR} {
 }
 
-const std::vector<GameObject*>& CollisionDetectorComponent::GetCollidingWith() {
+const std::vector<GameObject*>& VerticalCollisionDetectorComponent::
+        GetCollidingWith() {
     return colliding_with_;
 }
 
 
-bool CollisionDetectorComponent::GetIsColliding() {
+bool VerticalCollisionDetectorComponent::GetIsColliding() {
     return GetCollidingWith().size();
 }
 
-void CollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
-    auto graphics = o->GetComponent<GraphicsComponent>(Component::GRAPHICS);
-    if (!graphics) {
-        return;
-    }
-
+void VerticalCollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
     colliding_with_.clear();
     for (auto& other_obj : g->GetGameObjects()) {
         if (other_obj == o ||
@@ -48,14 +42,16 @@ void CollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
              continue;
         }
 
-        auto other_graphics = other_obj->GetComponent<GraphicsComponent>(
-                Component::GRAPHICS);
-        if (!other_graphics) {
-            continue;
-        }
+        double x, y, w, h;
+        o->GetPosition(&x, &y);
+        o->GetSize(&w, &h);
 
-        if (graphics->GetShape().getGlobalBounds().intersects(
-                    other_graphics->GetShape().getGlobalBounds())) {
+        double other_x, other_y, other_w, other_h;
+        other_obj->GetPosition(&other_x, &other_y);
+        other_obj->GetSize(&other_w, &other_h);
+
+        if ((y >= other_y && y <= other_y + h)
+                || (y + h >= other_y && y + h <= other_y + h)) {
             colliding_with_.push_back(other_obj);
         }
     }

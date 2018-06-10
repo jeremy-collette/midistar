@@ -42,13 +42,16 @@ void VerticalCollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
              continue;
         }
 
-        double x, y, w, h;
-        o->GetPosition(&x, &y);
-        o->GetSize(&w, &h);
-
         double other_x, other_y, other_w, other_h;
         other_obj->GetPosition(&other_x, &other_y);
         other_obj->GetSize(&other_w, &other_h);
+        if (!other_w || !other_h) {
+            continue;
+        }
+
+        double x, y, w, h;
+        o->GetPosition(&x, &y);
+        o->GetSize(&w, &h);
 
         if ((y >= other_y && y <= other_y + other_h)
                  || (y + h >= other_y && y + h <= other_y + other_h)

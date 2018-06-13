@@ -67,12 +67,14 @@ GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* inst) {
     double x, y, w, h;
     inst->GetPosition(&x, &y);
     inst->GetSize(&w, &h);
-    double sprite_scale = w * 2 / 64.0f;
-    double sprite_size = sprite_scale * 64.0f;
-    sprite->setScale(sprite_scale, sprite_scale);
+    double sprite_scale_x = w * 2 / 64.0f;
+    double sprite_scale_y = sprite_scale_x / 2.0f;
+    double sprite_w = sprite_scale_x * 64.0f;
+    double sprite_h = sprite_scale_y * 64.0f;
+    sprite->setScale(sprite_scale_x, sprite_scale_y);
 
-    auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_size / 2.0f)
-        , y - sprite_size, sprite_size, sprite_size};
+    auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
+        , y - sprite_h, sprite_w, sprite_h};
     int frame = static_cast<int>(x) % 6;
     obj->SetComponent(new SpriteAnimatorComponent{64, 0, frame, 18});
     return obj;

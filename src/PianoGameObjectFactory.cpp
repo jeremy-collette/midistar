@@ -61,6 +61,8 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
 
 GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* inst) {
     auto sprite = new sf::Sprite{grinding_texture_, {0, 0, 64, 64}};
+    sprite->setColor(sf::Color{255, 253, 197});
+
     double x, y, w, h;
     inst->GetPosition(&x, &y);
     inst->GetSize(&w, &h);
@@ -73,7 +75,7 @@ GameObject* PianoGameObjectFactory::CreateGrindingEffect(GameObject* inst) {
     auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
         , y - sprite_h, sprite_w, sprite_h};
     int frame = static_cast<int>(x) % 6;
-    obj->SetComponent(new SpriteAnimatorComponent{64, 0, frame, 24});
+    obj->SetComponent(new SpriteAnimatorComponent{64, 0, frame, 12});
     return obj;
 }
 

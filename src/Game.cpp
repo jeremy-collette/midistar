@@ -35,7 +35,7 @@ Game::Game()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
                  , Config::GetInstance().GetFullScreen() ?
-                 sf::Style::Fullscreen : sf::Style::None} {
+                 sf::Style::Fullscreen : sf::Style::Default} {
 }
 
 Game::~Game() {

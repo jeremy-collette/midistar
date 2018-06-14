@@ -33,7 +33,7 @@ MIDISTAR. These libraries are distributed with midistar, and each have their
 own dependencies. These dependencies need to be met to run midistar.
 
 On OSX, third-party libraries should come packaged with their dependencies
-and work out of the box. This means that no extra software should be installed.
+and work out of the box. This means that no extra software should be required.
 
 However, on Linux, additional software must be installed to meet runtime
 dependencies. If you're running Debian or Ubuntu, you should be able to install
@@ -138,7 +138,7 @@ runtime dependencies. These are sufficient for running midistar. However,
 additional dependencies are required to build midistar.
 
 On OSX, third-party libraries should come packaged with their dependencies
-and work out of the box. This means that no extra software should be installed.
+and work out of the box. This means that no extra software should be required.
 
 However, on Linux, additional software must be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install

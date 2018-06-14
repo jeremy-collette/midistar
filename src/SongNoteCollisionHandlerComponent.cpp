@@ -50,7 +50,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
         if (grinding_) {
             return;
         }
-        grinding_ = g->GetGameObjectFactory().CreateGrindingEffect(
+        grinding_ = g->GetGameObjectFactory().CreateNotePlayEffect(
                 valid_collider);
         g->AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect

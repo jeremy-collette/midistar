@@ -50,7 +50,7 @@ class GameObjectFactory {
      *
      * \return A GameObject that represents a grinding effect.
      */
-    virtual GameObject* CreateGrindingEffect(GameObject* note) = 0;
+    virtual GameObject* CreateNotePlayEffect(GameObject* note) = 0;
 
     /**
      * Creates the instrument to play.

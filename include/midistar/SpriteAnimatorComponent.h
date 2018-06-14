@@ -27,7 +27,7 @@ namespace midistar {
 
 /**
  * The SpriteAnimatorComponent class animates GameObjects that contain an
- * sf::Sprite instance.
+ * sf::Sprite instance which uses a spritesheet.
  */
 class SpriteAnimatorComponent : public Component {
  public:
@@ -42,11 +42,11 @@ class SpriteAnimatorComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    int col_;
-    int last_frame_delta_;
-    const int ms_per_frame_;
-    int row_;
-    const int sprite_size_;
+    int col_;  //!< The column in the sprite sheet
+    int last_frame_delta_;  //!< The time since last frame
+    const int ms_per_frame_;  //!< Milliseconds per frame
+    int row_;  //!< The row in the sprite sheet
+    const int sprite_size_;  //!< The size of each sprite
 };
 
 }   // End namespace midistar

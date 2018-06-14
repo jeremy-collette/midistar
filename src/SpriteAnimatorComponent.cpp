@@ -34,22 +34,25 @@ SpriteAnimatorComponent::SpriteAnimatorComponent(
 }
 
 void SpriteAnimatorComponent::Update(Game*, GameObject* o, int delta) {
+    // We only update X frames per second
     last_frame_delta_ += delta;
-
     if (last_frame_delta_ < ms_per_frame_) {
         return;
     }
     last_frame_delta_ = 0;
 
+    // We can only operate on GameObjects that actually have a sprite
     auto sprite = o->GetDrawformable<sf::Sprite>();
     if (!sprite) {
         return;
     }
 
+    // Set out position in the spritesheet to select a specific sprite
     sprite->setTextureRect({col_ * sprite_size_, row_ * sprite_size_
             , sprite_size_, sprite_size_});
     ++col_;
 
+    // Wrap-around to first sprite
     if (col_ * sprite_size_ + sprite_size_ >
             static_cast<int>(sprite->getTexture()->getSize().x)) {
         col_ = 0;

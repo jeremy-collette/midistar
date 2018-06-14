@@ -41,9 +41,9 @@ class PianoGameObjectFactory : public GameObjectFactory {
     explicit PianoGameObjectFactory(double note_speed);
 
    /**
-     * \copydoc GameObjectFactory::CreateGrindingEffect()
+     * \copydoc GameObjectFactory::CreateNotePlayEffect()
      */
-    virtual GameObject* CreateGrindingEffect(GameObject* note);
+    virtual GameObject* CreateNotePlayEffect(GameObject* note);
 
 
    /**
@@ -72,6 +72,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
               //!< G, and B colour channels by this multiplier during darkening
     static constexpr float BLACK_WIDTH_MULTIPLIER = 0.5f;  //!< Black keys and
                         //! notes have a different width to white counterparts
+    static constexpr float GRINDING_SPRITE_SIZE = 64.0f;  //!< Sprite size
     static constexpr float KEY_HOVER_PERCENTAGE = 0.1f;  //!< Percentage of the
                                   //!< screen height that the piano will hover
     static constexpr float NOTE_OUTLINE_THICKNESS = -2.0f;  //!< Note outline

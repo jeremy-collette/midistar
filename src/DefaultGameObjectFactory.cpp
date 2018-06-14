@@ -43,7 +43,7 @@ DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
             static_cast<double>(NUM_MIDI_KEYS)} {
 }
 
-GameObject* DefaultGameObjectFactory::CreateGrindingEffect(GameObject*) {
+GameObject* DefaultGameObjectFactory::CreateNotePlayEffect(GameObject*) {
     // NOTE: This feature is not implemented for the DefaultGameObjectFactory.
     auto* rect = new sf::RectangleShape{};
     return new GameObject{rect, 0, 0, 0, 0};

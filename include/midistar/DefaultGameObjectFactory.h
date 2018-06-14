@@ -39,9 +39,9 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     explicit DefaultGameObjectFactory(double note_speed);
 
     /**
-     * \copydoc GameObjectFactory::CreateGrindingEffect()
+     * \copydoc GameObjectFactory::CreateNotePlayEffect()
      */
-    virtual GameObject* CreateGrindingEffect(GameObject* note);
+    virtual GameObject* CreateNotePlayEffect(GameObject* note);
 
     /**
      * \copydoc GameObjectFactory::CreateInstrument()

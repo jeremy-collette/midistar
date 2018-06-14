@@ -137,9 +137,9 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
     *shift = midi_key >= num_keys * 2;
 }
 
-int DefaultGameObjectFactory::Init() {
+bool DefaultGameObjectFactory::Init() {
     // We have nothing to initialise...
-    return 0;
+    return true;
 }
 
 }  // End namespace midistar

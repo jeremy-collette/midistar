@@ -61,7 +61,7 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     /**
      * \copydoc GameObjectFactory::Init()
      */
-    virtual int Init();
+    virtual bool Init();
 
  private:
     static const int NUM_MIDI_KEYS = 128;  //!< Maximum MIDI key

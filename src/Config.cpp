@@ -109,7 +109,7 @@ const std::string Config::GetSoundFontPath() {
     return soundfont_path_;
 }
 
-int Config::ParseOptions(int argc, char** argv) {
+bool Config::ParseOptions(int argc, char** argv) {
     CLI::App app {};
     InitCliApp(&app);
 
@@ -117,9 +117,9 @@ int Config::ParseOptions(int argc, char** argv) {
         app.parse(argc, argv);
     } catch(const CLI::ParseError &e) {
         app.exit(e);
-        return 1;
+        return false;
     }
-    return 0;
+    return true;
 }
 
 void Config::InitCliApp(CLI::App* app) {

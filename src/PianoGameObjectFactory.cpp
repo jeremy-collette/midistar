@@ -139,8 +139,8 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     return song_note;
 }
 
-int PianoGameObjectFactory::Init() {
-    return !grinding_texture_.loadFromFile(GRINDING_TEXTURE_PATH);
+bool PianoGameObjectFactory::Init() {
+    return grinding_texture_.loadFromFile(GRINDING_TEXTURE_PATH);
 }
 
 sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {

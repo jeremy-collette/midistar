@@ -64,8 +64,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
     /**
      * \copydoc GameObjectFactory::Init()
      */
-    virtual int Init();
-
+    virtual bool Init();
 
  private:
     static constexpr float COLOUR_DARKEN_MULTIPLIER = 0.4f;  //!< Multiple R,

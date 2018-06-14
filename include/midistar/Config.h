@@ -162,9 +162,9 @@ class Config {
      * \param argc Number of arguments.
      * \param argv Arguments.
      *
-     * \return 0 for success. Other values for failure.
+     * \return true for success. false for failure.
      */
-    int ParseOptions(int argc, char** argv);
+    bool ParseOptions(int argc, char** argv);
 
  private:
     static const int MIDI_OUT_VELOCITY = 127;  //!< MIDI out velocity

@@ -71,7 +71,7 @@ sf::RenderWindow& Game::GetWindow() {
     return window_;
 }
 
-int Game::Init() {
+bool Game::Init() {
     // Setup SFML window
     window_.setFramerateLimit(Config::GetInstance().
             GetMaximumFramesPerSecond());
@@ -80,12 +80,11 @@ int Game::Init() {
     // Setup MIDI input / outputs
     midi_port_in_.Init();  // It is okay if this fails (player can be using
                                                         // computer keyboard)
-    int err;
-    if ((err = midi_file_in_.Init(Config::GetInstance().GetMidiFileName()))) {
-        return err;
+    if (!midi_file_in_.Init(Config::GetInstance().GetMidiFileName())) {
+        return false;
     }
-    if ((err = midi_out_.Init())) {
-        return err;
+    if (!midi_out_.Init()) {
+        return false;
     }
 
     // Setup GameObject factory and create GameObjects
@@ -99,16 +98,16 @@ int Game::Init() {
     } else {
             object_factory_ = new DefaultGameObjectFactory(note_speed);
     }
-    if ((err = object_factory_->Init())) {
-        return err;
+    if (!object_factory_->Init()) {
+        return false;
     }
 
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
-    return 0;
+    return true;
 }
 
-int Game::Run() {
+void Game::Run() {
     unsigned int t = 0;
     sf::Clock clock;
     while (window_.isOpen()) {
@@ -184,8 +183,6 @@ int Game::Run() {
         }
         ++t;
     }
-
-    return 0;
 }
 
 void Game::TurnMidiNoteOff(int chan, int note) {

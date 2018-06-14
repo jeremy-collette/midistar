@@ -80,9 +80,9 @@ class GameObjectFactory {
     /**
      * Initialises the GameObjectFactory.
      *
-     * \return 0 indicates success. Non-zero indicates failure.
+     * \return true indicates success. false indicates failure.
      */
-    virtual int Init() = 0;
+    virtual bool Init() = 0;
 
  protected:
     double GetNoteSpeed();  //!< Gets note speed

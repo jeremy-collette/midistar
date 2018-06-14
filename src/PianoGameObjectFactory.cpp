@@ -39,6 +39,10 @@
 
 namespace midistar {
 
+const sf::Color PianoGameObjectFactory::BACKGROUND_COLOUR{40, 40, 40};
+
+const sf::Color PianoGameObjectFactory::GRINDING_SPRITE_COLOUR{197, 253, 255};
+
 const sf::Color PianoGameObjectFactory::MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS] {
     sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
     , sf::Color::Magenta, sf::Color::Cyan
@@ -53,7 +57,7 @@ const char PianoGameObjectFactory::OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE] {
 };
 
 PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
-        : GameObjectFactory{note_speed}
+        : GameObjectFactory{note_speed, BACKGROUND_COLOUR}
         , grinding_texture_{}
         , white_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_WHITE_KEYS)} {
@@ -63,8 +67,7 @@ GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
     // Create a sprite from a spritesheet using the first frame
     auto sprite = new sf::Sprite{grinding_texture_, {0, 0, static_cast<int>(
             GRINDING_SPRITE_SIZE), static_cast<int>(GRINDING_SPRITE_SIZE)}};
-    sprite->setColor(sf::Color{GRINDING_SPRITE_R, GRINDING_SPRITE_G
-            , GRINDING_SPRITE_B});
+    sprite->setColor(GRINDING_SPRITE_COLOUR);
 
     // Set the sprite scale to match the instrument
     double x, y, w, h;

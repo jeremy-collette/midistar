@@ -20,6 +20,7 @@
 #define MIDISTAR_GAMEOBJECTFACTORY_H_
 
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 #include "midistar/GameObject.h"
 
@@ -35,7 +36,9 @@ class GameObjectFactory {
     /**
      * Constructor.
      */
-    explicit GameObjectFactory(double note_speed);
+    explicit GameObjectFactory(
+            double note_speed
+            , const sf::Color& backround_colour);
 
     /**
      * Destructor.
@@ -78,6 +81,13 @@ class GameObjectFactory {
             , double duration) = 0;
 
     /**
+     * Gets the recommended background colour for the GameObjectFactory.
+     *
+     * \return Background colour.
+     */
+    const sf::Color& GetBackgroundColour();
+
+    /**
      * Initialises the GameObjectFactory.
      *
      * \return true indicates success. false indicates failure.
@@ -88,6 +98,7 @@ class GameObjectFactory {
     double GetNoteSpeed();  //!< Gets note speed
 
  private:
+    const sf::Color background_colour_;  //!< Holds background colour
     double note_speed_;  //!< Holds note speed
 };
 

@@ -20,8 +20,15 @@
 
 namespace midistar {
 
-GameObjectFactory::GameObjectFactory(double note_speed)
-        : note_speed_{note_speed} {
+GameObjectFactory::GameObjectFactory(
+    double note_speed
+    , const sf::Color& background_colour)
+        : background_colour_{background_colour}
+        , note_speed_{note_speed} {
+}
+
+const sf::Color& GameObjectFactory::GetBackgroundColour() {
+    return background_colour_;
 }
 
 double GameObjectFactory::GetNoteSpeed() {

@@ -113,7 +113,7 @@ void Game::Run() {
     while (window_.isOpen()) {
         // Clean up from last tick
         FlushNewObjectQueue();
-        window_.clear(sf::Color{40, 40, 40});
+        window_.clear(object_factory_->GetBackgroundColour());
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
 

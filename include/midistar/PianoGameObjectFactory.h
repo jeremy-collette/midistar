@@ -67,14 +67,13 @@ class PianoGameObjectFactory : public GameObjectFactory {
     virtual bool Init();
 
  private:
+    static const sf::Color BACKGROUND_COLOUR;  //!< Background colour
     static constexpr float COLOUR_DARKEN_MULTIPLIER = 0.4f;  //!< Multiple R,
               //!< G, and B colour channels by this multiplier during darkening
     static constexpr float BLACK_WIDTH_MULTIPLIER = 0.5f;  //!< Black keys and
                         //! notes have a different width to white counterparts
     static const int GRINDING_FRAMES_PER_SECOND = 18;  //!< Grinding sprite FPS
-    static const int GRINDING_SPRITE_B = 197;  //!< Grinding sprite blue colour
-    static const int GRINDING_SPRITE_G = 253;  //!< Grinding sprite green colour
-    static const int GRINDING_SPRITE_R = 255;  //!< Grinding sprite red colour
+    static const sf::Color GRINDING_SPRITE_COLOUR;  //!< Grinding sprite colour
     static constexpr float GRINDING_SPRITE_SIZE = 64.0f;  //!< Sprite size
     static constexpr float KEY_HOVER_PERCENTAGE = 0.1f;  //!< Percentage of the
                                   //!< screen height that the piano will hover

@@ -20,14 +20,11 @@ midistar:
 Thanks to the developers and supporters of these libraries!
 
 midistar is written in C++ using code (and shared libraries) that are
-compatible with Linux, OSX, and Windows. However, at the current time, building
-is only supported on Linux and OSX. That being said, building on Windows should
-be possible.
-
-Releases may not contain binaries for all (if any) platforms. Furthermore, the
-instructions in this README are mainly written for Linux. However, they should
-still be relevant for OSX, with minor differences.
-
+compatible with Linux, OSX, and Windows. However, at the current time, only
+Debian Linux, Ubuntu Linux, and El Capitan OSX are supported. That being said,
+building and running on other platforms is possible. The instructions in this
+README are written for these platforms. Also note that releases may not contain
+binaries for all (if any) supported platforms.
 
 2. RUNNING MIDISTAR
 2.1 INSTALLING RUNTIME DEPENDENCIES
@@ -213,4 +210,3 @@ debugging midistar.
 
 4. LICENSE
 Refer to the 'LICENSE' file for more information.
-

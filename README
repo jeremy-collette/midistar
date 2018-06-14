@@ -41,7 +41,11 @@ and work out of the box. This means that no extra software should be installed.
 However, on Linux, additional software must be installed to meet runtime
 dependencies. If you're running Debian or Ubuntu, you should be able to install
 all runtime dependencies with the following command:
-    sudo apt-get install libasound2 libbsd0 libc6 libflac8 libfreetype6 libgcc1 libgl1-mesa-glx libglib2.0-0 libjpeg62-turbo libogg0 libopenal1 libpcre3 libpng16-16 libsndfile1 libstdc++6 libudev1 libvorbis0a libvorbisenc2 libvorbisfile3 libx11-6 libx11-xcb1 libxau6 libxcb-image0 libxcb-randr0 libxcb1 libxdmcp6 libxext6 libxrandr2 libxrender1 zlib1g
+    sudo apt-get install libasound2 libbsd0 libc6 libflac8 libfreetype6 libgcc1
+libgl1-mesa-glx libglib2.0-0 libjpeg62* libogg0 libopenal1 libpcre3 libpng16-16 libsndfile1 libstdc++6 libudev1 libvorbis0a libvorbisenc2 libvorbisfile3 libx11-6 libx11-xcb1 libxau6 libxcb-image0 libxcb-randr0 libxcb1 libxdmcp6 libxext6 libxrandr2 libxrender1 zlib1g
+
+If a package cannot be found, check that you have added the 'universe'
+repository in your apt sources.
 
 2.2 CONFIGURING MIDISTAR
 midistar has configuration options that can be configured for varying levels of
@@ -137,7 +141,11 @@ and work out of the box. This means that no extra software should be installed.
 However, on Linux, additional software must be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install
 all build dependencies with the following command:
-    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libjpeg62-turbo-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev
+    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev
+libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libjpeg62* libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev
+
+If a package cannot be found, check that you have added the 'universe'
+repository in your apt sources.
 
 3.3 BUILDING THIRD-PARTY LIBRARIES AUTOMATICALLY
 Before building midistar, the third-party libraries that it uses must be built.

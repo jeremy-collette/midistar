@@ -169,9 +169,7 @@ void PianoGameObjectFactory::GetInstrumentKeyBinding(
 
     int white_index = GetWhiteKeyIndex(midi_key);
     *key = keys[white_index];
-    if (IsBlackKey(midi_key)) {
-        *shift = true;
-    }
+    *shift = IsBlackKey(midi_key);
     *ctrl = false;
 }
 

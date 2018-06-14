@@ -21,7 +21,6 @@
 #include "midistar/PianoGameObjectFactory.h"
 
 #include "midistar/CollidableComponent.h"
-#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
@@ -34,7 +33,9 @@
 #include "midistar/ResizeComponent.h"
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 
@@ -53,8 +54,38 @@ const char PianoGameObjectFactory::OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE] {
 
 PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
+        , grinding_texture_{}
         , white_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_WHITE_KEYS)} {
+}
+
+GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
+    // Create a sprite from a spritesheet using the first frame
+    auto sprite = new sf::Sprite{grinding_texture_, {0, 0, static_cast<int>(
+            GRINDING_SPRITE_SIZE), static_cast<int>(GRINDING_SPRITE_SIZE)}};
+    sprite->setColor(sf::Color{GRINDING_SPRITE_R, GRINDING_SPRITE_G
+            , GRINDING_SPRITE_B});
+
+    // Set the sprite scale to match the instrument
+    double x, y, w, h;
+    inst->GetPosition(&x, &y);
+    inst->GetSize(&w, &h);
+    double sprite_scale_x = w * 2 / GRINDING_SPRITE_SIZE;
+    double sprite_scale_y = sprite_scale_x / 2.0f;  // Reduce height
+    double sprite_w = sprite_scale_x * GRINDING_SPRITE_SIZE;
+    double sprite_h = sprite_scale_y * GRINDING_SPRITE_SIZE;
+    sprite->setScale(sprite_scale_x, sprite_scale_y);
+
+    // Create the GameObject to hold the sprite
+    auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
+        , y - sprite_h, sprite_w, sprite_h};
+
+    // Animate the sprite
+    int frame = static_cast<int>(x) % static_cast<int>(
+            sprite->getTexture()->getSize().x / GRINDING_SPRITE_SIZE);
+    obj->SetComponent(new SpriteAnimatorComponent{static_cast<int>(
+                GRINDING_SPRITE_SIZE), 0, frame, GRINDING_FRAMES_PER_SECOND});
+    return obj;
 }
 
 std::vector<GameObject*> PianoGameObjectFactory::CreateInstrument() {
@@ -108,6 +139,10 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     return song_note;
 }
 
+int PianoGameObjectFactory::Init() {
+    return !grinding_texture_.loadFromFile(GRINDING_TEXTURE_PATH);
+}
+
 sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {
     c.r *= COLOUR_DARKEN_MULTIPLIER;
     c.g *= COLOUR_DARKEN_MULTIPLIER;
@@ -134,9 +169,7 @@ void PianoGameObjectFactory::GetInstrumentKeyBinding(
 
     int white_index = GetWhiteKeyIndex(midi_key);
     *key = keys[white_index];
-    if (IsBlackKey(midi_key)) {
-        *shift = true;
-    }
+    *shift = IsBlackKey(midi_key);
     *ctrl = false;
 }
 

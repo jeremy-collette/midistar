@@ -40,7 +40,13 @@ class PianoGameObjectFactory : public GameObjectFactory {
     */
     explicit PianoGameObjectFactory(double note_speed);
 
-    /**
+   /**
+     * \copydoc GameObjectFactory::CreateNotePlayEffect()
+     */
+    virtual GameObject* CreateNotePlayEffect(GameObject* note);
+
+
+   /**
      * \copydoc GameObjectFactory::CreateInstrument()
      */
     virtual std::vector<GameObject*> CreateInstrument();
@@ -55,11 +61,22 @@ class PianoGameObjectFactory : public GameObjectFactory {
             , int vel
             , double duration);
 
+    /**
+     * \copydoc GameObjectFactory::Init()
+     */
+    virtual int Init();
+
+
  private:
     static constexpr float COLOUR_DARKEN_MULTIPLIER = 0.4f;  //!< Multiple R,
               //!< G, and B colour channels by this multiplier during darkening
     static constexpr float BLACK_WIDTH_MULTIPLIER = 0.5f;  //!< Black keys and
                         //! notes have a different width to white counterparts
+    static const int GRINDING_FRAMES_PER_SECOND = 18;  //!< Grinding sprite FPS
+    static const int GRINDING_SPRITE_B = 197;  //!< Grinding sprite blue colour
+    static const int GRINDING_SPRITE_G = 253;  //!< Grinding sprite green colour
+    static const int GRINDING_SPRITE_R = 255;  //!< Grinding sprite red colour
+    static constexpr float GRINDING_SPRITE_SIZE = 64.0f;  //!< Sprite size
     static constexpr float KEY_HOVER_PERCENTAGE = 0.1f;  //!< Percentage of the
                                   //!< screen height that the piano will hover
     static constexpr float NOTE_OUTLINE_THICKNESS = -2.0f;  //!< Note outline
@@ -85,6 +102,8 @@ class PianoGameObjectFactory : public GameObjectFactory {
         WHITE_KEY_OUTLINE_THICKNESS / 2.0;  //!< Black key outline thickness
     static const int BLACK_KEY_HEIGHT = WHITE_KEY_HEIGHT * 0.65f;  //!< Black
                                                       //!< key height in pixels
+    static constexpr const char* GRINDING_TEXTURE_PATH = "assets/grinding.png";
+                                            //!< Path to metal grinding texture
     static const sf::Color MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS];  //!< Holds
                                                         //!< MIDI track colours
 
@@ -102,6 +121,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                                                  //!< the piano
 
+    sf::Texture grinding_texture_;  //!< Holds texture to represent metal grind
     double white_width_;  //!< Holds the width of white keys and notes
 };
 

@@ -43,6 +43,16 @@ class GameObjectFactory {
     virtual ~GameObjectFactory() = default;
 
     /**
+     * Creates a grinding effect to indicate a note is being played.
+     *
+     * \param note The GameObject which represents the note that is being
+     * played.
+     *
+     * \return A GameObject that represents a grinding effect.
+     */
+    virtual GameObject* CreateNotePlayEffect(GameObject* note) = 0;
+
+    /**
      * Creates the instrument to play.
      *
      * \return A collection of GameObjects representing an instrument.
@@ -66,6 +76,13 @@ class GameObjectFactory {
             , int note
             , int vel
             , double duration) = 0;
+
+    /**
+     * Initialises the GameObjectFactory.
+     *
+     * \return 0 indicates success. Non-zero indicates failure.
+     */
+    virtual int Init() = 0;
 
  protected:
     double GetNoteSpeed();  //!< Gets note speed

@@ -58,6 +58,7 @@ class Component {
         , VERTICAL_COLLISION_DETECTOR
         , NOTE_COLLISION_HANDLER
         , RESIZE
+        , SPRITE_ANIMATOR
         , NUM_COMPONENTS
     };
 

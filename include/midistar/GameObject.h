@@ -47,8 +47,17 @@ class GameObject {
      * \param drawformable Underlying drawformable.
      * \param x_pos The X on-screen position of the GameObject.
      * \param y_pos The Y on-screen position of the GameObject.
-     * \param width The width of the GameObject.
-     * \param height The height of the GameObject.
+     * \param width The current width of the underlying drawformable.
+     * \param height The current height of the underlying drawformable.
+     *
+     * \note The width and height arguments must be the actual size of the
+     * underlying drawformable, and they must be non-zero. Failure to comply
+     * with either of these requirements will result in undefined behaviour
+     * for the the GameObject::SetSize() and GameObject::GetSize() methods. If
+     * you want a GameObject with zero width / height, create the underlying
+     * drawformable with some non-zero with and height and then use the
+     * GameObject::SetSize() method to set the width / height to zero after
+     * instantiation.
      */
     template<typename T>
     GameObject(

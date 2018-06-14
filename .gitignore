@@ -1,6 +1,5 @@
 bin/
 build/
-data/*.mid
 doc/html
 doc/latex
 
@@ -10,3 +9,6 @@ doc/latex
 /TODO
 /make
 /run
+
+*.mid
+*.swp

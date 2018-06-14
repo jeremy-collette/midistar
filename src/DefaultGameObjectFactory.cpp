@@ -21,7 +21,6 @@
 #include <cassert>
 
 #include "midistar/CollidableComponent.h"
-#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
@@ -34,6 +33,7 @@
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Utility.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 
@@ -41,6 +41,12 @@ DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed}
         , note_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_MIDI_KEYS)} {
+}
+
+GameObject* DefaultGameObjectFactory::CreateNotePlayEffect(GameObject*) {
+    // NOTE: This feature is not implemented for the DefaultGameObjectFactory.
+    auto* rect = new sf::RectangleShape{};
+    return new GameObject{rect, 0, 0, 0, 0};
 }
 
 std::vector<GameObject*> DefaultGameObjectFactory::CreateInstrument() {
@@ -129,6 +135,11 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
     *ctrl = midi_key < num_keys;
     // Determine if we are in the third section
     *shift = midi_key >= num_keys * 2;
+}
+
+int DefaultGameObjectFactory::Init() {
+    // We have nothing to initialise...
+    return 0;
 }
 
 }  // End namespace midistar

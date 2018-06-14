@@ -54,10 +54,11 @@ add_executable(midistar
     src/ResizeComponent.cpp
     src/SongNoteCollisionHandlerComponent.cpp
     src/SongNoteComponent.cpp
+    src/SpriteAnimatorComponent.cpp
     src/Utility.cpp
     src/VerticalCollisionDetectorComponent.cpp
     )
-   
+
 
 # Link midistar
 target_link_libraries(midistar

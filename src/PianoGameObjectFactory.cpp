@@ -84,7 +84,7 @@ GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
     int frame = static_cast<int>(x) % static_cast<int>(
             sprite->getTexture()->getSize().x / GRINDING_SPRITE_SIZE);
     obj->SetComponent(new SpriteAnimatorComponent{static_cast<int>(
-                GRINDING_SPRITE_SIZE), 0, frame, 18});
+                GRINDING_SPRITE_SIZE), 0, frame, GRINDING_FRAMES_PER_SECOND});
     return obj;
 }
 

@@ -21,7 +21,6 @@
 #include "midistar/PianoGameObjectFactory.h"
 
 #include "midistar/CollidableComponent.h"
-#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
@@ -36,6 +35,7 @@
 #include "midistar/SongNoteComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 
@@ -60,21 +60,29 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
 }
 
 GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
-    // TODO(@jez): clean this code up
+    // Create a sprite from a spritesheet using the first frame
     auto sprite = new sf::Sprite{grinding_texture_, {0, 0, static_cast<int>(
             GRINDING_SPRITE_SIZE), static_cast<int>(GRINDING_SPRITE_SIZE)}};
-    sprite->setColor(sf::Color{255, 253, 197});
+    sprite->setColor(sf::Color{GRINDING_SPRITE_R, GRINDING_SPRITE_G
+            , GRINDING_SPRITE_B});
 
+    // Set the sprite scale to match the instrument
     double x, y, w, h;
     inst->GetPosition(&x, &y);
     inst->GetSize(&w, &h);
-    double sprite_scale = w * 2 / GRINDING_SPRITE_SIZE;
-    double sprite_size = sprite_scale * GRINDING_SPRITE_SIZE;
-    sprite->setScale(sprite_scale, sprite_scale);
+    double sprite_scale_x = w * 2 / GRINDING_SPRITE_SIZE;
+    double sprite_scale_y = sprite_scale_x / 2.0f;  // Reduce height
+    double sprite_w = sprite_scale_x * GRINDING_SPRITE_SIZE;
+    double sprite_h = sprite_scale_y * GRINDING_SPRITE_SIZE;
+    sprite->setScale(sprite_scale_x, sprite_scale_y);
 
-    auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_size / 2.0f)
-        , y - sprite_size, sprite_size, sprite_size};
-    int frame = static_cast<int>(x) % 6;
+    // Create the GameObject to hold the sprite
+    auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
+        , y - sprite_h, sprite_w, sprite_h};
+
+    // Animate the sprite
+    int frame = static_cast<int>(x) % static_cast<int>(
+            sprite->getTexture()->getSize().x / GRINDING_SPRITE_SIZE);
     obj->SetComponent(new SpriteAnimatorComponent{static_cast<int>(
                 GRINDING_SPRITE_SIZE), 0, frame, 18});
     return obj;

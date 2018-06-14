@@ -21,7 +21,6 @@
 #include <cassert>
 
 #include "midistar/CollidableComponent.h"
-#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
@@ -34,6 +33,7 @@
 #include "midistar/SongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Utility.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 

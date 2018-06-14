@@ -20,11 +20,11 @@
 
 #include <algorithm>
 
-#include "midistar/VerticalCollisionDetectorComponent.h"
 #include "midistar/Config.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
 

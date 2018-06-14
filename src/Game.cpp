@@ -90,7 +90,7 @@ bool Game::Init() {
     // Setup GameObject factory and create GameObjects
     double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
-        Config::GetInstance().GetNoteFallSpeed();
+        Config::GetInstance().GetFallSpeedMultiplier();
 
     auto mode = Config::GetInstance().GetGameMode();
     if (mode == "piano") {

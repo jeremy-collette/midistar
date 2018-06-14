@@ -31,6 +31,7 @@ Config& Config::GetInstance() {
 Config::Config()
         : audio_driver_{""}
         , auto_play_{false}
+        , fall_speed_multiplier_{0}
         , full_screen_{false}
         , game_mode_{""}
         , keyboard_first_note_{-1}
@@ -88,8 +89,8 @@ int Config::GetMidiOutVelocity() {
     return MIDI_OUT_VELOCITY;
 }
 
-double Config::GetNoteFallSpeed() {
-    return note_fall_speed_;
+double Config::GetFallSpeedMultiplier() {
+    return fall_speed_multiplier_;
 }
 
 int Config::GetScreenHeight() {
@@ -144,9 +145,9 @@ void Config::InitCliApp(CLI::App* app) {
             "whether or not to continuously repeat the MIDI file.");
     app->add_option("--midi_file_tracks", midi_file_tracks_, "The MIDI tracks "
             "to read notes from. -1 will enable all tracks.");
-    app->add_option("--note_fall_speed", note_fall_speed_, "Determines the "
-            "falling speed of notes on the screen. Fall speed is also "
-            "dependent on the speed of the MIDI file being played.");
+    app->add_option("--fall_speed_multiplier", fall_speed_multiplier_,
+            "Affects the falling speed of notes on the screen. Fall speed "
+            "is also dependent on the speed of the MIDI file being played.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "

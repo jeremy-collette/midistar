@@ -121,11 +121,12 @@ class Config {
     int GetMidiOutVelocity();
 
     /**
-     * Gets the fall speed of song notes.
+     * Gets the fall speed multiplier. This affects the fall speed of song
+     * notes.
      *
-     * \return Note fall speed.
+     * \return Fall speed multiplier.
      */
-    double GetNoteFallSpeed();
+    double GetFallSpeedMultiplier();
 
     /**
      * Gets the height of the screen.
@@ -179,6 +180,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    double fall_speed_multiplier_;  //!< Affects fall speed of notes
     bool full_screen_;  //!< Full-screen setting
     std::string game_mode_;  //!< Game mode name
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
@@ -187,7 +189,6 @@ class Config {
     std::string midi_file_name_;  //!< MIDI file being played by user
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
-    double note_fall_speed_;  //!< Fall speed of notes on the screen
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes

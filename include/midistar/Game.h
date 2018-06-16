@@ -92,16 +92,14 @@ class Game {
     /**
      * Initializes the game.
      *
-     * \return 0 for success. Non-zero for failure.
+     * \return true for success. false for failure.
      */
-    int Init();
+    bool Init();
 
     /**
      * Runs the game.
-     *
-     * \return 0 for success. Non-zero for failure.
      */
-    int Run();
+    void Run();
 
     /**
      * Turns off a MIDI note on the MIDI out port.

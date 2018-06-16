@@ -20,17 +20,39 @@ midistar:
 Thanks to the developers and supporters of these libraries!
 
 midistar is written in C++ using code (and shared libraries) that are
-compatible with Linux, OSX, and Windows. However, at the current time, building
-is only supported on Linux and OSX. That being said, building on Windows should
-be possible.
+compatible with Linux, OSX, and Windows. However, at the current time, only
+Debian Linux, Ubuntu Linux, and El Capitan OSX are supported. That being said,
+building and running on other platforms is possible.
 
-Releases may not contain binaries for all (if any) platforms. Furthermore, the
-instructions in this README are mainly written for Linux. However, they should
-still be relevant for OSX, with minor differences.
+The instructions in this README are written for the supported platforms listed
+above. Also note that releases may not contain binaries for all (if any)
+supported platforms.
 
 
 2. RUNNING MIDISTAR
-2.1 CONFIGURING MIDISTAR
+2.1 INSTALLING RUNTIME DEPENDENCIES
+midistar is built using third-party libraries, which are listed in ABOUT
+MIDISTAR. These libraries are distributed with midistar, and each have their
+own dependencies. These dependencies must be met before midistar can be run.
+
+On OSX, third-party libraries should come packaged with their dependencies
+and work out of the box. This means that no extra software should be required.
+
+However, on Linux, additional software must be installed to meet runtime
+dependencies. If you're running Debian or Ubuntu, you should be able to install
+the majority of runtime dependencies with the following command:
+    sudo apt-get install libasound2 libbsd0 libc6 libflac8 libfreetype6 libgcc1 libgl1-mesa-glx libglib2.0-0 libogg0 libopenal1 libpcre3 libpng16-16 libsndfile1 libstdc++6 libudev1 libvorbis0a libvorbisenc2 libvorbisfile3 libx11-6 libx11-xcb1 libxau6 libxcb-image0 libxcb-randr0 libxcb1 libxdmcp6 libxext6 libxrandr2 libxrender1 zlib1g
+
+Additionally, on Debian run the following command:
+    sudo apt-get install libjpeg62-turbo
+
+On Ubuntu, run the following command:
+    sudo apt-get install libjpeg62
+
+If a package cannot be found, check that you have added the 'universe'
+repository in your apt sources and have run the 'apt-get update' command.
+
+2.2 CONFIGURING MIDISTAR
 midistar has configuration options that can be configured for varying levels of
 customisation. Run midistar with the '--help' option to see a list of
 configuration options. These can be set in the 'config.cfg' file, which can be
@@ -39,7 +61,7 @@ the 'config.cfg' file will not be created until midistar has been built. It is
 recommended to use absolute paths instead of relative paths in configuration
 settings.
 
-2.2 INSTALLING A SOUNDFONT FILE
+2.3 INSTALLING A SOUNDFONT FILE
 Before running midistar, you will need to install a SoundFont file to use for
 playing MIDI sounds. If you are using Debian or Ubuntu, you can run the
 following command to install the FluidSynth general SoundFont:
@@ -52,11 +74,13 @@ Configure midistar so that the 'soundfont_path' configuration option points to
 the location of the newly installed SoundFont file. On Linux, the default
 configuration will point to the above location by default.
 
-2.3 STARTING FROM TERMINAL
+On OSX, you will have to find a SoundFont file online to download.
+
+2.4 STARTING FROM TERMINAL
 If you have downloaded a midistar release with pre-built binaries for your
 platform, you can start midistar with the './run' command from a terminal that
 is in the midistar directory. This executes a wrapper script that calls the
-actual binary (in the 'build' folder). It is recommended to always use this
+actual binary (in the 'build/bin' folder). It is recommended to always use this
 script instead of calling the binary directly. This allows the configuration
 file to be found, ensures consistency of the working directory, and allows
 environment variables to be set if required.
@@ -65,7 +89,7 @@ If there is not a midistar release with pre-built binaries for your platform,
 or you have cloned the midistar repository, you will have to build midistar
 from scratch before running. See the BUILDING section in this README.
 
-2.4 DEBUGGING MIDISTAR
+2.5 DEBUGGING MIDISTAR
 If you would like to run midistar in debugging mode, you can run the './debug'
 command to start midistar in gdb. You may have to install gdb before running
 the './debug' command. Note that you should only debug a midistar binary that
@@ -75,7 +99,7 @@ would like to debug midistar, you will have to build a debug build from
 scratch. For information on building midistar in debug mode, see the BUILDING
 section in this README.
 
-2.5 PLAYING MIDISTAR
+2.6 PLAYING MIDISTAR
 midistar will load the MIDI file supplied using the '--midi_file' command line
 argument. The MIDI notes from this file will be rendered on the game screen in
 real-time, falling from top to bottom. During its fall, each MIDI note will
@@ -113,7 +137,29 @@ command:
 
 The command will vary for other distributions and platforms.
 
-3.2 BUILDING THIRD-PARTY LIBRARIES AUTOMATICALLY
+3.2 INSTALLING BUILD DEPENDENCIES
+The INSTALLING RUNTIME DEPENDENCIES section describes the installation of
+runtime dependencies. These are sufficient for running midistar. However,
+additional dependencies are required to build midistar.
+
+On OSX, third-party libraries should come packaged with their dependencies
+and work out of the box. This means that no extra software should be required.
+
+However, on Linux, additional software must be installed to meet build
+dependencies. If you're running Debian or Ubuntu, you should be able to install
+the majority of build dependencies with the following command:
+    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev
+
+Additionally, on Debian run the following command:
+    sudo apt-get install libjpeg62-turbo-dev
+
+On Ubuntu, run the following command:
+    sudo apt-get install libjpeg62-dev
+
+If a package cannot be found, check that you have added the 'universe'
+repository in your apt sources and have run the 'apt-get update' command.
+
+3.3 BUILDING THIRD-PARTY LIBRARIES AUTOMATICALLY
 Before building midistar, the third-party libraries that it uses must be built.
 If you are on Linux or OSX, you can try running the './scripts/build_setup'
 command from a terminal in the midistar directory.
@@ -123,16 +169,7 @@ party libraries. As such, they may fail to build. When a build failure occurs,
 read the console output and install any missing prerequisites before trying
 again.
 
-If you are on Linux using Debian or Ubuntu, you can install prerequisites for
-the SFML library with the following command:
-    sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
-libxrandr-dev libfreetype6-dev libglew1.5-dev libjpeg8-dev libsndfile1-dev
-libopenal-dev libudev-dev libxcb-image0-dev libjpeg-dev libflac-dev
-
-On OSX, prerequisites for SFML are provided with the source. You should be able
-to build the source out of the box.
-
-3.3 BUILDING THIRD-PARTY LIBRARIES MANUALLY
+3.4 BUILDING THIRD-PARTY LIBRARIES MANUALLY
 If you cannot build the third-party libraries automatically, you can also build
 them manually. Run the following commands to initialise and download the third-
 party libraries:
@@ -147,14 +184,16 @@ may have their own prerequisites which you will have to resolve yourself.
 
 When building third-party libraries, leave the folder structure as is. midistar
 resolves third-party dependencies using the default locations for the header
-and binary files for each library.
+and binary files for each library. The exception to this is the SFML library,
+which should be built inside a 'build' folder, created in the root folder of
+the SFML project.
 
 You can change which version of third-party libraries to use by changing which
 commit the git submodule points to. Furthermore, if you want to use system-wide
 installations of third-party libraries, you may do so. This may require further
 build configuration.
 
-3.4 BUILDING MIDISTAR
+3.5 BUILDING MIDISTAR
 Once the required third-party libraries have been built, midistar can be built
 using cmake. In the midistar directory, run the following commands:
     mkdir build
@@ -178,4 +217,3 @@ debugging midistar.
 
 4. LICENSE
 Refer to the 'LICENSE' file for more information.
-

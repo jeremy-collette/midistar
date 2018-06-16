@@ -61,9 +61,10 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     /**
      * \copydoc GameObjectFactory::Init()
      */
-    virtual int Init();
+    virtual bool Init();
 
  private:
+    static const sf::Color BACKGROUND_COLOUR;  //!< Background colour
     static const int NUM_MIDI_KEYS = 128;  //!< Maximum MIDI key
     static const int INSTRUMENT_HEIGHT = 25;  //!< Instrument height
     static constexpr float INSTRUMENT_HOVER_PERCENTAGE = 0.1f;  //!< The

@@ -38,7 +38,7 @@ int MidiFileIn::GetTicksPerQuarterNote() const {
     return file_.getTicksPerQuarterNote();
 }
 
-int MidiFileIn::Init(const std::string& file_name) {
+bool MidiFileIn::Init(const std::string& file_name) {
     // We use a bool array to turn on channels / tracks
     for (int c : Config::GetInstance().GetMidiFileChannels()) {
         if (c == -1) {
@@ -73,7 +73,7 @@ int MidiFileIn::Init(const std::string& file_name) {
         std::cerr << "Error! Could not load MIDI file \"" << file_name << "\""
         << ".\n";
     }
-    return !success;
+    return success;
 }
 
 bool MidiFileIn::IsEof() {

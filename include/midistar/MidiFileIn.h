@@ -54,9 +54,9 @@ class MidiFileIn : public MidiIn {
      *
      * \param file_name MIDI file to open.
      *
-     * \return 0 for success. Non-zero indicates failure.
+     * \return true for success. false indicates failure.
      */
-    int Init(const std::string& file_name);
+    bool Init(const std::string& file_name);
 
     /**
      * Determines whether or not the reader is at the end of the MIDI file.

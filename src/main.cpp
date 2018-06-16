@@ -32,16 +32,16 @@ int main(int argc, char** argv) {
     std::cout << "This is a DEBUG build.\n";
 #endif
 
-    int err;
-    if ((err = midistar::Config::GetInstance().ParseOptions(argc, argv))) {
-        return err;
+    if (!midistar::Config::GetInstance().ParseOptions(argc, argv)) {
+        return 1;
     }
 
     midistar::Game g;
-    if ((err = g.Init())) {
-        return err;
+    if (!g.Init()) {
+        return 2;
     }
+    g.Run();
 
-    return g.Run();
+    return 0;
 }
 

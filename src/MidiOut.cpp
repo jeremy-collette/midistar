@@ -42,7 +42,7 @@ MidiOut::~MidiOut() {
     }
 }
 
-int MidiOut::Init() {
+bool MidiOut::Init() {
     settings_ = new_fluid_settings();
     fluid_settings_setstr(settings_, "audio.driver"
             , Config::GetInstance().GetAudioDriver().c_str());
@@ -62,7 +62,7 @@ int MidiOut::Init() {
         std::cerr << "Error: could not load SoundFont file!\n";
     }
 
-    return !synth_ || !a_driver_ || s_font_id_ == -1;
+    return synth_ && a_driver_ && s_font_id_ != -1;
 }
 
 void MidiOut::SendNoteOff(int note, int chan) {

@@ -37,8 +37,10 @@
 
 namespace midistar {
 
+const sf::Color DefaultGameObjectFactory::BACKGROUND_COLOUR{0, 0, 0};
+
 DefaultGameObjectFactory::DefaultGameObjectFactory(double note_speed)
-        : GameObjectFactory{note_speed}
+        : GameObjectFactory{note_speed, BACKGROUND_COLOUR}
         , note_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_MIDI_KEYS)} {
 }
@@ -137,9 +139,9 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
     *shift = midi_key >= num_keys * 2;
 }
 
-int DefaultGameObjectFactory::Init() {
+bool DefaultGameObjectFactory::Init() {
     // We have nothing to initialise...
-    return 0;
+    return true;
 }
 
 }  // End namespace midistar

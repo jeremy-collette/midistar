@@ -131,7 +131,7 @@ class GameObject {
      * Gets the size of the GameObject.
      *
      * \param[out] w Stores the width.
-     * \param[out[ h Stores the height.
+     * \param[out] h Stores the height.
      */
     void GetSize(double* w, double* h);
 

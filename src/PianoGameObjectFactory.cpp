@@ -41,7 +41,7 @@ namespace midistar {
 
 const sf::Color PianoGameObjectFactory::BACKGROUND_COLOUR{40, 40, 40};
 
-const sf::Color PianoGameObjectFactory::GRINDING_SPRITE_COLOUR{197, 253, 255};
+const sf::Color PianoGameObjectFactory::GRINDING_SPRITE_COLOUR{255, 253, 197};
 
 const sf::Color PianoGameObjectFactory::MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS] {
     sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
@@ -163,12 +163,11 @@ void PianoGameObjectFactory::GetInstrumentKeyBinding(
         , bool* ctrl
         , bool* shift) {
     const std::vector<sf::Keyboard::Key>& keys = Utility::GetQwertyKeys();
-    int num_keys = keys.size();
 
     // We bind each white piano key to its own computer keyboard key. Black
     // keys are played by pressing the key binding for the white key plus the
     // shift modifier.
-    assert(num_keys >= NUM_WHITE_KEYS);
+    assert(keys.size() >= NUM_WHITE_KEYS);
 
     int white_index = GetWhiteKeyIndex(midi_key);
     *key = keys[white_index];

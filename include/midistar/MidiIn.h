@@ -33,7 +33,7 @@ class MidiIn {
     /**
      * Gets the next MIDI message.
      *
-     * \param[out] mev Stores the MIDI message.
+     * \param[out] message Stores the MIDI message.
      *
      * \return True for success. False if an event is not available.
      */

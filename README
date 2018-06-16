@@ -74,7 +74,7 @@ Configure midistar so that the 'soundfont_path' configuration option points to
 the location of the newly installed SoundFont file. On Linux, the default
 configuration will point to the above location by default.
 
-For OSX, you will have to find a SoundFont file online to download.
+On OSX, you will have to find a SoundFont file online to download.
 
 2.4 STARTING FROM TERMINAL
 If you have downloaded a midistar release with pre-built binaries for your

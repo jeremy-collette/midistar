@@ -80,7 +80,7 @@ On OSX, you will have to find a SoundFont file online to download.
 If you have downloaded a midistar release with pre-built binaries for your
 platform, you can start midistar with the './run' command from a terminal that
 is in the midistar directory. This executes a wrapper script that calls the
-actual binary (in the 'build' folder). It is recommended to always use this
+actual binary (in the 'build/bin' folder). It is recommended to always use this
 script instead of calling the binary directly. This allows the configuration
 file to be found, ensures consistency of the working directory, and allows
 environment variables to be set if required.

@@ -26,7 +26,7 @@
 
 namespace midistar {
 
-/*
+/**
  * The InvertColourComponent inverts the colour of the owner's
  * GraphicsComponent.
  */
@@ -50,7 +50,7 @@ class InvertColourComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    static const char DEFAULT_INVERSION = 0xff;
+    static const char DEFAULT_INVERSION = 0xff;  //!< Default XOR inversion val
 
     char inv_;  //!< Value to invert with (using XOR)
 };

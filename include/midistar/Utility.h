@@ -24,12 +24,22 @@
 
 namespace midistar {
 
+/**
+ * The Utility class provides static functionality that may be useful to
+ * multiple classes or does not belong anywhere else.
+ */
 class Utility {
  public:
+    /**
+     * Gets a list of keyboard keys in QWERTY order.
+     *
+     * \return Keyboard keys in QWERTY order.
+     */
     static const std::vector<sf::Keyboard::Key>& GetQwertyKeys();
 
  private:
-    static const std::vector<sf::Keyboard::Key> qwerty_keys_;
+    static const std::vector<sf::Keyboard::Key> qwerty_keys_;  //!< Holds a list
+                                                   //!< of keys in QWERTY order
 };
 
 }  // End namespace midistar

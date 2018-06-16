@@ -27,13 +27,13 @@
 
 namespace midistar {
 
-/*
+/**
  * The LambdaComponent allows for lambda functions to be used as a Component.
  */
 class LambdaComponent : public Component {
  public:
     /**
-     * Constructor. 
+     * Constructor.
      *
      * \param func The lambda function to call.
      */

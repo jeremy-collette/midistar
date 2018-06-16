@@ -59,7 +59,6 @@ add_executable(midistar
     src/VerticalCollisionDetectorComponent.cpp
     )
 
-
 # Link midistar
 target_link_libraries(midistar
     midifile

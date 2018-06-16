@@ -33,7 +33,7 @@ supported platforms.
 2.1 INSTALLING RUNTIME DEPENDENCIES
 midistar is built using third-party libraries, which are listed in ABOUT
 MIDISTAR. These libraries are distributed with midistar, and each have their
-own dependencies. These dependencies need to be met to run midistar.
+own dependencies. These dependencies must be met before midistar can be run.
 
 On OSX, third-party libraries should come packaged with their dependencies
 and work out of the box. This means that no extra software should be required.
@@ -73,6 +73,8 @@ This should install a SoundFont file at the following location:
 Configure midistar so that the 'soundfont_path' configuration option points to
 the location of the newly installed SoundFont file. On Linux, the default
 configuration will point to the above location by default.
+
+For OSX, you will have to find a SoundFont file online to download.
 
 2.4 STARTING FROM TERMINAL
 If you have downloaded a midistar release with pre-built binaries for your
@@ -182,7 +184,9 @@ may have their own prerequisites which you will have to resolve yourself.
 
 When building third-party libraries, leave the folder structure as is. midistar
 resolves third-party dependencies using the default locations for the header
-and binary files for each library.
+and binary files for each library. The exception to this is the SFML library,
+which should be built inside a 'build' folder, created in the root folder of
+the SFML project.
 
 You can change which version of third-party libraries to use by changing which
 commit the git submodule points to. Furthermore, if you want to use system-wide

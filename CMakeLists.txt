@@ -60,6 +60,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiFileIn.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiIn.cpp
+    ${CMAKE_SOURCE_DIR}/src/MidiInstrumentIn.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiMessage.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiOut.cpp
@@ -150,7 +151,7 @@ set(HEADERS
 
 # Set source
 set(SOURCE
-    ${CMAKE_SOURCE_DIR}/${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollidableComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Component.cpp

@@ -79,8 +79,8 @@ bool Game::Init() {
     window_.setKeyRepeatEnabled(false);
 
     // Setup MIDI input / outputs
-    midi_port_in_.Init();  // It is okay if this fails (player can be using
-                                                        // computer keyboard)
+    midi_instrument_in_.Init();  // It is okay if this fails (player can be
+                                                    // using computer keyboard)
     if (!midi_file_in_.Init(Config::GetInstance().GetMidiFileName())) {
         return false;
     }
@@ -168,8 +168,8 @@ void Game::Run() {
         }
 
         // Handle MIDI port input events
-        midi_in_buf_.clear();
-        while (midi_port_in_.GetMessage(&msg)) {
+        midi_in_buf_.clear()
+        while (midi_instrument_in_.GetMessage(&msg)) {
 
 // TODO(@jcol2): remove debug code
 #ifdef DEBUG
@@ -195,7 +195,7 @@ void Game::Run() {
 
         // Update MIDI file and port
         midi_file_in_.Tick(delta);
-        midi_port_in_.Tick();
+        midi_instrument_in_.Tick();
 
         // Clean up!
         CleanUpObjects();

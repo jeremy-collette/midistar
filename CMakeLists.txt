@@ -67,8 +67,8 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/NoteInfoComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PhysicsComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp
-    ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/SongNoteCollisionHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/PianoSongNoteCollisionHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp    
     ${CMAKE_SOURCE_DIR}/src/SongNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SpriteAnimatorComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
@@ -150,19 +150,19 @@ set(HEADERS
 
 # Set source
 set(SOURCE
-    ${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
+    ${CMAKE_SOURCE_DIR}/${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollidableComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Component.cpp
     ${CMAKE_SOURCE_DIR}/src/Config.cpp
     ${CMAKE_SOURCE_DIR}/src/DefaultGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/DeleteOffscreenComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/DeleteOffscreenComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumGameObjectFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/DrumSongNoteCollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Game.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObjectFactory.cpp
-    ${CMAKE_SOURCE_DIR}/src/InstrumentCollisionHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/InstrumentAutoPlayComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentInputHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InvertColourComponent.cpp

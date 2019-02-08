@@ -96,9 +96,19 @@ bool Game::Init() {
     auto mode = Config::GetInstance().GetGameMode();
     if (mode == "drum") {
         auto unique_notes = midi_file_in_.GetUniqueMidiNotes();
+
+// TODO(@jcol2): remove debug code
+#ifdef DEBUG
+        std::cout << "MIDI file unique notes: \n";
+        for (const auto& n : unique_notes) {
+            std::cout << n << ' ';
+        }
+        std::cout << '\n';
+#endif
+
         auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
         object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
-            , max_note_duration);
+            , max_note_duration);        
     } else if (mode == "piano") {
         object_factory_ = new PianoGameObjectFactory(note_speed);
     } else {
@@ -160,6 +170,14 @@ void Game::Run() {
         // Handle MIDI port input events
         midi_in_buf_.clear();
         while (midi_port_in_.GetMessage(&msg)) {
+
+// TODO(@jcol2): remove debug code
+#ifdef DEBUG
+            if (msg.IsNoteOn()) {
+                std::cout << msg.GetKey() << '\n';
+            }
+#endif
+
             midi_in_buf_.push_back(msg);
         }
 

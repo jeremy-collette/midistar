@@ -108,7 +108,7 @@ bool Game::Init() {
 
         auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
         object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
-            , max_note_duration);        
+            , max_note_duration);
     } else if (mode == "piano") {
         object_factory_ = new PianoGameObjectFactory(note_speed);
     } else {
@@ -168,7 +168,7 @@ void Game::Run() {
         }
 
         // Handle MIDI port input events
-        midi_in_buf_.clear()
+        midi_in_buf_.clear();
         while (midi_instrument_in_.GetMessage(&msg)) {
 
 // TODO(@jcol2): remove debug code

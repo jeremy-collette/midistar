@@ -24,14 +24,16 @@
 #include "midistar/CollidableComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
+#include "midistar/DrumSongNoteCollisionHandlerComponent.h"
+#include "midistar/FadeOutEffectComponent.h"
 #include "midistar/Game.h"
 #include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
+#include "midistar/MovingOutlineEffectComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
-#include "midistar/DrumSongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Utility.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
@@ -64,10 +66,26 @@ DrumGameObjectFactory::DrumGameObjectFactory(
         (song_notes.size() * drum_radius_);
 }
 
-GameObject* DrumGameObjectFactory::CreateNotePlayEffect(GameObject*) {
-    // NOTE: This feature is not implemented for the DrumGameObjectFactory.
-    auto* rect = new sf::RectangleShape{};
-    return new GameObject{rect, 0, 0, 0, 0};
+GameObject* DrumGameObjectFactory::CreateNotePlayEffect(GameObject* note) {
+    auto circle = note->GetDrawformable<sf::CircleShape>();
+    if (!circle) {
+        auto rect = new sf::RectangleShape{{0, 0}};
+        return new GameObject{rect, 0, 0, 0, 0};
+    }
+
+#ifdef DEBUG
+    std::cout << "Creating drum note play effect!\n";
+#endif
+
+    auto radius = circle->getRadius();
+    auto position = circle->getPosition();
+    auto* effect_circle = new sf::CircleShape{radius};
+    effect_circle->setPosition(position);
+    effect_circle->setFillColor(circle->getFillColor());
+    auto effect_object = new GameObject{effect_circle, position.x, position.y
+        , radius, radius};
+    effect_object->SetComponent(new FadeOutEffectComponent{});
+    return effect_object;
 }
 
 std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {

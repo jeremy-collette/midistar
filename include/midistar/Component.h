@@ -59,6 +59,7 @@ class Component {
         , NOTE_COLLISION_HANDLER
         , RESIZE
         , SPRITE_ANIMATOR
+        , SMOKE_RING_EFFECT
         , NUM_COMPONENTS
     };
 

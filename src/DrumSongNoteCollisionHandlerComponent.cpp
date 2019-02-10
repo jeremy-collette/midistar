@@ -23,6 +23,7 @@
 #include "midistar/Config.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/MidiNoteComponent.h"
+#include "midistar/MovingOutlineEffectComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
@@ -38,8 +39,18 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         , GameObject* o
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
+    GameObject* valid_collider = nullptr;
     for (auto& collider : colliding_with) {
-        HandleCollision(g, o, collider);
+        if (HandleCollision(g, o, collider)) {
+            valid_collider = collider;
+        }
+    }
+
+    // If we are being played, let's add a drum play effect
+    if (valid_collider) {
+        auto play_effect = g->GetGameObjectFactory().CreateNotePlayEffect(o);
+        valid_collider->SetComponent(new MovingOutlineEffectComponent{});
+        g->AddGameObject(play_effect);
     }
 }
 

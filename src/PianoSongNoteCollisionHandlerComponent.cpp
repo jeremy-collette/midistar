@@ -51,7 +51,7 @@ void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
             return;
         }
         grinding_ = g->GetGameObjectFactory().CreateNotePlayEffect(
-                valid_collider);
+            valid_collider);
         g->AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect
         grinding_->SetRequestDelete(true);

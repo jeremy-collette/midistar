@@ -92,10 +92,17 @@ void GameObject::SetSize(double w, double h) {
 }
 
 void GameObject::Update(Game* g, int delta) {
+    auto has_component = false;
     for (const auto& c : components_) {
         if (c) {
             c->Update(g, this, delta);
+            has_component = true;
         }
+    }
+
+    // If we don't have any components, delete the GameObject
+    if (!has_component) {
+        SetRequestDelete(true);
     }
 
     for (const auto& c : to_delete_) {

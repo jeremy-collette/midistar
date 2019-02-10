@@ -16,26 +16,30 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_SMOKERINGEFFECTCOMPONENT_H_
-#define MIDISTAR_SMOKERINGEFFECTCOMPONENT_H_
+#ifndef MIDISTAR_SHRINKGROWCOMPONENT_H_
+#define MIDISTAR_SHRINKGROWCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
 
+#include <limits>
+
 namespace midistar {
 
 /**
- * The SmokeRingEffectComponent transforms its owner to create a 'smoke ring'
- * effect.
+ * The ShrinkGrowComponent transforms its owner to shrink or grow it.
  *
  * Each tick, the transformation will continue until it is complete.
  */
-class MovingOutlineEffectComponent : public Component {
+class ShrinkGrowComponent : public Component {
  public:
     /**
      * Constructor.
+     *
+     * \param target_w The target width to shrink / grow to.
+     * \param target_h The target height to shrink / grow to.
      */
-     explicit MovingOutlineEffectComponent();
+     explicit ShrinkGrowComponent(double target_w, double target_h);
 
     /**
      * \copydoc Component::Update()
@@ -43,18 +47,13 @@ class MovingOutlineEffectComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    const static int DURATION = 100;
-    const static sf::Color INNER_COLOUR;
-    const static sf::Color OUTLINE_COLOUR;
-    constexpr static float OUTLINE_INCREASE = 1.025f;
-    constexpr static float OUTLINE_THICKNESS = 5.0f;
+    constexpr static float EPSILON = std::numeric_limits<float>::epsilon();
+    constexpr static float SPEED = 0.25f;
 
-    sf::Color original_colour_;
-    sf::Color original_outline_colour_;
-    float original_outline_thickness_;
-    int time_remaining_;
+    double target_h_;
+    double target_w_;
 };
 
 }   // namespace midistar
 
-#endif  // MIDISTAR_SMOKERINGEFFECTCOMPONENT_H_
+#endif  // MIDISTAR_SHRINKGROWCOMPONENT_H_

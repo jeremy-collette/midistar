@@ -57,9 +57,10 @@ class Component {
         , DELETE_OFFSCREEN
         , VERTICAL_COLLISION_DETECTOR
         , NOTE_COLLISION_HANDLER
+        , SHRINK_GROW_COMPONENT
         , RESIZE
         , SPRITE_ANIMATOR
-        , SMOKE_RING_EFFECT
+        , FADING_OUTLINE_EFFECT
         , NUM_COMPONENTS
     };
 

@@ -19,12 +19,13 @@
 #include "midistar/DrumSongNoteCollisionHandlerComponent.h"
 
 #include <algorithm>
+#include <SFML/Graphics.hpp>
 
 #include "midistar/Config.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/MidiNoteComponent.h"
-#include "midistar/MovingOutlineEffectComponent.h"
 #include "midistar/NoteInfoComponent.h"
+#include "midistar/OutlineEffectComponent.h"
 #include "midistar/ResizeComponent.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
 
@@ -49,8 +50,23 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
     // If we are being played, let's add a drum play effect
     if (valid_collider) {
         auto play_effect = g->GetGameObjectFactory().CreateNotePlayEffect(o);
-        valid_collider->SetComponent(new MovingOutlineEffectComponent{});
         g->AddGameObject(play_effect);
+
+        /*
+        // Add an effect around the instrument too
+        auto inst_circle = valid_collider->GetDrawformable<sf::CircleShape>();
+        if (inst_circle) {
+            auto radius = inst_circle->getRadius();
+            auto effect_circle = new sf::CircleShape{radius};
+            auto pos = inst_circle->getPosition();
+            effect_circle->setPosition(pos);
+            effect_circle->setFillColor(sf::Color::Transparent);
+            auto to_add = new GameObject{ effect_circle, pos.x, pos.y
+                , radius * 2.0f, radius * 2.0f };
+            to_add->SetComponent(new OutlineEffectComponent{});
+            g->AddGameObject(to_add);
+        }
+        */
     }
 }
 

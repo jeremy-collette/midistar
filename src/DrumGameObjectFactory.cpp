@@ -30,10 +30,11 @@
 #include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
-#include "midistar/MovingOutlineEffectComponent.h"
 #include "midistar/NoteInfoComponent.h"
+#include "midistar/OutlineEffectComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/ShrinkGrowComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Utility.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
@@ -43,8 +44,8 @@ namespace midistar {
 const sf::Color DrumGameObjectFactory::BACKGROUND_COLOUR{ 40, 40, 40 };
 
 const sf::Color DrumGameObjectFactory::DRUM_COLOURS[NUM_DRUM_COLOURS] {
-    sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
-    , sf::Color::Magenta, sf::Color::Cyan
+    sf::Color{244, 66, 66}, sf::Color{66, 244, 69}, sf::Color{66, 164, 244}
+    , sf::Color{244, 244, 65}, sf::Color{88, 65, 244}, sf::Color{65, 235, 244}
 };
 
 const sf::Color DrumGameObjectFactory::INSTRUMENT_FILL_COLOUR{ 150, 150, 150 };
@@ -73,18 +74,16 @@ GameObject* DrumGameObjectFactory::CreateNotePlayEffect(GameObject* note) {
         return new GameObject{rect, 0, 0, 0, 0};
     }
 
-#ifdef DEBUG
-    std::cout << "Creating drum note play effect!\n";
-#endif
-
     auto radius = circle->getRadius();
     auto position = circle->getPosition();
     auto* effect_circle = new sf::CircleShape{radius};
     effect_circle->setPosition(position);
-    effect_circle->setFillColor(circle->getFillColor());
+    effect_circle->setFillColor(sf::Color::White);
     auto effect_object = new GameObject{effect_circle, position.x, position.y
-        , radius, radius};
+        , radius * 2.0f, radius * 2.0f};
     effect_object->SetComponent(new FadeOutEffectComponent{});
+    effect_object->SetComponent(new ShrinkGrowComponent{
+        radius * 2.5f, radius * 2.5f});
     return effect_object;
 }
 
@@ -108,6 +107,7 @@ GameObject* DrumGameObjectFactory::CreateSongNote(
     double padded_radius = drum_radius_ - padding_px * 2;
     sf::CircleShape* circle = new sf::CircleShape{ static_cast<float>(
         padded_radius) };
+
     auto colour = DRUM_COLOURS[GetNoteUniqueIndex(note) % NUM_DRUM_COLOURS];
     circle->setFillColor(colour);
     circle->setOutlineColor(OUTLINE_COLOUR);

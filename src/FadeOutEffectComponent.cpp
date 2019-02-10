@@ -19,15 +19,11 @@
 #include "midistar/FadeOutEffectComponent.h"
 
 #include "midistar/ResizeComponent.h"
-#include "..\include\midistar\FadeOutEffectComponent.h"
 
 namespace midistar {
 
-const sf::Color FadeOutEffectComponent::OUTLINE_COLOUR = {255, 255, 255};
-
 FadeOutEffectComponent::FadeOutEffectComponent()
-        : time_remaining_{FadeOutEffectComponent::DURATION}
-        , Component{ Component::SMOKE_RING_EFFECT} {
+        : Component{ Component::FADING_OUTLINE_EFFECT} {
 }
 
 void FadeOutEffectComponent::Update(Game * g, GameObject * o, int delta) {
@@ -38,25 +34,11 @@ void FadeOutEffectComponent::Update(Game * g, GameObject * o, int delta) {
 
     // Change the alpha of the circle, to dim the circle
     auto colour = circle->getFillColor();
-    colour.a *= 0.95;
+    colour.a *= FadeOutEffectComponent::ALPHA_MULTIPLIER;
     circle->setFillColor(colour);
 
-    // Increase size of circle, to give the circle a growing effect
-    auto radius = circle->getRadius();
-    auto new_radius = radius * FadeOutEffectComponent::SIZE_INCREASE;
-    circle->setRadius(new_radius);
-
-    // Re-centre circle
-    auto pos_diff = new_radius - radius;
-    double x, y;
-    o->GetPosition(&x, &y);
-    x -= pos_diff;
-    y -= pos_diff;
-    o->SetPosition(x, y);
-
     // If we're finished, delete the component
-    time_remaining_ -= delta;
-    if (time_remaining_ <= 0) {
+    if (colour.a <= EPSILON) {
         o->SetComponent(new ResizeComponent{0, 0});
         o->DeleteComponent(GetType());
     }

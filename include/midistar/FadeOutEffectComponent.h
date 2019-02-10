@@ -22,10 +22,12 @@
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
 
+#include <limits>
+
 namespace midistar {
 
 /**
- * The SmokeRingEffectComponent transforms its owner to create a 'fade out'
+ * The FadeOutEffectComponent transforms its owner to create a 'fade out'
  * effect.
  *
  * Each tick, the transformation will continue until it is complete.
@@ -43,14 +45,9 @@ class FadeOutEffectComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-     const static int DURATION = 100;
-     const static sf::Color INNER_COLOUR;
-     const static sf::Color OUTLINE_COLOUR;
-     constexpr static float OUTLINE_INCREASE = 1.025f;
-     constexpr static float OUTLINE_THICKNESS = 5.0f;
-     constexpr static float SIZE_INCREASE = 1.05f;
+    constexpr static float ALPHA_MULTIPLIER = 0.85f;
+    constexpr static float EPSILON = std::numeric_limits<float>::epsilon();
 
-    int time_remaining_;
 };
 
 }   // namespace midistar

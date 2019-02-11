@@ -74,16 +74,17 @@ GameObject* DrumGameObjectFactory::CreateNotePlayEffect(GameObject* note) {
         return new GameObject{rect, 0, 0, 0, 0};
     }
 
-    auto radius = circle->getRadius();
-    auto position = circle->getPosition();
-    auto* effect_circle = new sf::CircleShape{radius};
-    effect_circle->setPosition(position);
+    double w, h;
+    note->GetSize(&w, &h);
+    double x_pos, y_pos;
+    note->GetPosition(&x_pos, &y_pos);
+    auto* effect_circle = new sf::CircleShape{static_cast<float>(w) / 2.0f};
+    effect_circle->setPosition({static_cast<float>(x_pos)
+        , static_cast<float>(y_pos)});
     effect_circle->setFillColor(sf::Color::White);
-    auto effect_object = new GameObject{effect_circle, position.x, position.y
-        , radius * 2.0f, radius * 2.0f};
+    auto effect_object = new GameObject{effect_circle, x_pos, y_pos, w, h};
     effect_object->SetComponent(new FadeOutEffectComponent{});
-    effect_object->SetComponent(new ShrinkGrowComponent{
-        radius * 2.5f, radius * 2.5f});
+    effect_object->SetComponent(new ShrinkGrowComponent{w * 1.25f, h * 1.25f});
     return effect_object;
 }
 

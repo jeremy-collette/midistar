@@ -51,22 +51,6 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
     if (valid_collider) {
         auto play_effect = g->GetGameObjectFactory().CreateNotePlayEffect(o);
         g->AddGameObject(play_effect);
-
-        /*
-        // Add an effect around the instrument too
-        auto inst_circle = valid_collider->GetDrawformable<sf::CircleShape>();
-        if (inst_circle) {
-            auto radius = inst_circle->getRadius();
-            auto effect_circle = new sf::CircleShape{radius};
-            auto pos = inst_circle->getPosition();
-            effect_circle->setPosition(pos);
-            effect_circle->setFillColor(sf::Color::Transparent);
-            auto to_add = new GameObject{ effect_circle, pos.x, pos.y
-                , radius * 2.0f, radius * 2.0f };
-            to_add->SetComponent(new OutlineEffectComponent{});
-            g->AddGameObject(to_add);
-        }
-        */
     }
 }
 

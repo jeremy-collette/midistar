@@ -39,7 +39,6 @@ void FadeOutEffectComponent::Update(Game * g, GameObject * o, int delta) {
 
     // If we're finished, delete the component
     if (colour.a <= EPSILON) {
-        o->SetComponent(new ResizeComponent{0, 0});
         o->DeleteComponent(GetType());
     }
 }

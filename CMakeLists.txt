@@ -12,6 +12,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/Component.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Config.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DefaultGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DelayedComponentComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DeleteOffscreenComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumSongNoteCollisionHandlerComponent.h
@@ -164,6 +165,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/Component.cpp
     ${CMAKE_SOURCE_DIR}/src/Config.cpp
     ${CMAKE_SOURCE_DIR}/src/DefaultGameObjectFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/DelayedComponentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/DeleteOffscreenComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumSongNoteCollisionHandlerComponent.cpp

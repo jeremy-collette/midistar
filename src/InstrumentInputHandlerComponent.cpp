@@ -19,6 +19,7 @@
 #include "midistar/InstrumentInputHandlerComponent.h"
 
 #include "midistar/CollidableComponent.h"
+#include "midistar/DelayedComponentComponent.h"
 #include "midistar/Config.h"
 #include "midistar/Game.h"
 #include "midistar/InvertColourComponent.h"
@@ -38,6 +39,7 @@ InstrumentInputHandlerComponent::InstrumentInputHandlerComponent(
         , note_played_{false}
         , set_active_{false}
         , shift_{shift}
+        , uninvert_delay_{MAXIMUM_UNINVERT_DELAY}
         , was_active_{false} {
 }
 
@@ -53,7 +55,7 @@ void InstrumentInputHandlerComponent::SetNotePlayed(bool note_played) {
     note_played_ = note_played;
 }
 
-void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
+void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int delta){
     // Check for required component
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
@@ -94,6 +96,15 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
     if (key_down_ || set_active_) {
         // Set the GraphicsComponent and send a note on event
         if (!was_active_) {
+            // If we've played another note before the instrument colour
+            // uninversion, make it happen this tick so the colours stay
+            // correct.
+            if (o->HasComponent(Component::DELAYED_COMPONENT)) {
+                o->GetComponent<DelayedComponentComponent>(
+                    Component::DELAYED_COMPONENT)->SetRemainingDelay(0);
+            }
+
+            uninvert_delay_ = MAXIMUM_UNINVERT_DELAY;
             o->SetComponent(new CollidableComponent{});
             o->SetComponent(new InvertColourComponent{static_cast<char>(0xa0)});
             o->SetComponent(new MidiNoteComponent{
@@ -102,18 +113,28 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int) {
                     , note->GetKey()
                     , note->GetVelocity()});
             was_active_ = true;
-       }
+        } else {
+            // If we were activated in a previous tick, let's start counting
+            // down our uninvert delay.
+            uninvert_delay_ -= delta;
+        }
     // If it's not activated and the CollidableComponent is set... (just played
     // a note).
     } else if (was_active_) {
         // Remove it and send a note off event
         o->DeleteComponent(Component::COLLIDABLE);
-        o->SetComponent(new InvertColourComponent{static_cast<char>(0xa0)});
         o->SetComponent(new MidiNoteComponent{
                 false
                 , note->GetChannel()
                 , note->GetKey()
                 , note->GetVelocity()});
+        // We want to delay the colour of the instrument being uninverted
+        // until a second after being played.
+        o->SetComponent(new DelayedComponentComponent
+            {
+                new InvertColourComponent{static_cast<char>(0xa0)}
+                , uninvert_delay_
+            });
         // Add reset logic here.
         note_played_ = false;
         was_active_ = false;

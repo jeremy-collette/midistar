@@ -61,6 +61,7 @@ class Component {
         , RESIZE
         , SPRITE_ANIMATOR
         , FADING_OUTLINE_EFFECT
+        , DELAYED_COMPONENT
         , NUM_COMPONENTS
     };
 

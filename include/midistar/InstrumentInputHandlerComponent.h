@@ -79,6 +79,8 @@ class InstrumentInputHandlerComponent : public Component {
 
 
  private:
+     const static int MAXIMUM_UNINVERT_DELAY = 100;  //!< Maximum time to delay
+                                       //!< before uninverting instrument colour
      const bool ctrl_;  //!< Determines if the 'control' modifier has to be
                                   //!< pressed in conjunction with key binding
      const sf::Keyboard::Key key_;  //!< The key bound to this instrument
@@ -89,6 +91,7 @@ class InstrumentInputHandlerComponent : public Component {
                                                                 //!< externally
      const bool shift_;  //!< Determines if the 'shift' modifier has to be
                                   //!< pressed in conjunction with key binding
+     int uninvert_delay_;  //!< Time to delay before uninverting
      bool was_active_;  //!< Determines if the instrument was active last tick
 };
 

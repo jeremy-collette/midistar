@@ -155,7 +155,7 @@ if (WIN32)
     endif()
 
     # Currently only DEBUG mode is supported
-    add_definitions("-DDEBUG")
+    add_definitions("-DDEBUG /EHsc")
 
     # Copy Windows run script
     add_custom_command(TARGET midistar POST_BUILD

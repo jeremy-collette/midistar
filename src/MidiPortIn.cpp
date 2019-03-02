@@ -55,12 +55,6 @@ void MidiPortIn::Tick() {
     std::unordered_map<int, MidiMessage> this_tick;
     auto count = same_tick_buffer_.size();
 
-#ifdef DEBUG
-    if (count) {
-        std::cout << "Cached notes: " << count << '\n';
-    }
-#endif
-
     while (count--)
     {
         auto midi_message = same_tick_buffer_.front();

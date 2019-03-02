@@ -27,15 +27,14 @@ FadeOutEffectComponent::FadeOutEffectComponent()
 }
 
 void FadeOutEffectComponent::Update(Game * g, GameObject * o, int delta) {
-    auto circle = o->GetDrawformable<sf::CircleShape>();
-    if (!circle) {
+    auto shape = o->GetDrawformable<sf::Shape>();
+    if (!shape) {
         return;
     }
-
-    // Change the alpha of the circle, to dim the circle
-    auto colour = circle->getFillColor();
+    // Change the alpha of the colour, to dim the shape
+    auto colour = shape->getFillColor();
     colour.a *= FadeOutEffectComponent::ALPHA_MULTIPLIER;
-    circle->setFillColor(colour);
+    shape->setFillColor(colour);
 
     // If we're finished, delete the component
     if (colour.a <= EPSILON) {

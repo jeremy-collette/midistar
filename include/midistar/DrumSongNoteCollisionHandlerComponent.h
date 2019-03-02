@@ -42,6 +42,7 @@ class DrumSongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
      virtual void HandleCollisions(
              Game* g
              , GameObject* o
+             , int delta
              , std::vector<GameObject*> colliding_with);
 
  private:

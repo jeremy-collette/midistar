@@ -13,26 +13,32 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/Config.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DefaultGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DeleteOffscreenComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DrumGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DrumSongNoteCollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/FadeOutEffectComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Game.h
     ${CMAKE_SOURCE_DIR}/include/midistar/GameObject.h
     ${CMAKE_SOURCE_DIR}/include/midistar/GameObject.tpp
     ${CMAKE_SOURCE_DIR}/include/midistar/GameObjectFactory.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentCollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentAutoPlayComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentInputHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiIn.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiInstrumentIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiMessage.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiOut.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiPortIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/NoteInfoComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/OutlineEffectComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PhysicsComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PianoSongNoteCollisionHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteCollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ShrinkGrowComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SpriteAnimatorComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Utility.h
@@ -69,7 +75,8 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/PhysicsComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoSongNoteCollisionHandlerComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp    
+    ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/ShrinkGrowComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SongNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SpriteAnimatorComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
@@ -160,6 +167,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/DeleteOffscreenComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumSongNoteCollisionHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/FadeOutEffectComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Game.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObjectFactory.cpp

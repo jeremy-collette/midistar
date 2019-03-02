@@ -36,6 +36,7 @@ PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent()
 void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
+        , int delta
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
     GameObject* valid_collider = nullptr;

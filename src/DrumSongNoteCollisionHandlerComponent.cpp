@@ -38,6 +38,7 @@ DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent()
 void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
+        , int delta
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
     GameObject* valid_collider = nullptr;
@@ -97,7 +98,6 @@ bool DrumSongNoteCollisionHandlerComponent::HandleCollision(
     // Make the note invisible (it has been played)
     o->SetComponent(new ResizeComponent{0, 0});
     o->DeleteComponent(GetType());
-
     return true;
 }
 

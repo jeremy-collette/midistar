@@ -9,6 +9,8 @@ IF "%dir%"=="scripts" (cd ..)
 SET midistar_dir=%cd%
 SET ext_dir=%cd%/external
 SET lib_dir=%cd%/lib
+SET lib_dir_debug=%lib_dir%/debug
+SET lib_dir_release=%lib_dir%/release
 SET dll_dir=%cd%/dll
 SET inc_dir=%cd%/include
 
@@ -18,6 +20,8 @@ rd /q /s build
 echo Removing lib folder...
 rd /q /s lib
 mkdir lib
+mkdir "lib\debug"
+mkdir "lib\release"
 
 echo.
 echo Resetting include folder...
@@ -44,9 +48,12 @@ cd "%ext_dir%/fluidsynth"
 mkdir build
 cd build
 cmake .. -DCMAKE_TOOLCHAIN_FILE="C:\Program Files\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || goto :error
-msbuild FluidSynth.sln || goto :error
-copy "src\Debug\*.lib" "%lib_dir%\." || goto :error
-copy "src\Debug\*.dll" "%lib_dir%\." || goto :error
+msbuild FluidSynth.sln /p:Configuration=Debug || goto :error
+copy "src\Debug\*.lib" "%lib_dir_debug%\." || goto :error
+copy "src\Debug\*.dll" "%lib_dir_debug%\." || goto :error
+msbuild FluidSynth.sln /p:Configuration=Release || goto :error
+copy "src\Release\*.lib" "%lib_dir_release%\." || goto :error
+copy "src\Release\*.dll" "%lib_dir_release%\." || goto :error
 xcopy /E "..\include\fluidsynth" "%inc_dir%\fluidsynth\" || goto :error
 copy "include\fluidsynth.h" "%inc_dir%\." || goto :error
 copy "include\fluidsynth\version.h" "%inc_dir%\fluidsynth\." || goto :error
@@ -57,17 +64,22 @@ cd "%ext_dir%/midifile" || goto :error
 mkdir build
 cd build
 cmake .. || goto :error
-msbuild midifile.sln || goto :error
-copy "Debug\*.lib" "%lib_dir%\." || goto :error
+msbuild midifile.sln /p:Configuration=Debug || goto :error
+copy "Debug\*.lib" "%lib_dir_debug%\." || goto :error
+msbuild midifile.sln /p:Configuration=Release || goto :error
+copy "Release\*.lib" "%lib_dir_release%\." || goto :error
 mkdir "%inc_dir%\midifile" || goto :error
 copy "..\include\*.h" "%inc_dir%\midifile\." || goto :error
 
 echo.
 echo Preparing rtmidi...
 cd "%ext_dir%/rtmidi"
-copy "%midistar_dir%\scripts\rtmidi_makefile" Makefile || goto :error
+copy "%midistar_dir%\scripts\rtmidi_debug_makefile" Makefile || goto :error
 nmake /A rtmidi.lib || goto :error
-copy "*.lib" "%lib_dir%\." || goto :error
+copy "*.lib" "%lib_dir_debug%\." || goto :error
+copy "%midistar_dir%\scripts\rtmidi_release_makefile" Makefile || goto :error
+nmake /A rtmidi.lib || goto :error
+copy "*.lib" "%lib_dir_release%\." || goto :error
 mkdir "%inc_dir%\rtmidi" || goto :error
 copy "*.h" "%inc_dir%\rtmidi\." || goto :error
 
@@ -77,9 +89,12 @@ cd "%ext_dir%/SFML" || goto :error
 mkdir build
 cd build
 cmake .. || goto :error
-msbuild SFML.sln || goto :error
-copy "lib\Debug\*.lib" "%lib_dir%\." || goto :error
-copy "lib\Debug\*.dll" "%lib_dir%\." || goto :error
+msbuild SFML.sln /p:Configuration=Debug || goto :error
+copy "lib\Debug\*.lib" "%lib_dir_debug%\." || goto :error
+copy "lib\Debug\*.dll" "%lib_dir_debug%\." || goto :error
+msbuild SFML.sln /p:Configuration=Release || goto :error
+copy "lib\Release\*.lib" "%lib_dir_release%\." || goto :error
+copy "lib\Release\*.dll" "%lib_dir_release%\." || goto :error
 xcopy /E "..\include\SFML" "%inc_dir%\SFML\" || goto :error
 
 echo.

@@ -110,35 +110,23 @@ add_executable(midistar
 
 # Link midistar
 if (WIN32)
+    # We only want Debug and Release
+    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+
+    # Add libraries
     target_link_libraries(midistar
         fluidsynth
         midifile
         rtmidi
-        sfml-graphics-d
-        sfml-system-d
-        sfml-window-d)
+        debug sfml-graphics-d optimized sfml-graphics
+        debug sfml-system-d optimized sfml-system
+        debug sfml-window-d optimized sfml-window)
 
-    set(WIN_THIRD_PARTY_DLLS
-        ${CMAKE_SOURCE_DIR}/lib/glib-2.dll
-        ${CMAKE_SOURCE_DIR}/lib/libcharset.dll
-        ${CMAKE_SOURCE_DIR}/lib/libfluidsynth-1.dll
-        ${CMAKE_SOURCE_DIR}/lib/libiconv.dll
-        ${CMAKE_SOURCE_DIR}/lib/libintl.dll
-        ${CMAKE_SOURCE_DIR}/lib/pcred.dll
-        ${CMAKE_SOURCE_DIR}/lib/sfml-audio-d-2.dll
-        ${CMAKE_SOURCE_DIR}/lib/sfml-graphics-d-2.dll
-        ${CMAKE_SOURCE_DIR}/lib/sfml-network-d-2.dll
-        ${CMAKE_SOURCE_DIR}/lib/sfml-system-d-2.dll
-        ${CMAKE_SOURCE_DIR}/lib/sfml-window-d-2.dll
-    )
-
-    foreach(file_i ${WIN_THIRD_PARTY_DLLS})
-        add_custom_command(
-        TARGET midistar
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND}
-        ARGS -E copy ${file_i} "${CMAKE_BINARY_DIR}/bin/debug/.")
-    endforeach(file_i) 
+    # Copy libs
+    add_custom_command(TARGET midistar POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/lib/$<CONFIGURATION>"
+        $<TARGET_FILE_DIR:midistar>)
 
     # Copy Windows config (if it does not exist)
     if (NOT EXISTS ${CMAKE_SOURCE_DIR}/config.cfg)
@@ -154,8 +142,17 @@ if (WIN32)
             ${CMAKE_SOURCE_DIR}/config.cfg)
     endif()
 
-    # Currently only DEBUG mode is supported
-    add_definitions("-DDEBUG /EHsc")
+    # Set compiler flags
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG /EHsc")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHSc")
+
+    # Set debugging directory
+    set_property(TARGET midistar
+        PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+    # Set startup project
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PROPERTY VS_STARTUP_PROJECT midistar)
 
     # Copy Windows run script
     add_custom_command(TARGET midistar POST_BUILD

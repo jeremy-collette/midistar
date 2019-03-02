@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.9)
 project (midistar)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # If build type is not set, default to Debug
 if(NOT CMAKE_BUILD_TYPE)
@@ -167,6 +166,8 @@ if (WIN32)
             ../run.bat)
 
 else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
     target_link_libraries(midistar
         midifile
         rtmidi

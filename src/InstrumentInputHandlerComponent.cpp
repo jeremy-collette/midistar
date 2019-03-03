@@ -97,16 +97,19 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int delta){
         // Set the GraphicsComponent and send a note on event
         if (!was_active_) {
             // If we've played another note before the instrument colour
-            // uninversion, make it happen this tick so the colours stay
-            // correct.
-            if (o->HasComponent(Component::DELAYED_COMPONENT)) {
-                o->GetComponent<DelayedComponentComponent>(
-                    Component::DELAYED_COMPONENT)->SetRemainingDelay(0);
+            // un-inversion has taken place, cancel it so it doesn't mess up our
+            // colours!
+            if (o->HasComponent(Component::DELAYED_COMPONENT)
+                    || o->HasComponent(Component::INVERT_COLOUR)) {
+                o->DeleteComponent(Component::DELAYED_COMPONENT);
+                o->DeleteComponent(Component::INVERT_COLOUR);
+            } else {
+                o->SetComponent(new InvertColourComponent{
+                    static_cast<char>(0xa0)});
             }
 
             uninvert_delay_ = MAXIMUM_UNINVERT_DELAY;
             o->SetComponent(new CollidableComponent{});
-            o->SetComponent(new InvertColourComponent{static_cast<char>(0xa0)});
             o->SetComponent(new MidiNoteComponent{
                     true
                     , note->GetChannel()

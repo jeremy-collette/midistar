@@ -44,8 +44,8 @@ const sf::Color PianoGameObjectFactory::BACKGROUND_COLOUR{40, 40, 40};
 const sf::Color PianoGameObjectFactory::GRINDING_SPRITE_COLOUR{255, 253, 197};
 
 const sf::Color PianoGameObjectFactory::MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS] {
-    sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
-    , sf::Color::Magenta, sf::Color::Cyan
+    sf::Color{244, 66, 66}, sf::Color{66, 244, 69}, sf::Color{66, 164, 244}
+    , sf::Color{244, 244, 65}, sf::Color{88, 65, 244}, sf::Color{65, 235, 244}
 };
 
 const bool PianoGameObjectFactory::OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE] {

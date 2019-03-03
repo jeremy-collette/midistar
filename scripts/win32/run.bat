@@ -8,11 +8,11 @@ IF "%dir%"=="scripts" (cd ..)
 SET proj_dir="%cd%"
 
 REM Find binary:
-CALL scripts/find_binary_windows
+CALL scripts\win32\find_binary.bat
 
 REM If we found the binary...:
 IF %errorlevel%==0 (
     REM Run executable:
-    CALL "build\bin\Debug\midistar.exe" %*
+    CALL "build\Debug\midistar.exe" %*
     CD "%proj_dir%"
 )

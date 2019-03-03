@@ -4,7 +4,7 @@ cd "%~dp0"
 
 REM Change to source dir if we're in the scripts folder:
 FOR %%I in (.) do SET dir=%%~nxI
-IF "%dir%"=="scripts" (cd ..)
+IF "%dir%"=="win32" (cd ..\..)
 
 REM Check for 'build' folder:
 IF NOT EXIST "build\" (
@@ -14,8 +14,8 @@ IF NOT EXIST "build\" (
 )
 
 REM Check for binary:
-IF NOT EXIST "build\bin\Debug\midistar.exe" (
-    ECHO Could not find '.\build\bin\Debug\midistar.exe' binary!
+IF NOT EXIST "build\Debug\midistar.exe" (
+    ECHO Could not find '.\build\Debug\midistar.exe' binary!
     ECHO Refer to BUILDING MIDISTAR in the README.
     EXIT /b 2
 )

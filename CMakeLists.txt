@@ -75,6 +75,9 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp    
 )
 
+# Specify link directory
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+
 # Create executable
 add_executable(midistar
     ${SOURCE}
@@ -93,8 +96,6 @@ endif()
 if (WIN32) # Windows
     message("-- Windows detected")
     message("-- Release/Debug modes")        
-    set(CMAKE_CXX_FLAGS "-std=c++14")
-    link_directories(${CMAKE_SOURCE_DIR}/lib)
 
     # We only want Debug and Release
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
@@ -115,6 +116,7 @@ if (WIN32) # Windows
         $<TARGET_FILE_DIR:midistar>)
 
     # Set compiler flags
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG /EHsc")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O0 /EHSc")
 

@@ -114,7 +114,7 @@ if (WIN32)
     target_link_libraries(midistar
         fluidsynth
         midifile
-        rtmidi
+        debug rtmidi-d optimized rtmidi 
         debug sfml-graphics-d optimized sfml-graphics
         debug sfml-system-d optimized sfml-system
         debug sfml-window-d optimized sfml-window)

@@ -1,109 +1,109 @@
-@echo off
+@ECHO off
 REM Change to script dir:
-cd "%~dp0"
+CD "%~dp0"
 
 REM Change to source dir if we're in the scripts folder:
 FOR %%I in (.) do SET dir=%%~nxI
-IF "%dir%"=="scripts" (cd ..)
+IF "%dir%"=="scripts" (CD ..)
 
-SET midistar_dir=%cd%
-SET ext_dir=%cd%/external
-SET lib_dir=%cd%/lib
+SET midistar_dir=%CD%
+SET ext_dir=%CD%/external
+SET lib_dir=%CD%/lib
 SET lib_dir_debug=%lib_dir%/debug
 SET lib_dir_release=%lib_dir%/release
-SET dll_dir=%cd%/dll
-SET inc_dir=%cd%/include
+SET dll_dir=%CD%/dll
+SET inc_dir=%CD%/include
 
-echo Removing build folder...
-rd /q /s build
+ECHO Removing build folder...
+RD /q /s build
 
-echo Removing lib folder...
-rd /q /s lib
-mkdir lib
-mkdir "lib\debug"
-mkdir "lib\release"
+ECHO Removing lib folder...
+RD /q /s lib
+MKDIR lib
+MKDIR "lib\debug"
+MKDIR "lib\release"
 
-echo.
-echo Resetting include folder...
-rd /q /s "%inc_dir%/CLI"
-rd /q /s "%inc_dir%/FluidSynth"
-rd /q /s "%inc_dir%/midifile"
-rd /q /s "%inc_dir%/rtmidi"
-rd /q /s "%inc_dir%/SFML"
-del "%inc_dir%/fluidsynth.h"
+ECHO.
+ECHO Resetting include folder...
+RD /q /s "%inc_dir%/CLI"
+RD /q /s "%inc_dir%/FluidSynth"
+RD /q /s "%inc_dir%/midifile"
+RD /q /s "%inc_dir%/rtmidi"
+RD /q /s "%inc_dir%/SFML"
+DEL "%inc_dir%/fluidsynth.h"
 
-echo.
-echo Setting up git submodules...
+ECHO.
+ECHO Setting up git submodules...
 git submodule init
 git submodule update
 
-echo.
-echo Preparing CLI11...
-cd "%ext_dir%\CLI11" || goto :error
-xcopy /E "include\CLI" "%inc_dir%\CLI\" || goto :error
+ECHO.
+ECHO Preparing CLI11...
+CD "%ext_dir%\CLI11" || GOTO :error
+XCOPY /E "include\CLI" "%inc_dir%\CLI\" || GOTO :error
 
-echo.
-echo Preparing fluidsynth...
-cd "%ext_dir%/fluidsynth"
-mkdir build
-cd build
-cmake .. -Denable-pkgconfig:BOOL="0" || goto :error
-msbuild FluidSynth.sln /p:Configuration=Debug || goto :error
-copy "src\Debug\*.lib" "%lib_dir_debug%\." || goto :error
-copy "src\Debug\*.dll" "%lib_dir_debug%\." || goto :error
-msbuild FluidSynth.sln /p:Configuration=Release || goto :error
-copy "src\Release\*.lib" "%lib_dir_release%\." || goto :error
-copy "src\Release\*.dll" "%lib_dir_release%\." || goto :error
-xcopy /E "..\include\fluidsynth" "%inc_dir%\fluidsynth\" || goto :error
-copy "include\fluidsynth.h" "%inc_dir%\." || goto :error
-copy "include\fluidsynth\version.h" "%inc_dir%\fluidsynth\." || goto :error
+ECHO.
+ECHO Preparing fluidsynth...
+CD "%ext_dir%/fluidsynth"
+MKDIR build
+CD build
+cmake .. -Denable-pkgconfig:BOOL="0" || GOTO :error
+msbuild FluidSynth.sln /p:Configuration=Debug || GOTO :error
+COPY "src\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
+COPY "src\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error
+msbuild FluidSynth.sln /p:Configuration=Release || GOTO :error
+COPY "src\Release\*.lib" "%lib_dir_release%\." || GOTO :error
+COPY "src\Release\*.dll" "%lib_dir_release%\." || GOTO :error
+XCOPY /E "..\include\fluidsynth" "%inc_dir%\fluidsynth\" || GOTO :error
+COPY "include\fluidsynth.h" "%inc_dir%\." || GOTO :error
+COPY "include\fluidsynth\version.h" "%inc_dir%\fluidsynth\." || GOTO :error
 
-echo.
-echo Preparing midifile...
-cd "%ext_dir%/midifile" || goto :error
-mkdir build
-cd build
-cmake .. || goto :error
-msbuild midifile.sln /p:Configuration=Debug || goto :error
-copy "Debug\*.lib" "%lib_dir_debug%\." || goto :error
-msbuild midifile.sln /p:Configuration=Release || goto :error
-copy "Release\*.lib" "%lib_dir_release%\." || goto :error
-mkdir "%inc_dir%\midifile" || goto :error
-copy "..\include\*.h" "%inc_dir%\midifile\." || goto :error
+ECHO.
+ECHO Preparing midifile...
+CD "%ext_dir%/midifile" || GOTO :error
+MKDIR build
+CD build
+cmake .. || GOTO :error
+msbuild midifile.sln /p:Configuration=Debug || GOTO :error
+COPY "Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
+msbuild midifile.sln /p:Configuration=Release || GOTO :error
+COPY "Release\*.lib" "%lib_dir_release%\." || GOTO :error
+MKDIR "%inc_dir%\midifile" || GOTO :error
+COPY "..\include\*.h" "%inc_dir%\midifile\." || GOTO :error
 
-echo.
-echo Preparing rtmidi...
-cd "%ext_dir%/rtmidi"
-copy "%midistar_dir%\scripts\rtmidi_debug_makefile" Makefile || goto :error
-nmake /A rtmidi.lib || goto :error
-copy "*.lib" "%lib_dir_debug%\." || goto :error
-copy "%midistar_dir%\scripts\rtmidi_release_makefile" Makefile || goto :error
-nmake /A rtmidi.lib || goto :error
-copy "*.lib" "%lib_dir_release%\." || goto :error
-mkdir "%inc_dir%\rtmidi" || goto :error
-copy "*.h" "%inc_dir%\rtmidi\." || goto :error
+ECHO.
+ECHO Preparing rtmidi...
+CD "%ext_dir%/rtmidi"
+COPY "%midistar_dir%\scripts\rtmidi_debug_makefile" Makefile || GOTO :error
+nmake /A rtmidi-d.lib || GOTO :error
+COPY "*.lib" "%lib_dir_debug%\." || GOTO :error
+COPY "%midistar_dir%\scripts\rtmidi_release_makefile" Makefile || GOTO :error
+nmake /A rtmidi.lib || GOTO :error
+COPY "*.lib" "%lib_dir_release%\." || GOTO :error
+MKDIR "%inc_dir%\rtmidi" || GOTO :error
+COPY "*.h" "%inc_dir%\rtmidi\." || GOTO :error
 
-echo.
-echo Preparing SFML...
-cd "%ext_dir%/SFML" || goto :error
-mkdir build
-cd build
-cmake .. || goto :error
-msbuild SFML.sln /p:Configuration=Debug || goto :error
-copy "lib\Debug\*.lib" "%lib_dir_debug%\." || goto :error
-copy "lib\Debug\*.dll" "%lib_dir_debug%\." || goto :error
-msbuild SFML.sln /p:Configuration=Release || goto :error
-copy "lib\Release\*.lib" "%lib_dir_release%\." || goto :error
-copy "lib\Release\*.dll" "%lib_dir_release%\." || goto :error
-xcopy /E "..\include\SFML" "%inc_dir%\SFML\" || goto :error
+ECHO.
+ECHO Preparing SFML...
+CD "%ext_dir%/SFML" || GOTO :error
+MKDIR build
+CD build
+cmake .. || GOTO :error
+msbuild SFML.sln /p:Configuration=Debug || GOTO :error
+COPY "lib\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
+COPY "lib\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error
+msbuild SFML.sln /p:Configuration=Release || GOTO :error
+COPY "lib\Release\*.lib" "%lib_dir_release%\." || GOTO :error
+COPY "lib\Release\*.dll" "%lib_dir_release%\." || GOTO :error
+XCOPY /E "..\include\SFML" "%inc_dir%\SFML\" || GOTO :error
 
-echo.
-echo Finished! Refer to the README file for instructions on building midistar.
-goto :end
+ECHO.
+ECHO Finished! Refer to the README file for instructions on building midistar.
+GOTO :end
 
 :error
-echo.
-echo An error occured! Quitting...
+ECHO.
+ECHO An error occured! Quitting...
 
 :end
-cd "%midistar_dir%"
+CD "%midistar_dir%"

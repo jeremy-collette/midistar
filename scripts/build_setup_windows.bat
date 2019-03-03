@@ -47,7 +47,7 @@ echo Preparing fluidsynth...
 cd "%ext_dir%/fluidsynth"
 mkdir build
 cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE="C:\Program Files\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || goto :error
+cmake .. -Denable-pkgconfig:BOOL="0" || goto :error
 msbuild FluidSynth.sln /p:Configuration=Debug || goto :error
 copy "src\Debug\*.lib" "%lib_dir_debug%\." || goto :error
 copy "src\Debug\*.dll" "%lib_dir_debug%\." || goto :error

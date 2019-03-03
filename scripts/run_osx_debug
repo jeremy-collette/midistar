@@ -6,7 +6,6 @@ cd "$(dirname "$0")"
 # Check directory
 dir=${PWD##*/}
 if [ $dir == 'scripts' ]; then
-    echo "In 'scripts' folder. Changing to parent directory..."
     cd ..
 fi
 
@@ -18,7 +17,7 @@ if [ $? -eq 0 ]; then
     # Set environment variables
     . ./scripts/set_env_osx "debug"
 
-    # Run gdb
-    exec gdb ./build/bin/debug/midistar "$@"
+    # Run executable
+    exec ./build/bin/debug/midistar "$@"
 fi
 

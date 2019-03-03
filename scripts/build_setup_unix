@@ -33,6 +33,15 @@ if [ $dir == 'scripts' ]; then
     cd ..
 fi
 
+# Resetting lib folder
+rm -rf lib
+mkdir lib
+mkdir lib/debug
+mkdir lib/release
+lib_dir=$PWD/lib
+lib_debug_dir=$lib_dir/debug
+lib_release_dir=$lib_dir/release
+
 # Building...
 midistar_dir=$PWD
 ext_dir=$PWD/external
@@ -43,24 +52,57 @@ git submodule update
 
 cecho "\nBuilding fluidsynth..."
 cd $ext_dir/fluidsynth
-cmake .
+git clean -fdx
+mkdir -p build
+cd build
+mkdir -p debug
+cd debug
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug
 make
+cp -r src/FluidSynth.framework $lib_debug_dir/.
+cd ..
+mkdir -p release
+cd release
+cmake ../.. -DCMAKE_BUILD_TYPE=Release
+make
+cp -r src/FluidSynth.framework $lib_release_dir/.
+cd ..
 
 cecho "\nBuilding midifile..."
 cd $ext_dir/midifile
+git clean -fdx
 make library
+cp lib/*.dylib $lib_debug_dir/.
+cp lib/*.dylib $lib_release_dir/.
 
 cecho "\nBuilding rtmidi..."
 cd $ext_dir/rtmidi
-./autogen.sh
+git clean -fdx
+./autogen.sh --no-configure
+./configure --enable-maintainer-mode --enable-debug --disable-silent-rules
 make
+cp .libs/*.dylib $lib_debug_dir/.
+./configure
+make
+cp .libs/*.dylib $lib_release_dir/.
+
 
 cecho "\nBuilding SFML..."
 cd $ext_dir/SFML
-mkdir build
+git clean -fdx
+mkdir -p build
 cd build
-cmake ..
+mkdir -p debug
+cd debug
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug
 make
+cp lib/*.dylib $lib_debug_dir/.
+cd ..
+mkdir -p release
+cd release
+cmake ../.. -DCMAKE_BUILD_TYPE=Release
+make
+cp lib/*.dylib $lib_release_dir/.
 
 cd $midistar_dir
 cecho "\nFinished! Refer to the README file for instructions on building midistar."

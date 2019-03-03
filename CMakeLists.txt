@@ -3,31 +3,29 @@ project (midistar)
 
 # If build type is not set, default to Debug
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
-        "Choose the type of build, options are: Debug Release")
+    set(CMAKE_BUILD_TYPE "Debug")
 endif(NOT CMAKE_BUILD_TYPE)
-
-# Set compiler flags
-if(CMAKE_BUILD_TYPE MATCHES Release)
-    message("-- Release mode")
-    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
-else()
-    message("-- Debug mode")
-    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
-endif()
+string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
 
 # Find external libraries
 include_directories(include)
 
+# Set compiler flags and link directories
 if (WIN32)
     message("-- Windows detected")
     set(CMAKE_CXX_FLAGS "-std=c++14")
     link_directories(${CMAKE_SOURCE_DIR}/lib)
 else()    
-    link_directories(${CMAKE_SOURCE_DIR}/external/fluidsynth/src
-    ${CMAKE_SOURCE_DIR}/external/midifile/lib/
-    ${CMAKE_SOURCE_DIR}/external/rtmidi/.libs/
-    ${CMAKE_SOURCE_DIR}/external/SFML/build/lib)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
+
+    if(CMAKE_BUILD_TYPE MATCHES Release)
+        message("-- Release mode")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+    else()
+        message("-- Debug mode")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
+    endif()
+    link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 endif()
 
 # Set headers
@@ -164,16 +162,22 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E rename
             ${CMAKE_SOURCE_DIR}/run_windows.bat
             ../run.bat)
-
 else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-    target_link_libraries(midistar
-        midifile
-        rtmidi
-        sfml-graphics
-        sfml-system
-        sfml-window)
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        target_link_libraries(midistar
+            midifile
+            rtmidi
+            sfml-graphics-d
+            sfml-system-d
+            sfml-window-d)
+    else()
+        target_link_libraries(midistar
+            midifile
+            rtmidi
+            sfml-graphics
+            sfml-system
+            sfml-window)
+    endif()
 endif()
 
 # Handle OSX
@@ -181,20 +185,22 @@ if (${APPLE})
     message("-- OSX detected")
 
     # fluidsynth is a framework on OSX
-    set_target_properties(midistar PROPERTIES LINK_FLAGS "-Wl,-F${CMAKE_SOURCE_DIR}/external/fluidsynth/src")
-    target_link_libraries(midistar
+    set_target_properties(midistar PROPERTIES LINK_FLAGS
+        "-Wl,-F${CMAKE_SOURCE_DIR}/lib/${build_type}")
+
+    target_link_libraries(midistar 
         "-framework FluidSynth")
 
     # Copy OSX run script
     add_custom_command(TARGET midistar POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/scripts/run_osx
+        ${CMAKE_SOURCE_DIR}/scripts/run_osx_${build_type}
         ${CMAKE_SOURCE_DIR}/.)
 
     # Rename to 'run'
     add_custom_command(TARGET midistar POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E rename
-            ${CMAKE_SOURCE_DIR}/run_osx
+            ${CMAKE_SOURCE_DIR}/run_osx_${build_type}
             ../run)
 
     # Copy OSX debug script
@@ -231,13 +237,13 @@ elseif(UNIX)
     # Copy Linux run script
     add_custom_command(TARGET midistar POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/scripts/run_linux
+        ${CMAKE_SOURCE_DIR}/scripts/run_linux_${build_type}
         ${CMAKE_SOURCE_DIR}/.)
 
     # Rename to 'run'
     add_custom_command(TARGET midistar POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E rename
-            ${CMAKE_SOURCE_DIR}/run_linux
+            ${CMAKE_SOURCE_DIR}/run_linux_${build_type}
             ../run)
 
     # Copy Linux debug script

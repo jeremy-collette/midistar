@@ -10,12 +10,12 @@ if [ $dir == 'scripts' ]; then
 fi
 
 # Find binary
-./scripts/find_binary "release"
+./scripts/unix/find_binary "release"
 
 # If we found the binary...
 if [ $? -eq 0 ]; then
     # Set environment variables
-    . ./scripts/set_env_osx "release"
+    . ./scripts/debian/set_env "release"
 
     # Run executable
     exec ./build/bin/release/midistar "$@"

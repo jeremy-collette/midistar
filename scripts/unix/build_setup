@@ -17,11 +17,14 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo "Linux detected."
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-    echo "Windows not supported."
+    echo "Use build_setup.bat in the \"scripts\win32\" folder for Windows platforms."
     exit
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    echo "Windows not supported."
+    echo "Use build_setup.bat in the \"scripts\win32\" folder for Windows platforms."
     exit
+else
+	echo "Unrecognised platform."
+	exit
 fi
 
 # Change to script dir
@@ -66,7 +69,9 @@ cd release
 cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
 cp -r src/FluidSynth.framework $lib_release_dir/.
-cd ..
+cp -r include/fluidsynth $inc_dir
+cp include/fluidsynth.h $inc_dir/.
+cp include/fluidsynth/version.h $inc_dir/fluidsynth/.
 
 cecho "\nBuilding midifile..."
 cd $ext_dir/midifile
@@ -74,6 +79,8 @@ git clean -fdx
 make library
 cp lib/*.dylib $lib_debug_dir/.
 cp lib/*.dylib $lib_release_dir/.
+mkdir -p $inc_dir/midifile
+cp include/*.h $inc_dir/midifile/.
 
 cecho "\nBuilding rtmidi..."
 cd $ext_dir/rtmidi
@@ -85,7 +92,8 @@ cp .libs/*.dylib $lib_debug_dir/.
 ./configure
 make
 cp .libs/*.dylib $lib_release_dir/.
-
+mkdir -p $inc_dir/rtmidi
+cp *.h $inc_dir/rtmidi/.
 
 cecho "\nBuilding SFML..."
 cd $ext_dir/SFML
@@ -103,6 +111,7 @@ cd release
 cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
 cp lib/*.dylib $lib_release_dir/.
+cp -r ../include/SFML $inc_dir/.
 
 cd $midistar_dir
 cecho "\nFinished! Refer to the README file for instructions on building midistar."

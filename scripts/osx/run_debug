@@ -6,19 +6,18 @@ cd "$(dirname "$0")"
 # Check directory
 dir=${PWD##*/}
 if [ $dir == 'scripts' ]; then
-    echo "In 'scripts' folder. Changing to parent directory..."
     cd ..
 fi
 
 # Find binary
-./scripts/find_binary "debug"
+./scripts/unix/find_binary "debug"
 
 # If we found the binary...
 if [ $? -eq 0 ]; then
     # Set environment variables
-    . ./scripts/set_env_osx "debug"
+    . ./scripts/osx/set_env "debug"
 
-    # Run gdb
-    exec gdb ./build/bin/debug/midistar "$@"
+    # Run executable
+    exec ./build/bin/debug/midistar "$@"
 fi
 

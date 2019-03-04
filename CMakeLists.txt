@@ -118,7 +118,7 @@ if (WIN32) # Windows
     # Set compiler flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG /EHsc")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O0 /EHSc")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHSc")
 
     # Set debugging directory
     set_property(TARGET midistar
@@ -128,11 +128,17 @@ if (WIN32) # Windows
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         PROPERTY VS_STARTUP_PROJECT midistar)
 
-    # Copy Windows run script
+    # Copy Windows run script for Debug / Release
     add_custom_command(TARGET midistar POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/scripts/win32/run.bat
-        ${CMAKE_SOURCE_DIR}/.)
+        ${CMAKE_SOURCE_DIR}/scripts/win32/run_$<CONFIGURATION>.bat
+        ${CMAKE_SOURCE_DIR}/.)    
+
+    # Rename to 'run'
+    add_custom_command(TARGET midistar POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E rename
+        ${CMAKE_SOURCE_DIR}/run_$<CONFIGURATION>.bat
+        ../run.bat)
 
     # Copy 'make.bat' script
     add_custom_command(TARGET midistar POST_BUILD

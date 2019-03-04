@@ -14,11 +14,12 @@ IF NOT EXIST "build\" (
 )
 
 REM Check for binary:
-IF NOT EXIST "build\Debug\midistar.exe" (
-    ECHO Could not find '.\build\Debug\midistar.exe' binary!
+IF NOT EXIST "build\%1\midistar.exe" (
+    ECHO Could not find '.\build\%1\midistar.exe' binary!
     ECHO Refer to BUILDING MIDISTAR in the README.
     EXIT /b 2
 )
-ECHO Found binary!
+
+REM Found binary!
 EXIT /b 0
 

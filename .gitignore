@@ -21,5 +21,6 @@ include/SFML
 /run.bat
 /make.bat
 
-*.mid
-*.swp
+**.mid
+**.swp
+**.DS_Store

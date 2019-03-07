@@ -76,7 +76,19 @@ set(SOURCE
 )
 
 # Specify link directory
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+if (WIN32)
+    link_directories(${CMAKE_SOURCE_DIR}/lib)
+else()
+    # If build type is not set, default to Debug
+    if(NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE "Debug")
+    endif()
+    string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+    link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
+
+    # Change binary output dir
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
+endif()
 
 # Create executable
 add_executable(midistar
@@ -162,15 +174,6 @@ else() # Linux/OSX
         unset(CMAKE_BUILD_TYPE)
     endif()
 
-    # If build type is not set, default to Debug
-    if(NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Debug")
-    endif()
-    string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
-
-    # Change binary output dir
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
-
     # Set compiler flags
     if(CMAKE_BUILD_TYPE MATCHES Release)
         message("-- Release mode")
@@ -179,7 +182,6 @@ else() # Linux/OSX
         message("-- Debug mode")
         set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
     endif()
-    link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 
     # Link libraries depending on build type
     if(CMAKE_BUILD_TYPE MATCHES Release)

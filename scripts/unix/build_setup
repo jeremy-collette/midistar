@@ -32,8 +32,8 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'scripts' ]; then
-    cd ..
+if [ $dir == 'unix' ]; then
+    cd ../..
 fi
 
 # Resetting lib folder
@@ -45,6 +45,15 @@ lib_dir=$PWD/lib
 lib_debug_dir=$lib_dir/debug
 lib_release_dir=$lib_dir/release
 
+# Resetting include dir
+rm -rf include/CLI
+rm -rf include/fluidsynth
+rm -f include/fluidsynth.h
+rm -rf include/midifile
+rm -rf include/rtmidi
+rm -rf include/SFML
+inc_dir=$PWD/include
+
 # Building...
 midistar_dir=$PWD
 ext_dir=$PWD/external
@@ -52,6 +61,10 @@ ext_dir=$PWD/external
 cecho "Setting up git submodules..."
 git submodule init
 git submodule update
+
+cecho "\nPreparing CLI11..."
+cd $ext_dir/CLI11
+cp -r include/CLI $inc_dir/.
 
 cecho "\nBuilding fluidsynth..."
 cd $ext_dir/fluidsynth
@@ -69,7 +82,7 @@ cd release
 cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
 cp -r src/FluidSynth.framework $lib_release_dir/.
-cp -r include/fluidsynth $inc_dir
+cp -r ../../include/fluidsynth $inc_dir
 cp include/fluidsynth.h $inc_dir/.
 cp include/fluidsynth/version.h $inc_dir/fluidsynth/.
 
@@ -111,7 +124,7 @@ cd release
 cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
 cp lib/*.dylib $lib_release_dir/.
-cp -r ../include/SFML $inc_dir/.
+cp -r ../../include/SFML $inc_dir/.
 
 cd $midistar_dir
 cecho "\nFinished! Refer to the README file for instructions on building midistar."

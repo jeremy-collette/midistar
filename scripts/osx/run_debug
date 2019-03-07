@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'scripts' ]; then
+if [ $dir == 'osx' ]; then
     cd ..
 fi
 

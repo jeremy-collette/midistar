@@ -13,3 +13,6 @@
 [submodule "external/midifile"]
 	path = external/midifile
 	url = https://github.com/craigsapp/midifile.git
+[submodule "external/vcpkg"]
+	path = external/vcpkg
+	url = https://github.com/Microsoft/vcpkg.git

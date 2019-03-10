@@ -40,6 +40,16 @@ git submodule init
 git submodule update
 
 ECHO.
+ECHO Preparing vcpkg...
+CD "%ext_dir%\vcpkg" || GOTO :error
+git clean -fdx
+CALL bootstrap-vcpkg.bat
+IF NOT %errorlevel%==0 (
+	GOTO :error
+)
+vcpkg install glib || GOTO :error
+
+ECHO.
 ECHO Preparing CLI11...
 CD "%ext_dir%\CLI11" || GOTO :error
 git clean -fdx
@@ -51,7 +61,7 @@ CD "%ext_dir%\fluidsynth"
 git clean -fdx
 MKDIR build
 CD build
-cmake .. -DCMAKE_TOOLCHAIN_FILE="C:\Program Files\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || GOTO :error
+cmake .. -DCMAKE_TOOLCHAIN_FILE="%ext_dir%\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || GOTO :error
 msbuild FluidSynth.sln /p:Configuration=Debug || GOTO :error
 COPY "src\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "src\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error

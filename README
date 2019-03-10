@@ -16,7 +16,8 @@ with) midistar:
     * midifile: Copyright (c) 1999-2018, Craig Stuart Sapp.
     * RtMidi: Copyright (c) 2003-2017 Gary P. Scavone.
     * SFML: Copyright (C) 2007-2017 Laurent Gomila.
-    * vswhere: Copyright (C) Microsoft Corporation.
+    * vcpkg: Copyright (C) Microsoft Corporation.
+    * vswhere: Copyright (C) Microsoft Corporation.    
 
 Thanks to the developers and supporters of these libraries!
 

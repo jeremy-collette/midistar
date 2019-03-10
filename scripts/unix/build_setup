@@ -64,6 +64,7 @@ git submodule update
 
 cecho "\nPreparing CLI11..."
 cd $ext_dir/CLI11
+git clean -fdx
 cp -r include/CLI $inc_dir/.
 
 cecho "\nBuilding fluidsynth..."

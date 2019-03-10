@@ -42,13 +42,13 @@ git submodule update
 ECHO.
 ECHO Preparing CLI11...
 CD "%ext_dir%\CLI11" || GOTO :error
-REM git clean -fdx
+git clean -fdx
 XCOPY /E "include\CLI" "%inc_dir%\CLI\" || GOTO :error
 
 ECHO.
 ECHO Preparing fluidsynth...
 CD "%ext_dir%/fluidsynth"
-REM git clean -fdx
+git clean -fdx
 MKDIR build
 CD build
 cmake .. -DCMAKE_TOOLCHAIN_FILE="C:\Program Files\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || GOTO :error
@@ -65,7 +65,7 @@ COPY "include\fluidsynth\version.h" "%inc_dir%\fluidsynth\." || GOTO :error
 ECHO.
 ECHO Preparing midifile...
 CD "%ext_dir%/midifile" || GOTO :error
-REM git clean -fdx
+git clean -fdx
 MKDIR build
 CD build
 cmake .. || GOTO :error
@@ -79,7 +79,7 @@ COPY "..\include\*.h" "%inc_dir%\midifile\." || GOTO :error
 ECHO.
 ECHO Preparing rtmidi...
 CD "%ext_dir%/rtmidi" || GOTO :error
-REM git clean -fdx
+git clean -fdx
 COPY "%win_script_dir%\rtmidi_debug_makefile" Makefile || GOTO :error
 nmake /A rtmidi-d.lib || GOTO :error
 COPY "*.lib" "%lib_dir_debug%\." || GOTO :error
@@ -92,7 +92,7 @@ COPY "*.h" "%inc_dir%\rtmidi\." || GOTO :error
 ECHO.
 ECHO Preparing SFML...
 CD "%ext_dir%/SFML" || GOTO :error
-REM git clean -fdx
+git clean -fdx
 MKDIR build
 CD build
 cmake .. || GOTO :error

@@ -7,13 +7,13 @@ FOR %%I in (.) do SET dir=%%~nxI
 IF "%dir%"=="win32" (CD ..\..)
 
 SET midistar_dir=%CD%
-SET ext_dir=%CD%/external
-SET lib_dir=%CD%/lib
-SET lib_dir_debug=%lib_dir%/debug
-SET lib_dir_release=%lib_dir%/release
-SET dll_dir=%CD%/dll
-SET inc_dir=%CD%/include
-SET win_script_dir=%CD%/scripts/win32
+SET ext_dir=%CD%\external
+SET lib_dir=%CD%\lib
+SET lib_dir_debug=%lib_dir%\debug
+SET lib_dir_release=%lib_dir%\release
+SET dll_dir=%CD%\dll
+SET inc_dir=%CD%\include
+SET win_script_dir=%CD%\scripts\win32
 
 ECHO Removing build folder...
 RD /q /s build
@@ -27,12 +27,12 @@ MKDIR "lib\release"
 
 ECHO.
 ECHO Resetting include folder...
-RD /q /s "%inc_dir%/CLI"
-RD /q /s "%inc_dir%/FluidSynth"
-RD /q /s "%inc_dir%/midifile"
-RD /q /s "%inc_dir%/rtmidi"
-RD /q /s "%inc_dir%/SFML"
-DEL "%inc_dir%/fluidsynth.h"
+RD /q /s "%inc_dir%\CLI"
+RD /q /s "%inc_dir%\FluidSynth"
+RD /q /s "%inc_dir%\midifile"
+RD /q /s "%inc_dir%\rtmidi"
+RD /q /s "%inc_dir%\SFML"
+DEL "%inc_dir%\fluidsynth.h"
 
 ECHO.
 ECHO Setting up git submodules...
@@ -47,7 +47,7 @@ XCOPY /E "include\CLI" "%inc_dir%\CLI\" || GOTO :error
 
 ECHO.
 ECHO Preparing fluidsynth...
-CD "%ext_dir%/fluidsynth"
+CD "%ext_dir%\fluidsynth"
 git clean -fdx
 MKDIR build
 CD build
@@ -64,7 +64,7 @@ COPY "include\fluidsynth\version.h" "%inc_dir%\fluidsynth\." || GOTO :error
 
 ECHO.
 ECHO Preparing midifile...
-CD "%ext_dir%/midifile" || GOTO :error
+CD "%ext_dir%\midifile" || GOTO :error
 git clean -fdx
 MKDIR build
 CD build
@@ -78,7 +78,7 @@ COPY "..\include\*.h" "%inc_dir%\midifile\." || GOTO :error
 
 ECHO.
 ECHO Preparing rtmidi...
-CD "%ext_dir%/rtmidi" || GOTO :error
+CD "%ext_dir%\rtmidi" || GOTO :error
 git clean -fdx
 COPY "%win_script_dir%\rtmidi_debug_makefile" Makefile || GOTO :error
 nmake /A rtmidi-d.lib || GOTO :error
@@ -91,7 +91,7 @@ COPY "*.h" "%inc_dir%\rtmidi\." || GOTO :error
 
 ECHO.
 ECHO Preparing SFML...
-CD "%ext_dir%/SFML" || GOTO :error
+CD "%ext_dir%\SFML" || GOTO :error
 git clean -fdx
 MKDIR build
 CD build

@@ -19,16 +19,15 @@ SET inc_dir=%CD%\include
 SET win_script_dir=%CD%\scripts\win32
 
 REM Find MSBuild:
-ECHO.
-ECHO Finding MSBuild.exe...
-FOR /f "usebackq tokens=*" %%i in (`%win_script_dir%\vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe`) do (
-  SET msbuild=%%i
-)
-IF "%msbuild%" == "" (
-    ECHO Could not find MSBuild! Please install Microsoft Developer Tools and try again.
+CALL scripts\win32\find_msbuild.bat
+if %errorLevel% == 1 (
     GOTO :error
-) ELSE (
-    ECHO Found MSBuild at "%msbuild%".
+)
+
+REM Find nmake:
+CALL scripts\win32\find_nmake.bat
+if %errorLevel% == 1 (
+    GOTO :error
 )
 
 REM Find Git:
@@ -129,10 +128,10 @@ ECHO Preparing rtmidi...
 CD "%ext_dir%\rtmidi" || GOTO :error
 git clean -fdx
 COPY "%win_script_dir%\rtmidi_debug_makefile" Makefile || GOTO :error
-nmake /A rtmidi-d.lib || GOTO :error
+"%nmake%" /A rtmidi-d.lib || GOTO :error
 COPY "*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "%win_script_dir%\rtmidi_release_makefile" Makefile || GOTO :error
-nmake /A rtmidi.lib || GOTO :error
+"%nmake%" /A rtmidi.lib || GOTO :error
 COPY "*.lib" "%lib_dir_release%\." || GOTO :error
 MKDIR "%inc_dir%\rtmidi" || GOTO :error
 COPY "*.h" "%inc_dir%\rtmidi\." || GOTO :error
@@ -153,7 +152,14 @@ COPY "lib\Release\*.dll" "%lib_dir_release%\." || GOTO :error
 XCOPY /E "..\include\SFML" "%inc_dir%\SFML\" || GOTO :error
 
 ECHO.
-ECHO Finished! Refer to the README file for instructions on building midistar.
+ECHO Finished setting up pre-requisites. Building midistar...
+CD "%midistar_dir%"
+MKDIR build
+CD build
+cmake ..
+"%msbuild%" midistar.sln || GOTO :error
+ECHO midistar built successfully! Run using the 'run.bat' command.
+ECHO Refer to the README for more information.
 GOTO :end
 
 :error

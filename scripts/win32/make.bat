@@ -7,6 +7,12 @@ FOR %%I in (.) do SET dir=%%~nxI
 IF "%dir%"=="win32" (cd ..\..)
 SET proj_dir="%cd%"
 
+REM Find MSBuild:
+CALL scripts\win32\find_msbuild.bat
+if %errorLevel% == 1 (
+    GOTO :end
+)
+
 REM Get build type:
 SET build_type=%1
 IF "%~1"=="" (
@@ -19,5 +25,8 @@ ECHO Building midistar in %build_type% mode...
 MKDIR build
 CD build
 cmake ..
-msbuild midistar.sln /p:Configuration=%build_type%
+"%msbuild%" midistar.sln /p:Configuration=%build_type%
 CD %proj_dir%
+
+REM Finish
+:end

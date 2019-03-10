@@ -16,6 +16,6 @@ CALL scripts\win32\find_binary.bat Debug
 REM If we found the binary...:
 IF %errorlevel%==0 (
     REM Run executable:
-    CALL "build\Debug\midistar.exe" %*
+    CALL "%midistar%" %*
     CD "%proj_dir%"
 )

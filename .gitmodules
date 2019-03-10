@@ -16,3 +16,6 @@
 [submodule "external/vcpkg"]
 	path = external/vcpkg
 	url = https://github.com/Microsoft/vcpkg.git
+[submodule "external/vswhere"]
+	path = external/vswhere
+	url = https://github.com/Microsoft/vswhere

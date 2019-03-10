@@ -13,15 +13,16 @@ fi
 if [ ! -d build ]; then
     echo "'build' folder does not exist!"
     echo "Refer to BUILDING MIDISTAR in the README."
-    exit 1
+    return 1
 fi
 
 # Check for binary
 if [ ! -e ./build/bin/$1/midistar ]; then
     echo "Could not find './build/bin/$1/midistar' binary!"
     echo "Refer to BUILDING MIDISTAR in the README."
-    exit 2
+    return 2
 fi
 
-exit 0
+$midistar = "./build/bin/$1/midistar"
+return 0
 

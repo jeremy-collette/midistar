@@ -21,5 +21,6 @@ IF NOT EXIST "build\%1\midistar.exe" (
 )
 
 REM Found binary!
+SET midistar="build\%1\midistar.exe"
 EXIT /b 0
 

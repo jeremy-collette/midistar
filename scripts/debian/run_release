@@ -18,6 +18,6 @@ if [ $? -eq 0 ]; then
     . ./scripts/debian/set_env "release"
 
     # Run executable
-    exec ./build/bin/release/midistar "$@"
+    exec $midistar "$@"
 fi
 

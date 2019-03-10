@@ -19,15 +19,20 @@ SET inc_dir=%CD%\include
 SET win_script_dir=%CD%\scripts\win32
 
 REM Find MSBuild:
-CALL scripts\win32\find_msbuild.bat
+ECHO.
+ECHO Finding MSBuild...
+WHERE msbuild
 if %errorLevel% == 1 (
+    ECHO Could not find MSBuild^^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.
     GOTO :error
 )
 
 REM Find nmake:
-CALL scripts\win32\find_nmake.bat
+ECHO.
+ECHO Finding nmake...
+WHERE nmake
 if %errorLevel% == 1 (
-    GOTO :error
+    ECHO Could not find nmake^^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.    GOTO :error
 )
 
 REM Find Git:
@@ -79,7 +84,7 @@ REM Setup pre-requisites:
 ECHO.
 ECHO Preparing vcpkg...
 CD "%ext_dir%\vcpkg" || GOTO :error
-git clean -fdx
+REM git clean -fdx
 CALL bootstrap-vcpkg.bat
 IF NOT %errorlevel%==0 (
     GOTO :error
@@ -99,10 +104,10 @@ git clean -fdx
 MKDIR build
 CD build
 cmake .. -DCMAKE_TOOLCHAIN_FILE="%ext_dir%\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || GOTO :error
-"%msbuild%" FluidSynth.sln /p:Configuration=Debug || GOTO :error
+msbuild FluidSynth.sln /p:Configuration=Debug || GOTO :error
 COPY "src\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "src\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error
-"%msbuild%" FluidSynth.sln /p:Configuration=Release || GOTO :error
+msbuild FluidSynth.sln /p:Configuration=Release || GOTO :error
 COPY "src\Release\*.lib" "%lib_dir_release%\." || GOTO :error
 COPY "src\Release\*.dll" "%lib_dir_release%\." || GOTO :error
 XCOPY /E "..\include\fluidsynth" "%inc_dir%\fluidsynth\" || GOTO :error
@@ -116,9 +121,9 @@ git clean -fdx
 MKDIR build
 CD build
 cmake .. || GOTO :error
-"%msbuild%" midifile.sln /p:Configuration=Debug || GOTO :error
+msbuild midifile.sln /p:Configuration=Debug || GOTO :error
 COPY "Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
-"%msbuild%" midifile.sln /p:Configuration=Release || GOTO :error
+msbuild midifile.sln /p:Configuration=Release || GOTO :error
 COPY "Release\*.lib" "%lib_dir_release%\." || GOTO :error
 MKDIR "%inc_dir%\midifile" || GOTO :error
 COPY "..\include\*.h" "%inc_dir%\midifile\." || GOTO :error
@@ -128,10 +133,10 @@ ECHO Preparing rtmidi...
 CD "%ext_dir%\rtmidi" || GOTO :error
 git clean -fdx
 COPY "%win_script_dir%\rtmidi_debug_makefile" Makefile || GOTO :error
-"%nmake%" /A rtmidi-d.lib || GOTO :error
+nmake /A rtmidi-d.lib || GOTO :error
 COPY "*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "%win_script_dir%\rtmidi_release_makefile" Makefile || GOTO :error
-"%nmake%" /A rtmidi.lib || GOTO :error
+nmake /A rtmidi.lib || GOTO :error
 COPY "*.lib" "%lib_dir_release%\." || GOTO :error
 MKDIR "%inc_dir%\rtmidi" || GOTO :error
 COPY "*.h" "%inc_dir%\rtmidi\." || GOTO :error
@@ -143,10 +148,10 @@ git clean -fdx
 MKDIR build
 CD build
 cmake .. || GOTO :error
-"%msbuild%" SFML.sln /p:Configuration=Debug || GOTO :error
+msbuild SFML.sln /p:Configuration=Debug || GOTO :error
 COPY "lib\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "lib\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error
-"%msbuild%" SFML.sln /p:Configuration=Release || GOTO :error
+msbuild SFML.sln /p:Configuration=Release || GOTO :error
 COPY "lib\Release\*.lib" "%lib_dir_release%\." || GOTO :error
 COPY "lib\Release\*.dll" "%lib_dir_release%\." || GOTO :error
 XCOPY /E "..\include\SFML" "%inc_dir%\SFML\" || GOTO :error
@@ -157,7 +162,7 @@ CD "%midistar_dir%"
 MKDIR build
 CD build
 cmake ..
-"%msbuild%" midistar.sln || GOTO :error
+msbuild midistar.sln || GOTO :error
 ECHO midistar built successfully! Run using the 'run.bat' command.
 ECHO Refer to the README for more information.
 GOTO :end

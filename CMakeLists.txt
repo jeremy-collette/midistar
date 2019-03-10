@@ -75,16 +75,28 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp    
 )
 
+# If build type is not set, default to Debug
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif()
+string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
+
 # Specify link directory
 if (WIN32)
+    message("-- Windows detected")
+    message("-- Release/Debug modes")
+
     link_directories(${CMAKE_SOURCE_DIR}/lib)
+    set(platform win32)
 else()
-    # If build type is not set, default to Debug
-    if(NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Debug")
+    if (${APPLE})
+        message("-- OSX detected")
+        set(platform osx)
+    else()
+        message("-- Linux detected. Assuming Debian...")
+        set(platform debian)
     endif()
-    string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
-    link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 
     # Change binary output dir
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
@@ -106,9 +118,6 @@ endif()
 
 # OS specific stuff
 if (WIN32) # Windows
-    message("-- Windows detected")
-    message("-- Release/Debug modes")        
-
     # We only want Debug and Release
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
@@ -160,14 +169,6 @@ if (WIN32) # Windows
 
 else() # Linux/OSX
     # Do common stuff for Linux/OSX (Unix)
-    if (${APPLE})
-        message("-- OSX detected")
-        set(platform osx)
-    else()
-        message("-- Linux detected. Assuming Debian...")
-        set(platform debian)
-    endif()
-
     # Check for valid build type
     if(NOT ${CMAKE_BUILD_TYPE} EQUAL "Debug" OR NOT ${CMAKE_BUILD_TYPE} EQUAL "Release")
         message("Warning: invalid build type \"${CMAKE_BUILD_TYPE}\" supplied. Setting to \"Debug\"...")

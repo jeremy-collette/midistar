@@ -7,8 +7,11 @@ FOR %%I in (.) do SET dir=%%~nxI
 IF "%dir%"=="win32" (cd ..\..)
 SET proj_dir="%cd%"
 
+REM Tell user which build mode we're running:
+ECHO Starting midistar Release build...
+
 REM Find binary:
-CALL scripts\win32\find_binary.bat "Release"
+CALL scripts\win32\find_binary.bat Release
 
 REM If we found the binary...:
 IF %errorlevel%==0 (

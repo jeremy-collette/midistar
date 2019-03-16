@@ -76,18 +76,22 @@ set(SOURCE
 )
 
 # If build type is not set, default to Debug
+# Check for valid build type
+string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+if(CMAKE_BUILD_TYPE AND (NOT ${build_type} STREQUAL "debug" AND NOT ${build_type} STREQUAL "release"))
+    message(${build_type})
+    message("Warning: invalid build type \"${CMAKE_BUILD_TYPE}\" supplied. Setting to \"Debug\"...")
+    unset(CMAKE_BUILD_TYPE)
+endif()
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
-link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 
-# Specify link directory
+# Specify platform
 if (WIN32)
     message("-- Windows detected")
     message("-- Release/Debug modes")
-
-    link_directories(${CMAKE_SOURCE_DIR}/lib)
     set(platform win32)
 else()
     if (${APPLE})
@@ -101,6 +105,9 @@ else()
     # Change binary output dir
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
 endif()
+
+# Specify link directory
+link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 
 # Create executable
 add_executable(midistar
@@ -169,12 +176,6 @@ if (WIN32) # Windows
 
 else() # Linux/OSX
     # Do common stuff for Linux/OSX (Unix)
-    # Check for valid build type
-    if(NOT ${CMAKE_BUILD_TYPE} EQUAL "Debug" OR NOT ${CMAKE_BUILD_TYPE} EQUAL "Release")
-        message("Warning: invalid build type \"${CMAKE_BUILD_TYPE}\" supplied. Setting to \"Debug\"...")
-        unset(CMAKE_BUILD_TYPE)
-    endif()
-
     # Set compiler flags
     if(CMAKE_BUILD_TYPE MATCHES Release)
         message("-- Release mode")

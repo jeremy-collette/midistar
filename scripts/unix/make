@@ -10,11 +10,11 @@ if [ $dir == 'unix' ]; then
 fi
 
 # Get build type
-$build_type=$1
-IF "$build_type"=="" (
+build_type=$1
+if [ '$build_type' == '' ]; then
 	echo "WARNING: Build type not specified. Setting to debug mode..."
 	$build_type="debug"
-)
+fi
 
 # Setup cmake
 mkdir -p build
@@ -23,5 +23,5 @@ cmake .. -DCMAKE_BUILD_TYPE=$build_type
 cd ..
 
 # Call make
-exec make -C build "$@"
+exec make -C build
 

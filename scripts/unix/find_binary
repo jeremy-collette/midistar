@@ -23,6 +23,6 @@ if [ ! -e ./build/bin/$1/midistar ]; then
     return 2
 fi
 
-$midistar = "./build/bin/$1/midistar"
+midistar = "./build/bin/$1/midistar"
 return 0
 

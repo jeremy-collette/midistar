@@ -44,6 +44,7 @@ mkdir lib/release
 lib_dir=$PWD/lib
 lib_debug_dir=$lib_dir/debug
 lib_release_dir=$lib_dir/release
+unix_script_dir=$PWD/scripts/unix
 
 # Resetting include dir
 rm -rf include/CLI
@@ -127,6 +128,9 @@ make
 cp lib/*.dylib $lib_release_dir/.
 cp -r ../../include/SFML $inc_dir/.
 
+cd $unix_script_dir
+exec ./make debug
 cd $midistar_dir
-cecho "\nFinished! Refer to the README file for instructions on building midistar."
-
+cecho "\nFinished! Run midistar with the './run' command."
+cecho "Re-build in debug mode using the './make debug' command."
+cecho "Re-build in release mode using the './make release' command."

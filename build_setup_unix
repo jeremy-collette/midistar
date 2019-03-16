@@ -129,9 +129,9 @@ cp lib/*.dylib $lib_release_dir/.
 cp -r ../../include/SFML $inc_dir/.
 
 cd $unix_script_dir
-exec ./make debug
+./make debug
 if [ $makeerror -eq 1 ]; then
-    echo "Building midistar failed!"
+    cecho "\nBuilding midistar failed!"
 else
     cecho "\nFinished! Run midistar with the './run' command."
     cecho "Re-build in debug mode using the './make debug' command."

@@ -5,16 +5,22 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'scripts' ]; then
-    cd ..
+if [ $dir == 'unix' ]; then
+    cd ../..
 fi
 
-# Check for 'build' folder
-if [ ! -d build ]; then
-    echo "'build' folder does not exist!"
-    echo "Refer to BUILDING MIDISTAR in the README."
-    exit
-fi
+# Get build type
+$build_type=$1
+IF "$build_type"=="" (
+	echo "WARNING: Build type not specified. Setting to debug mode..."
+	$build_type="debug"
+)
+
+# Setup cmake
+mkdir -p build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=$build_type
+cd ..
 
 # Call make
 exec make -C build "$@"

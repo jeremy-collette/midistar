@@ -8,15 +8,18 @@ IF "%dir%"=="win32" (cd ..\..)
 SET proj_dir="%cd%"
 
 REM Find MSBuild:
-CALL scripts\win32\find_msbuild.bat
+ECHO.
+ECHO Finding MSBuild...
+WHERE msbuild
 if %errorLevel% == 1 (
-    GOTO :end
+    ECHO Could not find MSBuild^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.
+    GOTO :error
 )
 
 REM Get build type:
 SET build_type=%1
 IF "%~1"=="" (
-	ECHO WARNING: Build type not specified. Setting to debug mode...
+	ECHO WARNING: Build type not specified. Setting to Debug mode...
 	SET build_type=Debug
 )
 
@@ -25,7 +28,7 @@ ECHO Building midistar in %build_type% mode...
 MKDIR build
 CD build
 cmake ..
-"%msbuild%" midistar.sln /p:Configuration=%build_type%
+msbuild midistar.sln /p:Configuration=%build_type%
 CD %proj_dir%
 
 REM Finish

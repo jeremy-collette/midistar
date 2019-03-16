@@ -1,6 +1,4 @@
 @ECHO off
-SETLOCAL EnableDelayedExpansion
-
 REM Change to script dir:
 CD "%~dp0"
 
@@ -23,7 +21,7 @@ ECHO.
 ECHO Finding MSBuild...
 WHERE msbuild
 if %errorLevel% == 1 (
-    ECHO Could not find MSBuild^^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.
+    ECHO Could not find MSBuild^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.
     GOTO :error
 )
 
@@ -32,7 +30,7 @@ ECHO.
 ECHO Finding nmake...
 WHERE nmake
 if %errorLevel% == 1 (
-    ECHO Could not find nmake^^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.    GOTO :error
+    ECHO Could not find nmake^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.    GOTO :error
 )
 
 REM Find Git:
@@ -40,7 +38,7 @@ ECHO.
 ECHO Finding git...
 WHERE git
 if %errorLevel% == 1 (
-    ECHO Could not find git^^! Please install git, add it to the system PATH variable, re-open the terminal, and try again.
+    ECHO Could not find git^! Please install git, add it to the system PATH variable, re-open the terminal, and try again.
     GOTO :error
 )
 
@@ -49,7 +47,7 @@ ECHO.
 ECHO Finding cmake...
 WHERE cmake
 if %errorLevel% == 1 (
-    ECHO Could not find cmake^^! Please install cmake, add it to the system PATH variable, re-open the terminal, and try again.
+    ECHO Could not find cmake^! Please install cmake, add it to the system PATH variable, re-open the terminal, and try again.
     GOTO :error
 )
 
@@ -164,6 +162,8 @@ CD build
 cmake ..
 msbuild midistar.sln || GOTO :error
 ECHO midistar built successfully! Run using the 'run.bat' command.
+ECHO Re-build in Debug mode using 'make.bat' or 'make.bat Debug'.
+ECHO RE-build in Release mode using 'make.bat Release'.
 ECHO Refer to the README for more information.
 GOTO :end
 

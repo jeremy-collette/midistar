@@ -29,9 +29,12 @@ MKDIR build
 CD build
 cmake .. || GOTO :error
 msbuild midistar.sln /p:Configuration=%build_type% || GOTO :error
-CD %proj_dir%
 SET makeerror=0
+GOTO :fin
 
 :error
 CD %proj_dir%
 SET makeerror=1
+
+:fin
+CD %proj_dir%

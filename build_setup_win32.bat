@@ -157,10 +157,11 @@ XCOPY /E "..\include\SFML" "%inc_dir%\SFML\" || GOTO :error
 ECHO.
 ECHO Finished setting up pre-requisites. Building midistar...
 CD "%midistar_dir%"
-MKDIR build
-CD build
-cmake ..
-msbuild midistar.sln || GOTO :error
+CALL "%win_script_dir%\make.bat" Debug
+if %makeerror% == 1 (
+    ECHO Could not build midistar^!
+    GOTO :error
+)
 ECHO midistar built successfully! Run using the 'run.bat' command.
 ECHO Re-build in Debug mode using 'make.bat' or 'make.bat Debug'.
 ECHO RE-build in Release mode using 'make.bat Release'.

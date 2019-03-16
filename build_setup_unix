@@ -130,7 +130,11 @@ cp -r ../../include/SFML $inc_dir/.
 
 cd $unix_script_dir
 exec ./make debug
+if [ $makeerror -eq 1 ]; then
+    echo "Building midistar failed!"
+else
+    cecho "\nFinished! Run midistar with the './run' command."
+    cecho "Re-build in debug mode using the './make debug' command."
+    cecho "Re-build in release mode using the './make release' command."
+fi
 cd $midistar_dir
-cecho "\nFinished! Run midistar with the './run' command."
-cecho "Re-build in debug mode using the './make debug' command."
-cecho "Re-build in release mode using the './make release' command."

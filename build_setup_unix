@@ -32,22 +32,24 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir=='unix' ]; then
+if [[ $dir == 'unix' ]]; then
     cd ../..
 fi
 
 # Find git
 cecho "\nFinding git..."
 git_path=$(which git)
-if [ $git_path=='' ]; then
+if [[ $git_path == '' ]]; then
     echo "Error! Could not find git. Please install git and try again."
+    exit
 fi
 
 # Find cmake
 cecho "\nFinding cmake..."
 cmake_path=$(which cmake)
-if [ $cmake_path=='' ]; then
+if [[ $cmake_path=='' ]]; then
     echo "Error! Could not find cmake. Please install cmake and try again."
+    exit
 fi
 
 # Resetting lib folder

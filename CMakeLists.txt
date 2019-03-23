@@ -93,6 +93,9 @@ if (WIN32)
     message("-- Windows detected")
     message("-- Release/Debug modes")
     set(platform win32)
+
+    # Specify link directory
+    link_directories(${CMAKE_SOURCE_DIR}/lib)
 else()
     if (${APPLE})
         message("-- OSX detected")
@@ -102,12 +105,12 @@ else()
         set(platform debian)
     endif()
 
+    # Specify link directory by build type
+    link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
+
     # Change binary output dir
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
 endif()
-
-# Specify link directory
-link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 
 # Create executable
 add_executable(midistar
@@ -130,12 +133,12 @@ if (WIN32) # Windows
 
     # Add libraries
     target_link_libraries(midistar
-        debug fluidsynth optimized fluidsynth
-        debug midifile optimized midifile
-        debug rtmidi-d optimized rtmidi
-        debug sfml-graphics-d optimized sfml-graphics
-        debug sfml-system-d optimized sfml-system
-        debug sfml-window-d optimized sfml-window)
+        debug debug/fluidsynth optimized release/fluidsynth
+        debug debug/midifile optimized release/midifile
+        debug debug/rtmidi-d optimized release/rtmidi
+        debug debug/sfml-graphics-d optimized release/sfml-graphics
+        debug debug/sfml-system-d optimized release/sfml-system
+        debug debug/sfml-window-d optimized release/sfml-window)
 
     # Copy Release and Debug libs
     add_custom_command(TARGET midistar POST_BUILD

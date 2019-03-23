@@ -153,7 +153,7 @@ be required (except build tools), so you can skip this step.
 However, on Linux, additional software must be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install
 the majority of build dependencies with the following command:
-    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev build-essential pkg-config cmake 
+    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev build-essential pkg-config cmake libtool automake autoconf 
 
 Additionally, on Debian run the following command:
     sudo apt-get install libjpeg62-turbo-dev

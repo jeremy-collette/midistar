@@ -11,6 +11,19 @@ cecho() {
     sleep 1
 }
 
+# Find a dependency
+find() {
+    set +e
+    name=$1
+    cecho "\nLooking for $name..."
+    found=$(which $name)
+    if [[ $found == '' ]]; then
+        echo "Error! Could not find $name. Please install $name and try again."
+        exit
+    fi
+    set -e
+}
+
 # Platform detection
 if [ "$(uname)" == "Darwin" ]; then
     echo "OSX detected."
@@ -42,47 +55,14 @@ if [[ $dir == 'unix' ]]; then
     cd ../..
 fi
 
-set +e
-# Find git
-cecho "\nFinding git..."
-git_path=$(which git)
-if [[ $git_path == '' ]]; then
-    echo "Error! Could not find git. Please install git and try again."
-    exit
-fi
-
-# Find cmake
-cecho "\nFinding cmake..."
-cmake_path=$(which cmake)
-if [[ $cmake_path == '' ]]; then
-    echo "Error! Could not find cmake. Please install cmake and try again."
-    exit
-fi
-
-# Find g++
-cecho "\nFinding g++..."
-gpp_path=$(which g++)
-if [[ $gpp_path == '' ]]; then
-    echo "Error! Could not find g++. Please install g++ and try again."
-    exit
-fi
-
-# Find gcc
-cecho "\nFinding gcc..."
-gcc_path=$(which gcc)
-if [[ $gcc_path == '' ]]; then
-    echo "Error! Could not find gcc. Please install gcc and try again."
-    exit
-fi
-
-# Find pkg-config
-cecho "\nFinding pkg-config..."
-pkgconfig_path=$(which pkg-config)
-if [[ $gcc_path == '' ]]; then
-    echo "Error! Could not find pkg-config. Please install pkg-config and try again."
-    exit
-fi
-set -e
+# Find some dependencies
+find "git"
+find "cmake"
+find "g++"
+find "gcc"
+find "pkg-config"
+find "autoconf"
+find "automake"
 
 # Resetting lib folder
 rm -rf lib

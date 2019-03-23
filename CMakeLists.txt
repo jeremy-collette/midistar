@@ -130,12 +130,12 @@ if (WIN32) # Windows
 
     # Add libraries
     target_link_libraries(midistar
-        debug debug/fluidsynth optimized release/fluidsynth
-        debug debug/midifile optimized release/midifile
-        debug debug/rtmidi-d optimized release/rtmidi 
-        debug debug/sfml-graphics-d optimized release/sfml-graphics
-        debug debug/sfml-system-d optimized release/sfml-system
-        debug debug/sfml-window-d optimized release/sfml-window)
+        debug fluidsynth optimized fluidsynth
+        debug midifile optimized midifile
+        debug rtmidi-d optimized rtmidi
+        debug sfml-graphics-d optimized sfml-graphics
+        debug sfml-system-d optimized sfml-system
+        debug sfml-window-d optimized sfml-window)
 
     # Copy Release and Debug libs
     add_custom_command(TARGET midistar POST_BUILD

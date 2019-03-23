@@ -98,7 +98,7 @@ else()
         message("-- OSX detected")
         set(platform osx)
     else()
-        message("-- Linux detected. Assuming Debian...")
+        message("-- Linux detected")
         set(platform debian)
     endif()
 

@@ -76,17 +76,17 @@ set(SOURCE
 )
 
 # If build type is not set, default to Debug
-# Check for valid build type
-string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
-if(CMAKE_BUILD_TYPE AND (NOT ${build_type} STREQUAL "debug" AND NOT ${build_type} STREQUAL "release"))
-    message(${build_type})
-    message("Warning: invalid build type \"${CMAKE_BUILD_TYPE}\" supplied. Setting to \"Debug\"...")
-    unset(CMAKE_BUILD_TYPE)
-endif()
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+
+# Check for valid build type
+if(NOT ${build_type} STREQUAL "debug" AND NOT ${build_type} STREQUAL "release")
+    message("Warning: invalid build type \"${CMAKE_BUILD_TYPE}\" supplied. Setting to \"Debug\"...")
+    set(CMAKE_BUILD_TYPE "Debug")
+    set(build_type "debug")
+endif()
 
 # Specify platform
 if (WIN32)

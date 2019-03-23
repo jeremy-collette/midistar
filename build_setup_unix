@@ -47,7 +47,7 @@ fi
 # Find cmake
 cecho "\nFinding cmake..."
 cmake_path=$(which cmake)
-if [[ $cmake_path=='' ]]; then
+if [[ $cmake_path == '' ]]; then
     echo "Error! Could not find cmake. Please install cmake and try again."
     exit
 fi

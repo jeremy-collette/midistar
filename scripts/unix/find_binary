@@ -2,7 +2,6 @@
 
 # Change to script directory
 cd "$(dirname "$0")"
-echo $(dirname "$0")
 
 # Check directory
 dir=${PWD##*/}
@@ -24,7 +23,6 @@ if [[ ! -e ./build/bin/$1/midistar ]]; then
     return 2
 fi
 
-echo "Found binary!"
 midistar="./build/bin/$1/midistar"
 return 0
 

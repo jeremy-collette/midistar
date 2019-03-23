@@ -180,7 +180,7 @@ if (WIN32) # Windows
 else() # Linux/OSX
     # Do common stuff for Linux/OSX (Unix)
     # Set compiler flags
-    if(CMAKE_BUILD_TYPE MATCHES Release)
+    if(${build_type} STREQUAL "release")
         message("-- Release mode")
         set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
     else()
@@ -189,7 +189,7 @@ else() # Linux/OSX
     endif()
 
     # Link libraries depending on build type
-    if(CMAKE_BUILD_TYPE MATCHES Release)
+    if(${build_type} STREQUAL "release")
         target_link_libraries(midistar
             midifile
             rtmidi

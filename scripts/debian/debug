@@ -5,19 +5,19 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'scripts' ]; then
-    cd ..
+if [[ $dir == 'debian' ]]; then
+    cd ../..
 fi
 
 # Find binary
-./scripts/unix/find_binary "debug"
+. ./scripts/unix/find_binary "debug"
 
 # If we found the binary...
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]]; then
     # Set environment variables
-    . ./scripts/set_env_linux "debug"
+    . ./scripts/debian/set_env "debug"
 
     # Run gdb
-    exec gdb ./build/bin/debug/midistar "$@"
+    exec gdb "$midistar" "$@"
 fi
 

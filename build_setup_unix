@@ -27,9 +27,9 @@ find() {
 # Platform detection
 if [ "$(uname)" == "Darwin" ]; then
     echo "OSX detected."
-    lib_ext="dyalib"
+    lib_ext="dylib"
     fluidlib="FluidSynth.framework"
-    midifile_ext="dyalib"
+    midifile_ext="dylib"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo "Linux detected."
     lib_ext="so*"

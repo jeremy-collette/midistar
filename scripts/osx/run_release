@@ -5,15 +5,15 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'osx' ]; then
+if [[ $dir == 'osx' ]]; then
     cd ../..
 fi
 
 # Find binary
-./scripts/unix/find_binary "release"
+. ./scripts/unix/find_binary "release"
 
 # If we found the binary...
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]]; then
     # Set environment variables
     . ./scripts/osx/set_env "release"
 

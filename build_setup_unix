@@ -58,6 +58,22 @@ if [[ $cmake_path == '' ]]; then
     echo "Error! Could not find cmake. Please install cmake and try again."
     exit
 fi
+
+# Find g++
+cecho "\nFinding g++..."
+gpp_path=$(which g++)
+if [[ $gpp_path == '' ]]; then
+    echo "Error! Could not find g++. Please install g++ and try again."
+    exit
+fi
+
+# Find gcc
+cecho "\nFinding gcc..."
+gcc_path=$(which gcc)
+if [[ $gcc_path == '' ]]; then
+    echo "Error! Could not find gcc. Please install gcc and try again."
+    exit
+fi
 set -e
 
 # Resetting lib folder

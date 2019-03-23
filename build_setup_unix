@@ -74,6 +74,14 @@ if [[ $gcc_path == '' ]]; then
     echo "Error! Could not find gcc. Please install gcc and try again."
     exit
 fi
+
+# Find pkg-config
+cecho "\nFinding pkg-config..."
+pkgconfig_path=$(which pkg-config)
+if [[ $gcc_path == '' ]]; then
+    echo "Error! Could not find pkg-config. Please install pkg-config and try again."
+    exit
+fi
 set -e
 
 # Resetting lib folder

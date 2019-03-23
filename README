@@ -141,7 +141,6 @@ command:
 
 On Windows, you will have to download CMake online.
 
-
 3.2 INSTALLING BUILD DEPENDENCIES ON LINUX
 The INSTALLING RUNTIME DEPENDENCIES ON LINUX section describes the installation 
 of runtime dependencies. These are sufficient for running midistar on Linux. 

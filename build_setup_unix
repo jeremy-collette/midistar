@@ -42,6 +42,7 @@ if [[ $dir == 'unix' ]]; then
     cd ../..
 fi
 
+set +e
 # Find git
 cecho "\nFinding git..."
 git_path=$(which git)
@@ -57,6 +58,7 @@ if [[ $cmake_path == '' ]]; then
     echo "Error! Could not find cmake. Please install cmake and try again."
     exit
 fi
+set -e
 
 # Resetting lib folder
 rm -rf lib

@@ -2,27 +2,29 @@
 
 # Change to script directory
 cd "$(dirname "$0")"
+echo $(dirname "$0")
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'unix' ]; then
+if [[ $dir == 'unix' ]] || [[ $dir == 'debian' ]]; then
     cd ../..
 fi
 
 # Check for 'build' folder
-if [ ! -d build ]; then
+if [[ ! -d build ]]; then
     echo "'build' folder does not exist!"
     echo "Refer to BUILDING MIDISTAR in the README."
     return 1
 fi
 
 # Check for binary
-if [ ! -e ./build/bin/$1/midistar ]; then
+if [[ ! -e ./build/bin/$1/midistar ]]; then
     echo "Could not find './build/bin/$1/midistar' binary!"
     echo "Refer to BUILDING MIDISTAR in the README."
     return 2
 fi
 
-midistar = "./build/bin/$1/midistar"
+echo "Found binary!"
+midistar="./build/bin/$1/midistar"
 return 0
 

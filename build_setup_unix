@@ -2,7 +2,7 @@
 set -e
 
 # Text colours
-col="[34m"  # Blue
+col="[32m"  # Green
 def="[0m"   # Default
 
 # Coloured echo function
@@ -14,8 +14,14 @@ cecho() {
 # Platform detection
 if [ "$(uname)" == "Darwin" ]; then
     echo "OSX detected."
+    lib_ext="dyalib"
+    fluidlib="FluidSynth.framework"
+    midifile_ext="dyalib"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo "Linux detected."
+    lib_ext="so*"
+    fluidlib="libfluidsynth.so*"
+    midifile_ext="a"
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
     echo "Use build_setup.bat in the \"scripts\win32\" folder for Windows platforms."
     exit
@@ -75,7 +81,7 @@ inc_dir=$PWD/include
 midistar_dir=$PWD
 ext_dir=$PWD/external
 
-cecho "Setting up git submodules..."
+cecho "\nSetting up git submodules..."
 git submodule init
 git submodule update
 
@@ -93,13 +99,13 @@ mkdir -p debug
 cd debug
 cmake ../.. -DCMAKE_BUILD_TYPE=Debug
 make
-cp -r src/FluidSynth.framework $lib_debug_dir/.
+cp -r src/$fluidlib $lib_debug_dir/.
 cd ..
 mkdir -p release
 cd release
 cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
-cp -r src/FluidSynth.framework $lib_release_dir/.
+cp -r src/$fluidlib $lib_release_dir/.
 cp -r ../../include/fluidsynth $inc_dir
 cp include/fluidsynth.h $inc_dir/.
 cp include/fluidsynth/version.h $inc_dir/fluidsynth/.
@@ -108,8 +114,8 @@ cecho "\nBuilding midifile..."
 cd $ext_dir/midifile
 git clean -fdx
 make library
-cp lib/*.dylib $lib_debug_dir/.
-cp lib/*.dylib $lib_release_dir/.
+cp lib/*.$midifile_ext $lib_debug_dir/.
+cp lib/*.$midifile_ext $lib_release_dir/.
 mkdir -p $inc_dir/midifile
 cp include/*.h $inc_dir/midifile/.
 
@@ -119,10 +125,10 @@ git clean -fdx
 ./autogen.sh --no-configure
 ./configure --enable-maintainer-mode --enable-debug --disable-silent-rules
 make
-cp .libs/*.dylib $lib_debug_dir/.
+cp .libs/*.$lib_ext $lib_debug_dir/.
 ./configure
 make
-cp .libs/*.dylib $lib_release_dir/.
+cp .libs/*.$lib_ext $lib_release_dir/.
 mkdir -p $inc_dir/rtmidi
 cp *.h $inc_dir/rtmidi/.
 
@@ -135,18 +141,18 @@ mkdir -p debug
 cd debug
 cmake ../.. -DCMAKE_BUILD_TYPE=Debug
 make
-cp lib/*.dylib $lib_debug_dir/.
+cp lib/*.$lib_ext $lib_debug_dir/.
 cd ..
 mkdir -p release
 cd release
 cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
-cp lib/*.dylib $lib_release_dir/.
+cp lib/*.$lib_ext $lib_release_dir/.
 cp -r ../../include/SFML $inc_dir/.
 
 cd $unix_script_dir
 ./make debug
-if [ $makeerror -eq 1 ]; then
+if [[ $makeerror -eq 1 ]]; then
     cecho "\nBuilding midistar failed!"
 else
     cecho "\nFinished! Run midistar with the './run' command."

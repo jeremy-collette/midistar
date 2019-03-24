@@ -24,4 +24,3 @@ cd ..
 
 # Call make
 exec make -C build
-

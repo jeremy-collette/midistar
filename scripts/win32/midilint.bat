@@ -9,4 +9,3 @@ IF "%dir%"=="scripts" (cd ..)
 REM Call cpplint:
 cpplint --root=include --recursive include\midistar\
 cpplint --recursive src
-

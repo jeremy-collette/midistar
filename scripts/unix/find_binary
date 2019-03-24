@@ -25,4 +25,3 @@ fi
 
 midistar="./build/bin/$1/midistar"
 return 0
-

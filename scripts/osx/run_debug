@@ -20,4 +20,3 @@ if [[ $? -eq 0 ]]; then
     # Run executable
     exec "$midistar" "$@"
 fi
-

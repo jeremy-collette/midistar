@@ -2,4 +2,3 @@
 
 # Set LD_LIBRARY_PATH to find shared libraries
 export LD_LIBRARY_PATH="lib/$1"
-

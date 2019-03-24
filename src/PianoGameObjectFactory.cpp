@@ -77,7 +77,8 @@ GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
     double sprite_scale_y = sprite_scale_x / 2.0f;  // Reduce height
     double sprite_w = sprite_scale_x * GRINDING_SPRITE_SIZE;
     double sprite_h = sprite_scale_y * GRINDING_SPRITE_SIZE;
-    sprite->setScale(sprite_scale_x, sprite_scale_y);
+    sprite->setScale(static_cast<float>(sprite_scale_x), static_cast<float>(
+        sprite_scale_y));
 
     // Create the GameObject to hold the sprite
     auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
@@ -230,7 +231,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             width), static_cast<float>(height)}};
     rect->setFillColor(colour);
     rect->setOutlineColor(sf::Color::Black);
-    rect->setOutlineThickness(outline_thickness);
+    rect->setOutlineThickness(static_cast<float>(outline_thickness));
 
     // Create the actual note
     auto ins_note = new GameObject{rect, x, y, width, height};

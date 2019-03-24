@@ -73,7 +73,7 @@ class DrumGameObjectFactory : public GameObjectFactory {
 
  private:
     static const sf::Color BACKGROUND_COLOUR;  //!< Background colour
-    static constexpr float DRUM_PADDING_PERCENT = 0.1;  //!< Padding percentage
+    static constexpr float DRUM_PADDING_PERCENT = 0.1f;  //!< Padding percentage
     static constexpr double MAX_DRUM_RADIUS_PERCENT = 0.1;  //!< Max radius of
           //!< drum notes and instruments as a percentage of the size of the
                                                                      //!< screen

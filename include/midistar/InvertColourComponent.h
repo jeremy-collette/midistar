@@ -37,7 +37,7 @@ class InvertColourComponent : public Component {
      *
      * \param inv The value to XOR with each RGB value for inversion.
      */
-    explicit InvertColourComponent(char inv);
+    explicit InvertColourComponent(unsigned char inv);
 
     /**
      * Default constructor.
@@ -50,9 +50,10 @@ class InvertColourComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    static const char DEFAULT_INVERSION = 0xff;  //!< Default XOR inversion val
+    static const unsigned char DEFAULT_INVERSION = 0xff;  //!< Default XOR
+                                                            //!< inversion value
 
-    char inv_;  //!< Value to invert with (using XOR)
+    unsigned char inv_;  //!< Value to invert with (using XOR)
 };
 
 }   // End namespace midistar

@@ -95,8 +95,8 @@ class PianoGameObjectFactory : public GameObjectFactory {
     // These are out of order because they depend on other constants
     static constexpr float BLACK_KEY_OUTLINE_THICKNESS =
         WHITE_KEY_OUTLINE_THICKNESS / 2.0;  //!< Black key outline thickness
-    static const int BLACK_KEY_HEIGHT = WHITE_KEY_HEIGHT * 0.65f;  //!< Black
-                                                      //!< key height in pixels
+    static const int BLACK_KEY_HEIGHT = static_cast<int>(WHITE_KEY_HEIGHT
+        * 0.65f);                               //!< Black key height in pixels
     static constexpr const char* GRINDING_TEXTURE_PATH = "assets/grinding.png";
                                             //!< Path to metal grinding texture
     static const sf::Color MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS];  //!< Holds

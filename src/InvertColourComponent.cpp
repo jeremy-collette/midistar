@@ -20,7 +20,7 @@
 
 namespace midistar {
 
-InvertColourComponent::InvertColourComponent(char inv)
+InvertColourComponent::InvertColourComponent(unsigned char inv)
         : Component{INVERT_COLOUR}
         , inv_{inv} {
 }

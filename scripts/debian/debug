@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Change to script dir
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [[ $dir == 'debian' ]]; then
+    cd ../..
+fi
+
+# Find binary
+. ./scripts/unix/find_binary "debug"
+
+# If we found the binary...
+if [[ $? -eq 0 ]]; then
+    # Set environment variables
+    . ./scripts/debian/set_env "debug"
+
+    # Run gdb
+    exec gdb "$midistar" "$@"
+fi
+

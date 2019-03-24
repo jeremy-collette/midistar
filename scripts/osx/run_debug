@@ -5,19 +5,18 @@ cd "$(dirname "$0")"
 
 # Check directory
 dir=${PWD##*/}
-if [ $dir == 'scripts' ]; then
-    cd ..
+if [[ $dir == 'osx' ]]; then
+    cd ../..
 fi
 
 # Find binary
-./scripts/find_binary
+. ./scripts/unix/find_binary "debug"
 
 # If we found the binary...
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]]; then
     # Set environment variables
-    . ./scripts/set_env_linux
+    . ./scripts/osx/set_env "debug"
 
     # Run executable
-    exec ./build/bin/midistar "$@"
+    exec "$midistar" "$@"
 fi
-

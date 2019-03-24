@@ -1,7 +1,16 @@
 bin/
 build/
+dll/
 doc/html
 doc/latex
+lib/
+include/CLI
+include/fluidsynth
+include/fluidsynth.h
+include/midifile
+include/rtmidi
+include/SFML
+
 
 /config.cfg
 /debug
@@ -9,6 +18,9 @@ doc/latex
 /TODO
 /make
 /run
+/run.bat
+/make.bat
 
-*.mid
-*.swp
+**.mid
+**.swp
+**.DS_Store

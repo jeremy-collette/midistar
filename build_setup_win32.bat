@@ -163,7 +163,7 @@ if %makeerror% == 1 (
 )
 ECHO midistar built successfully! Run using the 'run.bat' command.
 ECHO Re-build in Debug mode using 'make.bat' or 'make.bat Debug'.
-ECHO RE-build in Release mode using 'make.bat Release'.
+ECHO Re-build in Release mode using 'make.bat Release'.
 ECHO Refer to the README for more information.
 GOTO :end
 

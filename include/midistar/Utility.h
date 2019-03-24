@@ -37,7 +37,7 @@ class Utility {
      * \param c The colour to darken.
      * \return A darker colour.
      */
-    static const sf::Color Utility::DarkenColour(sf::Color c);
+    static const sf::Color DarkenColour(sf::Color c);
 
     /**
      * Gets a list of keyboard keys in QWERTY order.
@@ -53,7 +53,7 @@ class Utility {
      * \param t The factor to multiply R, G, and B values by.
      * \return A transformed colour.
      */
-    static const sf::Color Utility::TransformColour(sf::Color c, double t);
+    static const sf::Color TransformColour(sf::Color c, double t);
 
  private:
      static constexpr float COLOUR_DARKEN_MULTIPLIER = 0.4f;  //!< Multiple R,

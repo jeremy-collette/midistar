@@ -22,9 +22,9 @@ namespace midistar {
 
 DelayedComponentComponent::DelayedComponentComponent(
     Component* component, int delay)
-        : component_{component}
-        , delay_{ delay }
-        , Component{Component::DELAYED_COMPONENT } {
+        : Component{Component::DELAYED_COMPONENT}
+        , component_{component}
+        , delay_{delay} {
 }
 
 void DelayedComponentComponent::SetRemainingDelay(int delay) {
@@ -32,7 +32,7 @@ void DelayedComponentComponent::SetRemainingDelay(int delay) {
 }
 
 void DelayedComponentComponent::Update(
-        Game* g
+        Game*
         , GameObject* o
         , int delta) {
 

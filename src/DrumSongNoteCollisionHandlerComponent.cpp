@@ -38,7 +38,7 @@ DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent()
 void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
-        , int delta
+        , int
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
     GameObject* valid_collider = nullptr;
@@ -56,7 +56,7 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
 }
 
 bool DrumSongNoteCollisionHandlerComponent::HandleCollision(
-        Game* g
+        Game*
         , GameObject* o
         , GameObject* collider) {
     // We only want to handle collisions with instruments

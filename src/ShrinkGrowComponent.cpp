@@ -18,18 +18,20 @@
 
 #include "midistar/ShrinkGrowComponent.h"
 
+#include <cmath>
+
 #include "midistar/Config.h"
 #include "midistar/ResizeComponent.h"
 
 namespace midistar {
 
 ShrinkGrowComponent::ShrinkGrowComponent(double target_w, double target_h)
-        : target_w_{target_w}
+        : Component{SHRINK_GROW_COMPONENT}
         , target_h_{target_h}
-        , Component{SHRINK_GROW_COMPONENT}  {
+        , target_w_{target_w} {
 }
 
-void ShrinkGrowComponent::Update(Game* g, GameObject* o, int delta) {
+void ShrinkGrowComponent::Update(Game*, GameObject* o, int) {
     double w, h;
     o->GetSize(&w, &h);
 

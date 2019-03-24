@@ -23,10 +23,10 @@
 namespace midistar {
 
 FadeOutEffectComponent::FadeOutEffectComponent()
-        : Component{ Component::FADING_OUTLINE_EFFECT} {
+        : Component{Component::FADING_OUTLINE_EFFECT} {
 }
 
-void FadeOutEffectComponent::Update(Game * g, GameObject * o, int delta) {
+void FadeOutEffectComponent::Update(Game*, GameObject* o, int) {
     auto shape = o->GetDrawformable<sf::Shape>();
     if (!shape) {
         return;

@@ -55,7 +55,7 @@ const sf::Color DrumGameObjectFactory::OUTLINE_COLOUR{ 0, 0, 0 };
 DrumGameObjectFactory::DrumGameObjectFactory(
     double note_speed
     , const std::vector<int>& song_notes
-    , double max_note_duration)
+    , double)
         : GameObjectFactory{note_speed, BACKGROUND_COLOUR}
         , drum_radius_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(song_notes.size())}

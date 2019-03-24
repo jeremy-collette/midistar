@@ -4,6 +4,48 @@ project (midistar)
 # Find external libraries
 include_directories(include)
 
+# Set headers
+set(HEADERS
+    ${CMAKE_SOURCE_DIR}/include/midistar/BarComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/CollidableComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/CollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/Component.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/Config.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DefaultGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DelayedComponentComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DeleteOffscreenComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DrumGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DrumSongNoteCollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/FadeOutEffectComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/Game.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/GameObject.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/GameObject.tpp
+    ${CMAKE_SOURCE_DIR}/include/midistar/GameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentAutoPlayComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentInputHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileIn.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiIn.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiInstrumentIn.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiMessage.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiNoteComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiOut.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiPortIn.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/NoteInfoComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PhysicsComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PianoGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PianoSongNoteCollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ShrinkGrowComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SpriteAnimatorComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/Utility.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/Version.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/VerticalCollisionDetectorComponent.h
+)
+
 # Set source
 set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
@@ -20,8 +62,8 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/Game.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObjectFactory.cpp
-    ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentAutoPlayComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentInputHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InvertColourComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/LambdaComponent.cpp
@@ -42,7 +84,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/SongNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SpriteAnimatorComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
-    ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp    
+    ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp
 )
 
 # If build type is not set, default to Debug
@@ -84,6 +126,7 @@ endif()
 
 # Create executable
 add_executable(midistar
+    ${HEADERS}
     ${SOURCE}
 )
 
@@ -132,7 +175,7 @@ if (WIN32) # Windows
     add_custom_command(TARGET midistar POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/scripts/win32/run_$<CONFIGURATION>.bat
-        ${CMAKE_SOURCE_DIR}/.)    
+        ${CMAKE_SOURCE_DIR}/.)
 
     # Rename to 'run'
     add_custom_command(TARGET midistar POST_BUILD
@@ -144,7 +187,7 @@ if (WIN32) # Windows
     add_custom_command(TARGET midistar POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/scripts/win32/make.bat
-        ${CMAKE_SOURCE_DIR}/.)    
+        ${CMAKE_SOURCE_DIR}/.)
 
 else() # Linux/OSX
     # Do common stuff for Linux/OSX (Unix)
@@ -203,11 +246,11 @@ else() # Linux/OSX
         # fluidsynth is a framework on OSX
         set_target_properties(midistar PROPERTIES LINK_FLAGS
             "-Wl,-F${CMAKE_SOURCE_DIR}/lib/${build_type}")
-        target_link_libraries(midistar 
+        target_link_libraries(midistar
             "-framework FluidSynth")
 
     # Linux specific stuff
-    elseif(UNIX) 
+    elseif(UNIX)
         # fluidsynth is a normal library on Linux
         target_link_libraries(midistar
             fluidsynth)

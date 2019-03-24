@@ -94,18 +94,17 @@ bool Game::Init() {
         Config::GetInstance().GetFallSpeedMultiplier();
 
     auto mode = Config::GetInstance().GetGameMode();
-    if (mode == "drum") {
-        auto unique_notes = midi_file_in_.GetUniqueMidiNotes();
+    auto unique_notes = midi_file_in_.GetUniqueMidiNotes();
 
-// TODO(@jcol2): remove debug code
 #ifdef DEBUG
-        std::cout << "MIDI file unique notes: \n";
-        for (const auto& n : unique_notes) {
-            std::cout << n << ' ';
-        }
-        std::cout << '\n';
+    std::cout << "MIDI file unique notes: \n";
+    for (const auto& n : unique_notes) {
+        std::cout << n << ' ';
+    }
+    std::cout << '\n';
 #endif
 
+    if (mode == "drum") {
         auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
         object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
             , max_note_duration);
@@ -171,10 +170,9 @@ void Game::Run() {
         midi_in_buf_.clear();
         while (midi_instrument_in_.GetMessage(&msg)) {
 
-// TODO(@jcol2): remove debug code
 #ifdef DEBUG
             if (msg.IsNoteOn()) {
-                std::cout << msg.GetKey() << '\n';
+                std::cout << "Played: " << msg.GetKey() << '\n';
             }
 #endif
 

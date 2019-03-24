@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# Set LD_LIBRARY_PATH to find shared libraries
-export LD_LIBRARY_PATH="external/fluidsynth/src:external/midifile/lib:external/rtmidi/.libs:external/SFML/build/lib"
-

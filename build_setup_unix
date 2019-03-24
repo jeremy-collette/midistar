@@ -1,0 +1,169 @@
+#!/bin/bash
+set -e
+
+# Text colours
+col="[32m"  # Green
+def="[0m"   # Default
+
+# Coloured echo function
+cecho() {
+    echo -e "\x1B$col$1\x1B$def"
+    sleep 1
+}
+
+# Find a dependency
+find() {
+    set +e
+    name=$1
+    cecho "\nLooking for $name..."
+    found=$(which $name)
+    if [[ $found == '' ]]; then
+        echo "Error! Could not find $name. Please install $name and try again."
+        exit
+    fi
+    set -e
+}
+
+# Platform detection
+if [ "$(uname)" == "Darwin" ]; then
+    echo "OSX detected."
+    lib_ext="dylib"
+    fluidlib="FluidSynth.framework"
+    midifile_ext="dylib"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    echo "Linux detected."
+    lib_ext="so*"
+    fluidlib="libfluidsynth.so*"
+    midifile_ext="a"
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+    echo "Use build_setup.bat in the \"scripts\win32\" folder for Windows platforms."
+    exit
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    echo "Use build_setup.bat in the \"scripts\win32\" folder for Windows platforms."
+    exit
+else
+	echo "Unrecognised platform."
+	exit
+fi
+
+# Change to script dir
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [[ $dir == 'unix' ]]; then
+    cd ../..
+fi
+
+# Find some dependencies
+find "git"
+find "cmake"
+find "g++"
+find "gcc"
+find "pkg-config"
+find "autoconf"
+find "automake"
+
+# Resetting lib folder
+rm -rf lib
+mkdir lib
+mkdir lib/debug
+mkdir lib/release
+lib_dir=$PWD/lib
+lib_debug_dir=$lib_dir/debug
+lib_release_dir=$lib_dir/release
+unix_script_dir=$PWD/scripts/unix
+
+# Resetting include dir
+rm -rf include/CLI
+rm -rf include/fluidsynth
+rm -f include/fluidsynth.h
+rm -rf include/midifile
+rm -rf include/rtmidi
+rm -rf include/SFML
+inc_dir=$PWD/include
+
+# Building...
+midistar_dir=$PWD
+ext_dir=$PWD/external
+
+cecho "\nSetting up git submodules..."
+git submodule init
+git submodule update
+
+cecho "\nPreparing CLI11..."
+cd $ext_dir/CLI11
+git clean -fdx
+cp -r include/CLI $inc_dir/.
+
+cecho "\nBuilding fluidsynth..."
+cd $ext_dir/fluidsynth
+git clean -fdx
+mkdir -p build
+cd build
+mkdir -p debug
+cd debug
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+make
+cp -r src/$fluidlib $lib_debug_dir/.
+cd ..
+mkdir -p release
+cd release
+cmake ../.. -DCMAKE_BUILD_TYPE=Release
+make
+cp -r src/$fluidlib $lib_release_dir/.
+cp -r ../../include/fluidsynth $inc_dir
+cp include/fluidsynth.h $inc_dir/.
+cp include/fluidsynth/version.h $inc_dir/fluidsynth/.
+
+cecho "\nBuilding midifile..."
+cd $ext_dir/midifile
+git clean -fdx
+make library
+cp lib/*.$midifile_ext $lib_debug_dir/.
+cp lib/*.$midifile_ext $lib_release_dir/.
+mkdir -p $inc_dir/midifile
+cp include/*.h $inc_dir/midifile/.
+
+cecho "\nBuilding rtmidi..."
+cd $ext_dir/rtmidi
+git clean -fdx
+./autogen.sh --no-configure
+./configure --enable-maintainer-mode --enable-debug --disable-silent-rules
+make
+cp .libs/*.$lib_ext $lib_debug_dir/.
+./configure
+make
+cp .libs/*.$lib_ext $lib_release_dir/.
+mkdir -p $inc_dir/rtmidi
+cp *.h $inc_dir/rtmidi/.
+
+cecho "\nBuilding SFML..."
+cd $ext_dir/SFML
+git clean -fdx
+mkdir -p build
+cd build
+mkdir -p debug
+cd debug
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+make
+cp lib/*.$lib_ext $lib_debug_dir/.
+cd ..
+mkdir -p release
+cd release
+cmake ../.. -DCMAKE_BUILD_TYPE=Release
+make
+cp lib/*.$lib_ext $lib_release_dir/.
+cp -r ../../include/SFML $inc_dir/.
+
+cd $unix_script_dir
+./make debug
+if [[ $makeerror -eq 1 ]]; then
+    cecho "\nBuilding midistar failed!"
+else
+    cecho "\nFinished! Run midistar with the './run' command."
+    cecho "Re-build in debug mode using the './make debug' command."
+    cecho "Re-build in release mode using the './make release' command."
+    cecho "Debug the latest debug build using the './debug' command."
+fi
+cd $midistar_dir

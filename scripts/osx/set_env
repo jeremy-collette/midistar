@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Set DYLD_LIBRARY_PATH to find shared libraries
+export DYLD_LIBRARY_PATH="lib/$1"
+
+# Set DYLD_FRAMEWORK_PATH to find fluidsynth framework
+export DYLD_FRAMEWORK_PATH="lib/$1"

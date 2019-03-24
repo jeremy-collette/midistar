@@ -26,8 +26,8 @@
 namespace midistar {
 
 /**
- * The DrumSongNoteCollisionHandlerComponent class handles collisions between song
- * notes and other GameObjects.
+ * The DrumSongNoteCollisionHandlerComponent class handles collisions between
+ * drum song notes and other GameObjects.
  */
 class DrumSongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
  public:

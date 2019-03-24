@@ -74,7 +74,7 @@ void GameObject::SetComponent(Component* c) {
 }
 
 void GameObject::SetPosition(double x, double y) {
-    transformable_->setPosition(x, y);
+    transformable_->setPosition(static_cast<float>(x), static_cast<float>(y));
 }
 
 void GameObject::SetRequestDelete(bool del) {
@@ -87,7 +87,8 @@ void GameObject::SetSize(double w, double h) {
     if (rect) {
         rect->setSize({static_cast<float>(w), static_cast<float>(h)});
     } else {
-        transformable_->setScale(w / original_width_, h / original_height_);
+        transformable_->setScale(static_cast<float>(w / original_width_)
+            , static_cast<float>(h / original_height_));
     }
 }
 

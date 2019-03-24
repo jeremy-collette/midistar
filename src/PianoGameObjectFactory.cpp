@@ -24,14 +24,14 @@
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
-#include "midistar/InstrumentCollisionHandlerComponent.h"
+#include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/InvertColourComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
-#include "midistar/SongNoteCollisionHandlerComponent.h"
+#include "midistar/PianoSongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
@@ -44,8 +44,8 @@ const sf::Color PianoGameObjectFactory::BACKGROUND_COLOUR{40, 40, 40};
 const sf::Color PianoGameObjectFactory::GRINDING_SPRITE_COLOUR{255, 253, 197};
 
 const sf::Color PianoGameObjectFactory::MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS] {
-    sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
-    , sf::Color::Magenta, sf::Color::Cyan
+    sf::Color{244, 66, 66}, sf::Color{66, 244, 69}, sf::Color{66, 164, 244}
+    , sf::Color{244, 244, 65}, sf::Color{88, 65, 244}, sf::Color{65, 235, 244}
 };
 
 const bool PianoGameObjectFactory::OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE] {
@@ -113,7 +113,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     sf::Color colour = GetTrackColour(track);
     if (IsBlackKey(note)) {
         // Darken sharp notes and change width
-        colour = DarkenColour(colour);
+        colour = Utility::DarkenColour(colour);
         width = white_width_ * BLACK_WIDTH_MULTIPLIER;
     } else {
         width = white_width_;
@@ -138,19 +138,12 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
+    song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{});
     return song_note;
 }
 
 bool PianoGameObjectFactory::Init() {
     return grinding_texture_.loadFromFile(GRINDING_TEXTURE_PATH);
-}
-
-sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {
-    c.r *= COLOUR_DARKEN_MULTIPLIER;
-    c.g *= COLOUR_DARKEN_MULTIPLIER;
-    c.b *= COLOUR_DARKEN_MULTIPLIER;
-    return c;
 }
 
 sf::Color PianoGameObjectFactory::GetTrackColour(int midi_track) {
@@ -254,7 +247,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl,
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
+    ins_note->SetComponent(new InstrumentAutoPlayComponent{});
     return ins_note;
 }
 

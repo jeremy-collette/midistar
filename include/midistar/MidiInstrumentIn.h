@@ -16,24 +16,25 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/CollisionHandlerComponent.h"
+#ifndef MIDISTAR_MIDIINSTRUMENTIN_H_
+#define MIDISTAR_MIDIINSTRUMENTIN_H_
 
-#include "midistar/VerticalCollisionDetectorComponent.h"
+#include "midistar/MidiMessage.h"
+#include "midistar/MidiPortIn.h"
 
 namespace midistar {
 
-CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
-        : Component{type} {
-}
-
-void CollisionHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-    auto detector = o->GetComponent<VerticalCollisionDetectorComponent>(
-            Component::VERTICAL_COLLISION_DETECTOR);
-    if (!detector) {
-        return;
-    }
-
-    HandleCollisions(g, o, delta, detector->GetCollidingWith());
-}
+/**
+ * The MidiIn class provides an interface for MIDI stream readers.
+ */
+class MidiInstrumentIn : public MidiPortIn {
+ public:
+    /**
+     * \copydoc MidiPortIn.GetMessage(MidiMessage*)
+     */
+    virtual bool GetMessage(MidiMessage* message);
+};
 
 }  // End namespace midistar
+
+#endif  // MIDISTAR_MIDIINSTRUMENTIN_H_

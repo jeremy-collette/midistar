@@ -16,24 +16,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/CollisionHandlerComponent.h"
+#include "midistar/MidiInstrumentIn.h"
 
-#include "midistar/VerticalCollisionDetectorComponent.h"
+#include "midistar/Config.h"
 
 namespace midistar {
 
-CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
-        : Component{type} {
-}
-
-void CollisionHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-    auto detector = o->GetComponent<VerticalCollisionDetectorComponent>(
-            Component::VERTICAL_COLLISION_DETECTOR);
-    if (!detector) {
-        return;
+bool MidiInstrumentIn::GetMessage(MidiMessage* message) {
+    if (!MidiPortIn::GetMessage(message)) {
+        return false;
     }
 
-    HandleCollisions(g, o, delta, detector->GetCollidingWith());
+    if (message->IsNote()) {
+        message->SetKey(Config::GetInstance().GetInstrumentMidiNoteRemapping(
+                message->GetKey()));
+    }
+    return true;
 }
 
 }  // End namespace midistar

@@ -16,41 +16,40 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIIN_H_
-#define MIDISTAR_MIDIIN_H_
+#ifndef MIDISTAR_OUTLINEEFFECTCOMPONENT_H_
+#define MIDISTAR_OUTLINEEFFECTCOMPONENT_H_
 
-#include <queue>
-
-#include "midistar/MidiMessage.h"
+#include "midistar/Component.h"
+#include "midistar/GameObject.h"
 
 namespace midistar {
 
 /**
- * The MidiIn class provides an interface for MIDI stream readers.
+ * The OutlineEffectComponent transforms its owner to create an outline.
+ *
+ * Each tick, the transformation will continue until it is complete.
  */
-class MidiIn {
+class OutlineEffectComponent : public Component {
  public:
     /**
-     * Gets the next MIDI message.
-     *
-     * \param[out] message Stores the MIDI message.
-     *
-     * \return True for success. False if an event is not available.
+     * Constructor.
      */
-    virtual bool GetMessage(MidiMessage* message);
+     explicit OutlineEffectComponent();
 
- protected:
     /**
-     * Adds a MIDI message to the message queue.
-     *
-     * \param message The message to add.
+     * \copydoc Component::Update()
      */
-    void AddMessage(MidiMessage message);
+    virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    std::queue<MidiMessage> buffer_;  //!< MIDI message buffer
+    const static int DURATION = 100;
+    const static sf::Color OUTLINE_COLOUR;
+    constexpr static float OUTLINE_INCREASE = 1.05f;
+    constexpr static float OUTLINE_THICKNESS = 5.0f;
+
+    int time_remaining_;
 };
 
-}  // End namespace midistar
+}   // namespace midistar
 
-#endif  // MIDISTAR_MIDIIN_H_
+#endif  // MIDISTAR_OUTLINEEFFECTCOMPONENT_H_

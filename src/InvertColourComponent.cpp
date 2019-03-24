@@ -30,16 +30,28 @@ InvertColourComponent::InvertColourComponent()
 }
 
 void InvertColourComponent::Update(Game*, GameObject* o, int) {
+    sf::Color colour;
     auto* rect = o->GetDrawformable<sf::RectangleShape>();
-    if (!rect) {
-        return;
+    if (rect) {
+        colour = rect->getFillColor();
     }
 
-    auto colour = rect->getFillColor();
+    auto* circle = o->GetDrawformable<sf::CircleShape>();
+    if (circle) {
+        colour = circle->getFillColor();
+    }
+
     for (auto &b : {&colour.r, &colour.g, &colour.b}) {
         *b ^= inv_;
     }
-    rect->setFillColor(colour);
+
+    if (rect) {
+        rect->setFillColor(colour);
+    }
+    if (circle) {
+        circle->setFillColor(colour);
+    }
+
     o->DeleteComponent(GetType());
 }
 

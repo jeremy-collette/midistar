@@ -16,24 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/CollisionHandlerComponent.h"
-
-#include "midistar/VerticalCollisionDetectorComponent.h"
+#include "midistar/DelayedComponentComponent.h"
 
 namespace midistar {
 
-CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
-        : Component{type} {
+DelayedComponentComponent::DelayedComponentComponent(
+    Component* component, int delay)
+        : Component{Component::DELAYED_COMPONENT}
+        , component_{component}
+        , delay_{delay} {
 }
 
-void CollisionHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-    auto detector = o->GetComponent<VerticalCollisionDetectorComponent>(
-            Component::VERTICAL_COLLISION_DETECTOR);
-    if (!detector) {
-        return;
-    }
+void DelayedComponentComponent::SetRemainingDelay(int delay) {
+    delay_ = delay;
+}
 
-    HandleCollisions(g, o, delta, detector->GetCollidingWith());
+void DelayedComponentComponent::Update(
+        Game*
+        , GameObject* o
+        , int delta) {
+
+    delay_ -= delta;
+    if (delay_ <= 0) {
+        o->SetComponent(component_);
+        o->DeleteComponent(GetType());
+    }
 }
 
 }  // End namespace midistar

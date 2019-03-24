@@ -56,9 +56,9 @@ const sf::Color Utility::DarkenColour(sf::Color c) {
 }
 
 const sf::Color Utility::TransformColour(sf::Color c, double t) {
-    c.r *= t;
-    c.g *= t;
-    c.b *= t;
+    c.r = static_cast<sf::Uint8>(c.r * t);
+    c.g *= static_cast<sf::Uint8>(c.g * t);
+    c.b *= static_cast<sf::Uint8>(c.b * t);
     return c;
 }
 

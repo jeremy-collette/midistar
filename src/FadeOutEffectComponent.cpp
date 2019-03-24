@@ -33,7 +33,8 @@ void FadeOutEffectComponent::Update(Game*, GameObject* o, int) {
     }
     // Change the alpha of the colour, to dim the shape
     auto colour = shape->getFillColor();
-    colour.a *= FadeOutEffectComponent::ALPHA_MULTIPLIER;
+    colour.a = static_cast<sf::Uint8>(colour.a
+        * FadeOutEffectComponent::ALPHA_MULTIPLIER);
     shape->setFillColor(colour);
 
     // If we're finished, delete the component

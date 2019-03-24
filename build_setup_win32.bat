@@ -82,7 +82,6 @@ REM Setup pre-requisites:
 ECHO.
 ECHO Preparing vcpkg...
 CD "%ext_dir%\vcpkg" || GOTO :error
-git clean -fdx
 CALL bootstrap-vcpkg.bat
 IF NOT %errorlevel%==0 (
     GOTO :error

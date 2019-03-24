@@ -164,5 +164,6 @@ else
     cecho "\nFinished! Run midistar with the './run' command."
     cecho "Re-build in debug mode using the './make debug' command."
     cecho "Re-build in release mode using the './make release' command."
+    cecho "Debug the latest debug build using the './debug' command."
 fi
 cd $midistar_dir

@@ -16,7 +16,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/SongNoteCollisionHandlerComponent.h"
+#include "midistar/PianoSongNoteCollisionHandlerComponent.h"
 
 #include <algorithm>
 
@@ -28,14 +28,15 @@
 
 namespace midistar {
 
-SongNoteCollisionHandlerComponent::SongNoteCollisionHandlerComponent()
+PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent()
         : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
         , grinding_{nullptr} {
 }
 
-void SongNoteCollisionHandlerComponent::HandleCollisions(
+void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
+        , int
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
     GameObject* valid_collider = nullptr;
@@ -51,7 +52,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
             return;
         }
         grinding_ = g->GetGameObjectFactory().CreateNotePlayEffect(
-                valid_collider);
+            valid_collider);
         g->AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect
         grinding_->SetRequestDelete(true);
@@ -59,7 +60,7 @@ void SongNoteCollisionHandlerComponent::HandleCollisions(
     }
 }
 
-bool SongNoteCollisionHandlerComponent::HandleCollision(
+bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
         Game* g
         , GameObject* o
         , GameObject* collider) {

@@ -16,10 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
-#define MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
-
-#include <vector>
+#ifndef MIDISTAR_DELAYEDCOMPONENTCOMPONENT_H_
+#define MIDISTAR_DELAYEDCOMPONENTCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/Game.h"
@@ -28,38 +26,36 @@
 namespace midistar {
 
 /**
- * The CollisionHandlerComponent class polls the owner's
- * VerticalCollisionDetectorComponent and handles collisions when they occur.
+ * The DelayedComponentComponent class allows a component to be added to the
+ * owner after a supplied delay.
  */
-class CollisionHandlerComponent : public Component {
+class DelayedComponentComponent : public Component {
  public:
     /**
      * Constructor.
      *
-     * \param type The ComponetType of the derived class.
+     * \param component The component to add.
+     * \param delay The delay in milliseconds before adding the component.
      */
-    explicit CollisionHandlerComponent(ComponentType type);
+    DelayedComponentComponent(Component* component, int delay);
 
     /**
-     * Handles most recent collisions.
+     * Sets the remaining delay until component is added.
      *
-     * \param[in,out] g The Game being played.
-     * \param[in,out] o The owner of the component.
-     * \param[in] delta The time since last update.
-     * \param[in,out] colliding_with The objects colliding with the owner.
+     * \param delay New remaining delay.
      */
-    virtual void HandleCollisions(
-            Game* g
-            , GameObject* o
-            , int delta
-            , const std::vector<GameObject*> colliding_with) = 0;
+    void SetRemainingDelay(int delay);
 
     /**
      * \copydoc Component::Update()
      */
     virtual void Update(Game* g, GameObject* o, int delta);
+
+ private:
+    Component* component_;  //!< The component to add after the delay.
+    int delay_;  //!< The delay before the component is added.
 };
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_COLLISIONHANDLERCOMPONENT_H_
+#endif  // MIDISTAR_DELAYEDCOMPONENTCOMPONENT_H_

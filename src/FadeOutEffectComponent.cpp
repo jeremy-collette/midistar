@@ -16,24 +16,30 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/CollisionHandlerComponent.h"
+#include "midistar/FadeOutEffectComponent.h"
 
-#include "midistar/VerticalCollisionDetectorComponent.h"
+#include "midistar/ResizeComponent.h"
 
 namespace midistar {
 
-CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
-        : Component{type} {
+FadeOutEffectComponent::FadeOutEffectComponent()
+        : Component{Component::FADING_OUTLINE_EFFECT} {
 }
 
-void CollisionHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-    auto detector = o->GetComponent<VerticalCollisionDetectorComponent>(
-            Component::VERTICAL_COLLISION_DETECTOR);
-    if (!detector) {
+void FadeOutEffectComponent::Update(Game*, GameObject* o, int) {
+    auto shape = o->GetDrawformable<sf::Shape>();
+    if (!shape) {
         return;
     }
+    // Change the alpha of the colour, to dim the shape
+    auto colour = shape->getFillColor();
+    colour.a *= FadeOutEffectComponent::ALPHA_MULTIPLIER;
+    shape->setFillColor(colour);
 
-    HandleCollisions(g, o, delta, detector->GetCollidingWith());
+    // If we're finished, delete the component
+    if (colour.a <= EPSILON) {
+        o->DeleteComponent(GetType());
+    }
 }
 
 }  // End namespace midistar

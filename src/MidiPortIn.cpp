@@ -18,19 +18,25 @@
 
 #include "midistar/MidiPortIn.h"
 
+#include <unordered_map>
 #include <vector>
 
 namespace midistar {
 
+MidiPortIn::MidiPortIn(bool extend_same_tick_notes)
+        : extend_same_tick_notes_{extend_same_tick_notes}
+        , midi_in_{nullptr} {
+}
+
 MidiPortIn::MidiPortIn()
-        : midi_in_{nullptr} {
+        : MidiPortIn(true) {
 }
 
 bool MidiPortIn::Init() {
     midi_in_ = new RtMidiIn();
 
     try {
-        midi_in_->openPort(0, "Midistar Input");
+        midi_in_->openPort(0, "midistar Input");
     } catch (...) {
         std::cerr << "Warning: error opening MIDI input port. MIDI input "
             << "disabled.\n";
@@ -44,13 +50,42 @@ void MidiPortIn::Tick() {
         return;
     }
 
-    std::vector<unsigned char> message;
+    // Here we go handle the cached note on/off events from last tick (see
+    // below)
+    std::unordered_map<int, MidiMessage> this_tick;
+    auto count = same_tick_buffer_.size();
+
+    while (count--)
+    {
+        auto midi_message = same_tick_buffer_.front();
+        same_tick_buffer_.pop();
+        if (this_tick.count(midi_message.GetKey())) {
+            same_tick_buffer_.emplace(midi_message);
+        } else {
+            this_tick[midi_message.GetKey()] = midi_message;
+            AddMessage(midi_message);
+        }
+    }
+
+    std::vector<unsigned char> data;
     while (true) {
-        double stamp = midi_in_->getMessage(&message);
-        if (message.size() == 0) {
+        double stamp = midi_in_->getMessage(&data);
+        if (data.size() == 0) {
             break;
         }
-        AddMessage({message, stamp});
+
+        // Here we check if we've already had a note event with the same key
+        // for this tick. If we have, and the extend_same_tick_notes option
+        // is enabled, we cache the note for next tick. This stops a note play
+        // from being totally ignored because it happened faster than a tick.
+        MidiMessage midi_message{ data, stamp };
+        if (extend_same_tick_notes_ && midi_message.IsNote()
+                && this_tick.count(midi_message.GetKey())) {
+            same_tick_buffer_.emplace(midi_message);
+        } else {
+            this_tick[midi_message.GetKey()] = midi_message;
+            AddMessage(midi_message);
+        }
     }
 }
 

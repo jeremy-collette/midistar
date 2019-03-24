@@ -60,7 +60,10 @@ class ResizeComponent : public Component {
         TOP_LEFT = 1,
         TOP_RIGHT = 1 << 1,
         BOT_LEFT = 1 << 2,
-        BOT_RIGHT = 1 << 3
+        BOT_RIGHT = 1 << 3,
+        TOP = TOP_LEFT | TOP_RIGHT,
+        BOT = BOT_LEFT | BOT_RIGHT,
+        CENTRE = TOP | BOT
     };
 
     /**

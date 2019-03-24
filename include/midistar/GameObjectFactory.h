@@ -48,12 +48,11 @@ class GameObjectFactory {
     /**
      * Creates a grinding effect to indicate a note is being played.
      *
-     * \param note The GameObject which represents the note that is being
-     * played.
+     * \param note The GameObject to use to create the effect.
      *
-     * \return A GameObject that represents a grinding effect.
+     * \return A GameObject that represents a note play effect.
      */
-    virtual GameObject* CreateNotePlayEffect(GameObject* note) = 0;
+    virtual GameObject* CreateNotePlayEffect(GameObject* o) = 0;
 
     /**
      * Creates the instrument to play.

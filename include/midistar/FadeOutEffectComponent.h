@@ -16,41 +16,40 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIIN_H_
-#define MIDISTAR_MIDIIN_H_
+#ifndef MIDISTAR_FADEOUTEFFECTCOMPONENT_H_
+#define MIDISTAR_FADEOUTEFFECTCOMPONENT_H_
 
-#include <queue>
+#include "midistar/Component.h"
+#include "midistar/GameObject.h"
 
-#include "midistar/MidiMessage.h"
+#include <limits>
 
 namespace midistar {
 
 /**
- * The MidiIn class provides an interface for MIDI stream readers.
+ * The FadeOutEffectComponent transforms its owner to create a 'fade out'
+ * effect.
+ *
+ * Each tick, the transformation will continue until it is complete.
  */
-class MidiIn {
+class FadeOutEffectComponent : public Component {
  public:
     /**
-     * Gets the next MIDI message.
-     *
-     * \param[out] message Stores the MIDI message.
-     *
-     * \return True for success. False if an event is not available.
+     * Constructor.
      */
-    virtual bool GetMessage(MidiMessage* message);
+     explicit FadeOutEffectComponent();
 
- protected:
     /**
-     * Adds a MIDI message to the message queue.
-     *
-     * \param message The message to add.
+     * \copydoc Component::Update()
      */
-    void AddMessage(MidiMessage message);
+    virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    std::queue<MidiMessage> buffer_;  //!< MIDI message buffer
+    constexpr static float ALPHA_MULTIPLIER = 0.85f;
+    constexpr static float EPSILON = std::numeric_limits<float>::epsilon();
+
 };
 
-}  // End namespace midistar
+}   // namespace midistar
 
-#endif  // MIDISTAR_MIDIIN_H_
+#endif  // MIDISTAR_FADEOUTEFFECTCOMPONENT_H_

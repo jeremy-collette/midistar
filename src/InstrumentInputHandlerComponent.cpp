@@ -104,8 +104,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int delta){
                 o->DeleteComponent(Component::DELAYED_COMPONENT);
                 o->DeleteComponent(Component::INVERT_COLOUR);
             } else {
-                o->SetComponent(new InvertColourComponent{
-                    static_cast<char>(0x7f)});
+                o->SetComponent(new InvertColourComponent{0xa0});
             }
 
             uninvert_delay_ = MAXIMUM_UNINVERT_DELAY;
@@ -135,7 +134,7 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int delta){
         // until a second after being played.
         o->SetComponent(new DelayedComponentComponent
             {
-                new InvertColourComponent{static_cast<char>(0x7f)}
+                new InvertColourComponent{0xa0}
                 , uninvert_delay_
             });
         // Add reset logic here.

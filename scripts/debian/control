@@ -1,0 +1,9 @@
+Package: midistar
+Version: 0.3.0-1
+Section: base
+Priority: optional
+Architecture: amd64
+Depends: libasound2 (>= 1.1.3-5), libbsd0 (>= 0.8.3-1), libc6 (>= 2.24-11+deb9), libflac8 (>= 1.3.2-1), libfreetype6 (>= 2.6.3-3.2), libgcc1 (>= 1:6.3.0-18+d), libgl1-mesa-glx (>= 13.0.6-1+b2), libglib2.0-0 (>= 2.50.3-2), libogg0 (>= 1.3.2-1), libopenal1 (>= 1:1.17.2-4+b), libpcre3 (>= 2:8.39-3), libpng16-16 (>= 1.6.28-1), libsndfile1 (>= 1.0.27-3), libstdc++6 (>= 6.3.0-18+deb), libudev1 (>= 232-25+deb9u), libvorbis0a (>= 1.3.5-4+deb9), libvorbisenc2 (>= 1.3.5-4+deb9), libvorbisfile3 (>= 1.3.5-4+deb9), libx11-6 (>= 2:1.6.4-3+de), libx11-xcb1 (>= 2:1.6.4-3+de), libxau6 (>= 1:1.0.8-1), libxcb-image0 (>= 0.4.0-1+b2), libxcb-randr0 (>= 1.12-1), libxcb1 (>= 1.12-1), libxdmcp6 (>= 1:1.1.2-3), libxext6 (>= 2:1.3.3-1+b2), libxrandr2 (>= 2:1.5.1-1), libxrender1 (>= 1:0.9.10-1), zlib1g (>= 1:1.2.8)
+Maintainer: Jeremy Collette <jez@jeremycollette.com>
+Description: midistar
+ midistar is a MIDI music game where players can play any MIDI file with any MIDI instrument.

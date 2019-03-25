@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Change to script dir
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [[ $dir == 'debian' ]]; then
+    cd ../..
+fi
+
+# Get version
+if [[ $# != 1 ]]; then
+	echo "Usage: create_package <version>"
+	exit
+fi
+version=$1
+
+# Find binary
+midistar_dir=$PWD
+script_dir=$midistar_dir/scripts
+unix_script_dir=$script_dir/unix
+debian_script_dir=$script_dir/debian
+. $unix_script_dir/find_binary "release"
+
+# If we found the binary...
+if [[ $? -eq 0 ]]; then
+	# Reset package folder
+	echo Resetting package folder...
+	rm -rf package
+
+	# Make a folder for the package
+	echo Creating folders...
+	package_dir=$midistar_dir/package
+    mkdir package
+    cd package
+    mkdir midistar_$version
+    cd midistar_$version
+
+    # Check control file version matches version supplied
+    match=$(cat $debian_script_dir/control | grep -c "^Version: $version\$")
+    if [[ $match -eq 0 ]]; then
+    	echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
+    	exit 1
+    fi
+
+    # Add control file   
+    echo Adding control file...
+    mkdir DEBIAN
+    cp $debian_script_dir/control DEBIAN/.
+
+
+    # Add source and binaries
+    echo Adding source and binaries...
+    mkdir usr
+    mkdir usr/local
+    mkdir usr/local/bin
+    cd usr/local/bin
+    mkdir midistar_$version
+    cp -r $midistar_dir/* midistar_$version/.
+
+    # Add symlink
+    echo Adding run script...
+	cp midistar_$version/scripts/debian/run_package midistar
+
+    # Create .deb
+    cd $package_dir
+    dpkg-deb --build midistar_$version
+fi
+

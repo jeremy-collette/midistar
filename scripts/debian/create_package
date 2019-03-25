@@ -11,8 +11,8 @@ fi
 
 # Get version
 if [[ $# != 1 ]]; then
-	echo "Usage: create_package <version>"
-	exit
+    echo "Usage: create_package <version>"
+    exit
 fi
 version=$1
 
@@ -25,13 +25,13 @@ debian_script_dir=$script_dir/debian
 
 # If we found the binary...
 if [[ $? -eq 0 ]]; then
-	# Reset package folder
-	echo Resetting package folder...
-	rm -rf package
+    # Reset package folder
+    echo Resetting package folder...
+    rm -rf package
 
-	# Make a folder for the package
-	echo Creating folders...
-	package_dir=$midistar_dir/package
+    # Make a folder for the package
+    echo Creating folders...
+    package_dir=$midistar_dir/package
     mkdir package
     cd package
     mkdir midistar_$version
@@ -40,8 +40,8 @@ if [[ $? -eq 0 ]]; then
     # Check control file version matches version supplied
     match=$(cat $debian_script_dir/control | grep -c "^Version: $version\$")
     if [[ $match -eq 0 ]]; then
-    	echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
-    	exit 1
+        echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
+        exit 1
     fi
 
     # Add control file   
@@ -61,7 +61,7 @@ if [[ $? -eq 0 ]]; then
 
     # Add symlink
     echo Adding run script...
-	cp midistar_$version/scripts/debian/run_package midistar
+    cp midistar_$version/scripts/debian/run_package midistar
 
     # Create .deb
     cd $package_dir

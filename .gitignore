@@ -10,6 +10,7 @@ include/fluidsynth.h
 include/midifile
 include/rtmidi
 include/SFML
+package
 
 
 /config.cfg

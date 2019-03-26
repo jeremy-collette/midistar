@@ -6,10 +6,10 @@ computer keyboard or a MIDI instrument, such as an electronic piano or drums.
 
 midistar uses third-party libraries and utilities that are not considered to be
 part of the midistar project, but are distributed with midistar for ease-of-
-access and completeness. Each subfolder in the 'external' folder contains a 
+access and completeness. Each subfolder in the 'external' folder contains a
 different third-party library or utility that is used by midistar.
 
-The following third-party libraries and utilities are used by (and distributed 
+The following third-party libraries and utilities are used by (and distributed
 with) midistar:
     * CLI11: Copyright (c) 2017-2018 University of Cincinnati.
     * fluidsynth: Copyright (C) 2003  Peter Hanappe and others.
@@ -30,40 +30,25 @@ above. Also note that releases may not contain binaries for all (if any)
 supported platforms.
 
 
-2. RUNNING MIDISTAR
-2.1 INSTALLING RUNTIME DEPENDENCIES ON LINUX
-midistar is built using third-party libraries, which are listed in ABOUT
-MIDISTAR. These libraries are distributed with midistar, and each have their
-own dependencies. These dependencies must be met before midistar can be run.
+2. INSTALLATION
+2.1 INSTALLING MIDISTAR
+If you're using Windows, OSX, Debian, or Ubuntu, installing midistar on your
+system is quite straightforward. Firstly, download the pre-built binaries for
+your system from one of the midistar releases. For Windows, pre-built binaries
+are distributed in a compressed .zip archive. For OSX, they are distributed in
+a .tar.gz archive. For Debian, and Ubuntu, they are distributed in a .deb
+package.
 
-On OSX and Windows, third-party libraries should come packaged with their 
-dependencies and work out of the box. This means that no extra software should 
-be required (except build tools), so you can skip this step.
+On Windows or OSX, extract the pre-built binaries from the compressed archive
+after downloading. If you're using Debian or Ubuntu, install the .deb package on
+your system. You're done! See the INSTALLING A SOUNDFONT FILE and RUNNING
+MIDISTAR sections of this README before playing.
 
-However, on Linux, additional software must be installed to meet runtime
-dependencies. If you're running Debian or Ubuntu, you should be able to install
-the majority of runtime dependencies with the following commands:
-    sudo apt-get install libasound2 libbsd0 libc6 libflac8 libfreetype6 libgcc1 libgl1-mesa-glx libglib2.0-0 libogg0 libopenal1 libpcre3 libpng16-16 libsndfile1 libstdc++6 libudev1 libvorbis0a libvorbisenc2 libvorbisfile3 libx11-6 libx11-xcb1 libxau6 libxcb-image0 libxcb-randr0 libxcb1 libxdmcp6 libxext6 libxrandr2 libxrender1 zlib1g
+If you're using another distribution of Linux or an unsupported platform /
+architecture, or you don't want to use a pre-built binary, you can still build
+midistar from source. See the BUILDING section of this README.
 
-Additionally, on Debian run the following command:
-    sudo apt-get install libjpeg62-turbo
-
-On Ubuntu, run the following command:
-    sudo apt-get install libjpeg62
-
-If a package cannot be found, check that you have added the 'universe'
-repository in your apt sources and have run the 'apt-get update' command.
-
-2.2 CONFIGURING MIDISTAR
-midistar has configuration options that can be configured for varying levels of
-customisation. Run midistar with the '--help' option to see a list of
-configuration options. These can be set in the 'config.cfg' file, which can be
-found in the midistar folder, or provided as command line arguments. Note that
-the 'config.cfg' file will not be created until midistar has been built. It is
-recommended to use absolute paths instead of relative paths in configuration
-settings.
-
-2.3 INSTALLING A SOUNDFONT FILE
+2.2 INSTALLING A SOUNDFONT FILE
 Before running midistar, you will need to install a SoundFont file to use for
 playing MIDI sounds. If you are using Debian or Ubuntu, you can run the
 following command to install the FluidSynth general SoundFont:
@@ -72,37 +57,55 @@ following command to install the FluidSynth general SoundFont:
 This should install a SoundFont file at the following location:
     '/usr/share/sounds/sf2/FluidR3_GM.sf2'
 
-Configure midistar so that the 'soundfont_path' configuration option points to
-the location of the newly installed SoundFont file. On Linux, the default
-configuration will point to the above location by default.
-
 On OSX and Windows, you will have to find a SoundFont file online to download.
 Please ensure it supports the instrument you want to play.
 
-2.4 STARTING FROM TERMINAL
+Once downloaded, configure midistar so that the 'soundfont_path' configuration
+option points to the location of the newly installed SoundFont file. On Linux,
+the default midistar configuration will point to the above location by default.
+For information on configuring midistar, see the CONFIGURING MIDISTAR section of
+this README.
+
+
+3. RUNNING MIDISTAR
+3.1 CONFIGURING MIDISTAR
+midistar has configuration options that can be configured for varying levels of
+customisation. Run midistar with the '--help' option to see a list of
+configuration options. These can be set in the 'config.cfg' file, which can be
+found in the midistar folder, or provided as command line arguments.
+
+If you have downloaded the midistar source instead of a release, please note
+that the 'config.cfg' file will not be created until midistar has been built. It
+is recommended to use absolute paths instead of relative paths in configuration
+settings.
+
+NOTE: If you have installed a midistar release from a .deb package, you will
+find 'config.cfg' at "/usr/local/bin/midistar_<pkg-version>/config.cfg". Where
+'pkg-version' is specified in the name of the .deb package.
+
+3.2 STARTING FROM TERMINAL
 If you have downloaded a midistar release with pre-built binaries for your
 platform, you can start midistar with the './run' command from a terminal that
-is in the midistar directory. This executes a wrapper script that calls the
-actual binary (in the 'build' folder). It is recommended to always use this
-script instead of calling the binary directly. This allows the configuration
-file to be found, ensures consistency of the working directory, and allows
-environment variables to be set if required.
+is in the midistar directory. If you're on Debian or Ubuntu, and have installed
+midistar using a .deb package, you can start midistar by running the 'midistar'
+command in a terminal. This is a wrapper that calls the 'run' script.
+
+The 'run' script calls the actual binary (in the 'build' folder). It is
+recommended to always use this script instead of calling the binary directly.
+This allows the configuration file to be found, ensures consistency of the
+working directory, and allows environment variables to be set if required.
+
+You will have to provide the path to a MIDI file that you'd like to play using
+the '--midi_file' command line option when using the './run' command. If you
+would like to set a default, you can do so by setting the 'midi_file' parameter
+in the 'config.cfg' file. See the CONFIGURING MIDISTAR section of this README
+for more information.
 
 If there is not a midistar release with pre-built binaries for your platform,
 or you have cloned the midistar repository, you will have to build midistar
 from scratch before running. See the BUILDING section in this README.
 
-2.5 DEBUGGING MIDISTAR
-If you would like to run midistar in debugging mode, you can run the './debug'
-command to start midistar in gdb. You may have to install gdb before running
-the './debug' command. Note that you should only debug a midistar binary that
-has been built in debug mode. Binaries that are provided with releases have
-been built in release mode, and are not suitable for debugging. As such, if you
-would like to debug midistar, you will have to build a debug build from
-scratch. For information on building midistar in debug mode, see the BUILDING
-section in this README.
-
-2.6 PLAYING MIDISTAR
+3.3 PLAYING MIDISTAR
 midistar will load the MIDI file supplied using the '--midi_file' command line
 argument. The MIDI notes from this file will be rendered on the game screen in
 real-time, falling from top to bottom. During its fall, each MIDI note will
@@ -127,9 +130,20 @@ depending on which platform and/or MIDI software you are using. Once you have
 connected and attached a MIDI instrument, the midistar instrument bar can be
 activated by playing the correlating note on the MIDI instrument.
 
+3.4 DEBUGGING MIDISTAR
+If you would like to run midistar in debugging mode, you can run the './debug'
+command to start midistar in gdb. You may have to install gdb before running
+the './debug' command.
 
-3. BUILDING
-3.1 CMAKE
+Note that you should only debug a midistar binary that has been built in debug
+mode. Binaries that are provided with releases have been built in release mode,
+and are not suitable for debugging. As such, if you would like to debug
+midistar, you will have to build a debug build from scratch. For information on
+building midistar in debug mode, see the BUILDING section in this README.
+
+
+4. BUILDING
+4.1 CMAKE
 'cmake' is required to build midistar and some of its third-party libraries. If
 you are on Debian or Ubuntu, you can install cmake by using the command:
     sudo apt-get install cmake
@@ -141,19 +155,19 @@ command:
 
 On Windows, you will have to download CMake online.
 
-3.2 INSTALLING BUILD DEPENDENCIES ON LINUX
-The INSTALLING RUNTIME DEPENDENCIES ON LINUX section describes the installation 
-of runtime dependencies. These are sufficient for running midistar on Linux. 
+4.2 INSTALLING BUILD DEPENDENCIES ON LINUX
+The INSTALLING RUNTIME DEPENDENCIES ON LINUX section describes the installation
+of runtime dependencies. These are sufficient for running midistar on Linux.
 However, additional dependencies are required to build midistar on Linux.
 
-On OSX and Windows, third-party libraries should come packaged with their 
-dependencies and work out of the box. This means that no extra software should 
+On OSX and Windows, third-party libraries should come packaged with their
+dependencies and work out of the box. This means that no extra software should
 be required (except build tools), so you can skip this step.
 
 However, on Linux, additional software must be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install
 the majority of build dependencies with the following command:
-    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev build-essential pkg-config cmake libtool automake autoconf 
+    sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev build-essential pkg-config cmake libtool automake autoconf
 
 Additionally, on Debian run the following command:
     sudo apt-get install libjpeg62-turbo-dev
@@ -164,10 +178,10 @@ On Ubuntu, run the following command:
 If a package cannot be found, check that you have added the 'universe'
 repository in your apt sources and have run the 'apt-get update' command.
 
-3.3 BUILDING MIDISTAR
-If you're building midistar for the first time, some setup is requried. If you 
+4.3 BUILDING MIDISTAR
+If you're building midistar for the first time, some setup is requried. If you
 are on Linux or OSX, you can try running the './build_setup_unix' command from a
-terminal in the midistar directory. If you are on Windows, run the 
+terminal in the midistar directory. If you are on Windows, run the
 'build_setup_win32.bat' command from a Developer Command Prompt.
 
 Please note that this command does not install prerequisites for the third-
@@ -175,12 +189,12 @@ party libraries. As such, they may fail to build. When a build failure occurs,
 read the console output and install any missing prerequisites before trying
 again.
 
-If build setup succeeds, midistar has already been built! You can re-build 
-midistar at any time by using the './make' command on Linux/OSX and the 
-'make.bat' command on Windows. You can specify whether to build in Debug or 
-Release mode by specifying the build mode to the make command, e.g. 
+If build setup succeeds, midistar has already been built! You can re-build
+midistar at any time by using the './make' command on Linux/OSX and the
+'make.bat' command on Windows. You can specify whether to build in Debug or
+Release mode by specifying the build mode to the make command, e.g.
 './make release' on Linux/OSX, or 'make.bat Release' on Windows. See the RUNNING
-MIDISTAR section for information on configuring, running, and debugging 
+MIDISTAR section for information on configuring, running, and debugging
 midistar.
 
 If build setup fails, try and troubleshoot the issue yourself. There should be

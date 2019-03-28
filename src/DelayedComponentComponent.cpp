@@ -35,7 +35,6 @@ void DelayedComponentComponent::Update(
         Game*
         , GameObject* o
         , int delta) {
-
     delay_ -= delta;
     if (delay_ <= 0) {
         o->SetComponent(component_);

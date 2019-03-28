@@ -55,8 +55,7 @@ void MidiPortIn::Tick() {
     std::unordered_map<int, MidiMessage> this_tick;
     auto count = same_tick_buffer_.size();
 
-    while (count--)
-    {
+    while (count--) {
         auto midi_message = same_tick_buffer_.front();
         same_tick_buffer_.pop();
         if (this_tick.count(midi_message.GetKey())) {

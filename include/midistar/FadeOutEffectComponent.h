@@ -19,10 +19,10 @@
 #ifndef MIDISTAR_FADEOUTEFFECTCOMPONENT_H_
 #define MIDISTAR_FADEOUTEFFECTCOMPONENT_H_
 
+#include <limits>
+
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
-
-#include <limits>
 
 namespace midistar {
 
@@ -37,7 +37,7 @@ class FadeOutEffectComponent : public Component {
     /**
      * Constructor.
      */
-     explicit FadeOutEffectComponent();
+     FadeOutEffectComponent();
 
     /**
      * \copydoc Component::Update()
@@ -47,7 +47,6 @@ class FadeOutEffectComponent : public Component {
  private:
     constexpr static float ALPHA_MULTIPLIER = 0.85f;
     constexpr static float EPSILON = std::numeric_limits<float>::epsilon();
-
 };
 
 }   // namespace midistar

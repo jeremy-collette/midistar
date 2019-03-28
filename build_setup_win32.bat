@@ -164,6 +164,7 @@ if %makeerror% == 1 (
 ECHO midistar built successfully! Run using the 'run.bat' command.
 ECHO Re-build in Debug mode using 'make.bat' or 'make.bat Debug'.
 ECHO Re-build in Release mode using 'make.bat Release'.
+ECHO Open in Visual Studio using the 'startvs.bat' command.
 ECHO Refer to the README for more information.
 GOTO :end
 

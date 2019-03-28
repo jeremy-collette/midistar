@@ -12,15 +12,15 @@ include/rtmidi
 include/SFML
 package
 
-
 /config.cfg
 /debug
 /tags
 /TODO
 /make
+/make.bat
 /run
 /run.bat
-/make.bat
+/startvs.bat
 
 **.mid
 **.swp

@@ -55,4 +55,4 @@ void ShrinkGrowComponent::Update(Game*, GameObject* o, int) {
     }
 }
 
-}
+}  // End namespace midistar

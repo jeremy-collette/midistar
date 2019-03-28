@@ -79,7 +79,7 @@ class InstrumentInputHandlerComponent : public Component {
 
 
  private:
-     const static int MAXIMUM_UNINVERT_DELAY = 100;  //!< Maximum time to delay
+     static const int MAXIMUM_UNINVERT_DELAY = 100;  //!< Maximum time to delay
                                        //!< before uninverting instrument colour
      const bool ctrl_;  //!< Determines if the 'control' modifier has to be
                                   //!< pressed in conjunction with key binding

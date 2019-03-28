@@ -4,7 +4,7 @@ CD "%~dp0"
 
 REM Change to source dir if we're in the scripts folder:
 FOR %%I in (.) do SET dir=%%~nxI
-IF "%dir%"=="scripts" (cd ..)
+IF "%dir%"=="win32" (CD ..\..)
 
 REM Call cpplint:
 cpplint --root=include --recursive include\midistar\

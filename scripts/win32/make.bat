@@ -4,17 +4,17 @@ CD "%~dp0"
 
 REM Change to source dir if we're in the scripts folder:
 FOR %%I in (.) do SET dir=%%~nxI
-IF "%dir%"=="win32" (cd ..\..)
+IF "%dir%"=="win32" (CD ..\..)
 SET proj_dir="%cd%"
 
 REM Find MSBuild:
-ECHO.
 ECHO Finding MSBuild...
-WHERE msbuild
+WHERE msbuild.exe
 if %errorLevel% == 1 (
     ECHO Could not find MSBuild^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.
     GOTO :error
 )
+ECHO.
 
 REM Get build type:
 SET build_type=%1

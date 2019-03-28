@@ -189,6 +189,12 @@ if (WIN32) # Windows
         ${CMAKE_SOURCE_DIR}/scripts/win32/make.bat
         ${CMAKE_SOURCE_DIR}/.)
 
+    # Copy 'startvs.bat' script
+    add_custom_command(TARGET midistar POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/scripts/win32/startvs.bat
+        ${CMAKE_SOURCE_DIR}/.)
+
 else() # Linux/OSX
     # Do common stuff for Linux/OSX (Unix)
     # Set compiler flags

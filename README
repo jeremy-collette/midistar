@@ -72,23 +72,26 @@ this README.
 midistar has configuration options that can be configured for varying levels of
 customisation. Run midistar with the '--help' option to see a list of
 configuration options. These can be set in the 'config.cfg' file, which can be
-found in the midistar folder, or provided as command line arguments.
+found in the midistar folder, or provided as command line arguments. 
+
+If you have installed a midistar release using a .deb package, you will find 
+'config.cfg' at "/usr/local/bin/midistar_<pkg-version>/config.cfg". Where
+'pkg-version' is the version of the .deb package that you installed. You can
+find the version in the file name of the package.
 
 If you have downloaded the midistar source instead of a release, please note
 that the 'config.cfg' file will not be created until midistar has been built. It
 is recommended to use absolute paths instead of relative paths in configuration
 settings.
 
-NOTE: If you have installed a midistar release from a .deb package, you will
-find 'config.cfg' at "/usr/local/bin/midistar_<pkg-version>/config.cfg". Where
-'pkg-version' is specified in the name of the .deb package.
-
 3.2 STARTING FROM TERMINAL
 If you have downloaded a midistar release with pre-built binaries for your
 platform, you can start midistar with the './run' command from a terminal that
-is in the midistar directory. If you're on Debian or Ubuntu, and have installed
-midistar using a .deb package, you can start midistar by running the 'midistar'
-command in a terminal. This is a wrapper that calls the 'run' script.
+is in the midistar directory. 
+
+If you installed a midistar release using a .deb package, you can start midistar
+by running the 'midistar' command in any terminal. This is a wrapper that calls 
+the 'run' script mentioned above.
 
 The 'run' script calls the actual binary (in the 'build' folder). It is
 recommended to always use this script instead of calling the binary directly.
@@ -130,17 +133,6 @@ depending on which platform and/or MIDI software you are using. Once you have
 connected and attached a MIDI instrument, the midistar instrument bar can be
 activated by playing the correlating note on the MIDI instrument.
 
-3.4 DEBUGGING MIDISTAR
-If you would like to run midistar in debugging mode, you can run the './debug'
-command to start midistar in gdb. You may have to install gdb before running
-the './debug' command.
-
-Note that you should only debug a midistar binary that has been built in debug
-mode. Binaries that are provided with releases have been built in release mode,
-and are not suitable for debugging. As such, if you would like to debug
-midistar, you will have to build a debug build from scratch. For information on
-building midistar in debug mode, see the BUILDING section in this README.
-
 
 4. BUILDING
 4.1 CMAKE
@@ -155,14 +147,11 @@ command:
 
 On Windows, you will have to download CMake online.
 
-4.2 INSTALLING BUILD DEPENDENCIES ON LINUX
-The INSTALLING RUNTIME DEPENDENCIES ON LINUX section describes the installation
-of runtime dependencies. These are sufficient for running midistar on Linux.
-However, additional dependencies are required to build midistar on Linux.
-
-On OSX and Windows, third-party libraries should come packaged with their
-dependencies and work out of the box. This means that no extra software should
-be required (except build tools), so you can skip this step.
+4.2 INSTALLING BUILD DEPENDENCIES
+If you are developing midistar on OSX and Windows, third-party libraries should
+come packaged with their dependencies and work out of the box. This means that 
+no extra software should be required (except build tools), so you can skip this
+step.
 
 However, on Linux, additional software must be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install
@@ -176,9 +165,11 @@ On Ubuntu, run the following command:
     sudo apt-get install libjpeg62-dev
 
 If a package cannot be found, check that you have added the 'universe'
-repository in your apt sources and have run the 'apt-get update' command.
+repository in your apt sources and have run the 'apt-get update' command. If you
+are trying to build midistar on an unsupported Linux distribution, you can try
+and find equivalent packages using your system package manager.
 
-4.3 BUILDING MIDISTAR
+4.2 BUILDING MIDISTAR
 If you're building midistar for the first time, some setup is requried. If you
 are on Linux or OSX, you can try running the './build_setup_unix' command from a
 terminal in the midistar directory. If you are on Windows, run the
@@ -201,6 +192,26 @@ midistar.
 If build setup fails, try and troubleshoot the issue yourself. There should be
 an error message that can be used to diagnose the failure.
 
+4.3 DEBUGGING MIDISTAR
+If you would like to debug midistar on Linux or OSX, you can run the './debug' 
+ommand to start midistar in gdb. You may have to install gdb before running the
+'./debug' command.
 
-4. LICENSE
+If you would like to debug midistar on Windows, please see the OPENING MIDISTAR
+IN VISUAL STUDIO section of this README.
+
+Note that you should only debug a midistar binary that has been built in debug
+mode. Binaries that are provided with releases have been built in release mode,
+and are not suitable for debugging. As such, if you would like to debug
+midistar, you will have to build a debug build from scratch. For information on
+building midistar in debug mode, see the BUILDING section in this README.
+
+4.4 OPENING MIDISTAR IN VISUAL STUDIO
+If you are on Windows, you can open midistar in Visual Studio by running the 
+'startvs.bat' command from the midistar project folder. Please note that you 
+must have already successfully build midistar following the instructions in
+BUILDING MIDISTAR before you can use this command.
+
+
+5. LICENSE
 Refer to the 'LICENSE' file for more information.

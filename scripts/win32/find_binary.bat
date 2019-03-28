@@ -1,10 +1,10 @@
-@echo off
+@ECHO off
 REM Change to script dir:
-cd "%~dp0"
+CD "%~dp0"
 
 REM Change to source dir if we're in the scripts folder:
 FOR %%I in (.) do SET dir=%%~nxI
-IF "%dir%"=="win32" (cd ..\..)
+IF "%dir%"=="win32" (CD ..\..)
 
 REM Check for 'build' folder:
 IF NOT EXIST "build\" (

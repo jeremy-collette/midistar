@@ -4,7 +4,7 @@ CD "%~dp0"
 
 REM Change to source dir if we're in the scripts folder:
 FOR %%I in (.) do SET dir=%%~nxI
-IF "%dir%"=="win32" (cd ..\..)
+IF "%dir%"=="win32" (CD ..\..)
 SET proj_dir="%cd%"
 
 REM Tell user which build mode we're running:

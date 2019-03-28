@@ -19,10 +19,10 @@
 #ifndef MIDISTAR_SHRINKGROWCOMPONENT_H_
 #define MIDISTAR_SHRINKGROWCOMPONENT_H_
 
+#include <limits>
+
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
-
-#include <limits>
 
 namespace midistar {
 

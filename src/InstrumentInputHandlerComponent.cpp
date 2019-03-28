@@ -55,7 +55,10 @@ void InstrumentInputHandlerComponent::SetNotePlayed(bool note_played) {
     note_played_ = note_played;
 }
 
-void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int delta){
+void InstrumentInputHandlerComponent::Update(
+        Game* g
+        , GameObject* o
+        , int delta) {
     // Check for required component
     auto note = o->GetComponent<NoteInfoComponent>(Component::NOTE_INFO);
     if (!note) {
@@ -129,11 +132,11 @@ void InstrumentInputHandlerComponent::Update(Game* g, GameObject* o, int delta){
                 false
                 , note->GetChannel()
                 , note->GetKey()
-                , note->GetVelocity()});
+                , note->GetVelocity()
+            });
         // We want to delay the colour of the instrument being uninverted
         // until a second after being played.
-        o->SetComponent(new DelayedComponentComponent
-            {
+        o->SetComponent(new DelayedComponentComponent {
                 new InvertColourComponent{0xa0}
                 , uninvert_delay_
             });

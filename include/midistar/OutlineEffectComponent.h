@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -34,7 +34,7 @@ class OutlineEffectComponent : public Component {
     /**
      * Constructor.
      */
-     explicit OutlineEffectComponent();
+     OutlineEffectComponent();
 
     /**
      * \copydoc Component::Update()
@@ -42,8 +42,8 @@ class OutlineEffectComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-    const static int DURATION = 100;
-    const static sf::Color OUTLINE_COLOUR;
+    static const int DURATION = 100;
+    static const sf::Color OUTLINE_COLOUR;
     constexpr static float OUTLINE_INCREASE = 1.05f;
     constexpr static float OUTLINE_THICKNESS = 5.0f;
 

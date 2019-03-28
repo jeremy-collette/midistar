@@ -169,7 +169,6 @@ void Game::Run() {
         // Handle MIDI port input events
         midi_in_buf_.clear();
         while (midi_instrument_in_.GetMessage(&msg)) {
-
 #ifdef DEBUG
             if (msg.IsNoteOn()) {
                 std::cout << "Played: " << msg.GetKey() << '\n';

@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     << "Jeremy Collette.\nThis program comes with ABSOLUTELY NO WARRANTY. "
     << "This is free software, and you are welcome to redistribute it under "
     << "certain conditions. midistar uses free third-party software, that you "
-    << "have obtained a copy of. Run with the --third_party argument to see "
+    << "have obtained a copy of. Run with the '--third_party' argument to see "
     << "each project and their copyright notices.\n\n";
 
 #ifdef DEBUG

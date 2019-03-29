@@ -26,14 +26,28 @@ int main(int argc, char** argv) {
     std::cout << "midistar " << MIDISTAR_VERSION << " Copyright (C) 2018-2019 "
     << "Jeremy Collette.\nThis program comes with ABSOLUTELY NO WARRANTY. "
     << "This is free software, and you are welcome to redistribute it under "
-    << "certain conditions.\n\n";
+    << "certain conditions. midistar uses free third-party software, that you "
+    << "have obtained a copy of. Run with the --third_party argument to see "
+    << "each library and their copyright notices.\n\n";
 
 #ifdef DEBUG
-    std::cout << "This is a DEBUG build.\n";
+    std::cout << "This is a DEBUG build.\n\n";
 #endif
 
     if (!midistar::Config::GetInstance().ParseOptions(argc, argv)) {
         return 1;
+    }
+
+    if (midistar::Config::GetInstance().GetThirdParty()) {
+        std::cout << "The following free third-party libraries and utilities "
+            << "are used by (and distributed with) midistar:\n";
+        std::cout << "\tCLI11: Copyright(c) 2017-2018 University of Cincinnati."
+            << "\n\tfluidsynth: Copyright(C) 2003  Peter Hanappe and others.\n"
+            << "\tmidifile: Copyright(c) 1999-2018, Craig Stuart Sapp.\n"
+            << "\tRtMidi: Copyright(c) 2003-2017 Gary P.Scavone.\n"
+            << "\tSFML: Copyright(C) 2007-2017 Laurent Gomila.\n"
+            << "\tvcpkg: Copyright(C) Microsoft Corporation.\n";
+        return 0;
     }
 
     midistar::Game g;

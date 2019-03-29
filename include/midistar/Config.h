@@ -169,6 +169,11 @@ class Config {
     const std::string GetSoundFontPath();
 
     /**
+     * Gets an indication if whether or not the third party flag was passed in.
+     */
+    bool GetThirdParty();
+
+    /**
      * Parses commandline arguments.
      *
      * \param argc Number of arguments.
@@ -207,6 +212,8 @@ class Config {
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes
+    bool third_party_;  //!< Determines whether or not to print out third party
+                                                         //!< copyright notices
 };
 
 }   // End namespace midistar

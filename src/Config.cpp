@@ -117,6 +117,10 @@ const std::string Config::GetSoundFontPath() {
     return soundfont_path_;
 }
 
+bool Config::GetThirdParty() {
+    return third_party_;
+}
+
 bool Config::ParseOptions(int argc, char** argv) {
     CLI::App app {};
     InitCliApp(&app);
@@ -178,6 +182,8 @@ void Config::InitCliApp(CLI::App* app) {
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "
             "to use for MIDI output.");
+    app->add_flag("--third_party", third_party_, "Adding this flag prints out "
+            "third-party libraries and their copyright notices.");
 }
 
 }  // End namespace midistar

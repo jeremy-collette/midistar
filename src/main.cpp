@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     << "This is free software, and you are welcome to redistribute it under "
     << "certain conditions. midistar uses free third-party software, that you "
     << "have obtained a copy of. Run with the --third_party argument to see "
-    << "each library and their copyright notices.\n\n";
+    << "each project and their copyright notices.\n\n";
 
 #ifdef DEBUG
     std::cout << "This is a DEBUG build.\n\n";

@@ -44,6 +44,7 @@ Config::Config()
         , midi_file_tracks_{}
         , screen_height_{-1}
         , screen_width_{-1}
+        , show_third_party_{false}
         , soundfont_path_{""} {
 }
 
@@ -113,12 +114,12 @@ int Config::GetScreenWidth() {
     return screen_width_;
 }
 
-const std::string Config::GetSoundFontPath() {
-    return soundfont_path_;
+bool Config::GetShowThirdParty() {
+    return show_third_party_;
 }
 
-bool Config::GetThirdParty() {
-    return third_party_;
+const std::string Config::GetSoundFontPath() {
+    return soundfont_path_;
 }
 
 bool Config::ParseOptions(int argc, char** argv) {
@@ -182,8 +183,9 @@ void Config::InitCliApp(CLI::App* app) {
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "
             "to use for MIDI output.");
-    app->add_flag("--third_party", third_party_, "Adding this flag prints out "
-            "third-party libraries and their copyright notices.");
+    app->add_flag("--show_third_party", show_third_party_, "Adding this flag "
+            "prints out the copyright notices of third-party projects that are "
+            "used by midistar.");
 }
 
 }  // End namespace midistar

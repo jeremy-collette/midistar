@@ -33,7 +33,7 @@ namespace midistar {
  */
 class MidiPortIn : public MidiIn {
  public:
-    /*
+    /**
      * Constructor.
      *
      * \param extend_same_tick_notes Determines whether or not notes that start
@@ -42,7 +42,7 @@ class MidiPortIn : public MidiIn {
      */
     explicit MidiPortIn(bool extend_same_tick_notes);
 
-    /*
+    /**
      * Default constructor.
      */
     MidiPortIn();

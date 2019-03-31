@@ -30,7 +30,7 @@ namespace midistar {
 class MidiInstrumentIn : public MidiPortIn {
  public:
     /**
-     * \copydoc MidiPortIn.GetMessage(MidiMessage*)
+     * \copydoc MidiIn::GetMessage(MidiMessage*)
      */
     virtual bool GetMessage(MidiMessage* message);
 };

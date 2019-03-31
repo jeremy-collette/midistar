@@ -25,11 +25,11 @@ namespace midistar {
 const sf::Color OutlineEffectComponent::OUTLINE_COLOUR = {255, 255, 255};
 
 OutlineEffectComponent::OutlineEffectComponent()
-        : time_remaining_{OutlineEffectComponent::DURATION}
-        , Component{ Component::FADING_OUTLINE_EFFECT} {
+        : Component{ Component::FADING_OUTLINE_EFFECT}
+        , time_remaining_{OutlineEffectComponent::DURATION} {
 }
 
-void OutlineEffectComponent::Update(Game * g, GameObject * o, int delta) {
+void OutlineEffectComponent::Update(Game*, GameObject * o, int delta) {
     auto circle = o->GetDrawformable<sf::CircleShape>();
     if (!circle) {
         return;

@@ -217,12 +217,20 @@ BUILDING MIDISTAR before you can use this command.
 
 4.5 BUILDING DOCUMENTATION
 If you would like to build midistar documentation, you can do so using doxygen.
-Install doxygen, navigate to the 'docs' folder, and type the command:
+Before building documentation, you must install doxygen and Graphviz. If you're 
+on Debian or Ubuntu, you can install doxygen and Graphviz using the following 
+command:
+    sudo apt-get install doxygen graphviz
+
+If you're own OSX, you can use Homebrew:
+    brew install doxygen graphviz
+
+On Windows, you will have to download and doxygen and Graphviz online.
+
+Once installed, navigate to the 'docs' folder, and type the command:
     doxygen doxygen.config
 
-This will build the midistar documentation in the 'docs' folder. Note: you may 
-have to install Graphviz/dot too before building.
-
+This will build the midistar documentation in the 'docs' folder.
 
 5. LICENSE
 Refer to the 'LICENSE' file for more information.

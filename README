@@ -227,10 +227,10 @@ If you're own OSX, you can use Homebrew:
 
 On Windows, you will have to download and doxygen and Graphviz online.
 
-Once installed, navigate to the 'docs' folder, and type the command:
+Once installed, navigate to the 'doc' folder, and type the command:
     doxygen doxygen.config
 
-This will build the midistar documentation in the 'docs' folder.
+This will build the midistar documentation in the 'doc' folder.
 
 
 5. LICENSE

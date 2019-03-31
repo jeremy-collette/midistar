@@ -172,7 +172,7 @@ repository in your apt sources and have run the 'apt-get update' command. If you
 are trying to build midistar on an unsupported Linux distribution, you can try
 and find equivalent packages using your system package manager.
 
-4.2 BUILDING MIDISTAR
+4.3 BUILDING MIDISTAR
 If you're building midistar for the first time, some setup is required. If you
 are on Linux or OSX, you can try running the './build_setup_unix' command from a
 terminal in the midistar directory. If you are on Windows, run the
@@ -195,7 +195,7 @@ midistar.
 If build setup fails, try and troubleshoot the issue yourself. There should be
 an error message that can be used to diagnose the failure.
 
-4.3 DEBUGGING MIDISTAR
+4.4 DEBUGGING MIDISTAR
 If you would like to debug midistar on Linux or OSX, you can run the './debug'
 command to start midistar in gdb. You may have to install gdb before running the
 './debug' command.
@@ -209,13 +209,13 @@ and are not suitable for debugging. As such, if you would like to debug
 midistar, you will have to build a debug build from scratch. For information on
 building midistar in debug mode, see the BUILDING section in this README.
 
-4.4 OPENING MIDISTAR IN VISUAL STUDIO
+4.5 OPENING MIDISTAR IN VISUAL STUDIO
 If you are on Windows, you can open midistar in Visual Studio by running the
 'startvs.bat' command from the midistar project folder. Please note that you
 must have already successfully build midistar following the instructions in
 BUILDING MIDISTAR before you can use this command.
 
-4.5 BUILDING DOCUMENTATION
+4.6 BUILDING DOCUMENTATION
 If you would like to build midistar documentation, you can do so using doxygen.
 Before building documentation, you must install doxygen and Graphviz. If you're 
 on Debian or Ubuntu, you can install doxygen and Graphviz using the following 

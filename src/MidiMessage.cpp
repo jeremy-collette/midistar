@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -105,6 +105,10 @@ bool MidiMessage::IsNoteOn() const {
     }
     unsigned char command = data_[0] & COMMAND_MASK;
     return command == NOTE_ON_COMMAND && data_[2] != 0;
+}
+
+void MidiMessage::SetKey(int key) {
+    data_[1] = static_cast<unsigned char>(key);
 }
 
 }  // End namespace midistar

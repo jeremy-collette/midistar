@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -49,6 +49,14 @@ class InstrumentInputHandlerComponent : public Component {
             , bool shift);
 
      /**
+      * Indicates if a note has been played by this instrument this tick.
+      *
+      * \returns bool True indicates a note has been played. False indicates
+      * otherwise.
+      */
+     bool GetNotePlayed();
+
+     /**
       * Allows other components to activate instrument.
       *
       * \param active True activates instrument. False leaves instrument
@@ -57,20 +65,34 @@ class InstrumentInputHandlerComponent : public Component {
      void SetActive(bool active);
 
      /**
+      * Indicates if a note has been played by this instrument this tick.
+      *
+      * \param note_played True indicates a note has been played. False
+      * indicates otherwise.
+      */
+     void SetNotePlayed(bool note_played);
+
+     /**
       * \copydoc Component::Update()
       */
      virtual void Update(Game* g, GameObject* o, int delta);
 
 
  private:
+     static const int MAXIMUM_UNINVERT_DELAY = 100;  //!< Maximum time to delay
+                                       //!< before uninverting instrument colour
      const bool ctrl_;  //!< Determines if the 'control' modifier has to be
                                   //!< pressed in conjunction with key binding
      const sf::Keyboard::Key key_;  //!< The key bound to this instrument
      bool key_down_;  //!< Determines if the instrument is currently activated
+     bool note_played_;  //!< Indicates if a note has been played within the
+                                                                  //!< last tick
      bool set_active_;  //!< Determines if the instrument has been activated
                                                                 //!< externally
      const bool shift_;  //!< Determines if the 'shift' modifier has to be
                                   //!< pressed in conjunction with key binding
+     int uninvert_delay_;  //!< Time to delay before uninverting
+     bool was_active_;  //!< Determines if the instrument was active last tick
 };
 
 }  // End namespace midistar

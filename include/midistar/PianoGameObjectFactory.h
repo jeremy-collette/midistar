@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -43,8 +43,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
    /**
      * \copydoc GameObjectFactory::CreateNotePlayEffect()
      */
-    virtual GameObject* CreateNotePlayEffect(GameObject* note);
-
+    virtual GameObject* CreateNotePlayEffect(GameObject* o);
 
    /**
      * \copydoc GameObjectFactory::CreateInstrument()
@@ -68,8 +67,6 @@ class PianoGameObjectFactory : public GameObjectFactory {
 
  private:
     static const sf::Color BACKGROUND_COLOUR;  //!< Background colour
-    static constexpr float COLOUR_DARKEN_MULTIPLIER = 0.4f;  //!< Multiple R,
-              //!< G, and B colour channels by this multiplier during darkening
     static constexpr float BLACK_WIDTH_MULTIPLIER = 0.5f;  //!< Black keys and
                         //! notes have a different width to white counterparts
     static const int GRINDING_FRAMES_PER_SECOND = 18;  //!< Grinding sprite FPS
@@ -98,14 +95,13 @@ class PianoGameObjectFactory : public GameObjectFactory {
     // These are out of order because they depend on other constants
     static constexpr float BLACK_KEY_OUTLINE_THICKNESS =
         WHITE_KEY_OUTLINE_THICKNESS / 2.0;  //!< Black key outline thickness
-    static const int BLACK_KEY_HEIGHT = WHITE_KEY_HEIGHT * 0.65f;  //!< Black
-                                                      //!< key height in pixels
+    static const int BLACK_KEY_HEIGHT = static_cast<int>(WHITE_KEY_HEIGHT
+        * 0.65f);                               //!< Black key height in pixels
     static constexpr const char* GRINDING_TEXTURE_PATH = "assets/grinding.png";
                                             //!< Path to metal grinding texture
     static const sf::Color MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS];  //!< Holds
                                                         //!< MIDI track colours
 
-    static sf::Color DarkenColour(sf::Color c);  //! Darken a colour
     static sf::Color GetTrackColour(int midi_track);  //!< Get colour for track
     static void GetInstrumentKeyBinding(int midi_key, sf::Keyboard::Key* key,
             bool* ctrl, bool* shift);  //!< Gets instrument key binding

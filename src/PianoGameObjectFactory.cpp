@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -24,14 +24,14 @@
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
-#include "midistar/InstrumentCollisionHandlerComponent.h"
+#include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/InvertColourComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
-#include "midistar/SongNoteCollisionHandlerComponent.h"
+#include "midistar/PianoSongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
@@ -44,8 +44,8 @@ const sf::Color PianoGameObjectFactory::BACKGROUND_COLOUR{40, 40, 40};
 const sf::Color PianoGameObjectFactory::GRINDING_SPRITE_COLOUR{255, 253, 197};
 
 const sf::Color PianoGameObjectFactory::MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS] {
-    sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow
-    , sf::Color::Magenta, sf::Color::Cyan
+    sf::Color{244, 66, 66}, sf::Color{66, 244, 69}, sf::Color{66, 164, 244}
+    , sf::Color{244, 244, 65}, sf::Color{88, 65, 244}, sf::Color{65, 235, 244}
 };
 
 const bool PianoGameObjectFactory::OCTAVE_BLACK_KEYS[NOTES_PER_OCTAVE] {
@@ -77,7 +77,8 @@ GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
     double sprite_scale_y = sprite_scale_x / 2.0f;  // Reduce height
     double sprite_w = sprite_scale_x * GRINDING_SPRITE_SIZE;
     double sprite_h = sprite_scale_y * GRINDING_SPRITE_SIZE;
-    sprite->setScale(sprite_scale_x, sprite_scale_y);
+    sprite->setScale(static_cast<float>(sprite_scale_x), static_cast<float>(
+        sprite_scale_y));
 
     // Create the GameObject to hold the sprite
     auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
@@ -113,7 +114,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     sf::Color colour = GetTrackColour(track);
     if (IsBlackKey(note)) {
         // Darken sharp notes and change width
-        colour = DarkenColour(colour);
+        colour = Utility::DarkenColour(colour);
         width = white_width_ * BLACK_WIDTH_MULTIPLIER;
     } else {
         width = white_width_;
@@ -138,19 +139,12 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
+    song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{});
     return song_note;
 }
 
 bool PianoGameObjectFactory::Init() {
     return grinding_texture_.loadFromFile(GRINDING_TEXTURE_PATH);
-}
-
-sf::Color PianoGameObjectFactory::DarkenColour(sf::Color c) {
-    c.r *= COLOUR_DARKEN_MULTIPLIER;
-    c.g *= COLOUR_DARKEN_MULTIPLIER;
-    c.b *= COLOUR_DARKEN_MULTIPLIER;
-    return c;
 }
 
 sf::Color PianoGameObjectFactory::GetTrackColour(int midi_track) {
@@ -237,7 +231,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             width), static_cast<float>(height)}};
     rect->setFillColor(colour);
     rect->setOutlineColor(sf::Color::Black);
-    rect->setOutlineThickness(outline_thickness);
+    rect->setOutlineThickness(static_cast<float>(outline_thickness));
 
     // Create the actual note
     auto ins_note = new GameObject{rect, x, y, width, height};
@@ -254,7 +248,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl,
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
+    ins_note->SetComponent(new InstrumentAutoPlayComponent{});
     return ins_note;
 }
 

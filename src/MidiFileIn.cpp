@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -34,8 +34,28 @@ MidiFileIn::MidiFileIn()
 MidiFileIn::~MidiFileIn() {
 }
 
+double MidiFileIn::GetMaximumNoteDuration() const {
+    double max = 0;
+    for (int i = 0; i < file_[0].size(); ++i) {
+        if (IsWanted(&file_[0][i])) {
+            max = std::max(max, file_[0][i].getDurationInSeconds());
+        }
+    }
+    return max;
+}
+
 int MidiFileIn::GetTicksPerQuarterNote() const {
     return file_.getTicksPerQuarterNote();
+}
+
+std::vector<int> MidiFileIn::GetUniqueMidiNotes() const {
+    std::set<int> notes;
+    for (int i=0; i < file_[0].size(); ++i) {
+        if (file_[0][i].isNote()) {
+            notes.insert(file_[0][i][1]);
+        }
+    }
+    return std::vector<int>{notes.begin(), notes.end()};
 }
 
 bool MidiFileIn::Init(const std::string& file_name) {
@@ -69,6 +89,7 @@ bool MidiFileIn::Init(const std::string& file_name) {
     bool success = file_.status();
     file_.joinTracks();
     file_.linkNotePairs();
+    file_.doTimeAnalysis();
     if (!success) {
         std::cerr << "Error! Could not load MIDI file \"" << file_name << "\""
         << ".\n";
@@ -104,7 +125,7 @@ void MidiFileIn::Tick(int delta) {
     }
 }
 
-bool MidiFileIn::IsWanted(smf::MidiEvent* mev) {
+bool MidiFileIn::IsWanted(const smf::MidiEvent* mev) const {
     if (!mev->isNoteOn() && !mev->isNoteOff()) {
         return false;
     }

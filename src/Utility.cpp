@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -50,5 +50,17 @@ const std::vector<sf::Keyboard::Key> Utility::qwerty_keys_{
 const std::vector<sf::Keyboard::Key>& Utility::GetQwertyKeys() {
     return qwerty_keys_;
 }
+
+const sf::Color Utility::DarkenColour(sf::Color c) {
+    return Utility::TransformColour(c, Utility::COLOUR_DARKEN_MULTIPLIER);
+}
+
+const sf::Color Utility::TransformColour(sf::Color c, double t) {
+    c.r = static_cast<sf::Uint8>(c.r * t);
+    c.g *= static_cast<sf::Uint8>(c.g * t);
+    c.b *= static_cast<sf::Uint8>(c.b * t);
+    return c;
+}
+
 
 }  // End namespace midistar

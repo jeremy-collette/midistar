@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -74,7 +74,7 @@ void GameObject::SetComponent(Component* c) {
 }
 
 void GameObject::SetPosition(double x, double y) {
-    transformable_->setPosition(x, y);
+    transformable_->setPosition(static_cast<float>(x), static_cast<float>(y));
 }
 
 void GameObject::SetRequestDelete(bool del) {
@@ -87,15 +87,23 @@ void GameObject::SetSize(double w, double h) {
     if (rect) {
         rect->setSize({static_cast<float>(w), static_cast<float>(h)});
     } else {
-        transformable_->setScale(w / original_width_, h / original_height_);
+        transformable_->setScale(static_cast<float>(w / original_width_)
+            , static_cast<float>(h / original_height_));
     }
 }
 
 void GameObject::Update(Game* g, int delta) {
+    auto has_component = false;
     for (const auto& c : components_) {
         if (c) {
             c->Update(g, this, delta);
+            has_component = true;
         }
+    }
+
+    // If we don't have any components, delete the GameObject
+    if (!has_component) {
+        SetRequestDelete(true);
     }
 
     for (const auto& c : to_delete_) {

@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -149,6 +149,13 @@ class MidiMessage {
      * \return True if the MIDI message is a note-off event. False otherwise.
      */
     bool IsNoteOn() const;
+
+    /**
+     * Sets the MIDI key of the message.
+     *
+     * \param key The MIDI key.
+     */
+    void SetKey(int key);
 
  private:
     static const unsigned char CHANNEL_MASK = 0x0f;  //!< Mask for channel

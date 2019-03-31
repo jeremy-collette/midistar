@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -26,14 +26,14 @@ CollisionHandlerComponent::CollisionHandlerComponent(ComponentType type)
         : Component{type} {
 }
 
-void CollisionHandlerComponent::Update(Game* g, GameObject* o, int) {
+void CollisionHandlerComponent::Update(Game* g, GameObject* o, int delta) {
     auto detector = o->GetComponent<VerticalCollisionDetectorComponent>(
             Component::VERTICAL_COLLISION_DETECTOR);
     if (!detector) {
         return;
     }
 
-    HandleCollisions(g, o, detector->GetCollidingWith());
+    HandleCollisions(g, o, delta, detector->GetCollidingWith());
 }
 
 }  // End namespace midistar

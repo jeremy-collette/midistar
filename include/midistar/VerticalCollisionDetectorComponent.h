@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -34,12 +34,12 @@ namespace midistar {
 class VerticalCollisionDetectorComponent : public Component {
  public:
      /**
-      * Constructor. 
+      * Constructor.
       */
      VerticalCollisionDetectorComponent();
 
      /**
-      * Finds GameObjects that are colliding with the owner. 
+      * Finds GameObjects that are colliding with the owner.
       *
       * \return Colliding GameObjects.
       */

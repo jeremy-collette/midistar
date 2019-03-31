@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -20,6 +20,7 @@
 #define MIDISTAR_CONFIG_H_
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <CLI/CLI.hpp>
 #include <SFML/Graphics.hpp>
@@ -67,6 +68,16 @@ class Config {
      * \return Game mode.
      */
     const std::string GetGameMode();
+
+    /**
+     * Gets the MIDI note re-mapping (if it exists) of a note played on an
+     * instrument.
+     *
+     * \param note The actual MIDI note played on the instrument.
+     * \return The MIDI note it is mapped to in midistar. If there is no re-
+     * mapping, returns the original note.
+     */
+    int GetInstrumentMidiNoteRemapping(int note);
 
     /**
      * Gets the maximum number of frames per second (FPS) for the SFML window.
@@ -151,6 +162,14 @@ class Config {
     int GetScreenWidth();
 
     /**
+     * Gets an indication if whether or not the 'show third party' flag was
+     * passed in.
+     *
+     * \return True if 'show third party' flag was used. False otherwise.
+     */
+    bool GetShowThirdParty();
+
+    /**
      * Gets the SoundFont path used to create MIDI sounds.
      *
      * \return MIDI SoundFont path.
@@ -183,6 +202,10 @@ class Config {
     double fall_speed_multiplier_;  //!< Affects fall speed of notes
     bool full_screen_;  //!< Full-screen setting
     std::string game_mode_;  //!< Game mode name
+    std::unordered_map<int, int> instrument_midi_remapping_;  //!< MIDI
+                                    //!< remapping derived from commandline arg
+    std::vector<int> instrument_midi_remapping_notes_;  //!< MIDI remapping
+                                                           //!< commandline arg
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play
@@ -191,6 +214,8 @@ class Config {
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
+    bool show_third_party_;  //!< Determines whether or not to print out third-
+                                                    //!< party copyright notices
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes
 };
 

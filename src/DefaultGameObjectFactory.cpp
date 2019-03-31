@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -24,13 +24,13 @@
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
 #include "midistar/Game.h"
-#include "midistar/InstrumentCollisionHandlerComponent.h"
+#include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
-#include "midistar/SongNoteCollisionHandlerComponent.h"
+#include "midistar/PianoSongNoteCollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Utility.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
@@ -83,7 +83,7 @@ GameObject* DefaultGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    song_note->SetComponent(new SongNoteCollisionHandlerComponent{});
+    song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{});
     return song_note;
 }
 
@@ -93,11 +93,12 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     double y = Config::GetInstance().GetScreenHeight() - INSTRUMENT_HEIGHT -
         (Config::GetInstance().GetScreenHeight() * INSTRUMENT_HOVER_PERCENTAGE);
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
-            note_width_), INSTRUMENT_HEIGHT}};;
+            note_width_), static_cast<float>(INSTRUMENT_HEIGHT)}};;
     rect->setFillColor(sf::Color::Red);
 
     // Create GameObject
-    auto ins_note = new GameObject{rect, x, y, note_width_, INSTRUMENT_HEIGHT};
+    auto ins_note = new GameObject{rect, x, y, note_width_, static_cast<float>(
+        INSTRUMENT_HEIGHT)};
 
     // Get key binding
     sf::Keyboard::Key key;
@@ -111,7 +112,7 @@ GameObject* DefaultGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl
             , shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    ins_note->SetComponent(new InstrumentCollisionHandlerComponent{});
+    ins_note->SetComponent(new InstrumentAutoPlayComponent{});
     return ins_note;
 }
 

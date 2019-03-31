@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Set DYLD_LIBRARY_PATH to find shared libraries
-export DYLD_LIBRARY_PATH="external/midifile/lib:external/rtmidi/.libs:external/SFML/build/lib"
-
-# Set DYLD_FRAMEWORK_PATH to find fluidsynth framework
-export DYLD_FRAMEWORK_PATH="external/fluidsynth/src"
-

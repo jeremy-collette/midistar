@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -49,7 +49,7 @@ class Component {
         , COLLIDABLE
         , NOTE_INFO
         , INSTRUMENT_INPUT_HANDLER
-        , INSTRUMENT_COLLISION_HANDLER
+        , INSTRUMENT_AUTO_PLAY
         , TRANSFORMATION
         , INVERT_COLOUR
         , MIDI_NOTE
@@ -57,8 +57,11 @@ class Component {
         , DELETE_OFFSCREEN
         , VERTICAL_COLLISION_DETECTOR
         , NOTE_COLLISION_HANDLER
+        , SHRINK_GROW_COMPONENT
         , RESIZE
         , SPRITE_ANIMATOR
+        , FADING_OUTLINE_EFFECT
+        , DELAYED_COMPONENT
         , NUM_COMPONENTS
     };
 

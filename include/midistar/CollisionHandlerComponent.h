@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -28,13 +28,13 @@
 namespace midistar {
 
 /**
- * The CollisionHandlerComponent class polls the owner's 
- * VerticalCollisionDetectorComponent and handles collisions when they occur. 
+ * The CollisionHandlerComponent class polls the owner's
+ * VerticalCollisionDetectorComponent and handles collisions when they occur.
  */
 class CollisionHandlerComponent : public Component {
  public:
     /**
-     * Constructor. 
+     * Constructor.
      *
      * \param type The ComponetType of the derived class.
      */
@@ -45,11 +45,13 @@ class CollisionHandlerComponent : public Component {
      *
      * \param[in,out] g The Game being played.
      * \param[in,out] o The owner of the component.
+     * \param[in] delta The time since last update.
      * \param[in,out] colliding_with The objects colliding with the owner.
      */
     virtual void HandleCollisions(
             Game* g
             , GameObject* o
+            , int delta
             , const std::vector<GameObject*> colliding_with) = 0;
 
     /**

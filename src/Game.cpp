@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -23,6 +23,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "midistar/DefaultGameObjectFactory.h"
+#include "midistar/DrumGameObjectFactory.h"
 #include "midistar/PianoGameObjectFactory.h"
 #include "midistar/Config.h"
 #include "midistar/NoteInfoComponent.h"
@@ -78,8 +79,8 @@ bool Game::Init() {
     window_.setKeyRepeatEnabled(false);
 
     // Setup MIDI input / outputs
-    midi_port_in_.Init();  // It is okay if this fails (player can be using
-                                                        // computer keyboard)
+    midi_instrument_in_.Init();  // It is okay if this fails (player can be
+                                                    // using computer keyboard)
     if (!midi_file_in_.Init(Config::GetInstance().GetMidiFileName())) {
         return false;
     }
@@ -93,10 +94,24 @@ bool Game::Init() {
         Config::GetInstance().GetFallSpeedMultiplier();
 
     auto mode = Config::GetInstance().GetGameMode();
-    if (mode == "piano") {
-            object_factory_ = new PianoGameObjectFactory(note_speed);
+    auto unique_notes = midi_file_in_.GetUniqueMidiNotes();
+
+#ifdef DEBUG
+    std::cout << "MIDI file unique notes: \n";
+    for (const auto& n : unique_notes) {
+        std::cout << n << ' ';
+    }
+    std::cout << '\n';
+#endif
+
+    if (mode == "drum") {
+        auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
+        object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
+            , max_note_duration);
+    } else if (mode == "piano") {
+        object_factory_ = new PianoGameObjectFactory(note_speed);
     } else {
-            object_factory_ = new DefaultGameObjectFactory(note_speed);
+        object_factory_ = new DefaultGameObjectFactory(note_speed);
     }
     if (!object_factory_->Init()) {
         return false;
@@ -153,7 +168,13 @@ void Game::Run() {
 
         // Handle MIDI port input events
         midi_in_buf_.clear();
-        while (midi_port_in_.GetMessage(&msg)) {
+        while (midi_instrument_in_.GetMessage(&msg)) {
+#ifdef DEBUG
+            if (msg.IsNoteOn()) {
+                std::cout << "Played: " << msg.GetKey() << '\n';
+            }
+#endif
+
             midi_in_buf_.push_back(msg);
         }
 
@@ -171,7 +192,7 @@ void Game::Run() {
 
         // Update MIDI file and port
         midi_file_in_.Tick(delta);
-        midi_port_in_.Tick();
+        midi_instrument_in_.Tick();
 
         // Clean up!
         CleanUpObjects();

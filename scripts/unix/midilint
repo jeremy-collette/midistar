@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Change to script dir
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [[ $dir == 'unix' ]]; then
+    cd ../..
+fi
+
+cpplint --root=include include/midistar/*.h
+cpplint src/*.cpp

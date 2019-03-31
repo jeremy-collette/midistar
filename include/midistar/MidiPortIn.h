@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018 Jeremy Collette.
+ * Copyright (C) 2018-2019 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -21,6 +21,8 @@
 
 #include <rtmidi/RtMidi.h>
 
+#include <queue>
+
 #include "midistar/MidiIn.h"
 
 namespace midistar {
@@ -31,8 +33,17 @@ namespace midistar {
  */
 class MidiPortIn : public MidiIn {
  public:
-    /*
+    /**
      * Constructor.
+     *
+     * \param extend_same_tick_notes Determines whether or not notes that start
+     * and finish in the same tick should be extended to finish in the next
+     * tick.
+     */
+    explicit MidiPortIn(bool extend_same_tick_notes);
+
+    /**
+     * Default constructor.
      */
     MidiPortIn();
 
@@ -49,7 +60,11 @@ class MidiPortIn : public MidiIn {
     void Tick();
 
  private:
-    RtMidiIn* midi_in_;  //!< MIDI port instance
+     bool extend_same_tick_notes_;  //!< Extends notes that start / finish in
+                                                              //!< the same tick
+     RtMidiIn* midi_in_;  //!< MIDI port instance
+     std::queue<MidiMessage> same_tick_buffer_;  //!< Holds note end events that
+                           //!< occured in the same tick as the note start
 };
 
 }  // End namespace midistar

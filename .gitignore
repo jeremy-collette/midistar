@@ -22,6 +22,7 @@ package
 /run.bat
 /startvs.bat
 
+**.DS_Store
 **.mid
 **.swp
-**.DS_Store
+**.tmp

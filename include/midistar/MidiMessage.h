@@ -153,7 +153,7 @@ class MidiMessage {
     /**
      * Sets the MIDI key of the message.
      *
-     * \param note The MIDI key.
+     * \param key The MIDI key.
      */
     void SetKey(int key);
 

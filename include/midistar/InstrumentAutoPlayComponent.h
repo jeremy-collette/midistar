@@ -31,9 +31,13 @@ namespace midistar {
  */
 class InstrumentAutoPlayComponent : public CollisionHandlerComponent {
  public:
+     /**
+      * Determines the criteria for a collision to be detected.
+      */
      enum class CollisionCriteria {
-         NONE = 0,
-         CENTRE = 1
+         NONE = 0,  //!< Any collision will be detected
+         CENTRE = 1  //!< Only collisions where both objects overlap in the
+                                                    //!< centre will be detected
      };
 
      /**

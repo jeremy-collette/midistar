@@ -41,7 +41,7 @@ class DefaultGameObjectFactory : public GameObjectFactory {
     /**
      * \copydoc GameObjectFactory::CreateNotePlayEffect()
      */
-    virtual GameObject* CreateNotePlayEffect(GameObject* note);
+    virtual GameObject* CreateNotePlayEffect(GameObject* o);
 
     /**
      * \copydoc GameObjectFactory::CreateInstrument()

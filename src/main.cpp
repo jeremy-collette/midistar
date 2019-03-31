@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
     << "Jeremy Collette.\nThis program comes with ABSOLUTELY NO WARRANTY. "
     << "This is free software, and you are welcome to redistribute it under "
     << "certain conditions. midistar uses free third-party software, that you "
-    << "have obtained a copy of. Run with the '--third_party' argument to see "
-    << "each project and their copyright notices.\n\n";
+    << "have obtained a copy of. Run with the '--show_third_party' argument to "
+    << "see each included third-party project and their copyright notices.\n\n";
 
 #ifdef DEBUG
     std::cout << "This is a DEBUG build.\n\n";
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (midistar::Config::GetInstance().GetThirdParty()) {
+    if (midistar::Config::GetInstance().GetShowThirdParty()) {
         std::cout << "The following free third-party libraries and utilities "
             << "are used by (and distributed with) midistar:\n";
         std::cout << "\tCLI11: Copyright(c) 2017-2018 University of Cincinnati."

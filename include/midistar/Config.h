@@ -162,16 +162,19 @@ class Config {
     int GetScreenWidth();
 
     /**
+     * Gets an indication if whether or not the 'show third party' flag was
+     * passed in.
+     *
+     * \return True if 'show third party' flag was used. False otherwise.
+     */
+    bool GetShowThirdParty();
+
+    /**
      * Gets the SoundFont path used to create MIDI sounds.
      *
      * \return MIDI SoundFont path.
      */
     const std::string GetSoundFontPath();
-
-    /**
-     * Gets an indication if whether or not the third party flag was passed in.
-     */
-    bool GetThirdParty();
 
     /**
      * Parses commandline arguments.
@@ -211,9 +214,9 @@ class Config {
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
+    bool show_third_party_;  //!< Determines whether or not to print out third-
+                                                    //!< party copyright notices
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes
-    bool third_party_;  //!< Determines whether or not to print out third party
-                                                         //!< copyright notices
 };
 
 }   // End namespace midistar

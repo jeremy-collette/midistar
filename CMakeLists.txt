@@ -123,7 +123,7 @@ else()
     link_directories(${CMAKE_SOURCE_DIR}/lib/${build_type})
 
     # Change binary output dir
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${build_type})
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${build_type})
 endif()
 
 # Create executable

@@ -19,6 +19,9 @@
 #ifndef MIDISTAR_GAME_H_
 #define MIDISTAR_GAME_H_
 
+// TODO(@jeremy): remove
+#define SCENE_TEST
+
 #include <queue>
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -29,6 +32,7 @@
 #include "midistar/MidiMessage.h"
 #include "midistar/MidiOut.h"
 #include "midistar/MidiInstrumentIn.h"
+#include "midistar/Scene.h"
 
 namespace midistar {
 
@@ -118,19 +122,28 @@ class Game {
      */
     void TurnMidiNoteOn(int chan, int note, int vel);
 
+	bool SetScene(std::string scene_name);
+
  private:
     bool CheckSongNotes();  //!< Determines if the Game has valid song notes
     void CleanUpObjects();  //!< Deletes all GameObjects and their components
     void DeleteObject(GameObject* o);  //!< Deletes a GameObject
+#ifndef SCENE_TEST
     void FlushNewObjectQueue();  //!< Adds new objects to object buffer
+#endif
 
-    GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
+	Scene* current_scene_;  //!< Current scene
     MidiFileIn midi_file_in_;  //!< MIDI file in instance
     std::vector<MidiMessage> midi_in_buf_;  //!< MIDI input port notes buffer
     MidiOut midi_out_;  //!< MIDI port out instance
     MidiInstrumentIn midi_instrument_in_;  //!< MIDI instrument input
     std::queue<GameObject*> new_objects_;  //!< New GameObjects buffer
+	GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
     std::vector<GameObject*> objects_;  //!< GameObjects buffer
+	// TODO(@jeremy): Use this
+	//SceneFactoryManager scene_factory_manager_;  //!< Creates Scenes
+	// TODO(@jeremy): remove
+	bool scene_changed_;
     std::vector<sf::Event> sf_events_;  //!< SFML events buffer
     sf::RenderWindow window_;  //!< SFML window instance
 };

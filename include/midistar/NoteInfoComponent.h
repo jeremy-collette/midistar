@@ -67,13 +67,6 @@ class NoteInfoComponent : public Component {
     int GetVelocity();
 
     /**
-     * Determines whether or not the note has a MIDI track.
-     *
-     * \return True if the note has a track. False otherwise.
-     */
-    bool HasTrack();
-
-    /**
      * \copydoc Component::Update()
      */
     void Update(Game* g, GameObject* o, int delta);

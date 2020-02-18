@@ -26,3 +26,6 @@ package
 **.mid
 **.swp
 **.tmp
+
+*.sf2
+*.ttf

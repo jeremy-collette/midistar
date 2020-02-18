@@ -21,12 +21,13 @@
 
 namespace midistar {
 
+// TODO(@jeremy): this should be a scene factory
 IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 }
 
 std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
-	// TODO(@jeremy): Cleanup heap objects
-	// TODO(@jeremy): Add font to project
+	// TODO(@jeremy): cleanup heap objects
+	// TODO(@jeremy): add font to project
 	auto font = new sf::Font();
 	if (!font->loadFromFile("arial.ttf")) {
 		throw "Could not load font!";
@@ -39,17 +40,17 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 			for (const auto& evt : game->GetSfEvents()) {
 				if (evt.key.code == sf::Keyboard::Enter && evt.type ==
 					sf::Event::KeyPressed) {
+					// TODO(@jeremy): use correct scene name
 					game->SetScene("Foo");
 				}
 			}
 		}
 	};
 
-	// Create at (50, 50)
-	auto square = new GameObject{ text, 50.0f, 50.0f, 100.0f, 100.0f };
-	square->SetComponent(lamda_component);
-
-	return std::vector<GameObject*> { square };
+	// Create text at (50, 50)
+	auto text_object = new GameObject{ text, 50.0f, 50.0f, 100.0f, 100.0f };
+	text_object->SetComponent(lamda_component);
+	return std::vector<GameObject*> { text_object };
 }
 
 }  // End namespace midistar

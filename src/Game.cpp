@@ -197,6 +197,7 @@ void Game::Run() {
         window_.display();
 
         // Handle MIDI file events
+		// TODO(@jeremy): This should be done inside a GameObject
 #ifdef SCENE_TEST
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
@@ -226,6 +227,7 @@ void Game::Run() {
 #endif
 
         // Handle MIDI port input events
+		// TODO(@jeremy): This should be done inside a GameObject
         midi_in_buf_.clear();
         while (midi_instrument_in_.GetMessage(&msg)) {
 #ifdef DEBUG
@@ -238,6 +240,7 @@ void Game::Run() {
         }
 
         // Handle SFML events
+	    // TODO(@jeremy): This should be done inside a GameObject
         sf_events_.clear();
         sf::Event event;
         while (window_.pollEvent(event)) {
@@ -245,6 +248,7 @@ void Game::Run() {
             if (event.type == sf::Event::Closed
                 || (event.type == sf::Event::KeyPressed &&
                         event.key.code == sf::Keyboard::Escape)) {
+				// TODO(@jeremy): cleanup
                 window_.close();
             }
         }
@@ -283,7 +287,12 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 bool Game::SetScene(std::string scene_name) {
 	// TODO(@jeremy): Use Scene name
 
+	if (scene_name.find("Exit") != std::string::npos) {
+		window_.close();
+	}
+
 	// TODO(@jeremy): clean-up old Scene
+	//delete current_scene_;
 	current_scene_ = new Scene{ this, window_, objects_ };
 
 	if (!current_scene_->Init())

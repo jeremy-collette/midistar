@@ -27,6 +27,9 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MenuComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MenuInputHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MenuItemComponent.h    
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiInstrumentIn.h
@@ -72,6 +75,9 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/InvertColourComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/LambdaComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_SOURCE_DIR}/src/MenuComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/MenuInputHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/MenuItemComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiFileIn.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiIn.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiInstrumentIn.cpp

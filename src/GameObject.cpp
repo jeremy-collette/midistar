@@ -18,6 +18,8 @@
 
 #include "midistar/GameObject.h"
 
+#include <algorithm>
+
 namespace midistar {
 
 GameObject::~GameObject() {
@@ -25,6 +27,19 @@ GameObject::~GameObject() {
         delete c;
     }
     delete drawable_;
+
+	for (auto child : children_) {
+		delete child;
+	}
+}
+
+void GameObject::AddChild(GameObject* const game_object) {
+	this->children_.push_back(game_object);
+}
+
+void GameObject::AddTag(std::string tag)
+{
+	// TODO(@jeremy): implement
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -37,6 +52,15 @@ void GameObject::DeleteComponent(ComponentType type) {
 
 void GameObject::Draw(sf::RenderWindow* window) {
     window->draw(*drawable_);
+
+	for (const auto& child : children_) {
+		child->Draw(window);
+	}
+}
+
+std::vector<GameObject*>& GameObject::GetChildren()
+{
+	return children_;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
@@ -66,6 +90,12 @@ bool GameObject::GetRequestDelete() {
 
 bool GameObject::HasComponent(ComponentType type) {
     return components_[type];
+}
+
+bool GameObject::HasTag(std::string tag)
+{
+	// TODO(@jeremy): implement
+	return false;
 }
 
 void GameObject::SetComponent(Component* c) {
@@ -100,6 +130,22 @@ void GameObject::Update(Game* g, int delta) {
             has_component = true;
         }
     }
+
+	// Cleanup children
+	auto children_to_delete = std::vector<GameObject*>{ };
+	for (const auto& child : children_) {
+		child->Update(g, delta);
+		if (child->GetRequestDelete()) {
+			children_to_delete.push_back(child);
+		} else {
+			has_component = true;
+		}
+	}
+	for (const auto& child : children_to_delete) {
+		children_.erase(std::remove(children_.begin(), children_.end(), child),
+			children_.end());
+		delete child;
+	}
 
     // If we don't have any components, delete the GameObject
     if (!has_component) {

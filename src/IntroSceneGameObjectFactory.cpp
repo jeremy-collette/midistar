@@ -17,6 +17,10 @@
  */
 
 #include "midistar/IntroSceneGameObjectFactory.h"
+
+#include "midistar/MenuComponent.h"
+#include "midistar/MenuInputHandlerComponent.h"
+#include "midistar/MenuItemComponent.h"
 #include "midistar/LambdaComponent.h"
 
 namespace midistar {
@@ -28,29 +32,33 @@ IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 	// TODO(@jeremy): cleanup heap objects
 	// TODO(@jeremy): add font to project
+
+	// Create menu
 	auto font = new sf::Font();
 	if (!font->loadFromFile("arial.ttf")) {
 		throw "Could not load font!";
 	}
-	auto text = new sf::Text("Press enter to play", *font, 50U);
-	text->setFillColor(sf::Color::White);
 
-	auto lamda_component = new LambdaComponent{
-		[](Game* game, GameObject* game_object, auto delta) {
-			for (const auto& evt : game->GetSfEvents()) {
-				if (evt.key.code == sf::Keyboard::Enter && evt.type ==
-					sf::Event::KeyPressed) {
-					// TODO(@jeremy): use correct scene name
-					game->SetScene("Foo");
-				}
-			}
-		}
+	auto menu_title = new sf::Text("midistar", *font, 100);
+	menu_title->setFillColor(sf::Color::Green);
+	auto menu = new GameObject{ menu_title, 0, 0, 0, 0 };
+	menu->SetComponent(new MenuComponent{ });
+	menu->SetComponent(new MenuInputHandlerComponent{ });
+
+	// Add menu items
+	auto menu_item_text = std::vector<std::string*>{
+		new std::string{ "1. Start" },
+		new std::string{ "2. Exit" },
 	};
+	int i = 1;
+	for (const auto& text : menu_item_text) {
+		auto drawable = new sf::Text(*text, *font, 100);
+		auto menu_item = new GameObject(drawable, 0, 100 * i++, 20, 20);
+		menu_item->SetComponent(new MenuItemComponent{ *text });
+		menu->AddChild(menu_item);
+	}
 
-	// Create text at (50, 50)
-	auto text_object = new GameObject{ text, 50.0f, 50.0f, 100.0f, 100.0f };
-	text_object->SetComponent(lamda_component);
-	return std::vector<GameObject*> { text_object };
+	return std::vector<GameObject*> { menu };
 }
 
 }  // End namespace midistar

@@ -30,10 +30,12 @@ GameObject::GameObject(
     , double height)
         : components_{0}
         , drawable_{drawformable}
+		, children_{ }
         , original_height_{height}
         , original_width_{width}
         , request_delete_{false}
-        , to_delete_{}
+		, tags_{ }
+        , to_delete_{ }
         , transformable_{drawformable} {
     SetPosition(x_pos, y_pos);
     for (int i=0; i < Component::NUM_COMPONENTS; ++i) {

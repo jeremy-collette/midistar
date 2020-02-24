@@ -61,7 +61,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 	}
 
 	auto copyright_string = new std::string{
-		"Copyright (c) Jeremy Collette 2020" };
+		"Copyright (c) Jeremy Collette 2018-2020" };
 	auto copyright_text = new sf::Text(*copyright_string, *font, 25);
 	copyright_text->setFillColor(sf::Color::White);
 	auto copyright = new GameObject{ copyright_text, 150, 650, 0, 0 };

@@ -45,22 +45,17 @@ Game::Game()
 }
 
 Game::~Game() {
-#ifndef SCENE_TEST
-    for (auto& o : objects_) {
-        delete o;
-    }
-#endif
     if (object_factory_) {
         delete object_factory_;
     }
+
+	if (current_scene_) {
+		delete current_scene_;
+	}
 }
 
 void Game::AddGameObject(GameObject* obj) {
-#ifdef SCENE_TEST
 	current_scene_->AddNewGameObject(obj);
-#else
-	new_objects_.push(obj);
-#endif
 }
 
 GameObjectFactory& Game::GetGameObjectFactory() {
@@ -72,11 +67,7 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
 }
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
-#ifdef SCENE_TEST
 	return current_scene_->GetGameObjects();
-#else
-    return objects_;
-#endif
 }
 
 const std::vector<sf::Event>& Game::GetSfEvents() {
@@ -136,7 +127,6 @@ bool Game::Init() {
     auto instrument = object_factory_->CreateInstrument();
     objects_.insert(objects_.end(), instrument.begin(), instrument.end());
 
-#ifdef SCENE_TEST
 	auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
 	auto game_objects = intro_scene_object_factory->CreateGameObjects();
 	current_scene_ = new Scene{ this, window_, game_objects };
@@ -153,7 +143,6 @@ bool Game::Init() {
 		std::cerr << "Error initializing scene!" << std::endl;
 		return false;
 	}
-#endif
 
 	return true;
 }
@@ -163,42 +152,17 @@ void Game::Run() {
     sf::Clock clock;
     while (window_.isOpen()) {
         // Clean up from last tick
-#ifndef SCENE_TEST
-        FlushNewObjectQueue();
-#endif
         window_.clear(object_factory_->GetBackgroundColour());
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
         // Handle updating
-
-#ifdef SCENE_TEST
 		current_scene_->Update(delta);
 		current_scene_->Draw();
-#else
-        unsigned num_objects;
-        unsigned i = 0;
-        do {
-            num_objects = objects_.size();
-            while (i < objects_.size()) {
-                objects_[i++]->Update(this, delta);
-            }
-            FlushNewObjectQueue();
-        // If we've added new objects during updating, we will update them now.
-        // NOTE: This could cause an infinite loop if new objects create new
-        // objects.
-        } while (num_objects != objects_.size());
-
-        // Handle drawing
-        for (auto obj : objects_) {
-            obj->Draw(&window_);
-        }
-#endif
         window_.display();
 
         // Handle MIDI file events
 		// TODO(@jeremy): This should be done inside a GameObject
-#ifdef SCENE_TEST
         MidiMessage msg;
         while (midi_file_in_.GetMessage(&msg)) {
             if (msg.IsNoteOn()) {
@@ -211,20 +175,6 @@ void Game::Run() {
                             , msg.GetDuration()));
             }
         }
-#else
-		MidiMessage msg;
-		while (midi_file_in_.GetMessage(&msg)) {
-			if (msg.IsNoteOn()) {
-				objects_.push_back(object_factory_->
-					CreateSongNote(
-						msg.GetTrack()
-						, msg.GetChannel()
-						, msg.GetKey()
-						, msg.GetVelocity()
-						, msg.GetDuration()));
-			}
-		}
-#endif
 
         // Handle MIDI port input events
 		// TODO(@jeremy): This should be done inside a GameObject
@@ -254,14 +204,11 @@ void Game::Run() {
         }
 
         // Update MIDI file and port
-#ifdef SCENE_TEST
+		// TODO(@jeremy): move this inside scene
 		if (scene_changed_) {
-#endif
-		midi_file_in_.Tick(delta);
-		midi_instrument_in_.Tick();
-#ifdef SCENE_TEST
+			midi_file_in_.Tick(delta);
+			midi_instrument_in_.Tick();
 		}
-#endif
 
         // Clean up!
 		// TODO(@jeremy): move this inside scene
@@ -292,6 +239,9 @@ bool Game::SetScene(std::string scene_name) {
 	}
 
 	// TODO(@jeremy): clean-up old Scene
+	// We need to store the new scene in some temporary place and
+	// swap it at the end of the update cycle to avoid accessing
+	// cleaned up data
 	//delete current_scene_;
 	current_scene_ = new Scene{ this, window_, objects_ };
 
@@ -306,55 +256,20 @@ bool Game::SetScene(std::string scene_name) {
 }
 
 bool Game::CheckSongNotes() {
-#ifdef SCENE_TEST
 	for (const auto& obj : current_scene_->GetGameObjects()) {
 		if (obj->HasComponent(Component::SONG_NOTE)) {
 			return true;
 		}
-}
+	}
 	return false;
-#else
-    for (const auto& obj : objects_) {
-        if (obj->HasComponent(Component::SONG_NOTE)) {
-            return true;
-        }
-    }
-	return false;
-#endif
 }
 
 void Game::CleanUpObjects() {
-#ifdef SCENE_TEST
 	current_scene_->CleanUpObjects();
-#else
-    auto objects_copy {objects_};
-	for (auto& o : objects_copy) {
-		if (o->GetRequestDelete()) {
-			DeleteObject(o);
-		}
-	}
-#endif
 }
 
 void Game::DeleteObject(GameObject* o) {
-#ifdef SCENE_TEST
 	current_scene_->DeleteObject(o);
-#else
-    auto itr = std::find(objects_.begin(), objects_.end(), o);
-    if (itr != objects_.end()) {
-        objects_.erase(itr);
-    }
-    delete o;
-#endif
 }
-
-#ifndef SCENE_TEST
-void Game::FlushNewObjectQueue() {
-    while (!new_objects_.empty()) {
-        objects_.push_back(new_objects_.front());
-        new_objects_.pop();
-    }
-}
-#endif
 
 }   // namespace midistar

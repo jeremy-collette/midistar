@@ -19,9 +19,6 @@
 #ifndef MIDISTAR_GAME_H_
 #define MIDISTAR_GAME_H_
 
-// TODO(@jeremy): remove
-#define SCENE_TEST
-
 #include <queue>
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -128,9 +125,6 @@ class Game {
     bool CheckSongNotes();  //!< Determines if the Game has valid song notes
     void CleanUpObjects();  //!< Deletes all GameObjects and their components
     void DeleteObject(GameObject* o);  //!< Deletes a GameObject
-#ifndef SCENE_TEST
-    void FlushNewObjectQueue();  //!< Adds new objects to object buffer
-#endif
 
 	Scene* current_scene_;  //!< Current scene
     MidiFileIn midi_file_in_;  //!< MIDI file in instance

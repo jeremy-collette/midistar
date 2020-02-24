@@ -84,6 +84,7 @@ bool Game::Init() {
             GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
 
+	// TODO(@jeremy): move this stuff to Scene?
     // Setup MIDI input / outputs
     midi_instrument_in_.Init();  // It is okay if this fails (player can be
                                                     // using computer keyboard)
@@ -94,57 +95,7 @@ bool Game::Init() {
         return false;
     }
 
-    // Setup GameObject factory and create GameObjects
-    double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
-        Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
-        Config::GetInstance().GetFallSpeedMultiplier();
-
-    auto mode = Config::GetInstance().GetGameMode();
-    auto unique_notes = midi_file_in_.GetUniqueMidiNotes();
-
-#ifdef DEBUG
-    std::cout << "MIDI file unique notes: \n";
-    for (const auto& n : unique_notes) {
-        std::cout << n << ' ';
-    }
-    std::cout << '\n';
-#endif
-
-    if (mode == "drum") {
-        auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
-        object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
-            , max_note_duration);
-    } else if (mode == "piano") {
-        object_factory_ = new PianoGameObjectFactory(note_speed);
-    } else {
-        object_factory_ = new DefaultGameObjectFactory(note_speed);
-    }
-
-    if (!object_factory_->Init()) {
-        return false;
-    }
-
-    auto instrument = object_factory_->CreateInstrument();
-    objects_.insert(objects_.end(), instrument.begin(), instrument.end());
-
-	auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
-	auto game_objects = intro_scene_object_factory->CreateGameObjects();
-	current_scene_ = new Scene{ this, window_, game_objects };
-
-	//if (scene_factory_manager_.TryCreateScene("TestScene", current_scene_)
-	//	== false)
-	//{
-	//	std::cerr << "Error creating scene \"TestScene\"!" << std::endl;
-	//	return false;
-	//}
-
-	if (!current_scene_->Init())
-	{
-		std::cerr << "Error initializing scene!" << std::endl;
-		return false;
-	}
-
-	return true;
+	return SetScene("Intro");
 }
 
 void Game::Run() {
@@ -152,6 +103,7 @@ void Game::Run() {
     sf::Clock clock;
     while (window_.isOpen()) {
         // Clean up from last tick
+		// TODO(@jeremy): move this to scene
         window_.clear(object_factory_->GetBackgroundColour());
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
@@ -232,26 +184,69 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 }
 
 bool Game::SetScene(std::string scene_name) {
-	// TODO(@jeremy): Use Scene name
-
 	if (scene_name.find("Exit") != std::string::npos) {
 		window_.close();
+		return true;
 	}
 
-	// TODO(@jeremy): clean-up old Scene
-	// We need to store the new scene in some temporary place and
-	// swap it at the end of the update cycle to avoid accessing
-	// cleaned up data
-	//delete current_scene_;
-	current_scene_ = new Scene{ this, window_, objects_ };
+	// Setup GameObject factory and create GameObjects
+	double note_speed = (midi_file_in_.GetTicksPerQuarterNote() /
+		Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
+		Config::GetInstance().GetFallSpeedMultiplier();
+
+	auto mode = Config::GetInstance().GetGameMode();
+	auto unique_notes = midi_file_in_.GetUniqueMidiNotes();
+
+#ifdef DEBUG
+	std::cout << "MIDI file unique notes: \n";
+	for (const auto& n : unique_notes) {
+		std::cout << n << ' ';
+	}
+	std::cout << '\n';
+#endif
+
+	// TODO(@jeremy): clean up
+	object_factory_ = new DefaultGameObjectFactory(note_speed);
+	if (scene_name.find("Intro") != std::string::npos) {
+		// Setup initial scene
+		auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
+		auto game_objects = intro_scene_object_factory->CreateGameObjects();
+		current_scene_ = new Scene{ this, window_, game_objects };
+	}
+	else
+	{
+		scene_changed_ = true;
+
+		if (scene_name.find("Piano") != std::string::npos) {
+			object_factory_ = new PianoGameObjectFactory(note_speed);
+		}
+		else if (scene_name.find("Drum") != std::string::npos) {
+			auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
+			object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
+				, max_note_duration);
+		}
+
+		if (!object_factory_->Init()) {
+			return false;
+		}
+
+		auto instrument = object_factory_->CreateInstrument();
+		objects_.insert(objects_.end(), instrument.begin(), instrument.end());
+
+		// TODO(@jeremy): clean-up old Scene
+		// We need to store the new scene in some temporary place and
+		// swap it at the end of the update cycle to avoid accessing
+		// cleaned up data
+		//delete current_scene_;
+		current_scene_ = new Scene{ this, window_, objects_ };
+	}
 
 	if (!current_scene_->Init())
 	{
-		std::cerr << "Error initializing scene!" << std::endl;
+		std::cerr << "Error initializing scene: " << scene_name << std::endl;
 		return false;
 	}
 
-	scene_changed_ = true;
 	return true;
 }
 
@@ -264,10 +259,12 @@ bool Game::CheckSongNotes() {
 	return false;
 }
 
+// TODO(@jeremy): remove
 void Game::CleanUpObjects() {
 	current_scene_->CleanUpObjects();
 }
 
+// TODO(@jeremy): remove
 void Game::DeleteObject(GameObject* o) {
 	current_scene_->DeleteObject(o);
 }

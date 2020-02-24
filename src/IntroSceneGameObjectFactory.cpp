@@ -21,7 +21,7 @@
 #include "midistar/MenuComponent.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
-#include "midistar/LambdaComponent.h"
+#include "midistar/SongNoteComponent.h"
 
 namespace midistar {
 
@@ -32,10 +32,11 @@ IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 	// TODO(@jeremy): cleanup heap objects
 	// TODO(@jeremy): add font to project
+	// TODO(@jeremy): resize based on screen size
 
 	// Create menu
 	auto font = new sf::Font();
-	if (!font->loadFromFile("arial.ttf")) {
+	if (!font->loadFromFile("PixelMiners-KKal.otf")) {
 		throw "Could not load font!";
 	}
 
@@ -47,18 +48,27 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 
 	// Add menu items
 	auto menu_item_text = std::vector<std::string*>{
-		new std::string{ "1. Start" },
-		new std::string{ "2. Exit" },
+		new std::string{ "1. Piano" },
+		new std::string{ "2. Drum" },
+		new std::string{ "0. Exit" },
 	};
 	int i = 1;
 	for (const auto& text : menu_item_text) {
-		auto drawable = new sf::Text(*text, *font, 100);
-		auto menu_item = new GameObject(drawable, 0, 100 * i++, 20, 20);
+		auto drawable = new sf::Text(*text, *font, 50);
+		auto menu_item = new GameObject(drawable, 50, 100 + 50 * i++, 20, 20);
 		menu_item->SetComponent(new MenuItemComponent{ *text });
 		menu->AddChild(menu_item);
 	}
 
-	return std::vector<GameObject*> { menu };
+	auto copyright_string = new std::string{
+		"Copyright (c) Jeremy Collette 2020" };
+	auto copyright_text = new sf::Text(*copyright_string, *font, 25);
+	copyright_text->setFillColor(sf::Color::White);
+	auto copyright = new GameObject{ copyright_text, 150, 650, 0, 0 };
+	// TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
+	// create a "KeepAliveComponent"?
+	copyright->SetComponent(new SongNoteComponent{ });
+	return std::vector<GameObject*> { menu, copyright };
 }
 
 }  // End namespace midistar

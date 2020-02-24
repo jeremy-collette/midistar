@@ -35,8 +35,10 @@ namespace midistar {
 // TODO(@jeremy): Remove old code
 Game::Game()
 		: current_scene_{ nullptr }
+		, current_scene_name_{ "" }
+		, next_scene_{ nullptr }
 		, object_factory_{ nullptr }
-		, scene_changed_{ false }
+		, play_notes_{ false }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
@@ -102,6 +104,15 @@ void Game::Run() {
     unsigned int t = 0;
     sf::Clock clock;
     while (window_.isOpen()) {
+		// If we're changing scenes, do it now
+		if (next_scene_) {
+			if (current_scene_) {
+				delete current_scene_;
+			}
+			current_scene_ = next_scene_;
+			next_scene_ = nullptr;
+		}
+
         // Clean up from last tick
 		// TODO(@jeremy): move this to scene
         window_.clear(object_factory_->GetBackgroundColour());
@@ -150,14 +161,18 @@ void Game::Run() {
             if (event.type == sf::Event::Closed
                 || (event.type == sf::Event::KeyPressed &&
                         event.key.code == sf::Keyboard::Escape)) {
-				// TODO(@jeremy): cleanup
-                window_.close();
+				if (current_scene_name_ == "Intro") {
+					window_.close();
+					continue;
+				} else {
+					SetScene("Intro");
+				}
             }
         }
 
         // Update MIDI file and port
 		// TODO(@jeremy): move this inside scene
-		if (scene_changed_) {
+		if (play_notes_) {
 			midi_file_in_.Tick(delta);
 			midi_instrument_in_.Tick();
 		}
@@ -185,6 +200,7 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 
 bool Game::SetScene(std::string scene_name) {
 	if (scene_name.find("Exit") != std::string::npos) {
+		current_scene_name_ = "Exit";
 		window_.close();
 		return true;
 	}
@@ -209,18 +225,22 @@ bool Game::SetScene(std::string scene_name) {
 	object_factory_ = new DefaultGameObjectFactory(note_speed);
 	if (scene_name.find("Intro") != std::string::npos) {
 		// Setup initial scene
+		current_scene_name_ = "Intro";
 		auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
 		auto game_objects = intro_scene_object_factory->CreateGameObjects();
-		current_scene_ = new Scene{ this, window_, game_objects };
+		next_scene_ = new Scene{ this, window_, game_objects };
+		play_notes_ = false;
 	}
 	else
 	{
-		scene_changed_ = true;
+		play_notes_ = true;
 
 		if (scene_name.find("Piano") != std::string::npos) {
+			current_scene_name_ = "Piano";
 			object_factory_ = new PianoGameObjectFactory(note_speed);
 		}
 		else if (scene_name.find("Drum") != std::string::npos) {
+			current_scene_name_ = "Drum";
 			auto max_note_duration = midi_file_in_.GetMaximumNoteDuration();
 			object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
 				, max_note_duration);
@@ -231,17 +251,10 @@ bool Game::SetScene(std::string scene_name) {
 		}
 
 		auto instrument = object_factory_->CreateInstrument();
-		objects_.insert(objects_.end(), instrument.begin(), instrument.end());
-
-		// TODO(@jeremy): clean-up old Scene
-		// We need to store the new scene in some temporary place and
-		// swap it at the end of the update cycle to avoid accessing
-		// cleaned up data
-		//delete current_scene_;
-		current_scene_ = new Scene{ this, window_, objects_ };
+		next_scene_ = new Scene{ this, window_, instrument};
 	}
 
-	if (!current_scene_->Init())
+	if (!next_scene_->Init())
 	{
 		std::cerr << "Error initializing scene: " << scene_name << std::endl;
 		return false;

@@ -16,19 +16,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_SCENEFACTORY_H_
-#define MIDISTAR_SCENEFACTORY_H_
+#ifndef MIDISTAR_INTROSCENEFACTORY_H_
+#define MIDISTAR_INTROSCENEFACTORY_H_
 
-#include "midistar/Scene.h"
+#include "midistar/SceneFactory.h"
 
 namespace midistar {
 
-class SceneFactory {
+class IntroSceneFactory : public SceneFactory {
  public:
     virtual bool Create(
         Game* game
         , sf::RenderWindow& render_window
-        , Scene** scene) = 0;
+        , Scene** scene);
+
 };
 
 }   // End namespace midistar

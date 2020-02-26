@@ -27,7 +27,7 @@
 #include "midistar/DefaultGameObjectFactory.h"
 #include "midistar/DrumGameObjectFactory.h"
 #include "midistar/PianoGameObjectFactory.h"
-#include "midistar/IntroSceneGameObjectFactory.h"
+#include "midistar/IntroSceneFactory.h"
 #include "midistar/NoteInfoComponent.h"
 
 // TODO(@jeremy): remove
@@ -45,12 +45,13 @@ Game::Game()
         , midi_instrument_in_component_ { nullptr }
 		, next_scene_{ nullptr }
 		, object_factory_{ nullptr }
-		, play_notes_{ false }
+        , scene_factories_{ }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
                  , Config::GetInstance().GetFullScreen() ?
                  sf::Style::Fullscreen : sf::Style::Default} {
+    scene_factories_["Intro"] = new IntroSceneFactory{};
 }
 
 Game::~Game() {
@@ -61,6 +62,11 @@ Game::~Game() {
 	if (current_scene_) {
 		delete current_scene_;
 	}
+
+    for (auto& itr = scene_factories_.begin(); itr != scene_factories_.end();
+            ++itr) {
+        delete itr->second;
+    }
 }
 
 void Game::AddGameObject(GameObject* obj) {
@@ -111,6 +117,10 @@ void Game::Run() {
 			}
 			current_scene_ = next_scene_;
 			next_scene_ = nullptr;
+
+            if (!current_scene_->Init()) {
+                throw "Error initializing scene!";
+            }
 		}
 
         // Clean up from last tick
@@ -224,54 +234,39 @@ bool Game::SetScene(std::string scene_name) {
 
 	// TODO(@jeremy): clean up
 	object_factory_ = new DefaultGameObjectFactory(note_speed);
-	if (scene_name.find("Intro") != std::string::npos) {
-		// Setup initial scene
-		current_scene_name_ = "Intro";
-		auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
-		auto game_objects = intro_scene_object_factory->CreateGameObjects();
-		next_scene_ = new Scene{ this, window_, game_objects };
-		play_notes_ = false;
 
-        midi_instrument_in_component_ = nullptr;
+    auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
+    GameObject* midi_instrument_in_game_object;
+    if (!midi_instrument_object_factory.Create(&midi_instrument_in_game_object)) {
+        return false;
+    }
+    midi_instrument_in_component_ = midi_instrument_in_game_object->GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
+    assert(midi_instrument_in_component_);
+
+    if (scene_factories_.count(scene_name) != 0)
+    {
+        return scene_factories_[scene_name]->Create(this, window_, &next_scene_);
+    }
+
+	if (scene_name.find("Piano") != std::string::npos) {
+		current_scene_name_ = "Piano";
+		object_factory_ = new PianoGameObjectFactory(note_speed);
 	}
-	else
-	{
-		play_notes_ = true;
-
-        auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
-        GameObject* midi_instrument_in_game_object;
-        if (!midi_instrument_object_factory.Create(&midi_instrument_in_game_object)) {
-            return false;
-        }
-        midi_instrument_in_component_ = midi_instrument_in_game_object->GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
-        assert(midi_instrument_in_component_);
-
-		if (scene_name.find("Piano") != std::string::npos) {
-			current_scene_name_ = "Piano";
-			object_factory_ = new PianoGameObjectFactory(note_speed);
-		}
-		else if (scene_name.find("Drum") != std::string::npos) {
-			current_scene_name_ = "Drum";
-			auto max_note_duration = midi_file_in_component_->midi_file_in_->GetMaximumNoteDuration();
-			object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
-				, max_note_duration);
-		}
-
-		if (!object_factory_->Init()) {
-			return false;
-		}
-
-		auto scene_objects = object_factory_->CreateInstrument();
-        scene_objects.push_back(midi_file_game_object);
-        scene_objects.push_back(midi_instrument_in_game_object);
-		next_scene_ = new Scene{ this, window_, scene_objects};
+	else if (scene_name.find("Drum") != std::string::npos) {
+		current_scene_name_ = "Drum";
+		auto max_note_duration = midi_file_in_component_->midi_file_in_->GetMaximumNoteDuration();
+		object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
+			, max_note_duration);
 	}
 
-	if (!next_scene_->Init())
-	{
-		std::cerr << "Error initializing scene: " << scene_name << std::endl;
+	if (!object_factory_->Init()) {
 		return false;
 	}
+
+	auto scene_objects = object_factory_->CreateInstrument();
+    scene_objects.push_back(midi_file_game_object);
+    scene_objects.push_back(midi_instrument_in_game_object);
+	next_scene_ = new Scene{ this, window_, scene_objects};
 
 	return true;
 }

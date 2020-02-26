@@ -20,6 +20,7 @@
 #define MIDISTAR_GAME_H_
 
 #include <queue>
+#include <unordered_map>
 #include <vector>
 #include <SFML/Graphics.hpp>
 
@@ -30,6 +31,7 @@
 #include "midistar/MidiOut.h"
 #include "midistar/MidiInstrumentIn.h"
 #include "midistar/Scene.h"
+#include "midistar/SceneFactory.h"
 
 // TODO(@jeremy): remove
 #include "midistar/MidiFileInComponent.h"
@@ -136,10 +138,10 @@ class Game {
     std::queue<GameObject*> new_objects_;  //!< New GameObjects buffer
 	Scene* next_scene_;  //!< The scene to swap to
 	GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
-	// TODO(@jeremy): remove
-	bool play_notes_;
     std::vector<sf::Event> sf_events_;  //!< SFML events buffer
     sf::RenderWindow window_;  //!< SFML window instance
+
+    std::unordered_map<std::string, SceneFactory*> scene_factories_;
 
     // TODO(@jeremy): remove
     MidiFileInComponent* midi_file_in_component_;

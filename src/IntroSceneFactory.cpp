@@ -16,21 +16,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_SCENEFACTORY_H_
-#define MIDISTAR_SCENEFACTORY_H_
+#include "midistar/IntroSceneFactory.h"
 
-#include "midistar/Scene.h"
+#include "midistar/IntroSceneGameObjectFactory.h"
 
 namespace midistar {
 
-class SceneFactory {
- public:
-    virtual bool Create(
+bool IntroSceneFactory::Create(
         Game* game
         , sf::RenderWindow& render_window
-        , Scene** scene) = 0;
-};
+        , Scene** scene) {
+    auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
+    auto game_objects = intro_scene_object_factory->CreateGameObjects();
+    *scene = new Scene{ game, render_window, game_objects };
+
+    return true;
+}
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_SCENEFACTORY_H_

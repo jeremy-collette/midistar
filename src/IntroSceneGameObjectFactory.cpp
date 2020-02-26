@@ -22,6 +22,7 @@
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/Version.h"
 
 namespace midistar {
 
@@ -68,7 +69,15 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 	// TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
 	// create a "KeepAliveComponent"?
 	copyright->SetComponent(new SongNoteComponent{ });
-	return std::vector<GameObject*> { menu, copyright };
+
+    auto version_string = new std::string{ MIDISTAR_VERSION };
+    auto version_text = new sf::Text(*version_string, *font, 25);
+    auto version = new GameObject{ version_text, 900, 720, 0, 0 };
+    // TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
+    // create a "KeepAliveComponent"?
+    version->SetComponent(new SongNoteComponent{ });
+
+	return std::vector<GameObject*> { menu, copyright, version };
 }
 
 }  // End namespace midistar

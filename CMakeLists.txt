@@ -24,6 +24,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentAutoPlayComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentInputHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
@@ -48,6 +49,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoSongNoteCollisionHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Scene.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SceneFactory.h    
     ${CMAKE_SOURCE_DIR}/include/midistar/ShrinkGrowComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SpriteAnimatorComponent.h
@@ -73,6 +75,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentAutoPlayComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/IntroSceneFactory.cpp    
     ${CMAKE_SOURCE_DIR}/src/IntroSceneGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentInputHandlerComponent.cpp

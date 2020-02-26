@@ -30,7 +30,9 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuInputHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuItemComponent.h    
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileGameObjectFactory.h    
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileIn.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileInComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiInstrumentIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiMessage.h
@@ -78,7 +80,9 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/MenuComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuInputHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuItemComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/MidiFileGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiFileIn.cpp
+    ${CMAKE_SOURCE_DIR}/src/MidiFileInComponent.cpp    
     ${CMAKE_SOURCE_DIR}/src/MidiIn.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiInstrumentIn.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiMessage.cpp

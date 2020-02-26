@@ -32,6 +32,12 @@ MidiPortIn::MidiPortIn()
         : MidiPortIn(true) {
 }
 
+MidiPortIn::~MidiPortIn() {
+    if (midi_in_) {
+        delete midi_in_;
+    }
+}
+
 bool MidiPortIn::Init() {
     midi_in_ = new RtMidiIn();
 

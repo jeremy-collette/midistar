@@ -33,6 +33,8 @@ class MidiInstrumentInComponent : public Component {
  public:
 	 explicit MidiInstrumentInComponent(MidiInstrumentIn* midi_instrument_in);
 
+     ~MidiInstrumentInComponent();
+
      std::vector<MidiMessage>& GetMessages();
 
     /**

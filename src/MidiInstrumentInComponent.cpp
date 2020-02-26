@@ -26,6 +26,10 @@ MidiInstrumentInComponent::MidiInstrumentInComponent(
         , midi_instrument_in_{ midi_instrument_in } {
 }
 
+MidiInstrumentInComponent::~MidiInstrumentInComponent() {
+    delete midi_instrument_in_;
+}
+
 std::vector<MidiMessage>& MidiInstrumentInComponent::GetMessages()
 {
     return message_buffer_;

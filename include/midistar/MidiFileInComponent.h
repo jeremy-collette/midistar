@@ -36,6 +36,8 @@ class MidiFileInComponent : public Component {
  public:
 	 explicit MidiFileInComponent(MidiFileIn* midi_file_in);
 
+     ~MidiFileInComponent();
+
      std::vector<MidiMessage>& GetMessages();
 
     /**

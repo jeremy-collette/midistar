@@ -42,6 +42,7 @@ Game::Game()
 		: current_scene_{ nullptr }
 		, current_scene_name_{ "" }
         , midi_file_in_component_{ nullptr }
+        , midi_instrument_in_component_ { nullptr }
 		, next_scene_{ nullptr }
 		, object_factory_{ nullptr }
 		, play_notes_{ false }
@@ -139,12 +140,14 @@ void Game::Run() {
 
         // Handle MIDI port input events
 		// TODO(@jeremy): This should be done inside a GameObject
-        for (MidiMessage msg : midi_instrument_in_component_->GetMessages()) {
+        if (midi_instrument_in_component_) {
+            for (MidiMessage msg : midi_instrument_in_component_->GetMessages()) {
 #ifdef DEBUG
-            if (msg.IsNoteOn()) {
-                std::cout << "Played: " << msg.GetKey() << '\n';
-            }
+                if (msg.IsNoteOn()) {
+                    std::cout << "Played: " << msg.GetKey() << '\n';
+                }
 #endif
+            }
         }
 
         // Handle SFML events
@@ -203,13 +206,6 @@ bool Game::SetScene(std::string scene_name) {
     midi_file_in_component_ = midi_file_game_object->GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);
     assert(midi_file_in_component_);
 
-    auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
-    GameObject* midi_instrument_game_object = nullptr;
-    if (!midi_instrument_object_factory.Create(&midi_instrument_game_object)) {
-        return false;
-    }
-    midi_instrument_in_component_ = midi_instrument_game_object->GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
-
 	// Setup GameObject factory and create GameObjects
 	double note_speed = (midi_file_in_component_->midi_file_in_->GetTicksPerQuarterNote() /
 		Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
@@ -235,10 +231,20 @@ bool Game::SetScene(std::string scene_name) {
 		auto game_objects = intro_scene_object_factory->CreateGameObjects();
 		next_scene_ = new Scene{ this, window_, game_objects };
 		play_notes_ = false;
+
+        midi_instrument_in_component_ = nullptr;
 	}
 	else
 	{
 		play_notes_ = true;
+
+        auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
+        GameObject* midi_instrument_in_game_object;
+        if (!midi_instrument_object_factory.Create(&midi_instrument_in_game_object)) {
+            return false;
+        }
+        midi_instrument_in_component_ = midi_instrument_in_game_object->GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
+        assert(midi_instrument_in_component_);
 
 		if (scene_name.find("Piano") != std::string::npos) {
 			current_scene_name_ = "Piano";
@@ -257,7 +263,7 @@ bool Game::SetScene(std::string scene_name) {
 
 		auto scene_objects = object_factory_->CreateInstrument();
         scene_objects.push_back(midi_file_game_object);
-        scene_objects.push_back(midi_instrument_game_object);
+        scene_objects.push_back(midi_instrument_in_game_object);
 		next_scene_ = new Scene{ this, window_, scene_objects};
 	}
 

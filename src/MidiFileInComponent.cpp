@@ -25,6 +25,10 @@ MidiFileInComponent::MidiFileInComponent(MidiFileIn* midi_file_in)
 		, midi_file_in_{ midi_file_in } {
 }
 
+MidiFileInComponent::~MidiFileInComponent() {
+    delete midi_file_in_;
+}
+
 std::vector<MidiMessage>& MidiFileInComponent::GetMessages()
 {
     return message_buffer_;

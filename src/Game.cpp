@@ -32,6 +32,7 @@
 
 // TODO(@jeremy): remove
 #include "midistar/MidiFileGameObjectFactory.h"
+#include "midistar/MidiInstrumentGameObjectFactory.h"
 
 namespace midistar {
 
@@ -70,7 +71,7 @@ GameObjectFactory& Game::GetGameObjectFactory() {
 }
 
 const std::vector<MidiMessage>& Game::GetMidiInMessages() {
-    return midi_in_buf_;
+    return midi_instrument_in_component_->GetMessages();
 }
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
@@ -90,18 +91,6 @@ bool Game::Init() {
     window_.setFramerateLimit(Config::GetInstance().
             GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
-
-	// TODO(@jeremy): move this stuff to Scene?
-    // Setup MIDI input / outputs
-    midi_instrument_in_.Init();  // It is okay if this fails (player can be
-                                                    // using computer keyboard)
-
-    // TODO(@jeremy): remove
-    /*
-    if (!midi_file_in_.Init(Config::GetInstance().GetMidiFileName())) {
-        return false;
-    }
-    */
 
     if (!midi_out_.Init()) {
         return false;
@@ -136,8 +125,7 @@ void Game::Run() {
 
         // Handle MIDI file events
 		// TODO(@jeremy): This should be done inside a GameObject
-        MidiMessage msg;
-        while (midi_file_in_component_->GetMessage(&msg)) {
+        for (MidiMessage msg : midi_file_in_component_->GetMessages()) {
             if (msg.IsNoteOn()) {
                 current_scene_->AddNewGameObject(object_factory_->
                         CreateSongNote(
@@ -151,15 +139,12 @@ void Game::Run() {
 
         // Handle MIDI port input events
 		// TODO(@jeremy): This should be done inside a GameObject
-        midi_in_buf_.clear();
-        while (midi_instrument_in_.GetMessage(&msg)) {
+        for (MidiMessage msg : midi_instrument_in_component_->GetMessages()) {
 #ifdef DEBUG
             if (msg.IsNoteOn()) {
                 std::cout << "Played: " << msg.GetKey() << '\n';
             }
 #endif
-
-            midi_in_buf_.push_back(msg);
         }
 
         // Handle SFML events
@@ -180,19 +165,13 @@ void Game::Run() {
             }
         }
 
-        // Update MIDI file and port
-		// TODO(@jeremy): move this inside scene
-		if (play_notes_) {
-			midi_instrument_in_.Tick();
-		}
-
         // Clean up!
 		// TODO(@jeremy): move this inside scene
         CleanUpObjects();
 
         // If we're done playing the file and have no song notes to be played,
         // we're done!
-        if (midi_file_in_component_->midi_file_in_.IsEof() && !CheckSongNotes()) {
+        if (midi_file_in_component_->midi_file_in_->IsEof() && !CheckSongNotes()) {
             window_.close();
         }
         ++t;
@@ -217,20 +196,27 @@ bool Game::SetScene(std::string scene_name) {
     auto midi_file_object_factory = MidiFileGameObjectFactory{};
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
-        Config::GetInstance().GetMidiFileName(),
-        &midi_file_game_object)) {
+            Config::GetInstance().GetMidiFileName(),
+            &midi_file_game_object)) {
         return false;
     }
     midi_file_in_component_ = midi_file_game_object->GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);
     assert(midi_file_in_component_);
 
+    auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
+    GameObject* midi_instrument_game_object = nullptr;
+    if (!midi_instrument_object_factory.Create(&midi_instrument_game_object)) {
+        return false;
+    }
+    midi_instrument_in_component_ = midi_instrument_game_object->GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
+
 	// Setup GameObject factory and create GameObjects
-	double note_speed = (midi_file_in_component_->midi_file_in_.GetTicksPerQuarterNote() /
+	double note_speed = (midi_file_in_component_->midi_file_in_->GetTicksPerQuarterNote() /
 		Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
 		Config::GetInstance().GetFallSpeedMultiplier();
 
 	auto mode = Config::GetInstance().GetGameMode();
-	auto unique_notes = midi_file_in_component_->midi_file_in_.GetUniqueMidiNotes();
+	auto unique_notes = midi_file_in_component_->midi_file_in_->GetUniqueMidiNotes();
 
 #ifdef DEBUG
 	std::cout << "MIDI file unique notes: \n";
@@ -260,7 +246,7 @@ bool Game::SetScene(std::string scene_name) {
 		}
 		else if (scene_name.find("Drum") != std::string::npos) {
 			current_scene_name_ = "Drum";
-			auto max_note_duration = midi_file_in_component_->midi_file_in_.GetMaximumNoteDuration();
+			auto max_note_duration = midi_file_in_component_->midi_file_in_->GetMaximumNoteDuration();
 			object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
 				, max_note_duration);
 		}
@@ -269,9 +255,10 @@ bool Game::SetScene(std::string scene_name) {
 			return false;
 		}
 
-		auto instrument = object_factory_->CreateInstrument();
-        instrument.push_back(midi_file_game_object);
-		next_scene_ = new Scene{ this, window_, instrument};
+		auto scene_objects = object_factory_->CreateInstrument();
+        scene_objects.push_back(midi_file_game_object);
+        scene_objects.push_back(midi_instrument_game_object);
+		next_scene_ = new Scene{ this, window_, scene_objects};
 	}
 
 	if (!next_scene_->Init())

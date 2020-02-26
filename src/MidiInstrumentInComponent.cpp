@@ -16,26 +16,28 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/MidiFileInComponent.h"
+#include "midistar/MidiInstrumentInComponent.h"
 
 namespace midistar {
 
-MidiFileInComponent::MidiFileInComponent(MidiFileIn* midi_file_in)
-		: Component{ Component::MIDI_FILE_IN }
-		, midi_file_in_{ midi_file_in } {
+MidiInstrumentInComponent::MidiInstrumentInComponent(
+    MidiInstrumentIn* midi_instrument_in)
+        : Component{ Component::MIDI_INSTRUMENT_IN }
+        , midi_instrument_in_{ midi_instrument_in } {
 }
 
-std::vector<MidiMessage>& MidiFileInComponent::GetMessages()
+std::vector<MidiMessage>& MidiInstrumentInComponent::GetMessages()
 {
     return message_buffer_;
 }
 
-void MidiFileInComponent::Update(Game * g, GameObject * o, int delta) {
-	midi_file_in_->Tick(delta);
+void MidiInstrumentInComponent::Update(Game* g, GameObject* o, int delta)
+{
+    midi_instrument_in_->Tick();
 
     message_buffer_.clear();
     MidiMessage message;
-    while (midi_file_in_->GetMessage(&message)) {
+    while (midi_instrument_in_->GetMessage(&message)) {
         message_buffer_.push_back(message);
     }
 }

@@ -16,25 +16,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIFILEINCOMPONENT_H_
-#define MIDISTAR_MIDIFILEINCOMPONENT_H_
+#ifndef MIDISTAR_MIDIINSTRUMENTINCOMPONENT_H_
+#define MIDISTAR_MIDIINSTRUMENTINCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
-#include "midistar/MidiFileIn.h"
+#include "midistar/MidiInstrumentIn.h"
 #include "midistar/MidiMessage.h"
 
-// TODO(@jeremy): add proper reference
+ // TODO(@jeremy): add proper reference
 class Game;
 
 namespace midistar {
 
-/**
- * The MidiFileInComponent allows the reading of MIDI files.
- */
-class MidiFileInComponent : public Component {
+class MidiInstrumentInComponent : public Component {
  public:
-	 explicit MidiFileInComponent(MidiFileIn* midi_file_in);
+	 explicit MidiInstrumentInComponent(MidiInstrumentIn* midi_instrument_in);
 
      std::vector<MidiMessage>& GetMessages();
 
@@ -45,7 +42,7 @@ class MidiFileInComponent : public Component {
 
  // TODO(@jeremy): remove
  //private:
-	MidiFileIn* midi_file_in_;
+    MidiInstrumentIn* midi_instrument_in_;
 
 private:
     std::vector<MidiMessage> message_buffer_;
@@ -54,4 +51,4 @@ private:
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_MIDIFILEINCOMPONENT_H_
+#endif  // MIDISTAR_MIDIINSTRUMENTINCOMPONENT_H_

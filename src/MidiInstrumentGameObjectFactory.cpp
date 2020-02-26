@@ -16,28 +16,29 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/MidiFileInComponent.h"
+#include "midistar/MidiInstrumentGameObjectFactory.h"
+
+#include "midistar/MidiInstrumentIn.h"
+#include "midistar/MidiInstrumentInComponent.h"
 
 namespace midistar {
 
-MidiFileInComponent::MidiFileInComponent(MidiFileIn* midi_file_in)
-		: Component{ Component::MIDI_FILE_IN }
-		, midi_file_in_{ midi_file_in } {
-}
-
-std::vector<MidiMessage>& MidiFileInComponent::GetMessages()
+bool MidiInstrumentGameObjectFactory::Create(GameObject** game_object_out)
 {
-    return message_buffer_;
-}
-
-void MidiFileInComponent::Update(Game * g, GameObject * o, int delta) {
-	midi_file_in_->Tick(delta);
-
-    message_buffer_.clear();
-    MidiMessage message;
-    while (midi_file_in_->GetMessage(&message)) {
-        message_buffer_.push_back(message);
+    auto midi_instrument_in = new MidiInstrumentIn{ };
+    if (!midi_instrument_in->Init()) {
+        return false;
     }
+
+    auto midi_instrument_in_component = new MidiInstrumentInComponent{
+        midi_instrument_in };
+
+    auto rect = new sf::RectangleShape{ { 0, 0 } };
+    *game_object_out = new GameObject{ rect, 0, 0, 0, 0 };
+    (*game_object_out)->AddTag("MidiInstrument");
+    (*game_object_out)->SetComponent(midi_instrument_in_component);
+
+    return true;
 }
 
-}   // End namespace midistar
+}

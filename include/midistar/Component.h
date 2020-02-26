@@ -66,6 +66,7 @@ class Component {
 		, MENU_ITEM_COMPONENT
 		, MENU_INPUT_HANDLER_COMPONENT
 		, MIDI_FILE_IN
+        , MIDI_INSTRUMENT_IN
         , NUM_COMPONENTS
     };
 

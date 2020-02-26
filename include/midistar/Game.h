@@ -33,6 +33,7 @@
 
 // TODO(@jeremy): remove
 #include "midistar/MidiFileInComponent.h"
+#include "midistar/MidiInstrumentInComponent.h"
 
 namespace midistar {
 
@@ -131,9 +132,7 @@ class Game {
 
 	Scene* current_scene_;  //!< Current scene
 	std::string current_scene_name_;  //!< Current scene name
-    std::vector<MidiMessage> midi_in_buf_;  //!< MIDI input port notes buffer
     MidiOut midi_out_;  //!< MIDI port out instance
-    MidiInstrumentIn midi_instrument_in_;  //!< MIDI instrument input
     std::queue<GameObject*> new_objects_;  //!< New GameObjects buffer
 	Scene* next_scene_;  //!< The scene to swap to
 	GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
@@ -144,6 +143,7 @@ class Game {
 
     // TODO(@jeremy): remove
     MidiFileInComponent* midi_file_in_component_;
+    MidiInstrumentInComponent* midi_instrument_in_component_;
 };
 
 }   // End namespace midistar

@@ -16,14 +16,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_INTROSCENEFACTORY_H_
-#define MIDISTAR_INTROSCENEFACTORY_H_
+#ifndef MIDISTAR_DRUMSCENEFACTORY_H_
+#define MIDISTAR_DRUMSCENEFACTORY_H_
 
 #include "midistar/SceneFactory.h"
 
 namespace midistar {
 
-class IntroSceneFactory : public SceneFactory {
+class DrumSceneFactory : public SceneFactory {
  public:
     virtual bool Create(
         Game* game
@@ -34,4 +34,4 @@ class IntroSceneFactory : public SceneFactory {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_INTROSCENEFACTORY_H_
+#endif  // MIDISTAR_DRUMSCENEFACTORY_H_

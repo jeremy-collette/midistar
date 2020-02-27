@@ -16,41 +16,24 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MENUITEMCOMPONENT_H_
-#define MIDISTAR_MENUITEMCOMPONENT_H_
-
-#include <functional>
+#ifndef MIDISTAR_SONGNOTECREATORCOMPONENT_H_
+#define MIDISTAR_SONGNOTECREATORCOMPONENT_H_
 
 #include "midistar/Component.h"
-#include "midistar/GameObject.h"
+#include "midistar/GameObjectFactory.h"
 
 namespace midistar {
 
-/**
- * The MenuComponent class creates a text menu.
- */
-class MenuItemComponent : public Component {
+class SongNoteCreatorComponent : public Component {
  public:
-	MenuItemComponent(
-        std::string text
-        , std::function<void(Game*, GameObject*, int)> on_select);
+    SongNoteCreatorComponent(GameObjectFactory* game_object_factory);
 
-	void OnSelect();
-
-	void SetFocus(bool has_focus);
-
-    /**
-     * \copydoc Component::Update()
-     */
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-	 bool has_focus_;  //!< Indicates if this menu item currently has focus
-     std::function<void(Game*, GameObject*, int)> on_select_;
-     bool selected_;  //!< Indicates this item was selected
-	 std::string text_;  //!< Holds menu item text
+    GameObjectFactory* game_object_factory_;
 };
 
-}  // namespace midistar
+}   // End namespace midistar
 
-#endif  // MIDISTAR_MENUCOMPONENT_H_
+#endif  // MIDISTAR_SONGNOTECREATORCOMPONENT_H_

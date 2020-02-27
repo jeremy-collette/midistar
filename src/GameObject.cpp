@@ -37,9 +37,8 @@ void GameObject::AddChild(GameObject* const game_object) {
 	this->children_.push_back(game_object);
 }
 
-void GameObject::AddTag(std::string tag)
-{
-	// TODO(@jeremy): implement
+void GameObject::AddTag(std::string tag) {
+    tags_.push_back(tag);
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -92,10 +91,8 @@ bool GameObject::HasComponent(ComponentType type) {
     return components_[type];
 }
 
-bool GameObject::HasTag(std::string tag)
-{
-	// TODO(@jeremy): implement
-	return false;
+bool GameObject::HasTag(const std::string& tag) const {
+    return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
 }
 
 void GameObject::SetComponent(Component* c) {

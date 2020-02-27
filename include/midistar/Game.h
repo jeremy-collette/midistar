@@ -61,6 +61,8 @@ class Game {
      */
     void AddGameObject(GameObject* obj);
 
+    Scene& GetCurrentScene();
+
     /**
      * Gets the GameObjectFactory instance in use.
      *
@@ -135,17 +137,11 @@ class Game {
 	Scene* current_scene_;  //!< Current scene
 	std::string current_scene_name_;  //!< Current scene name
     MidiOut midi_out_;  //!< MIDI port out instance
-    std::queue<GameObject*> new_objects_;  //!< New GameObjects buffer
 	Scene* next_scene_;  //!< The scene to swap to
-	GameObjectFactory* object_factory_;  //!< Holds GameObjectFactory instance
     std::vector<sf::Event> sf_events_;  //!< SFML events buffer
     sf::RenderWindow window_;  //!< SFML window instance
 
     std::unordered_map<std::string, SceneFactory*> scene_factories_;
-
-    // TODO(@jeremy): remove
-    MidiFileInComponent* midi_file_in_component_;
-    MidiInstrumentInComponent* midi_instrument_in_component_;
 };
 
 }   // End namespace midistar

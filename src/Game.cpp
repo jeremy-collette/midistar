@@ -24,15 +24,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "midistar/Config.h"
-#include "midistar/DefaultGameObjectFactory.h"
-#include "midistar/DrumGameObjectFactory.h"
-#include "midistar/PianoGameObjectFactory.h"
-#include "midistar/IntroSceneFactory.h"
+#include "midistar/DrumSceneFactory.h"
 #include "midistar/NoteInfoComponent.h"
+#include "midistar/PianoSceneFactory.h"
+#include "midistar/IntroSceneFactory.h"
 
 // TODO(@jeremy): remove
-#include "midistar/MidiFileGameObjectFactory.h"
-#include "midistar/MidiInstrumentGameObjectFactory.h"
+#include "midistar/PianoGameObjectFactory.h"
 
 namespace midistar {
 
@@ -41,10 +39,7 @@ namespace midistar {
 Game::Game()
 		: current_scene_{ nullptr }
 		, current_scene_name_{ "" }
-        , midi_file_in_component_{ nullptr }
-        , midi_instrument_in_component_ { nullptr }
 		, next_scene_{ nullptr }
-		, object_factory_{ nullptr }
         , scene_factories_{ }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
@@ -52,13 +47,11 @@ Game::Game()
                  , Config::GetInstance().GetFullScreen() ?
                  sf::Style::Fullscreen : sf::Style::Default} {
     scene_factories_["Intro"] = new IntroSceneFactory{};
+    scene_factories_["Piano"] = new PianoSceneFactory{};
+    scene_factories_["Drum"] = new DrumSceneFactory{};
 }
 
 Game::~Game() {
-    if (object_factory_) {
-        delete object_factory_;
-    }
-
 	if (current_scene_) {
 		delete current_scene_;
 	}
@@ -73,12 +66,20 @@ void Game::AddGameObject(GameObject* obj) {
 	current_scene_->AddNewGameObject(obj);
 }
 
+Scene& Game::GetCurrentScene() {
+    return *current_scene_;
+}
+
 GameObjectFactory& Game::GetGameObjectFactory() {
-    return *object_factory_;
+    return PianoGameObjectFactory{ 20.0 };
 }
 
 const std::vector<MidiMessage>& Game::GetMidiInMessages() {
-    return midi_instrument_in_component_->GetMessages();
+    auto game_objects = current_scene_->GetGameObjectsByTag("MidiInstrument");
+    auto midi_instrument_game_object = game_objects[0];
+    auto midi_instrument_in_component = midi_instrument_game_object->
+        GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
+    return midi_instrument_in_component->GetMessages();
 }
 
 const std::vector<GameObject*>& Game::GetGameObjects() {
@@ -125,7 +126,7 @@ void Game::Run() {
 
         // Clean up from last tick
 		// TODO(@jeremy): move this to scene
-        window_.clear(object_factory_->GetBackgroundColour());
+        window_.clear(sf::Color::Black);
         int delta = clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
@@ -136,21 +137,27 @@ void Game::Run() {
 
         // Handle MIDI file events
 		// TODO(@jeremy): This should be done inside a GameObject
-        for (MidiMessage msg : midi_file_in_component_->GetMessages()) {
-            if (msg.IsNoteOn()) {
-                current_scene_->AddNewGameObject(object_factory_->
-                        CreateSongNote(
-                            msg.GetTrack()
-                            , msg.GetChannel()
-                            , msg.GetKey()
-                            , msg.GetVelocity()
-                            , msg.GetDuration()));
-            }
+        bool midi_file_is_eof = false;
+        auto game_objects = current_scene_->GetGameObjectsByTag("MidiFile");
+        if (game_objects.size())
+        {
+            auto midi_file_game_object = game_objects[0];
+            auto midi_file_in_component = midi_file_game_object->
+                GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);
+
+            midi_file_is_eof = midi_file_in_component->midi_file_in_->IsEof();
         }
+
 
         // Handle MIDI port input events
 		// TODO(@jeremy): This should be done inside a GameObject
-        if (midi_instrument_in_component_) {
+        game_objects = current_scene_->GetGameObjectsByTag("MidiInstrument");
+        if (game_objects.size()) {
+            auto midi_file_game_object = game_objects[0];
+            auto midi_instrument_in_component_ = midi_file_game_object->
+                GetComponent<MidiInstrumentInComponent>(
+                    Component::MIDI_INSTRUMENT_IN);
+
             for (MidiMessage msg : midi_instrument_in_component_->GetMessages()) {
 #ifdef DEBUG
                 if (msg.IsNoteOn()) {
@@ -184,7 +191,7 @@ void Game::Run() {
 
         // If we're done playing the file and have no song notes to be played,
         // we're done!
-        if (midi_file_in_component_->midi_file_in_->IsEof() && !CheckSongNotes()) {
+        if (midi_file_is_eof && !CheckSongNotes()) {
             window_.close();
         }
         ++t;
@@ -200,75 +207,16 @@ void Game::TurnMidiNoteOn(int chan, int note, int vel) {
 }
 
 bool Game::SetScene(std::string scene_name) {
-	if (scene_name.find("Exit") != std::string::npos) {
-		current_scene_name_ = "Exit";
+    current_scene_name_ = scene_name;
+	if (scene_name == "Exit") {
 		window_.close();
 		return true;
 	}
 
-    auto midi_file_object_factory = MidiFileGameObjectFactory{};
-    GameObject* midi_file_game_object = nullptr;
-    if (!midi_file_object_factory.Create(
-            Config::GetInstance().GetMidiFileName(),
-            &midi_file_game_object)) {
+    if (scene_factories_.count(scene_name) == 0) {
         return false;
     }
-    midi_file_in_component_ = midi_file_game_object->GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);
-    assert(midi_file_in_component_);
-
-	// Setup GameObject factory and create GameObjects
-	double note_speed = (midi_file_in_component_->midi_file_in_->GetTicksPerQuarterNote() /
-		Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
-		Config::GetInstance().GetFallSpeedMultiplier();
-
-	auto mode = Config::GetInstance().GetGameMode();
-	auto unique_notes = midi_file_in_component_->midi_file_in_->GetUniqueMidiNotes();
-
-#ifdef DEBUG
-	std::cout << "MIDI file unique notes: \n";
-	for (const auto& n : unique_notes) {
-		std::cout << n << ' ';
-	}
-	std::cout << '\n';
-#endif
-
-	// TODO(@jeremy): clean up
-	object_factory_ = new DefaultGameObjectFactory(note_speed);
-
-    auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
-    GameObject* midi_instrument_in_game_object;
-    if (!midi_instrument_object_factory.Create(&midi_instrument_in_game_object)) {
-        return false;
-    }
-    midi_instrument_in_component_ = midi_instrument_in_game_object->GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
-    assert(midi_instrument_in_component_);
-
-    if (scene_factories_.count(scene_name) != 0)
-    {
-        return scene_factories_[scene_name]->Create(this, window_, &next_scene_);
-    }
-
-	if (scene_name.find("Piano") != std::string::npos) {
-		current_scene_name_ = "Piano";
-		object_factory_ = new PianoGameObjectFactory(note_speed);
-	}
-	else if (scene_name.find("Drum") != std::string::npos) {
-		current_scene_name_ = "Drum";
-		auto max_note_duration = midi_file_in_component_->midi_file_in_->GetMaximumNoteDuration();
-		object_factory_ = new DrumGameObjectFactory(note_speed, unique_notes
-			, max_note_duration);
-	}
-
-	if (!object_factory_->Init()) {
-		return false;
-	}
-
-	auto scene_objects = object_factory_->CreateInstrument();
-    scene_objects.push_back(midi_file_game_object);
-    scene_objects.push_back(midi_instrument_in_game_object);
-	next_scene_ = new Scene{ this, window_, scene_objects};
-
-	return true;
+    return scene_factories_[scene_name]->Create(this, window_, &next_scene_);
 }
 
 bool Game::CheckSongNotes() {

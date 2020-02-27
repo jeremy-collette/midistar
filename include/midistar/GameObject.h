@@ -172,7 +172,7 @@ class GameObject {
 	 *
 	 * \return True if the GameObject has the specified tag. False otherwise.
 	 */
-	bool HasTag(std::string tag);
+	bool HasTag(const std::string& tag) const;
 
     /**
      * Sets the Component in slot determined by the ComponentType.

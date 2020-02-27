@@ -24,10 +24,13 @@
 
 namespace midistar {
 
-MenuItemComponent::MenuItemComponent(std::string text)
-		: Component{ Component::MENU_ITEM_COMPONENT }
+MenuItemComponent::MenuItemComponent(
+    std::string text,
+    std::function<void(Game*, GameObject*, int)> on_select)
+		: Component{ Component::MENU_ITEM }
 		, has_focus_{ false }
-		, selected_{ false }
+        , on_select_{ on_select }
+        , selected_{ false }
 		, text_{ text } {
 }
 
@@ -52,7 +55,7 @@ void MenuItemComponent::Update(Game* g, GameObject* o, int delta)
 
 	if (selected_) {
 		selected_ = false;
-		g->SetScene(text_);
+        on_select_(g, o, delta);
 	}
 }
 

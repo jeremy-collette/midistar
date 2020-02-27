@@ -80,6 +80,8 @@ class Scene {
 
 	 std::vector<GameObject*>& GetGameObjects();
 
+     std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
+
 	 void CleanUpObjects();
 
  private:

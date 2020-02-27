@@ -81,8 +81,7 @@ void Scene::FlushNewObjectQueue() {
 	}
 }
 
-void Scene::DeleteObject(GameObject * o)
-{
+void Scene::DeleteObject(GameObject* o) {
 	auto itr = std::find(game_objects_.begin(), game_objects_.end(), o);
 	if (itr != game_objects_.end()) {
 		game_objects_.erase(itr);
@@ -90,13 +89,23 @@ void Scene::DeleteObject(GameObject * o)
 	delete o;
 }
 
-std::vector<GameObject*>& Scene::GetGameObjects()
-{
+std::vector<GameObject*>& Scene::GetGameObjects() {
 	return game_objects_;
 }
 
-void Scene::CleanUpObjects()
-{
+std::vector<GameObject*> Scene::GetGameObjectsByTag(std::string tag) {
+    auto game_objects = std::vector<GameObject*>{ };
+
+    for (const auto& game_object : this->game_objects_) {
+        if (game_object->HasTag(tag)) {
+            game_objects.push_back(game_object);
+        }
+    }
+
+    return game_objects;
+}
+
+void Scene::CleanUpObjects() {
 	auto game_objects_copy{ game_objects_ };
 	for (auto& o : game_objects_copy) {
 		if (o->GetRequestDelete()) {

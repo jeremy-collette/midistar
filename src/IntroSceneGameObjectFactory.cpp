@@ -18,6 +18,7 @@
 
 #include "midistar/IntroSceneGameObjectFactory.h"
 
+#include "midistar/Game.h"
 #include "midistar/MenuComponent.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
@@ -53,11 +54,23 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 		new std::string{ "2. Drum" },
 		new std::string{ "0. Exit" },
 	};
-	int i = 1;
-	for (const auto& text : menu_item_text) {
-		auto drawable = new sf::Text(*text, *font, 50);
-		auto menu_item = new GameObject(drawable, 50, 100 + 50 * i++, 20, 20);
-		menu_item->SetComponent(new MenuItemComponent{ *text });
+
+    auto on_select_lambdas = std::vector<std::function<void(Game*, GameObject*, int)>>{
+        [](Game* g, GameObject*, int) {
+            g->SetScene("Piano");
+        }, [](Game* g, GameObject*, int) {
+            g->SetScene("Drum");
+        }, [](Game* g, GameObject*, int) {
+            g->SetScene("Exit");
+        }
+    };
+
+
+    for (auto i = 0u; i < menu_item_text.size(); ++i) {
+		auto drawable = new sf::Text(*menu_item_text[i], *font, 50);
+		auto menu_item = new GameObject(drawable, 50, 150 + 50 * i, 20, 20);
+		menu_item->SetComponent(new MenuItemComponent{ *menu_item_text[i]
+            , on_select_lambdas[i] });
 		menu->AddChild(menu_item);
 	}
 

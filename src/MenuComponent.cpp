@@ -25,7 +25,7 @@
 namespace midistar {
 
 MenuComponent::MenuComponent()
-		: Component{ Component::MENU_COMPONENT }
+		: Component{ Component::MENU }
 		, current_item_{ nullptr }
 		, index_{ 0 } {
 }
@@ -70,14 +70,14 @@ MenuItemComponent* MenuComponent::GetChildMenuItemComponent(GameObject* o) {
 	auto has_menu_item = std::vector<GameObject*>{ };
 
 	for (const auto& child : o->GetChildren()) {
-		if (child->HasComponent(Component::MENU_ITEM_COMPONENT)) {
+		if (child->HasComponent(Component::MENU_ITEM)) {
 			has_menu_item.push_back(child);
 		}
 	}
 
 	index_ = (index_ + has_menu_item.size()) % has_menu_item.size();
 	auto menu_item_component = has_menu_item[index_]->GetComponent<
-		MenuItemComponent>(Component::MENU_ITEM_COMPONENT);
+		MenuItemComponent>(Component::MENU_ITEM);
 
 	assert(menu_item_component);
 	return menu_item_component;

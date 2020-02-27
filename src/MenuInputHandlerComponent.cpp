@@ -23,12 +23,12 @@
 
 namespace midistar {
 MenuInputHandlerComponent::MenuInputHandlerComponent()
-		: Component(Component::MENU_INPUT_HANDLER_COMPONENT) {
+		: Component(Component::MENU_INPUT_HANDLER) {
 }
 
 void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
 	// Check for required component
-	auto menu = o->GetComponent<MenuComponent>(Component::MENU_COMPONENT);
+	auto menu = o->GetComponent<MenuComponent>(Component::MENU);
 	if (!menu) {
 		return;
 	}

@@ -26,6 +26,7 @@ bool IntroSceneFactory::Create(
         Game* game
         , sf::RenderWindow& render_window
         , Scene** scene) {
+
     auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
     auto game_objects = intro_scene_object_factory->CreateGameObjects();
     *scene = new Scene{ game, render_window, game_objects };

@@ -61,7 +61,7 @@ class Game {
      */
     void AddGameObject(GameObject* obj);
 
-    Scene* GetCurrentScene();
+    Scene& GetCurrentScene();
 
     /**
      * Gets all GameObjects.

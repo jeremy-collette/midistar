@@ -29,9 +29,9 @@ SongNoteCreatorComponent::SongNoteCreatorComponent(
 }
 
 void SongNoteCreatorComponent::Update(Game* g, GameObject* o, int delta) {
-    auto current_scene = g->GetCurrentScene();
+    auto& current_scene = g->GetCurrentScene();
 
-    auto game_objects = current_scene->GetGameObjectsByTag("MidiFile");
+    auto game_objects = current_scene.GetGameObjectsByTag("MidiFile");
     if (game_objects.size())
     {
         auto midi_file_game_object = game_objects[0];
@@ -40,7 +40,7 @@ void SongNoteCreatorComponent::Update(Game* g, GameObject* o, int delta) {
 
         for (MidiMessage msg : midi_file_in_component->GetMessages()) {
             if (msg.IsNoteOn()) {
-                current_scene->AddNewGameObject(game_object_factory_->
+                current_scene.AddNewGameObject(game_object_factory_->
                     CreateSongNote(
                         msg.GetTrack()
                         , msg.GetChannel()

@@ -66,8 +66,8 @@ void Game::AddGameObject(GameObject* obj) {
 	current_scene_->AddNewGameObject(obj);
 }
 
-Scene* Game::GetCurrentScene() {
-    return current_scene_;
+Scene& Game::GetCurrentScene() {
+    return *current_scene_;
 }
 
 const std::vector<MidiMessage>& Game::GetMidiInMessages() {

@@ -128,7 +128,7 @@ GameObject* DrumGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    song_note->SetComponent(new DrumSongNoteCollisionHandlerComponent{});
+    song_note->SetComponent(new DrumSongNoteCollisionHandlerComponent{ this });
     return song_note;
 }
 

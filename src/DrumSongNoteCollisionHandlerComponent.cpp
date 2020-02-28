@@ -31,8 +31,10 @@
 
 namespace midistar {
 
-DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent()
-        : CollisionHandlerComponent{ Component::NOTE_COLLISION_HANDLER } {
+DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent(
+    GameObjectFactory* game_object_factory)
+        : CollisionHandlerComponent{ Component::NOTE_COLLISION_HANDLER }
+        , game_object_factory_{ game_object_factory } {
 }
 
 void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
@@ -50,7 +52,7 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
 
     // If we are being played, let's add a drum play effect
     if (valid_collider) {
-        auto play_effect = g->GetGameObjectFactory().CreateNotePlayEffect(o);
+        auto play_effect = game_object_factory_->CreateNotePlayEffect(o);
         g->AddGameObject(play_effect);
     }
 }

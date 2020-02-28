@@ -75,6 +75,10 @@ bool DrumSceneFactory::Create(
         , unique_notes
         , max_note_duration);
 
+    if (!drum_scene_object_factory->Init()) {
+        return false;
+    }
+
     // Add component to create song notes from MIDI file
     midi_file_game_object->SetComponent(new SongNoteCreatorComponent{
         drum_scene_object_factory });

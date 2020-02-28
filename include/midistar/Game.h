@@ -61,14 +61,7 @@ class Game {
      */
     void AddGameObject(GameObject* obj);
 
-    Scene& GetCurrentScene();
-
-    /**
-     * Gets the GameObjectFactory instance in use.
-     *
-     * \return GameObjectFactory instance.
-     */
-    GameObjectFactory& GetGameObjectFactory();
+    Scene* GetCurrentScene();
 
     /**
      * Gets all GameObjects.

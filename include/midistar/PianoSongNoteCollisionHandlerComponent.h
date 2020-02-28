@@ -22,6 +22,7 @@
 #include <vector>
 
 #include "midistar/CollisionHandlerComponent.h"
+#include "midistar/GameObjectFactory.h"
 
 namespace midistar {
 
@@ -34,7 +35,8 @@ class PianoSongNoteCollisionHandlerComponent : public CollisionHandlerComponent{
      /**
       * Constructor.
       */
-     PianoSongNoteCollisionHandlerComponent();
+     PianoSongNoteCollisionHandlerComponent(
+        GameObjectFactory* game_object_factory);
 
      /**
       * \copydoc CollisionHandlerComponent::HandleCollisions()
@@ -53,6 +55,7 @@ class PianoSongNoteCollisionHandlerComponent : public CollisionHandlerComponent{
     bool HandleCollision(Game* g, GameObject* o, GameObject* collider);
                //!< Handles a collision returns true if it's a valid collision
 
+    GameObjectFactory* game_object_factory_;
     GameObject* grinding_;  //!< Holds GameObject display metal grinding effect
 };
 

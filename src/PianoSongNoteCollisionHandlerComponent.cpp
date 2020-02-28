@@ -28,8 +28,10 @@
 
 namespace midistar {
 
-PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent()
+PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent(
+    GameObjectFactory* game_object_factory)
         : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
+        , game_object_factory_{ game_object_factory }
         , grinding_{nullptr} {
 }
 
@@ -51,7 +53,7 @@ void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         if (grinding_) {
             return;
         }
-        grinding_ = g->GetGameObjectFactory().CreateNotePlayEffect(
+        grinding_ = game_object_factory_->CreateNotePlayEffect(
             valid_collider);
         g->AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect
@@ -104,7 +106,7 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
             return true;
         }
 
-        GameObject* half = g->GetGameObjectFactory().CreateSongNote(
+        GameObject* half = game_object_factory_->CreateSongNote(
                     note->GetTrack()
                     , note->GetChannel()
                     , note->GetKey()

@@ -61,6 +61,9 @@ bool PianoSceneFactory::Create(
         GetMaximumNoteDuration();
 
     auto piano_scene_object_factory = new PianoGameObjectFactory(note_speed);
+    if (!piano_scene_object_factory->Init()) {
+        return false;
+    }
 
     // Add component to create song notes from MIDI file
     midi_file_game_object->SetComponent(new SongNoteCreatorComponent{

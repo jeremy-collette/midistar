@@ -31,6 +31,7 @@
 
 // TODO(@jeremy): remove
 #include "midistar/PianoGameObjectFactory.h"
+#include "midistar/SfmlEventsComponent.h"
 
 namespace midistar {
 
@@ -76,14 +77,6 @@ const std::vector<MidiMessage>& Game::GetMidiInMessages() {
     auto midi_instrument_in_component = midi_instrument_game_object->
         GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
     return midi_instrument_in_component->GetMessages();
-}
-
-const std::vector<GameObject*>& Game::GetGameObjects() {
-	return current_scene_->GetGameObjects();
-}
-
-const std::vector<sf::Event>& Game::GetSfEvents() {
-    return sf_events_;
 }
 
 sf::RenderWindow& Game::GetWindow() {
@@ -142,43 +135,6 @@ void Game::Run() {
                 GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);
 
             midi_file_is_eof = midi_file_in_component->midi_file_in_->IsEof();
-        }
-
-
-        // Handle MIDI port input events
-		// TODO(@jeremy): This should be done inside a GameObject
-        game_objects = current_scene_->GetGameObjectsByTag("MidiInstrument");
-        if (game_objects.size()) {
-            auto midi_file_game_object = game_objects[0];
-            auto midi_instrument_in_component_ = midi_file_game_object->
-                GetComponent<MidiInstrumentInComponent>(
-                    Component::MIDI_INSTRUMENT_IN);
-
-            for (MidiMessage msg : midi_instrument_in_component_->GetMessages()) {
-#ifdef DEBUG
-                if (msg.IsNoteOn()) {
-                    std::cout << "Played: " << msg.GetKey() << '\n';
-                }
-#endif
-            }
-        }
-
-        // Handle SFML events
-	    // TODO(@jeremy): This should be done inside a GameObject
-        sf_events_.clear();
-        sf::Event event;
-        while (window_.pollEvent(event)) {
-            sf_events_.push_back(event);
-            if (event.type == sf::Event::Closed
-                || (event.type == sf::Event::KeyPressed &&
-                        event.key.code == sf::Keyboard::Escape)) {
-				if (current_scene_name_ == "Intro") {
-					window_.close();
-					continue;
-				} else {
-					SetScene("Intro");
-				}
-            }
         }
 
         // Clean up!

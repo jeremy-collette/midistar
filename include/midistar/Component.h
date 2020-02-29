@@ -68,6 +68,8 @@ class Component {
 		, MIDI_FILE_IN
         , MIDI_INSTRUMENT_IN
         , SONG_NOTE_CREATOR
+        , SFML_EVENTS
+        , SFML_EVENTS_HANDLER
         , NUM_COMPONENTS
     };
 

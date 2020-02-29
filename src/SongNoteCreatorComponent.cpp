@@ -18,6 +18,8 @@
 
 #include "midistar/SongNoteCreatorComponent.h"
 
+#include <iostream>
+
 #include "midistar/Game.h"
 
 namespace midistar {

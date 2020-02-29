@@ -23,7 +23,9 @@
 #include "midistar/MidiFileGameObjectFactory.h"
 #include "midistar/MidiFileInComponent.h"
 #include "midistar/MidiInstrumentGameObjectFactory.h"
+#include "midistar/SfmlEventsComponent.h"
 #include "midistar/SongNoteCreatorComponent.h"
+#include "midistar/SongSceneSfmlEventsHandlerComponent.h"
 
 namespace midistar {
 
@@ -83,9 +85,18 @@ bool DrumSceneFactory::Create(
     midi_file_game_object->SetComponent(new SongNoteCreatorComponent{
         drum_scene_object_factory });
 
+    // Create game object to handle SFML events
+    auto rect = new sf::RectangleShape{ {0, 0} };
+    auto sfml_event_object = new GameObject{ rect, 0, 0, 0, 0 };
+    sfml_event_object->AddTag("SfmlEvents");
+    sfml_event_object->SetComponent(new SfmlEventsComponent{ render_window });
+    sfml_event_object->SetComponent(
+        new SongSceneSfmlEventsHandlerComponent{ });
+
     auto game_objects = drum_scene_object_factory->CreateInstrument();
     game_objects.push_back(midi_file_game_object);
     game_objects.push_back(midi_instrument_game_object);
+    game_objects.push_back(sfml_event_object);
     *scene = new Scene{ game, render_window, game_objects };
 
     return true;

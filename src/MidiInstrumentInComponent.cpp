@@ -42,6 +42,12 @@ void MidiInstrumentInComponent::Update(Game* g, GameObject* o, int delta)
     message_buffer_.clear();
     MidiMessage message;
     while (midi_instrument_in_->GetMessage(&message)) {
+
+#ifdef DEBUG
+        if (message.IsNoteOn()) {
+            std::cout << "Played: " << message.GetKey() << '\n';
+        }
+#endif
         message_buffer_.push_back(message);
     }
 }

@@ -36,7 +36,7 @@ bool VerticalCollisionDetectorComponent::GetIsColliding() {
 
 void VerticalCollisionDetectorComponent::Update(Game* g, GameObject* o, int) {
     colliding_with_.clear();
-    for (auto& other_obj : g->GetGameObjects()) {
+    for (auto& other_obj : g->GetCurrentScene().GetGameObjects()) {
         if (other_obj == o ||
                 !other_obj->HasComponent(Component::COLLIDABLE)) {
              continue;

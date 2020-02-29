@@ -24,6 +24,8 @@
 
 #include "midistar/Component.h"
 
+// TODO(@jeremy): GameObject should support null Drawable
+
 namespace midistar {
 class Game;
 

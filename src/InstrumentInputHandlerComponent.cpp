@@ -25,6 +25,7 @@
 #include "midistar/InvertColourComponent.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
+#include "midistar/SfmlEventsComponent.h"
 
 namespace midistar {
 
@@ -66,7 +67,16 @@ void InstrumentInputHandlerComponent::Update(
     }
 
     // Check SFML events for key presses
-    for (const auto& e : g->GetSfEvents()) {
+    auto& current_scene = g->GetCurrentScene();
+    auto game_objects = current_scene.GetGameObjectsByTag("SfmlEvents");
+    if (!game_objects.size()) {
+        return;
+    }
+    auto game_object = game_objects[0];
+    auto sfml_events_component = game_object->GetComponent<SfmlEventsComponent>(
+        Component::SFML_EVENTS);
+
+    for (const auto& e : sfml_events_component->GetEvents()) {
         // Check if its the right key and event type
         if (e.key.code != key_ || (e.type != sf::Event::KeyPressed
                     && e.type != sf::Event::KeyReleased)) {

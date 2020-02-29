@@ -64,25 +64,11 @@ class Game {
     Scene& GetCurrentScene();
 
     /**
-     * Gets all GameObjects.
-     *
-     * \return All GameObjects.
-     */
-    const std::vector<GameObject*>& GetGameObjects();
-
-    /**
      * Gets MIDI input port messages for the last tick.
      *
      * \return MIDI messages.
      */
     const std::vector<MidiMessage>& GetMidiInMessages();
-
-    /**
-     * Gets SFML events for the last tick.
-     *
-     * \return SFML events.
-     */
-    const std::vector<sf::Event>& GetSfEvents();
 
     /**
      * Gets the SFML window being used for rendering.

@@ -20,6 +20,7 @@
 
 #include "midistar/Game.h"
 #include "midistar/MenuComponent.h"
+#include "midistar/SfmlEventsComponent.h"
 
 namespace midistar {
 MenuInputHandlerComponent::MenuInputHandlerComponent()
@@ -33,8 +34,17 @@ void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
 		return;
 	}
 
-	// Check SFML events for key presses
-	for (const auto& e : g->GetSfEvents()) {
+    // Check SFML events for key presses
+    auto& current_scene = g->GetCurrentScene();
+    auto game_objects = current_scene.GetGameObjectsByTag("SfmlEvents");
+    if (!game_objects.size()) {
+        return;
+    }
+    auto game_object = game_objects[0];
+    auto sfml_events_component = game_object->GetComponent<SfmlEventsComponent>(
+        Component::SFML_EVENTS);
+
+	for (const auto& e : sfml_events_component->GetEvents()) {
 		// Check if its the right key and event type
 		if (e.type != sf::Event::KeyPressed ||
 			(e.key.code != sf::Keyboard::Down && e.key.code != sf::Keyboard::Up

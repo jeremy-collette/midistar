@@ -19,23 +19,12 @@
 #ifndef MIDISTAR_GAME_H_
 #define MIDISTAR_GAME_H_
 
-#include <queue>
 #include <unordered_map>
-#include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "midistar/GameObject.h"
-#include "midistar/GameObjectFactory.h"
-#include "midistar/MidiFileIn.h"
-#include "midistar/MidiMessage.h"
-#include "midistar/MidiOut.h"
-#include "midistar/MidiInstrumentIn.h"
 #include "midistar/Scene.h"
 #include "midistar/SceneFactory.h"
 
-// TODO(@jeremy): remove
-#include "midistar/MidiFileInComponent.h"
-#include "midistar/MidiInstrumentInComponent.h"
 
 namespace midistar {
 
@@ -55,13 +44,6 @@ class Game {
     ~Game();
 
     Scene& GetCurrentScene();
-
-    /**
-     * Gets MIDI input port messages for the last tick.
-     *
-     * \return MIDI messages.
-     */
-    const std::vector<MidiMessage>& GetMidiInMessages();
 
     /**
      * Gets the SFML window being used for rendering.

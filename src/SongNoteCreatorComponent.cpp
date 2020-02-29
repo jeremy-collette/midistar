@@ -21,6 +21,7 @@
 #include <iostream>
 
 #include "midistar/Game.h"
+#include "midistar/MidiFileInComponent.h"
 
 namespace midistar {
 

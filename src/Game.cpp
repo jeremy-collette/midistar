@@ -60,14 +60,6 @@ Scene& Game::GetCurrentScene() {
     return *current_scene_;
 }
 
-const std::vector<MidiMessage>& Game::GetMidiInMessages() {
-    auto game_objects = current_scene_->GetGameObjectsByTag("MidiInstrument");
-    auto midi_instrument_game_object = game_objects[0];
-    auto midi_instrument_in_component = midi_instrument_game_object->
-        GetComponent<MidiInstrumentInComponent>(Component::MIDI_INSTRUMENT_IN);
-    return midi_instrument_in_component->GetMessages();
-}
-
 sf::RenderWindow& Game::GetWindow() {
     return window_;
 }
@@ -108,20 +100,6 @@ void Game::Run() {
 		current_scene_->Update(delta);
 		current_scene_->Draw();
         window_.display();
-
-        // Handle MIDI file events
-		// TODO(@jeremy): This should be done inside a GameObject
-        bool midi_file_is_eof = false;
-        auto game_objects = current_scene_->GetGameObjectsByTag("MidiFile");
-        if (game_objects.size())
-        {
-            auto midi_file_game_object = game_objects[0];
-            auto midi_file_in_component = midi_file_game_object->
-                GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);
-
-            midi_file_is_eof = midi_file_in_component->midi_file_in_->IsEof();
-        }
-
         ++t;
     }
 }

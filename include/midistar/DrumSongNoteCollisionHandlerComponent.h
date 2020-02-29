@@ -22,6 +22,7 @@
 #include <vector>
 
 #include "midistar/CollisionHandlerComponent.h"
+#include "midistar/GameObjectFactory.h"
 
 namespace midistar {
 

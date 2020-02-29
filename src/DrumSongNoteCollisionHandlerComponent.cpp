@@ -23,6 +23,7 @@
 
 #include "midistar/Config.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
+#include "midistar/GameObjectFactory.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/OutlineEffectComponent.h"

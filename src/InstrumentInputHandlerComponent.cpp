@@ -23,6 +23,7 @@
 #include "midistar/Config.h"
 #include "midistar/Game.h"
 #include "midistar/InvertColourComponent.h"
+#include "midistar/MidiFileInComponent.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/SfmlEventsComponent.h"
@@ -93,7 +94,12 @@ void InstrumentInputHandlerComponent::Update(
     // Handle MIDI input port events.
     // If we find a note on event that matches this instruments MIDI note,
     // activate this instrument!
-    for (const auto& msg : g->GetMidiInMessages()) {
+    auto midi_instrument_game_object = g->GetCurrentScene().
+        GetFirstGameObjectByTag("MidiInstrument");
+    auto midi_instrument_in = midi_instrument_game_object->GetComponent<
+        MidiFileInComponent>(Component::MIDI_INSTRUMENT_IN);
+
+    for (const auto& msg : midi_instrument_in->GetMessages()) {
         if (msg.IsNote() && msg.GetKey() == note->GetKey()) {
             key_down_ = msg.IsNoteOn();
         }

@@ -23,7 +23,9 @@
 #include "midistar/MidiFileGameObjectFactory.h"
 #include "midistar/MidiFileInComponent.h"
 #include "midistar/MidiInstrumentGameObjectFactory.h"
+#include "midistar/MidiOutputComponent.h"
 #include "midistar/SfmlEventsComponent.h"
+#include "midistar/SongEndWatcherComponent.h"
 #include "midistar/SongNoteCreatorComponent.h"
 #include "midistar/SongSceneSfmlEventsHandlerComponent.h"
 
@@ -76,14 +78,17 @@ bool DrumSceneFactory::Create(
         note_speed
         , unique_notes
         , max_note_duration);
-
     if (!drum_scene_object_factory->Init()) {
         return false;
     }
+    auto game_objects = drum_scene_object_factory->CreateInstrument();
+    game_objects.push_back(midi_instrument_game_object);
 
     // Add component to create song notes from MIDI file
     midi_file_game_object->SetComponent(new SongNoteCreatorComponent{
         drum_scene_object_factory });
+    midi_file_game_object->SetComponent(new SongEndWatcherComponent{});
+    game_objects.push_back(midi_file_game_object);
 
     // Create game object to handle SFML events
     auto rect = new sf::RectangleShape{ {0, 0} };
@@ -92,11 +97,21 @@ bool DrumSceneFactory::Create(
     sfml_event_object->SetComponent(new SfmlEventsComponent{ render_window });
     sfml_event_object->SetComponent(
         new SongSceneSfmlEventsHandlerComponent{ });
-
-    auto game_objects = drum_scene_object_factory->CreateInstrument();
-    game_objects.push_back(midi_file_game_object);
-    game_objects.push_back(midi_instrument_game_object);
     game_objects.push_back(sfml_event_object);
+
+    // Create game object for MIDI out
+    rect = new sf::RectangleShape{ {0, 0} };
+    auto midi_out_game_object = new GameObject{ rect, 0, 0, 0, 0 };
+    sfml_event_object->AddTag("MidiOut");
+    auto midi_out = new MidiOut{ };
+    if (!midi_out->Init()) {
+        return false;
+    }
+    sfml_event_object->SetComponent(new MidiOutputComponent{ midi_out });
+    sfml_event_object->SetComponent(
+        new SongSceneSfmlEventsHandlerComponent{ });
+    game_objects.push_back(midi_out_game_object);
+
     *scene = new Scene{ game, render_window, game_objects };
 
     return true;

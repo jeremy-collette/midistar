@@ -54,13 +54,6 @@ class Game {
      */
     ~Game();
 
-    /**
-     * Adds a new object to the game.
-     *
-     * \param obj The object to add.
-     */
-    void AddGameObject(GameObject* obj);
-
     Scene& GetCurrentScene();
 
     /**
@@ -89,35 +82,11 @@ class Game {
      */
     void Run();
 
-    /**
-     * Turns off a MIDI note on the MIDI out port.
-     *
-     * \param chan MIDI channel.
-     * \param note MIDI note.
-     */
-    void TurnMidiNoteOff(int chan, int note);
-
-    /**
-     * Turns on a MIDI note on the MIDI out port.
-     *
-     * \param chan MIDI channel.
-     * \param note MIDI note.
-     * \param vel MIDI velocity.
-     */
-    void TurnMidiNoteOn(int chan, int note, int vel);
-
 	bool SetScene(std::string scene_name);
 
  private:
-    bool CheckSongNotes();  //!< Determines if the Game has valid song notes
-    void CleanUpObjects();  //!< Deletes all GameObjects and their components
-    void DeleteObject(GameObject* o);  //!< Deletes a GameObject
-
 	Scene* current_scene_;  //!< Current scene
-	std::string current_scene_name_;  //!< Current scene name
-    MidiOut midi_out_;  //!< MIDI port out instance
 	Scene* next_scene_;  //!< The scene to swap to
-    std::vector<sf::Event> sf_events_;  //!< SFML events buffer
     sf::RenderWindow window_;  //!< SFML window instance
 
     std::unordered_map<std::string, SceneFactory*> scene_factories_;

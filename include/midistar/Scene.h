@@ -48,6 +48,8 @@ class Scene {
 		 , std::vector<GameObject*> game_objects);
 
 	 ~Scene();
+     Scene(const Scene& other) = delete;
+     Scene(const Scene&& other) = delete;
 
 	 /**
 	  * Initializes the Scene.
@@ -72,24 +74,24 @@ class Scene {
 	  */
 	 bool Draw();
 
-	 void AddNewGameObject(GameObject* new_game_object);
-
-	 void FlushNewObjectQueue();
+	 void AddGameObject(GameObject* new_game_object);
 
 	 void DeleteObject(GameObject* o);
+
+     GameObject* GetFirstGameObjectByTag(std::string tag);
 
 	 std::vector<GameObject*>& GetGameObjects();
 
      std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
 
-	 void CleanUpObjects();
+private:
+    void CleanUpObjects();
+    void FlushNewObjectQueue();
 
- private:
-	 Game* game_;
-	 std::vector<GameObject*> game_objects_;
-	 sf::RenderWindow& render_window_;
-	 std::queue<GameObject*> new_game_objects_;
-
+	Game* game_;
+	std::vector<GameObject*> game_objects_;
+	sf::RenderWindow& render_window_;
+	std::queue<GameObject*> new_game_objects_;
 };
 
 }   // End namespace midistar

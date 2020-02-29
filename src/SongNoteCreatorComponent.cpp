@@ -42,7 +42,7 @@ void SongNoteCreatorComponent::Update(Game* g, GameObject* o, int delta) {
 
         for (MidiMessage msg : midi_file_in_component->GetMessages()) {
             if (msg.IsNoteOn()) {
-                current_scene.AddNewGameObject(game_object_factory_->
+                current_scene.AddGameObject(game_object_factory_->
                     CreateSongNote(
                         msg.GetTrack()
                         , msg.GetChannel()

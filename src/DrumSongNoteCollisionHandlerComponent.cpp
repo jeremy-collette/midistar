@@ -53,7 +53,7 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
     // If we are being played, let's add a drum play effect
     if (valid_collider) {
         auto play_effect = game_object_factory_->CreateNotePlayEffect(o);
-        g->AddGameObject(play_effect);
+        g->GetCurrentScene().AddGameObject(play_effect);
     }
 }
 

@@ -74,6 +74,9 @@ class GameObject {
      */
     ~GameObject();
 
+    GameObject(const GameObject& other) = delete;
+    GameObject(const GameObject&& other) = delete;
+
 	/**
 	 * Adds a child GameObject. Children GameObjects are updated after the
 	 * parent is updated. Ownership is transferred to the parent and the child

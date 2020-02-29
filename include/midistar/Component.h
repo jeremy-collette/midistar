@@ -70,6 +70,8 @@ class Component {
         , SONG_NOTE_CREATOR
         , SFML_EVENTS
         , SFML_EVENTS_HANDLER
+        , MIDI_OUTPUT
+        , SONG_END_WATCHER
         , NUM_COMPONENTS
     };
 

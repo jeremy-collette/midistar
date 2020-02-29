@@ -120,6 +120,7 @@ GameObject* DrumGameObjectFactory::CreateSongNote(
     auto y_pos = -padded_radius * 2.0f;
     auto song_note = new GameObject{ circle, x + padding_px, y_pos
         , padded_radius * 2.0f, padded_radius * 2.0f};
+    song_note->AddTag("SongNote");
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});

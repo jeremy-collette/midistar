@@ -58,6 +58,8 @@ bool Scene::Update(int delta) {
 		// objects.
 	} while (num_objects != game_objects_.size());
 
+    CleanUpObjects();
+
 	return true;
 }
 
@@ -70,7 +72,7 @@ bool Scene::Draw() {
 	return true;
 }
 
-void Scene::AddNewGameObject(GameObject* new_game_object) {
+void Scene::AddGameObject(GameObject* new_game_object) {
 	this->new_game_objects_.push(new_game_object);
 }
 
@@ -79,6 +81,15 @@ void Scene::FlushNewObjectQueue() {
 		game_objects_.push_back(new_game_objects_.front());
 		new_game_objects_.pop();
 	}
+}
+
+GameObject* Scene::GetFirstGameObjectByTag(std::string tag) {
+    auto game_objects = GetGameObjectsByTag(tag);
+    if (!game_objects.size()) {
+        return nullptr;
+    }
+
+    return game_objects.front();
 }
 
 void Scene::DeleteObject(GameObject* o) {

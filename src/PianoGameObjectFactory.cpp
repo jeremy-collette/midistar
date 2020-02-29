@@ -131,6 +131,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
 
     // Create actual note
     auto song_note = new GameObject{rect, x, -height, width, height};
+    song_note->AddTag("SongNote");
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});

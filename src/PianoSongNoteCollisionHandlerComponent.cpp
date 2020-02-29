@@ -55,7 +55,7 @@ void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         }
         grinding_ = game_object_factory_->CreateNotePlayEffect(
             valid_collider);
-        g->AddGameObject(grinding_);
+        g->GetCurrentScene().AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect
         grinding_->SetRequestDelete(true);
         grinding_ = nullptr;
@@ -119,7 +119,7 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
         half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
         half->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));
-        g->AddGameObject(half);
+        g->GetCurrentScene().AddGameObject(half);
     }
 
     // Now we are guaranteed to have a note that ends before the bottom

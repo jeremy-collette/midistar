@@ -16,32 +16,32 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/MidiNoteComponent.h"
-
 #include "midistar/MidiOutputComponent.h"
 
 namespace midistar {
 
-MidiNoteComponent::MidiNoteComponent(bool on, int chan, int note, int vel)
-        : Component{Component::MIDI_NOTE}
-        , chan_{chan}
-        , note_{note}
-        , on_{on}
-        , vel_{vel} {
+MidiOutputComponent::MidiOutputComponent(MidiOut* midi_out)
+		: Component{ Component::MIDI_OUTPUT }
+		, midi_out_{ midi_out } {
 }
 
-void MidiNoteComponent::Update(Game* g, GameObject* o, int) {
-    auto midi_out_game_object = g->GetCurrentScene().GetFirstGameObjectByTag(
-        "MidiOut");
-    auto midi_out_component = midi_out_game_object->GetComponent<
-        MidiOutputComponent>(Component::MIDI_OUTPUT);
+MidiOutputComponent::~MidiOutputComponent() {
+    delete midi_out_;
+}
 
-    if (on_) {
-        midi_out_component->TurnMidiNoteOn(chan_, note_, vel_);
-    } else {
-        midi_out_component->TurnMidiNoteOff(chan_, note_);
-    }
-    o->DeleteComponent(GetType());
+void MidiOutputComponent::TurnMidiNoteOff(int chan, int note) {
+    midi_out_->SendNoteOff(note, chan);
+}
+
+void MidiOutputComponent::TurnMidiNoteOn(int chan, int note, int vel) {
+    midi_out_->SendNoteOn(note, chan, vel);
+}
+
+void MidiOutputComponent::Update(Game* g, GameObject* o, int delta) {
+    // TODO(@jeremy): we should probably be buffering on/off events and applying
+    // them here.
+
+    // Do nothing
 }
 
 }   // End namespace midistar

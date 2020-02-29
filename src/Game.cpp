@@ -20,8 +20,8 @@
 
 #include <cassert>
 #include <iostream>
-#include <vector>
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 #include "midistar/Config.h"
 #include "midistar/DrumSceneFactory.h"
@@ -29,17 +29,10 @@
 #include "midistar/PianoSceneFactory.h"
 #include "midistar/IntroSceneFactory.h"
 
-// TODO(@jeremy): remove
-#include "midistar/PianoGameObjectFactory.h"
-#include "midistar/SfmlEventsComponent.h"
-
 namespace midistar {
 
-// TODO(@jeremy): Inject these dependencies
-// TODO(@jeremy): Remove old code
 Game::Game()
 		: current_scene_{ nullptr }
-		, current_scene_name_{ "" }
 		, next_scene_{ nullptr }
         , scene_factories_{ }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
@@ -63,10 +56,6 @@ Game::~Game() {
     }
 }
 
-void Game::AddGameObject(GameObject* obj) {
-	current_scene_->AddNewGameObject(obj);
-}
-
 Scene& Game::GetCurrentScene() {
     return *current_scene_;
 }
@@ -88,10 +77,6 @@ bool Game::Init() {
     window_.setFramerateLimit(Config::GetInstance().
             GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
-
-    if (!midi_out_.Init()) {
-        return false;
-    }
 
 	return SetScene("Intro");
 }
@@ -137,57 +122,15 @@ void Game::Run() {
             midi_file_is_eof = midi_file_in_component->midi_file_in_->IsEof();
         }
 
-        // Clean up!
-		// TODO(@jeremy): move this inside scene
-        CleanUpObjects();
-
-        // If we're done playing the file and have no song notes to be played,
-        // we're done!
-        if (midi_file_is_eof && !CheckSongNotes()) {
-            window_.close();
-        }
         ++t;
     }
 }
 
-void Game::TurnMidiNoteOff(int chan, int note) {
-    midi_out_.SendNoteOff(note, chan);
-}
-
-void Game::TurnMidiNoteOn(int chan, int note, int vel) {
-    midi_out_.SendNoteOn(note, chan, vel);
-}
-
 bool Game::SetScene(std::string scene_name) {
-    current_scene_name_ = scene_name;
-	if (scene_name == "Exit") {
-		window_.close();
-		return true;
-	}
-
     if (scene_factories_.count(scene_name) == 0) {
         return false;
     }
     return scene_factories_[scene_name]->Create(this, window_, &next_scene_);
-}
-
-bool Game::CheckSongNotes() {
-	for (const auto& obj : current_scene_->GetGameObjects()) {
-		if (obj->HasComponent(Component::SONG_NOTE)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-// TODO(@jeremy): remove
-void Game::CleanUpObjects() {
-	current_scene_->CleanUpObjects();
-}
-
-// TODO(@jeremy): remove
-void Game::DeleteObject(GameObject* o) {
-	current_scene_->DeleteObject(o);
 }
 
 }   // namespace midistar

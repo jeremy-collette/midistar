@@ -37,6 +37,15 @@ bool PianoSceneFactory::Create(
         , sf::RenderWindow& render_window
         , Scene** scene) {
 
+    return Create(game, render_window, Config::GetInstance().GetMidiFileName(), scene);
+}
+
+bool PianoSceneFactory::Create(
+        Game* game
+        , sf::RenderWindow& render_window
+        , const std::string& midi_file_name
+        , Scene** scene) {
+
     // Create MIDI instrument GameObject to read input from MIDI instrument
     auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
     GameObject* midi_instrument_game_object = nullptr;
@@ -48,7 +57,7 @@ bool PianoSceneFactory::Create(
     auto midi_file_object_factory = MidiFileGameObjectFactory{};
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
-        Config::GetInstance().GetMidiFileName(),
+        midi_file_name,
         &midi_file_game_object)) {
         return false;
     }

@@ -40,6 +40,14 @@ class IntroSceneGameObjectFactory {
    IntroSceneGameObjectFactory();
 
    std::vector<GameObject*> CreateGameObjects();
+
+ private:
+   enum GameType {
+       PIANO,
+       DRUM
+   };
+
+   GameObject* CreateSongSelectionMenuGameObject(GameType game_type);
 };
 
 }  // End namespace midistar

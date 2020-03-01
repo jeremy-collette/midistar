@@ -50,8 +50,8 @@ class MenuComponent : public Component {
 	 MenuItemComponent* GetChildMenuItemComponent(GameObject* o);  //!< Gets
 	   //!< menu item component from child GameObject at index
 
+     MenuItemComponent* current_item_;  //!< Currently focused item
 	 int index_;  //!< Menu index
-	 MenuItemComponent* current_item_;  //!< Currently focused item
 };
 
 }  // namespace midistar

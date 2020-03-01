@@ -66,6 +66,8 @@ class Game {
 
 	bool SetScene(std::string scene_name);
 
+    void SetScene(Scene* next_scene);
+
  private:
 	Scene* current_scene_;  //!< Current scene
 	Scene* next_scene_;  //!< The scene to swap to

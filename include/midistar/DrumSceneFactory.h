@@ -30,6 +30,12 @@ class DrumSceneFactory : public SceneFactory {
         , sf::RenderWindow& render_window
         , Scene** scene);
 
+    bool Create(
+        Game* game
+        , sf::RenderWindow& render_window
+        , const std::string& midi_file_name
+        , Scene** scene);
+
 };
 
 }   // End namespace midistar

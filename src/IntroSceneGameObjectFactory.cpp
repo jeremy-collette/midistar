@@ -18,15 +18,23 @@
 
 #include "midistar/IntroSceneGameObjectFactory.h"
 
+#include <filesystem>
+#include <string>
+
+#include "midistar/DrumSceneFactory.h"
 #include "midistar/Game.h"
 #include "midistar/MenuComponent.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
+#include "midistar/PianoSceneFactory.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Version.h"
 
+namespace fs = std::experimental::filesystem;
+
 namespace midistar {
 
+// TODO(@jeremy): cleanup & simplify menu creation
 // TODO(@jeremy): this should be a scene factory
 IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 }
@@ -55,16 +63,27 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 		new std::string{ "0. Exit" },
 	};
 
-    auto on_select_lambdas = std::vector<std::function<void(Game*, GameObject*, int)>>{
-        [](Game* g, GameObject*, int) {
-            g->SetScene("Piano");
-        }, [](Game* g, GameObject*, int) {
-            g->SetScene("Drum");
-        }, [](Game* g, GameObject*, int) {
-            g->SetScene("Exit");
+    auto on_select_lambdas = std::vector<std::function<void(Game*, GameObject*, int)>> {
+        {
+            [this, menu](Game* g, GameObject* o, int) {
+                g->GetCurrentScene().AddGameObject(CreateSongSelectionMenuGameObject(
+                    GameType::PIANO));
+                    menu->SetRequestDelete(true);
+            }
+        },
+        {
+            [this, menu](Game* g, GameObject* o, int) {
+                g->GetCurrentScene().AddGameObject(CreateSongSelectionMenuGameObject(
+                    GameType::DRUM));
+                    menu->SetRequestDelete(true);
+            }
+        },
+        {
+            [this, menu](Game* g, GameObject* o, int) {
+                g->GetWindow().close();
+            }
         }
     };
-
 
     for (auto i = 0u; i < menu_item_text.size(); ++i) {
 		auto drawable = new sf::Text(*menu_item_text[i], *font, 50);
@@ -91,6 +110,64 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
     version->SetComponent(new SongNoteComponent{ });
 
 	return std::vector<GameObject*> { menu, copyright, version };
+}
+
+GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
+        GameType game_type) {
+
+    auto font = new sf::Font();
+    if (!font->loadFromFile("PixelMiners-KKal.otf")) {
+        throw "Could not load font!";
+    }
+
+    auto menu_title = new sf::Text("Select a song", *font, 40);
+    menu_title->setFillColor(sf::Color::White);
+    auto menu = new GameObject{ menu_title, 0, 0, 0, 0 };
+    menu->SetComponent(new MenuComponent{ });
+    menu->SetComponent(new MenuInputHandlerComponent{ });
+
+    // Add menu items
+    auto menu_item_text = std::vector<std::string*>{ };
+    std::string path = ".";
+    for (const auto & entry : fs::directory_iterator(path)) {
+        auto path_string = entry.path().string();
+        if (path_string.find(".mid") != std::string::npos) {
+            menu_item_text.push_back(new std::string{ entry.path().string() });
+        }
+    }
+
+    for (auto i = 0u; i < menu_item_text.size(); ++i) {
+        auto drawable = new sf::Text(*menu_item_text[i], *font, 20);
+        auto menu_item = new GameObject(drawable, 50, 150 + 25 * i, 20, 20);
+        menu_item->SetComponent(new MenuItemComponent{ *menu_item_text[i]
+            , [menu_item_text, i, game_type](Game* g, GameObject*, int) {
+                Scene* new_scene = nullptr;
+                if (game_type == GameType::PIANO) {
+                    auto piano_scene_factory = PianoSceneFactory{};
+                    if (!piano_scene_factory.Create(
+                            g
+                            , g->GetWindow()
+                            , *menu_item_text[i]
+                            , &new_scene)) {
+                        throw "Scene creation failed";
+                    }
+                } else {
+                    auto drum_scene_factory = DrumSceneFactory{};
+                    if (!drum_scene_factory.Create(
+                        g
+                        , g->GetWindow()
+                        , *menu_item_text[i]
+                        , &new_scene)) {
+                        throw "Scene creation failed";
+                    }
+                }
+                g->SetScene(new_scene);
+            }
+        });
+        menu->AddChild(menu_item);
+    }
+
+    return menu;
 }
 
 }  // End namespace midistar

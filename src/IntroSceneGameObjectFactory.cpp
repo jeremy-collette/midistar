@@ -23,6 +23,7 @@
 
 #include "midistar/DrumSceneFactory.h"
 #include "midistar/Game.h"
+#include "midistar/KeepAliveComponent.h"
 #include "midistar/MenuComponent.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
@@ -52,7 +53,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 
 	auto menu_title = new sf::Text("midistar", *font, 100);
 	menu_title->setFillColor(sf::Color::Green);
-	auto menu = new GameObject{ menu_title, 0, 0, 0, 0 };
+	auto menu = new GameObject{ menu_title, 0, 0, 20, 20 };
 	menu->SetComponent(new MenuComponent{ });
 	menu->SetComponent(new MenuInputHandlerComponent{ });
 
@@ -97,17 +98,13 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 		"Copyright (c) Jeremy Collette 2018-2020" };
 	auto copyright_text = new sf::Text(*copyright_string, *font, 25);
 	copyright_text->setFillColor(sf::Color::White);
-	auto copyright = new GameObject{ copyright_text, 150, 650, 0, 0 };
-	// TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
-	// create a "KeepAliveComponent"?
-	copyright->SetComponent(new SongNoteComponent{ });
+	auto copyright = new GameObject{ copyright_text, 150, 650, 20, 20 };
+	copyright->SetComponent(new KeepAliveComponent{ });
 
     auto version_string = new std::string{ MIDISTAR_VERSION };
     auto version_text = new sf::Text(*version_string, *font, 25);
-    auto version = new GameObject{ version_text, 900, 720, 0, 0 };
-    // TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
-    // create a "KeepAliveComponent"?
-    version->SetComponent(new SongNoteComponent{ });
+    auto version = new GameObject{ version_text, 900, 720, 20, 20 };
+    version->SetComponent(new KeepAliveComponent{ });
 
 	return std::vector<GameObject*> { menu, copyright, version };
 }
@@ -122,17 +119,15 @@ GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
 
     auto menu_title = new sf::Text("Select a song", *font, 40);
     menu_title->setFillColor(sf::Color::White);
-    auto menu = new GameObject{ menu_title, 0, 0, 0, 0 };
+    auto menu = new GameObject{ menu_title, 0, 0, 20, 20 };
     menu->SetComponent(new MenuComponent{ });
     menu->SetComponent(new MenuInputHandlerComponent{ });
 
     auto subtitle = new sf::Text("Scanning directory " +fs::current_path()
         .string(), *font, 20);
     subtitle->setFillColor(sf::Color::White);
-    auto subtitle_game_object = new GameObject{ subtitle, 0, 80, 0, 0 };
-    // TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
-    // create a "KeepAliveComponent"?
-    subtitle_game_object->SetComponent(new SongNoteComponent{ });
+    auto subtitle_game_object = new GameObject{ subtitle, 0, 80, 20, 20 };
+    subtitle_game_object->SetComponent(new KeepAliveComponent{ });
     menu->AddChild(subtitle_game_object);
 
     // Add menu items

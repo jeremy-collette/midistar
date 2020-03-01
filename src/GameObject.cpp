@@ -19,14 +19,29 @@
 #include "midistar/GameObject.h"
 
 #include <algorithm>
+#include <SFML/Graphics.hpp>
 
 namespace midistar {
+
+// We have to do some magic here and cast the nullptr to get the compiler to
+// call the delegate constructor
+GameObject::GameObject()
+    : GameObject{
+        static_cast<sf::RectangleShape*>(nullptr)
+        , 0.0
+        , 0.0
+        , 0.0
+        , 0.0 } {
+}
 
 GameObject::~GameObject() {
     for (auto c : components_) {
         delete c;
     }
-    delete drawable_;
+
+    if (drawable_) {
+        delete drawable_;
+    }
 
 	for (auto child : children_) {
 		delete child;
@@ -50,19 +65,26 @@ void GameObject::DeleteComponent(ComponentType type) {
 }
 
 void GameObject::Draw(sf::RenderWindow* window) {
-    window->draw(*drawable_);
+    if (drawable_) {
+        window->draw(*drawable_);
+    }
 
 	for (const auto& child : children_) {
 		child->Draw(window);
 	}
 }
 
-std::vector<GameObject*>& GameObject::GetChildren()
-{
+std::vector<GameObject*>& GameObject::GetChildren() {
 	return children_;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
+    if (!transformable_) {
+        *x = 0;
+        *y = 0;
+        return;
+    }
+
     auto pos = transformable_->getPosition();
     *x = pos.x;
     *y = pos.y;
@@ -77,6 +99,12 @@ void GameObject::GetSize(double* w, double* h) {
         *w = size.x;
         *h = size.y;
     } else {
+        if (!transformable_) {
+            *w = 0;
+            *h = 0;
+            return;
+        }
+
         auto scale = transformable_->getScale();
         *w = original_width_ * scale.x;
         *h = original_height_ * scale.y;
@@ -101,7 +129,10 @@ void GameObject::SetComponent(Component* c) {
 }
 
 void GameObject::SetPosition(double x, double y) {
-    transformable_->setPosition(static_cast<float>(x), static_cast<float>(y));
+    if (transformable_) {
+        transformable_->setPosition(static_cast<float>(x)
+            , static_cast<float>(y));
+    }
 }
 
 void GameObject::SetRequestDelete(bool del) {
@@ -113,7 +144,7 @@ void GameObject::SetSize(double w, double h) {
     auto* rect = GetDrawformable<sf::RectangleShape>();
     if (rect) {
         rect->setSize({static_cast<float>(w), static_cast<float>(h)});
-    } else {
+    } else if (transformable_) {
         transformable_->setScale(static_cast<float>(w / original_width_)
             , static_cast<float>(h / original_height_));
     }

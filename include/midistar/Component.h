@@ -72,6 +72,7 @@ class Component {
         , SFML_EVENTS_HANDLER
         , MIDI_OUTPUT
         , SONG_END_WATCHER
+        , KEEP_ALIVE
         , NUM_COMPONENTS
     };
 

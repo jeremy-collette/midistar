@@ -37,7 +37,9 @@ GameObject::GameObject(
 		, tags_{ }
         , to_delete_{ }
         , transformable_{drawformable} {
+
     SetPosition(x_pos, y_pos);
+    SetSize(width, height);
     for (int i=0; i < Component::NUM_COMPONENTS; ++i) {
         components_[i] = nullptr;
     }

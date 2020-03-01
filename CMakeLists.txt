@@ -27,7 +27,9 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentInputHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneSfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/KeepAliveComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuInputHandlerComponent.h
@@ -42,6 +44,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiMessage.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiOut.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MidiOutputComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiPortIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/NoteInfoComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/OutlineEffectComponent.h
@@ -52,7 +55,12 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Scene.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SceneFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SfmlEventsComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ShrinkGrowComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SongEndWatcherComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SongSceneSfmlEventsHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteCreatorComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SpriteAnimatorComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Utility.h
@@ -80,9 +88,11 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/InstrumentAutoPlayComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/IntroSceneFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/IntroSceneGameObjectFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/IntroSceneSfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentInputHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InvertColourComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/KeepAliveComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/LambdaComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuComponent.cpp
@@ -98,6 +108,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/MidiMessage.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiOut.cpp
+    ${CMAKE_SOURCE_DIR}/src/MidiOutputComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiPortIn.cpp
     ${CMAKE_SOURCE_DIR}/src/NoteInfoComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/OutlineEffectComponent.cpp
@@ -107,8 +118,13 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/PianoSongNoteCollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Scene.cpp
+    ${CMAKE_SOURCE_DIR}/src/SfmlEventsComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/SfmlEventsHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/SongSceneSfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/ShrinkGrowComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/SongNoteCreatorComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SongNoteComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/SongEndWatcherComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SpriteAnimatorComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
     ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp

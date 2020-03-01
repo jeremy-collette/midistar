@@ -69,6 +69,8 @@ class GameObject {
             , double width
             , double height);
 
+    GameObject();
+
     /**
      * Destructor.
      */

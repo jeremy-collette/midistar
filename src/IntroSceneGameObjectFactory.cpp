@@ -126,6 +126,15 @@ GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
     menu->SetComponent(new MenuComponent{ });
     menu->SetComponent(new MenuInputHandlerComponent{ });
 
+    auto subtitle = new sf::Text("Scanning directory " +fs::current_path()
+        .string(), *font, 20);
+    subtitle->setFillColor(sf::Color::White);
+    auto subtitle_game_object = new GameObject{ subtitle, 0, 80, 0, 0 };
+    // TODO(@jeremy): revist empty GameObjects being deleted. Maybe we can
+    // create a "KeepAliveComponent"?
+    subtitle_game_object->SetComponent(new SongNoteComponent{ });
+    menu->AddChild(subtitle_game_object);
+
     // Add menu items
     auto menu_item_text = std::vector<std::string*>{ };
     std::string path = ".";

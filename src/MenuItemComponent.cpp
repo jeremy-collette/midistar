@@ -36,13 +36,15 @@ MenuItemComponent::MenuItemComponent(
 
 void MenuItemComponent::OnSelect()
 {
-	std::cout << "Selected menu item: " << text_ << std::endl;
+    // TODO(@jeremy): remove
+	//std::cout << "Selected menu item: " << text_ << std::endl;
 	selected_ = true;
 }
 
 void MenuItemComponent::SetFocus(bool has_focus)
 {
-	std::cout << "Menu item: " << text_ << " focus: " << has_focus << std::endl;
+    // TODO(@jeremy): remove
+	//std::cout << "Menu item: " << text_ << " focus: " << has_focus << std::endl;
 	has_focus_ = has_focus;
 }
 

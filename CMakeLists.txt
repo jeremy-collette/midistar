@@ -31,8 +31,10 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/KeepAliveComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MenuBuilder.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuInputHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MenuItemBuilder.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuItemComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiFileIn.h
@@ -63,6 +65,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteCreatorComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SpriteAnimatorComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/TestSceneFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Utility.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Version.h
     ${CMAKE_SOURCE_DIR}/include/midistar/VerticalCollisionDetectorComponent.h
@@ -95,8 +98,10 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/KeepAliveComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/LambdaComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_SOURCE_DIR}/src/MenuBuilder.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuInputHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/MenuItemBuilder.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuItemComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiFileGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/MidiFileIn.cpp
@@ -126,6 +131,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/SongNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SongEndWatcherComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SpriteAnimatorComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/TestSceneFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
     ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp
 )

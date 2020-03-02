@@ -28,26 +28,31 @@ namespace midistar {
 
 // Forward declaration to prevent circular dependency
 class MenuBuilder;
+class MenuBuilderHeapFactory;
 
 class MenuItemBuilder {
  public:
      MenuItemBuilder(
-         sf::Font& font
+         MenuBuilder& parent
+         , sf::Font& font
          , const std::string item_text
          , double x_pos
          , double y_pos
-         , MenuBuilder& menu_builder
-         , GameObject* menu_game_object);
+         , GameObject* menu_game_object
+         , MenuBuilderHeapFactory& menu_builder_factory);
 
      MenuItemBuilder& SetOnSelect(std::function<void(Game*, GameObject*, int)>
         on_select_func);
 
-     MenuBuilder& Create();
+     MenuBuilder& CreateSubMenu();
+
+     MenuBuilder& Done();
 
  private:
      sf::Font& font_;
-     MenuBuilder& menu_builder_;
+     MenuBuilderHeapFactory& menu_builder_factory_;
      GameObject* menu_game_object_;
+     MenuBuilder& parent_;
      MenuItemComponent* result_;
 };
 

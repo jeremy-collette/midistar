@@ -20,6 +20,7 @@
 
 #include "midistar/IntroSceneSfmlEventsHandlerComponent.h"
 #include "midistar/MenuBuilder.h"
+#include "midistar/MenuBuilderHeapFactory.h"
 #include "midistar/SfmlEventsComponent.h"
 
 namespace midistar {
@@ -33,18 +34,30 @@ bool TestSceneFactory::Create(
     if (!font->loadFromFile("PixelMiners-KKal.otf")) {
         throw "Could not load font!";
     }
+    /*
+    auto menu_builder_factory = MenuBuilderHeapFactory{};
+    auto menu_builder = menu_builder_factory.Create(*font);
 
-    auto menu_builder = MenuBuilder{ *font };
     auto menu = menu_builder
         .SetTitle("Test Menu")
         .AddItem("Test Item")
-            .Create()
+            .Done()
         .AddItem("Test Item 2")
         .SetOnSelect([](Game* g, GameObject*, int) {
             g->SetScene("Intro");
         })
-            .Create()
+            .Done()
+        .AddItem("Test Item 3")
+            .CreateSubMenu()
+            .SetTitle("Sub menu!")
+            .AddItem("Hello")
+                .Done()
+            .AddItem("Workd")
+                .Done()
+            .Done()
+        .Done()
         .Create();
+
 
     menu->AddTag("SfmlEvents");
     menu->SetComponent(new SfmlEventsComponent{ render_window });
@@ -52,6 +65,7 @@ bool TestSceneFactory::Create(
 
     auto game_objects = std::vector<GameObject*>{ menu };
     *scene = new Scene{ game, render_window, game_objects };
+    */
     return true;
 }
 

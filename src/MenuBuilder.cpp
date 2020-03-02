@@ -23,30 +23,36 @@
 
 namespace midistar {
 
-MenuBuilder::MenuBuilder(sf::Font& font)
-        : font_{ font }
+MenuBuilder::MenuBuilder(MenuItemBuilder* parent, sf::Font& font, MenuBuilderHeapFactory& factory)
+        : factory_{factory}
+        , font_{ font }
+        , parent_{ *parent }
         , title_text_{ nullptr }
-        , result_{ new GameObject{ } }
+        , game_object_{ new GameObject{ } }
         , y_{ 0 } {
-    result_->SetPosition(0, y_);
+    game_object_->SetPosition(0, y_);
     y_ += 150;
-    result_->SetComponent(new MenuComponent{});
-    result_->SetComponent(new MenuInputHandlerComponent{});
+    game_object_->SetComponent(new MenuComponent{});
+    game_object_->SetComponent(new MenuInputHandlerComponent{});
 }
 
 MenuBuilder& MenuBuilder::SetTitle(const std::string title) {
-    result_->SetDrawformable(new sf::Text(title, font_, 100));
+    game_object_->SetDrawformable(new sf::Text(title, font_, 100));
     return *this;
 }
 
 MenuItemBuilder MenuBuilder::AddItem(const std::string item_text) {
-    auto result = MenuItemBuilder{ font_, item_text, 0.0, y_, *this, result_ };
+    auto result = MenuItemBuilder{ *this, font_, item_text, 0.0, y_, game_object_, factory_};
     y_ += 50;
     return result;
 }
 
+MenuItemBuilder& MenuBuilder::Done() {
+    return parent_;
+}
+
 GameObject* MenuBuilder::Create() {
-    return result_;
+    return game_object_;
 }
 
 }  // End namespace midistar

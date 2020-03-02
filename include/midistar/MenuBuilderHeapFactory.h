@@ -16,38 +16,23 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MENUBUILDER_H_
-#define MIDISTAR_MENUBUILDER_H_
+#ifndef MIDISTAR_MENUBUILDERFACTORY_H_
+#define MIDISTAR_MENUBUILDERFACTORY_H_
 
 #include <SFML/Graphics.hpp>
-#include <string>
 
-#include "midistar/GameObject.h"
+#include "midistar/MenuBuilder.h"
 #include "midistar/MenuItemBuilder.h"
 
 namespace midistar {
 
-class MenuBuilderHeapFactory;
-
-class MenuBuilder {
+class MenuBuilderHeapFactory {
  public:
-    MenuBuilder(MenuItemBuilder* parent, sf::Font& font, MenuBuilderHeapFactory& factory);
+    ~MenuBuilderHeapFactory();
 
-    MenuBuilder& SetTitle(const std::string title);
+    MenuBuilder& Create(MenuItemBuilder& parent, sf::Font& font);
 
-    MenuItemBuilder AddItem(const std::string item_text);
-
-    MenuItemBuilder& Done();
-
-    GameObject* Create();
-
- private:
-    MenuBuilderHeapFactory& factory_;
-    sf::Font& font_;
-    GameObject* game_object_;
-    MenuItemBuilder& parent_;
-    sf::Text* title_text_;
-    double y_;
+    MenuBuilder& Create(sf::Font& font);
 };
 
 }  // namespace midistar

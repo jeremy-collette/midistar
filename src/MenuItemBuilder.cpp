@@ -20,19 +20,22 @@
 
 #include "midistar/Game.h"
 #include "midistar/MenuBuilder.h"
+#include "midistar/MenuBuilderHeapFactory.h"
 #include "midistar/MenuItemComponent.h"
 
 namespace midistar {
 
 MenuItemBuilder::MenuItemBuilder(
-    sf::Font& font
+    MenuBuilder& parent
+    , sf::Font& font
     , const std::string item_text
     , double x_pos
     , double y_pos
-    , MenuBuilder& menu_builder
-    , GameObject* menu_game_object)
+    , GameObject* menu_game_object
+    , MenuBuilderHeapFactory& menu_builder_factory)
         : font_{ font }
-        , menu_builder_{ menu_builder }
+        , parent_{ parent }
+        , menu_builder_factory_{ menu_builder_factory }
         , menu_game_object_{ menu_game_object }
         , result_{ nullptr } {
 
@@ -49,8 +52,12 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(std::function<void(Game*
     return *this;
 }
 
-MenuBuilder& MenuItemBuilder::Create() {
-    return menu_builder_;
+MenuBuilder& MenuItemBuilder::CreateSubMenu() {
+    return menu_builder_factory_.Create(*this, font_);
+}
+
+MenuBuilder& MenuItemBuilder::Done() {
+    return parent_;
 }
 
 }  // End namespace midistar

@@ -20,16 +20,20 @@
 
 namespace midistar {
 
+MenuBuilderHeapFactory::MenuBuilderHeapFactory(sf::RenderWindow& render_window)
+        : window_{ render_window } {
+}
+
 MenuBuilderHeapFactory::~MenuBuilderHeapFactory() {
-    // TODO(@jeremy): implement
+    // TODO(@jeremy): implement cleanup
 }
 
 MenuBuilder& MenuBuilderHeapFactory::Create(MenuItemBuilder& parent, sf::Font & font) {
-    return *(new MenuBuilder{ &parent, font, *this });
+    return *(new MenuBuilder{ &parent, font, *this, window_ });
 }
 
 MenuBuilder& MenuBuilderHeapFactory::Create(sf::Font & font) {
-    return *(new MenuBuilder{ (MenuItemBuilder*)nullptr, font, *this });
+    return *(new MenuBuilder{ (MenuItemBuilder*)nullptr, font, *this, window_ });
 }
 
 }   // End namespace midistar

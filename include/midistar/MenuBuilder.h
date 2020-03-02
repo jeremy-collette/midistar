@@ -31,7 +31,7 @@ class MenuBuilderHeapFactory;
 
 class MenuBuilder {
  public:
-    MenuBuilder(MenuItemBuilder* parent, sf::Font& font, MenuBuilderHeapFactory& factory);
+    MenuBuilder(MenuItemBuilder* parent, sf::Font& font, MenuBuilderHeapFactory& factory, sf::RenderWindow& window);
 
     MenuBuilder& SetTitle(const std::string title);
 

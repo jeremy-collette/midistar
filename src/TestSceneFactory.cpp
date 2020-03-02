@@ -34,8 +34,8 @@ bool TestSceneFactory::Create(
     if (!font->loadFromFile("PixelMiners-KKal.otf")) {
         throw "Could not load font!";
     }
-    /*
-    auto menu_builder_factory = MenuBuilderHeapFactory{};
+
+    auto menu_builder_factory = MenuBuilderHeapFactory{ render_window };
     auto menu_builder = menu_builder_factory.Create(*font);
 
     auto menu = menu_builder
@@ -53,19 +53,16 @@ bool TestSceneFactory::Create(
             .AddItem("Hello")
                 .Done()
             .AddItem("Workd")
+                .SetOnSelect([](Game* g, GameObject*, int) {
+                    g->SetScene("Test");
+                })
                 .Done()
             .Done()
         .Done()
         .Create();
 
-
-    menu->AddTag("SfmlEvents");
-    menu->SetComponent(new SfmlEventsComponent{ render_window });
-    menu->SetComponent(new IntroSceneSfmlEventsHandlerComponent{ });
-
     auto game_objects = std::vector<GameObject*>{ menu };
     *scene = new Scene{ game, render_window, game_objects };
-    */
     return true;
 }
 

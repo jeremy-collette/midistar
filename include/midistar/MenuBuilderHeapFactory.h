@@ -28,11 +28,16 @@ namespace midistar {
 
 class MenuBuilderHeapFactory {
  public:
+    MenuBuilderHeapFactory(sf::RenderWindow& window);
+
     ~MenuBuilderHeapFactory();
 
     MenuBuilder& Create(MenuItemBuilder& parent, sf::Font& font);
 
     MenuBuilder& Create(sf::Font& font);
+
+ private:
+    sf::RenderWindow& window_;
 };
 
 }  // namespace midistar

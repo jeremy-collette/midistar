@@ -53,7 +53,7 @@ class MenuItemBuilder {
      MenuBuilderHeapFactory& menu_builder_factory_;
      GameObject* menu_game_object_;
      MenuBuilder& parent_;
-     MenuItemComponent* result_;
+     MenuItemComponent* menu_item_component_;
 };
 
 }  // namespace midistar

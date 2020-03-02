@@ -21,19 +21,27 @@
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemBuilder.h"
 
+#include "midistar/SfmlEventsComponent.h"
+#include "midistar/IntroSceneSfmlEventsHandlerComponent.h"
+
 namespace midistar {
 
-MenuBuilder::MenuBuilder(MenuItemBuilder* parent, sf::Font& font, MenuBuilderHeapFactory& factory)
+MenuBuilder::MenuBuilder(MenuItemBuilder* parent, sf::Font& font, MenuBuilderHeapFactory& factory, sf::RenderWindow& window)
         : factory_{factory}
         , font_{ font }
         , parent_{ *parent }
         , title_text_{ nullptr }
         , game_object_{ new GameObject{ } }
         , y_{ 0 } {
+    game_object_->AddTag("Menu");
     game_object_->SetPosition(0, y_);
     y_ += 150;
     game_object_->SetComponent(new MenuComponent{});
     game_object_->SetComponent(new MenuInputHandlerComponent{});
+    game_object_->AddTag("SfmlEvents");
+
+    game_object_->SetComponent(new SfmlEventsComponent{ window });
+    game_object_->SetComponent(new IntroSceneSfmlEventsHandlerComponent{ });
 }
 
 MenuBuilder& MenuBuilder::SetTitle(const std::string title) {

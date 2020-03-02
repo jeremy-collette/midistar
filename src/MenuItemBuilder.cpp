@@ -37,23 +37,33 @@ MenuItemBuilder::MenuItemBuilder(
         , parent_{ parent }
         , menu_builder_factory_{ menu_builder_factory }
         , menu_game_object_{ menu_game_object }
-        , result_{ nullptr } {
+        , menu_item_component_{ nullptr } {
 
     auto text = new sf::Text{ item_text, font, 30U };
     auto child_object = new GameObject{ text, x_pos, y_pos, 1, 1 };
-    result_ = new MenuItemComponent{ };
-    child_object->SetComponent(result_);
+    menu_item_component_ = new MenuItemComponent{ };
+    child_object->SetComponent(menu_item_component_);
     menu_game_object->AddChild(child_object);
 }
 
 MenuItemBuilder& MenuItemBuilder::SetOnSelect(std::function<void(Game*
         , GameObject*, int)> on_select_func) {
-    result_->SetOnSelect(on_select_func);
+    menu_item_component_->SetOnSelect(on_select_func);
     return *this;
 }
 
 MenuBuilder& MenuItemBuilder::CreateSubMenu() {
-    return menu_builder_factory_.Create(*this, font_);
+    auto& menu_builder = menu_builder_factory_.Create(*this, font_);
+    auto sub_menu_game_object = menu_builder.Create();
+    menu_item_component_->SetOnSelect(
+        [sub_menu_game_object](Game* g, GameObject* o, int delta)
+        {
+            auto current_menu = g->GetCurrentScene().GetFirstGameObjectByTag("Menu");
+            current_menu->SetRequestDelete(true);
+            g->GetCurrentScene().AddGameObject(sub_menu_game_object);
+        }
+    );
+    return menu_builder;
 }
 
 MenuBuilder& MenuItemBuilder::Done() {

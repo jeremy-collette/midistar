@@ -32,6 +32,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/KeepAliveComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/LambdaComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuBuilder.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/MenuBuilderHeapFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuInputHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/MenuItemBuilder.h
@@ -99,6 +100,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/LambdaComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuBuilder.cpp
+    ${CMAKE_SOURCE_DIR}/src/MenuBuilderHeapFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuInputHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/MenuItemBuilder.cpp

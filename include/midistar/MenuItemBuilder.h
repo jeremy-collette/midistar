@@ -16,41 +16,39 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MENUITEMCOMPONENT_H_
-#define MIDISTAR_MENUITEMCOMPONENT_H_
+#ifndef MIDISTAR_MENUITEMBUILDER_H_
+#define MIDISTAR_MENUITEMBUILDER_H_
 
 #include <functional>
 
-#include "midistar/Component.h"
 #include "midistar/GameObject.h"
+#include "midistar/MenuItemComponent.h"
 
 namespace midistar {
 
-/**
- * The MenuComponent class creates a text menu.
- */
-class MenuItemComponent : public Component {
+// Forward declaration to prevent circular dependency
+class MenuBuilder;
+
+class MenuItemBuilder {
  public:
-	MenuItemComponent(
-        std::function<void(Game*, GameObject*, int)> on_select);
+     MenuItemBuilder(
+         sf::Font& font
+         , const std::string item_text
+         , double x_pos
+         , double y_pos
+         , MenuBuilder& menu_builder
+         , GameObject* menu_game_object);
 
-    explicit MenuItemComponent();
+     MenuItemBuilder& SetOnSelect(std::function<void(Game*, GameObject*, int)>
+        on_select_func);
 
-	void OnSelect();
-
-	void SetFocus(bool has_focus);
-
-    void SetOnSelect(std::function<void(Game*, GameObject*, int)> on_select);
-
-    /**
-     * \copydoc Component::Update()
-     */
-    virtual void Update(Game* g, GameObject* o, int delta);
+     MenuBuilder& Create();
 
  private:
-	 bool has_focus_;  //!< Indicates if this menu item currently has focus
-     std::function<void(Game*, GameObject*, int)> on_select_;
-     bool selected_;  //!< Indicates this item was selected
+     sf::Font& font_;
+     MenuBuilder& menu_builder_;
+     GameObject* menu_game_object_;
+     MenuItemComponent* result_;
 };
 
 }  // namespace midistar

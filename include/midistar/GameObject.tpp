@@ -57,6 +57,12 @@ T* GameObject::GetDrawformable() {
     return dynamic_cast<T*>(drawable_);
 }
 
+template <typename T>
+void GameObject::SetDrawformable(T* drawformable) {
+    drawable_ = drawformable;
+    transformable_ = drawformable;
+}
+
 }  // End namespace midistar
 
 #endif  // MIDISTAR_GAMEOBJECT_TPP_

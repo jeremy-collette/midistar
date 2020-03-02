@@ -89,8 +89,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
     for (auto i = 0u; i < menu_item_text.size(); ++i) {
 		auto drawable = new sf::Text(*menu_item_text[i], *font, 50);
 		auto menu_item = new GameObject(drawable, 50, 150 + 50 * i, 20, 20);
-		menu_item->SetComponent(new MenuItemComponent{ *menu_item_text[i]
-            , on_select_lambdas[i] });
+		menu_item->SetComponent(new MenuItemComponent{ on_select_lambdas[i] });
 		menu->AddChild(menu_item);
 	}
 
@@ -143,8 +142,8 @@ GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
     for (auto i = 0u; i < menu_item_text.size(); ++i) {
         auto drawable = new sf::Text(*menu_item_text[i], *font, 20);
         auto menu_item = new GameObject(drawable, 50, 150 + 25 * i, 20, 20);
-        menu_item->SetComponent(new MenuItemComponent{ *menu_item_text[i]
-            , [menu_item_text, i, game_type](Game* g, GameObject*, int) {
+        menu_item->SetComponent(new MenuItemComponent{
+            [menu_item_text, i, game_type](Game* g, GameObject*, int) {
                 Scene* new_scene = nullptr;
                 if (game_type == GameType::PIANO) {
                     auto piano_scene_factory = PianoSceneFactory{};

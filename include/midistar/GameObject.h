@@ -188,6 +188,9 @@ class GameObject {
      */
     void SetComponent(Component* c);
 
+    template <typename T>
+    void SetDrawformable(T* drawformable);
+
     /**
      * Sets the position of the GameObject.
      *

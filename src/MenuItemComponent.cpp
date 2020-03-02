@@ -25,13 +25,15 @@
 namespace midistar {
 
 MenuItemComponent::MenuItemComponent(
-    std::string text,
     std::function<void(Game*, GameObject*, int)> on_select)
 		: Component{ Component::MENU_ITEM }
 		, has_focus_{ false }
         , on_select_{ on_select }
-        , selected_{ false }
-		, text_{ text } {
+        , selected_{ false } {
+}
+
+MenuItemComponent::MenuItemComponent()
+        : MenuItemComponent([](Game*, GameObject*, int) {}) {
 }
 
 void MenuItemComponent::OnSelect()
@@ -48,10 +50,14 @@ void MenuItemComponent::SetFocus(bool has_focus)
 	has_focus_ = has_focus;
 }
 
+void MenuItemComponent::SetOnSelect(
+        std::function<void(Game*, GameObject*, int)> on_select) {
+    on_select_ = on_select;
+}
+
 void MenuItemComponent::Update(Game* g, GameObject* o, int delta)
 {
 	auto text = o->GetDrawformable<sf::Text>();
-	text->setString(text_);
 	auto color = has_focus_ ? sf::Color::White : sf::Color::Red;
 	text->setFillColor(color);
 

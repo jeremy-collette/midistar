@@ -27,27 +27,41 @@ namespace midistar {
 MenuComponent::MenuComponent()
 		: Component{ Component::MENU }
 		, current_item_{ nullptr }
-		, index_{ 0 } {
+		, index_{ 0 }
+        , previous_menu_{ nullptr } {
 }
 
-void MenuComponent::OnNextFocus()
-{
+void MenuComponent::OnNextFocus() {
 	++index_;
 }
 
-void MenuComponent::OnPreviousFocus()
-{
+void MenuComponent::OnPreviousFocus() {
 	--index_;
 }
 
-void MenuComponent::OnSelect()
-{
+void MenuComponent::OnSelect() {
 	if (current_item_) {
 		current_item_->OnSelect();
 	}
 }
 
-void MenuComponent::Update(Game * g, GameObject * o, int delta) {
+void MenuComponent::OnBack(Game* g, GameObject* o, int delta) {
+    if (!this->previous_menu_) {
+        return;
+    }
+
+    // Remove existing menu
+    g->GetCurrentScene().RemoveObject(o);
+
+    // Restore parent
+    g->GetCurrentScene().AddGameObject(previous_menu_);
+}
+
+void MenuComponent::SetPreviousMenu(GameObject* previous_menu) {
+    previous_menu_ = previous_menu;
+}
+
+void MenuComponent::Update(Game* g, GameObject* o, int delta) {
 	auto focused_item = GetChildMenuItemComponent(o);
 
 	// If the focused item has changed, update focus

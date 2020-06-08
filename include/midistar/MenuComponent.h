@@ -20,6 +20,7 @@
 #define MIDISTAR_MENUCOMPONENT_H_
 
 #include "midistar/Component.h"
+#include "midistar/Game.h"
 #include "midistar/GameObject.h"
 #include "midistar/MenuItemComponent.h"
 
@@ -41,6 +42,10 @@ class MenuComponent : public Component {
 
 	void OnSelect();
 
+    void OnBack(Game* g, GameObject* o, int delta);
+
+    void SetPreviousMenu(GameObject* parent);
+
     /**
      * \copydoc Component::Update()
      */
@@ -52,6 +57,8 @@ class MenuComponent : public Component {
 
      MenuItemComponent* current_item_;  //!< Currently focused item
 	 int index_;  //!< Menu index
+
+     GameObject* previous_menu_;
 };
 
 }  // namespace midistar

@@ -92,12 +92,13 @@ GameObject* Scene::GetFirstGameObjectByTag(std::string tag) {
     return game_objects.front();
 }
 
-void Scene::DeleteObject(GameObject* o) {
+void Scene::RemoveObject(GameObject* o) {
 	auto itr = std::find(game_objects_.begin(), game_objects_.end(), o);
 	if (itr != game_objects_.end()) {
 		game_objects_.erase(itr);
 	}
-	delete o;
+    // TODO(@jez): investigate
+	//delete o;
 }
 
 std::vector<GameObject*>& Scene::GetGameObjects() {
@@ -120,7 +121,8 @@ void Scene::CleanUpObjects() {
 	auto game_objects_copy{ game_objects_ };
 	for (auto& o : game_objects_copy) {
 		if (o->GetRequestDelete()) {
-			DeleteObject(o);
+			RemoveObject(o);
+            delete o;
 		}
 	}
 }

@@ -76,7 +76,7 @@ class Scene {
 
 	 void AddGameObject(GameObject* new_game_object);
 
-	 void DeleteObject(GameObject* o);
+	 void RemoveObject(GameObject* o);
 
      GameObject* GetFirstGameObjectByTag(std::string tag);
 

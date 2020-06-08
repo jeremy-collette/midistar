@@ -67,4 +67,12 @@ void MenuItemComponent::Update(Game* g, GameObject* o, int delta)
 	}
 }
 
+GameObject* MenuItemComponent::GetOwningMenu() {
+    return parent_;
+}
+
+void MenuItemComponent::SetOwningMenu(GameObject* parent) {
+    parent_ = parent;
+}
+
 }  // End namespace midistar

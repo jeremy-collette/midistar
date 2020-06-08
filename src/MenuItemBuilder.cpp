@@ -16,38 +16,42 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Remove
-#include <iostream>
-
 #include "midistar/MenuBuilder.h"
 #include "midistar/MenuItemBuilder.h"
+#include "midistar/MenuComponent.h"
 
 namespace midistar {
 MenuItemBuilder::MenuItemBuilder(
     const std::string text
     , GameObject* game_object
     , const sf::Font& font)
-        : game_object_{ game_object } {
+        : game_object_{ game_object }
+        , parent_menu_{ nullptr }{
     menu_item_component_ = new MenuItemComponent{ };
     game_object_->SetComponent(menu_item_component_);
     game_object_->SetDrawformable(new sf::Text{ text, font, 30U });
 }
 
 MenuItemBuilder& MenuItemBuilder::SetOnSelect(MenuBuilder& sub_menu) {
-    auto sub_menu_object = sub_menu.GetGameObject();
+    auto new_submenu_object = sub_menu.GetGameObject();
 
     menu_item_component_->SetOnSelect(
-        [this, sub_menu_object](Game* g, GameObject* o, int delta)
+        [this, new_submenu_object](Game* g, GameObject* o, int delta)
         {
-            // TODO(@jez): How do we get back?
-            auto current_menu = g->GetCurrentScene().GetFirstGameObjectByTag("Menu");
-            current_menu->SetRequestDelete(true);
+            // Remove existing menu
+            auto menu_item = o->GetComponent<MenuItemComponent>(
+                Component::MENU_ITEM);
 
-            //game_object_->SetRequestDelete(true);
-            //auto text = game_object_->GetDrawformable<sf::Text>();
-            //text->setCharacterSize(0);
+            // Here we remove the current menu
+            // TODO(@jez): can we do this somewhere else?
+            auto owning_menu = menu_item->GetOwningMenu();
+            g->GetCurrentScene().RemoveObject(owning_menu);
 
-            g->GetCurrentScene().AddGameObject(sub_menu_object);
+            // Set new menu and tell it t he current menu so it can go back
+            auto new_submenu = new_submenu_object->GetComponent<
+                MenuComponent>(Component::MENU);
+            new_submenu->SetPreviousMenu(owning_menu);
+            g->GetCurrentScene().AddGameObject(new_submenu_object);
         }
     );
     return *this;
@@ -59,12 +63,15 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(
     return *this;
 }
 
-MenuItemBuilder& MenuItemBuilder::SetYPosition(const double y_pos) {
+void MenuItemBuilder::SetOwningMenu(GameObject* parent) {
+    menu_item_component_->SetOwningMenu(parent);
+}
+
+void MenuItemBuilder::SetYPosition(const double y_pos) {
     double x, y;
     game_object_->GetPosition(&x, &y);
     y = y_pos;
     game_object_->SetPosition(x, y);
-    return *this;
 }
 
 GameObject* MenuItemBuilder::GetGameObject() {

@@ -42,13 +42,16 @@ class MenuItemBuilder {
      MenuItemBuilder& SetOnSelect(std::function<void(Game*, GameObject*, int)>
          on_select_func);
 
-     MenuItemBuilder& SetYPosition(const double y_pos);
+     void SetOwningMenu(GameObject* parent);
+
+     void SetYPosition(const double y_pos);
 
      GameObject* GetGameObject();
 
  private:
      GameObject* game_object_;
      MenuItemComponent* menu_item_component_;
+     GameObject* parent_menu_;
 };
 
 }  // namespace midistar

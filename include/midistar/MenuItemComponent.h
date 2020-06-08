@@ -47,10 +47,15 @@ class MenuItemComponent : public Component {
      */
     virtual void Update(Game* g, GameObject* o, int delta);
 
+    GameObject* GetOwningMenu();
+
+    void SetOwningMenu(GameObject* parent);
+
  private:
 	 bool has_focus_;  //!< Indicates if this menu item currently has focus
      std::function<void(Game*, GameObject*, int)> on_select_;
      bool selected_;  //!< Indicates this item was selected
+     GameObject* parent_;
 };
 
 }  // namespace midistar

@@ -45,10 +45,8 @@ void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
         Component::SFML_EVENTS);
 
 	for (const auto& e : sfml_events_component->GetEvents()) {
-		// Check if its the right key and event type
-		if (e.type != sf::Event::KeyPressed ||
-			(e.key.code != sf::Keyboard::Down && e.key.code != sf::Keyboard::Up
-				&& e.key.code != sf::Keyboard::Enter)) {
+		// Check if the event type is key pressed
+		if (e.type != sf::Event::KeyPressed) {
 			continue;
 		}
 
@@ -62,8 +60,9 @@ void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
 			case sf::Keyboard::Enter:
 				menu->OnSelect();
 				break;
-			default:
-				throw "Unexpected key code";
+            case sf::Keyboard::Escape:
+                menu->OnBack(g, o, delta);
+                break;
 		}
 	}
 }

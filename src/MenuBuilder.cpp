@@ -43,10 +43,11 @@ MenuBuilder::MenuBuilder(
 
     game_object_->AddTag("SfmlEvents");
     game_object_->SetComponent(new SfmlEventsComponent{ window });
-    game_object_->SetComponent(new IntroSceneSfmlEventsHandlerComponent{ });
+    //game_object_->SetComponent(new IntroSceneSfmlEventsHandlerComponent{ });
 }
 
 MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder& menu_item) {
+    menu_item.SetOwningMenu(game_object_);
     game_object_->AddChild(menu_item.GetGameObject());
     menu_item.SetYPosition(y_);
     y_ += 50;

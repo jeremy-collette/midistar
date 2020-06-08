@@ -36,47 +36,26 @@ bool TestSceneFactory::Create(
         throw "Could not load font!";
     }
 
-    /*
-    auto menu_builder_factory = MenuBuilderHeapFactory{ render_window };
-    auto menu_builder = menu_builder_factory.Create(*font);
-
-    auto menu = menu_builder
-        .SetTitle("Test Menu")
-        .AddItem("Test Item")
-            .Done()
-        .AddItem("Test Item 2")
-            .SetOnSelect([](Game* g, GameObject*, int) {
-                g->SetScene("Intro");
-            })
-            .Done()
-        .AddItem("Test Item 3")
-        .CreateSubMenu()
-            .SetTitle("Sub menu!")
-            .AddItem("Hello")
-                .Done()
-            .AddItem("Workd")
-                .SetOnSelect([](Game* g, GameObject*, int) {
-                    g->SetScene("Test");
-                })
-                .Done()
-            .Done()
-        .Done()
-        .Create();
-    */
-
     auto factory = MenuFactory{ *font, render_window };
     auto menu_context =
         factory.CreateMenu("Test Menu")
-        .AddMenuItem(factory.CreateMenuItem("Test Item")
-            .SetOnSelect(factory.CreateMenu("Sub Menu")
-                .AddMenuItem(factory.CreateMenuItem("Sub Menu Item"))))
-        .AddMenuItem(factory.CreateMenuItem("Test Item 2")
+        .AddMenuItem(factory.CreateMenuItem("Birbs")
+            .SetOnSelect(factory.CreateMenu("Birbs Menu")
+                .AddMenuItem(factory.CreateMenuItem("Cockatoo"))
+                .AddMenuItem(factory.CreateMenuItem("Gallah")
+                    .SetOnSelect(factory.CreateMenu("Rosella")
+                        .AddMenuItem(factory.CreateMenuItem("Eastern Rosella"))
+                        .AddMenuItem(factory.CreateMenuItem("Crimson Rosella"))))))
+        .AddMenuItem(factory.CreateMenuItem("Start Game")
             .SetOnSelect([](Game* g, GameObject*, int) {
                 g->SetScene("Intro");
+            }))
+        .AddMenuItem(factory.CreateMenuItem("Exit")
+            .SetOnSelect([](Game* g, GameObject*, int) {
+                g->GetWindow().close();
             }));
 
     auto game_objects = std::vector<GameObject*>{ menu_context.GetGameObject() };
-    //auto game_objects = std::vector<GameObject*>{ menu };
     *scene = new Scene{ game, render_window, game_objects };
     return true;
 }

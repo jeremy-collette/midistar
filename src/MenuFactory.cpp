@@ -16,32 +16,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MENUBUILDER_H_
-#define MIDISTAR_MENUBUILDER_H_
-
-#include "midistar/GameObject.h"
-#include "midistar/MenuItemBuilder.h"
+#include "midistar/MenuFactory.h"
 
 namespace midistar {
+MenuFactory::MenuFactory(const sf::Font& font, sf::RenderWindow & window)
+    : font_{ font }
+    , window_{ window } {
+}
 
-class MenuBuilder {
- public:
-    MenuBuilder(
-        const std::string title
-        , GameObject* game_object
-        , const sf::Font& font
-        , sf::RenderWindow& window);
+MenuBuilder MenuFactory::CreateMenu(const std::string title) {
+    auto game_object = new GameObject{ (sf::Text*)nullptr, 0.0, 0.0, 0.0, 0.0 };
+    return MenuBuilder{ title, game_object, font_, window_ };
+}
 
-    MenuBuilder& AddMenuItem(MenuItemBuilder& menu_item);
+MenuItemBuilder MenuFactory::CreateMenuItem(const std::string title) {
+    auto game_object = new GameObject{ (sf::Text*)nullptr, 0.0, 0.0, 0.0, 0.0 };
+    return MenuItemBuilder{ title, game_object, font_ };
+}
 
-    GameObject* GetGameObject();
-
- private:
-    GameObject* game_object_;
-    const sf::Font& font_;
-    float y_;
-};
-
-}  // namespace midistar
-
-#endif  // MIDISTAR_MENUBUILDER_H_
+}  // End namespace midistar

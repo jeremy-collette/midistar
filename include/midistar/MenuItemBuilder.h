@@ -20,42 +20,37 @@
 #define MIDISTAR_MENUITEMBUILDER_H_
 
 #include <functional>
+#include <string>
 
+#include "midistar/Game.h"
 #include "midistar/GameObject.h"
 #include "midistar/MenuItemComponent.h"
 
 namespace midistar {
 
-// Forward declaration to prevent circular dependency
 class MenuBuilder;
-class MenuBuilderHeapFactory;
 
 class MenuItemBuilder {
  public:
      MenuItemBuilder(
-         MenuBuilder& parent
-         , sf::Font& font
-         , const std::string item_text
-         , double x_pos
-         , double y_pos
-         , GameObject* menu_game_object
-         , MenuBuilderHeapFactory& menu_builder_factory);
+         const std::string text
+         , GameObject* game_object
+         , const sf::Font& font);
+
+     MenuItemBuilder& SetOnSelect(MenuBuilder& sub_menu);
 
      MenuItemBuilder& SetOnSelect(std::function<void(Game*, GameObject*, int)>
-        on_select_func);
+         on_select_func);
 
-     MenuBuilder& CreateSubMenu();
+     MenuItemBuilder& SetYPosition(const double y_pos);
 
-     MenuBuilder& Done();
+     GameObject* GetGameObject();
 
  private:
-     sf::Font& font_;
-     MenuBuilderHeapFactory& menu_builder_factory_;
-     GameObject* menu_game_object_;
-     MenuBuilder& parent_;
+     GameObject* game_object_;
      MenuItemComponent* menu_item_component_;
 };
 
 }  // namespace midistar
 
-#endif  // MIDISTAR_MENUCOMPONENT_H_
+#endif  // MIDISTAR_MENUITEMBUILDER_H_

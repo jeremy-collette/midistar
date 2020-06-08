@@ -22,6 +22,7 @@
 #include "midistar/MenuBuilder.h"
 #include "midistar/MenuBuilderHeapFactory.h"
 #include "midistar/SfmlEventsComponent.h"
+#include "midistar/MenuFactory.h"
 
 namespace midistar {
 
@@ -35,6 +36,7 @@ bool TestSceneFactory::Create(
         throw "Could not load font!";
     }
 
+    /*
     auto menu_builder_factory = MenuBuilderHeapFactory{ render_window };
     auto menu_builder = menu_builder_factory.Create(*font);
 
@@ -43,12 +45,12 @@ bool TestSceneFactory::Create(
         .AddItem("Test Item")
             .Done()
         .AddItem("Test Item 2")
-        .SetOnSelect([](Game* g, GameObject*, int) {
-            g->SetScene("Intro");
-        })
+            .SetOnSelect([](Game* g, GameObject*, int) {
+                g->SetScene("Intro");
+            })
             .Done()
         .AddItem("Test Item 3")
-            .CreateSubMenu()
+        .CreateSubMenu()
             .SetTitle("Sub menu!")
             .AddItem("Hello")
                 .Done()
@@ -60,8 +62,21 @@ bool TestSceneFactory::Create(
             .Done()
         .Done()
         .Create();
+    */
 
-    auto game_objects = std::vector<GameObject*>{ menu };
+    auto factory = MenuFactory{ *font, render_window };
+    auto menu_context =
+        factory.CreateMenu("Test Menu")
+        .AddMenuItem(factory.CreateMenuItem("Test Item")
+            .SetOnSelect(factory.CreateMenu("Sub Menu")
+                .AddMenuItem(factory.CreateMenuItem("Sub Menu Item"))))
+        .AddMenuItem(factory.CreateMenuItem("Test Item 2")
+            .SetOnSelect([](Game* g, GameObject*, int) {
+                g->SetScene("Intro");
+            }));
+
+    auto game_objects = std::vector<GameObject*>{ menu_context.GetGameObject() };
+    //auto game_objects = std::vector<GameObject*>{ menu };
     *scene = new Scene{ game, render_window, game_objects };
     return true;
 }

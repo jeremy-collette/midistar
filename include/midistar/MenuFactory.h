@@ -16,25 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/MenuBuilderHeapFactory.h"
+#ifndef MIDISTAR_MENUFACTORY_H_
+#define MIDISTAR_MENUFACTORY_H_
+
+#include <SFML/Graphics.hpp>
+
+#include "midistar/MenuBuilder.h"
+#include "midistar/MenuItemBuilder.h"
 
 namespace midistar {
 
-MenuBuilderHeapFactory::MenuBuilderHeapFactory(sf::RenderWindow& render_window)
-        : window_{ render_window } {
-}
+class MenuFactory {
+ public:
+    MenuFactory(
+        const sf::Font& font
+        , sf::RenderWindow& window);
 
-MenuBuilderHeapFactory::~MenuBuilderHeapFactory() {
-    // TODO(@jeremy): implement cleanup
-}
+    MenuBuilder CreateMenu(const std::string title);
 
-MenuBuilder& MenuBuilderHeapFactory::Create(MenuItemBuilder& parent, sf::Font & font) {
-    return *(new MenuBuilder{ &parent, font, *this, window_ });
-}
+    MenuItemBuilder CreateMenuItem(const std::string title);
 
-MenuBuilder& MenuBuilderHeapFactory::Create(sf::Font & font) {
-    return *(new MenuBuilder{ (MenuItemBuilder*)nullptr, font, *this, window_ });
-}
+private:
+    const sf::Font& font_;
+    sf::RenderWindow& window_;
+};
 
-}   // End namespace midistar
+}  // namespace midistar
 
+#endif  // MIDISTAR_MENUFACTORY_H_

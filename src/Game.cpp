@@ -87,6 +87,8 @@ void Game::Run() {
 		// If we're changing scenes, do it now
 		if (next_scene_) {
 			if (current_scene_) {
+                // TODO(@jeremy): we need some way of preserving the scene if
+                // we want to re-use it
 				delete current_scene_;
 			}
 			current_scene_ = next_scene_;

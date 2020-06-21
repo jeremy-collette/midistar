@@ -64,19 +64,22 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
 		new std::string{ "0. Exit" },
 	};
 
-    auto on_select_lambdas = std::vector<std::function<void(Game*, GameObject*, int)>> {
+    auto on_select_lambdas =
+        std::vector<std::function<void(Game*, GameObject*, int)>> {
         {
             [this, menu](Game* g, GameObject* o, int) {
-                g->GetCurrentScene().AddGameObject(CreateSongSelectionMenuGameObject(
-                    GameType::PIANO));
-                    menu->SetRequestDelete(true);
+                g->GetCurrentScene().AddGameObject(
+                    CreateSongSelectionMenuGameObject(
+                        GameType::PIANO));
+                        menu->SetRequestDelete(true);
             }
         },
         {
             [this, menu](Game* g, GameObject* o, int) {
-                g->GetCurrentScene().AddGameObject(CreateSongSelectionMenuGameObject(
-                    GameType::DRUM));
-                    menu->SetRequestDelete(true);
+                g->GetCurrentScene().AddGameObject(
+                    CreateSongSelectionMenuGameObject(
+                        GameType::DRUM));
+                        menu->SetRequestDelete(true);
             }
         },
         {
@@ -122,7 +125,7 @@ GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
     menu->SetComponent(new MenuComponent{ });
     menu->SetComponent(new MenuInputHandlerComponent{ });
 
-    auto subtitle = new sf::Text("Scanning directory " +fs::current_path()
+    auto subtitle = new sf::Text("Scanning directory " + fs::current_path()
         .string(), *font, 20);
     subtitle->setFillColor(sf::Color::White);
     auto subtitle_game_object = new GameObject{ subtitle, 0, 80, 20, 20 };

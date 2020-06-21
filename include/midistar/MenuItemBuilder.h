@@ -44,7 +44,7 @@ class MenuItemBuilder {
 
      void SetOwningMenu(GameObject* parent);
 
-     void SetYPosition(const double y_pos);
+     void SetPosition(const double x_pos, const double y_pos);
 
      GameObject* GetGameObject();
 

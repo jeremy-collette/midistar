@@ -49,13 +49,18 @@ MenuBuilder::MenuBuilder(
 MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder& menu_item) {
     menu_item.SetOwningMenu(game_object_);
     game_object_->AddChild(menu_item.GetGameObject());
-    menu_item.SetYPosition(y_);
+    menu_item.SetPosition(50.0, y_);
     y_ += 50;
     return *this;
 }
 
-GameObject * MenuBuilder::GetGameObject() {
+GameObject* MenuBuilder::GetGameObject() {
     return game_object_;
+}
+
+MenuBuilder& MenuBuilder::SetTextColour(sf::Color colour) {
+    game_object_->GetDrawformable<sf::Text>()->setFillColor(colour);
+    return *this;
 }
 
 }  // End namespace midistar

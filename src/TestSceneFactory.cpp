@@ -39,6 +39,7 @@ bool TestSceneFactory::Create(
     auto factory = MenuFactory{ *font, render_window };
     auto menu_context =
         factory.CreateMenu("Test Menu")
+        .SetTextColour(sf::Color::Green)
         .AddMenuItem(factory.CreateMenuItem("Birbs")
             .SetOnSelect(factory.CreateMenu("Birbs Menu")
                 .AddMenuItem(factory.CreateMenuItem("Cockatoo"))
@@ -52,7 +53,7 @@ bool TestSceneFactory::Create(
             }))
         .AddMenuItem(factory.CreateMenuItem("Exit")
             .SetOnSelect([](Game* g, GameObject*, int) {
-                g->GetWindow().close();
+                g->Exit();
             }));
 
     auto game_objects = std::vector<GameObject*>{ menu_context.GetGameObject() };

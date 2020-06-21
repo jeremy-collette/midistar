@@ -29,7 +29,7 @@ MenuItemBuilder::MenuItemBuilder(
         , parent_menu_{ nullptr }{
     menu_item_component_ = new MenuItemComponent{ };
     game_object_->SetComponent(menu_item_component_);
-    game_object_->SetDrawformable(new sf::Text{ text, font, 30U });
+    game_object_->SetDrawformable(new sf::Text{ text, font, 50U });
 }
 
 MenuItemBuilder& MenuItemBuilder::SetOnSelect(MenuBuilder& sub_menu) {
@@ -67,11 +67,8 @@ void MenuItemBuilder::SetOwningMenu(GameObject* parent) {
     menu_item_component_->SetOwningMenu(parent);
 }
 
-void MenuItemBuilder::SetYPosition(const double y_pos) {
-    double x, y;
-    game_object_->GetPosition(&x, &y);
-    y = y_pos;
-    game_object_->SetPosition(x, y);
+void MenuItemBuilder::SetPosition(const double x_pos, const double y_pos) {
+    game_object_->SetPosition(x_pos, y_pos);
 }
 
 GameObject* MenuItemBuilder::GetGameObject() {

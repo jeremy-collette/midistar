@@ -36,6 +36,8 @@ class MenuBuilder {
 
     GameObject* GetGameObject();
 
+    MenuBuilder& SetTextColour(sf::Color colour);
+
  private:
     GameObject* game_object_;
     const sf::Font& font_;

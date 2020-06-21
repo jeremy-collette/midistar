@@ -23,8 +23,7 @@ namespace midistar {
 void IntroSceneSfmlEventsHandlerComponent::HandleEvent(Game* g, GameObject* o, int delta, sf::Event evt) {
     if (evt.type == sf::Event::Closed || (evt.type == sf::Event::KeyPressed &&
             evt.key.code == sf::Keyboard::Escape)) {
-        // TODO(@jeremy): g->Exit()
-        g->GetWindow().close();
+        g->Exit();
     }
 }
 

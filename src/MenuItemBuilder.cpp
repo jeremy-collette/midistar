@@ -47,7 +47,7 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(MenuBuilder& sub_menu) {
             auto owning_menu = menu_item->GetOwningMenu();
             g->GetCurrentScene().RemoveObject(owning_menu);
 
-            // Set new menu and tell it t he current menu so it can go back
+            // Set new menu and tell it the current menu so it can go back
             auto new_submenu = new_submenu_object->GetComponent<
                 MenuComponent>(Component::MENU);
             new_submenu->SetPreviousMenu(owning_menu);

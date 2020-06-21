@@ -81,7 +81,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
         },
         {
             [this, menu](Game* g, GameObject* o, int) {
-                g->GetWindow().close();
+               g->Exit();
             }
         }
     };

@@ -43,6 +43,8 @@ class Game {
      */
     ~Game();
 
+    void Exit();
+
     Scene& GetCurrentScene();
 
     /**

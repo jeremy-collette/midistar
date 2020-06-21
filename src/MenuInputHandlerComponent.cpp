@@ -45,6 +45,10 @@ void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
         Component::SFML_EVENTS);
 
 	for (const auto& e : sfml_events_component->GetEvents()) {
+        if (e.type == sf::Event::Closed) {
+            g->Exit();
+        }
+
 		// Check if the event type is key pressed
 		if (e.type != sf::Event::KeyPressed) {
 			continue;

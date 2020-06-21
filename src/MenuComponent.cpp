@@ -47,6 +47,7 @@ void MenuComponent::OnSelect() {
 
 void MenuComponent::OnBack(Game* g, GameObject* o, int delta) {
     if (!this->previous_menu_) {
+        g->Exit();
         return;
     }
 

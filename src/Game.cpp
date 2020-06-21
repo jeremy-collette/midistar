@@ -122,4 +122,8 @@ void Game::SetScene(Scene * next_scene) {
     next_scene_ = next_scene;
 }
 
+void Game::Exit() {
+    window_.close();
+}
+
 }   // namespace midistar

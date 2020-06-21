@@ -39,7 +39,7 @@ bool TestSceneFactory::Create(
     auto factory = MenuFactory{ *font, render_window };
     auto menu_context =
         factory.CreateMenu("Test Menu")
-        .SetTextColour(sf::Color::Green)
+        .SetTitleColour(sf::Color::Green)
         .AddMenuItem(factory.CreateMenuItem("Birbs")
             .SetOnSelect(factory.CreateMenu("Birbs Menu")
                 .AddMenuItem(factory.CreateMenuItem("Cockatoo"))

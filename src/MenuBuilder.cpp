@@ -27,10 +27,12 @@ namespace midistar {
 
 MenuBuilder::MenuBuilder(
     const std::string title,
+    const float menu_item_y_gap,
     GameObject* game_object,
     const sf::Font& font,
     sf::RenderWindow& window)
-        : game_object_{ game_object }
+        : menu_item_y_gap_{ menu_item_y_gap }
+        , game_object_{ game_object }
         , font_{ font }
         , y_{ 0 } {
     game_object_->SetDrawformable(new sf::Text(title, font_, 100));
@@ -43,14 +45,13 @@ MenuBuilder::MenuBuilder(
 
     game_object_->AddTag("SfmlEvents");
     game_object_->SetComponent(new SfmlEventsComponent{ window });
-    //game_object_->SetComponent(new IntroSceneSfmlEventsHandlerComponent{ });
 }
 
 MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder& menu_item) {
     menu_item.SetOwningMenu(game_object_);
     game_object_->AddChild(menu_item.GetGameObject());
     menu_item.SetPosition(50.0, y_);
-    y_ += 50;
+    y_ += menu_item_y_gap_;
     return *this;
 }
 
@@ -58,8 +59,13 @@ GameObject* MenuBuilder::GetGameObject() {
     return game_object_;
 }
 
-MenuBuilder& MenuBuilder::SetTextColour(sf::Color colour) {
+MenuBuilder& MenuBuilder::SetTitleColour(sf::Color colour) {
     game_object_->GetDrawformable<sf::Text>()->setFillColor(colour);
+    return *this;
+}
+
+MenuBuilder& MenuBuilder::SetTitleFontSize(int size) {
+    game_object_->GetDrawformable<sf::Text>()->setCharacterSize(size);
     return *this;
 }
 

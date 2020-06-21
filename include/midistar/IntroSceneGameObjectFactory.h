@@ -22,6 +22,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+#include "midistar/Game.h"
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
 
@@ -39,7 +40,7 @@ class IntroSceneGameObjectFactory {
     */
    IntroSceneGameObjectFactory();
 
-   std::vector<GameObject*> CreateGameObjects();
+   std::vector<GameObject*> CreateGameObjects(sf::RenderWindow& window);
 
  private:
    enum GameType {

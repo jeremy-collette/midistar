@@ -75,4 +75,9 @@ GameObject* MenuItemBuilder::GetGameObject() {
     return game_object_;
 }
 
+MenuItemBuilder& MenuItemBuilder::SetFontSize(const int size) {
+    game_object_->GetDrawformable<sf::Text>()->setCharacterSize(size);
+    return *this;
+}
+
 }  // End namespace midistar

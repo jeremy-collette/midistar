@@ -74,10 +74,7 @@ bool Game::Init() {
             GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
 
-    // TODO(@jeremy): remove
-    return SetScene("Test");
-
-	//return SetScene("Intro");
+	return SetScene("Intro");
 }
 
 void Game::Run() {

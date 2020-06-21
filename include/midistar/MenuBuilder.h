@@ -28,6 +28,7 @@ class MenuBuilder {
  public:
     MenuBuilder(
         const std::string title
+        , const float menu_item_y_gap
         , GameObject* game_object
         , const sf::Font& font
         , sf::RenderWindow& window);
@@ -36,12 +37,15 @@ class MenuBuilder {
 
     GameObject* GetGameObject();
 
-    MenuBuilder& SetTextColour(sf::Color colour);
+    MenuBuilder& SetTitleColour(sf::Color colour);
+
+    MenuBuilder& SetTitleFontSize(int size);
 
  private:
     GameObject* game_object_;
     const sf::Font& font_;
     float y_;
+    const float menu_item_y_gap_;
 };
 
 }  // namespace midistar

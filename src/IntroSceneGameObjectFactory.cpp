@@ -25,6 +25,7 @@
 #include "midistar/Game.h"
 #include "midistar/KeepAliveComponent.h"
 #include "midistar/MenuComponent.h"
+#include "midistar/MenuFactory.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
 #include "midistar/PianoSceneFactory.h"
@@ -35,102 +36,34 @@ namespace fs = std::experimental::filesystem;
 
 namespace midistar {
 
-// TODO(@jeremy): cleanup & simplify menu creation
-// TODO(@jeremy): this should be a scene factory
+// TODO(@jeremy): this should be in the scene factory
 IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 }
 
-std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects() {
-	// TODO(@jeremy): cleanup heap objects
-	// TODO(@jeremy): add font to project
-	// TODO(@jeremy): resize based on screen size
+std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::RenderWindow& window) {
+    // TODO(@jeremy): add font to project
+    // TODO(@jeremy): resize based on screen size
 
-	// Create menu
-	auto font = new sf::Font();
-	if (!font->loadFromFile("PixelMiners-KKal.otf")) {
-		throw "Could not load font!";
-	}
-
-	auto menu_title = new sf::Text("midistar", *font, 100);
-	menu_title->setFillColor(sf::Color::Green);
-	auto menu = new GameObject{ menu_title, 0, 0, 20, 20 };
-	menu->SetComponent(new MenuComponent{ });
-	menu->SetComponent(new MenuInputHandlerComponent{ });
-
-	// Add menu items
-	auto menu_item_text = std::vector<std::string*>{
-		new std::string{ "1. Piano" },
-		new std::string{ "2. Drum" },
-		new std::string{ "0. Exit" },
-	};
-
-    auto on_select_lambdas =
-        std::vector<std::function<void(Game*, GameObject*, int)>> {
-        {
-            [this, menu](Game* g, GameObject* o, int) {
-                g->GetCurrentScene().AddGameObject(
-                    CreateSongSelectionMenuGameObject(
-                        GameType::PIANO));
-                        menu->SetRequestDelete(true);
-            }
-        },
-        {
-            [this, menu](Game* g, GameObject* o, int) {
-                g->GetCurrentScene().AddGameObject(
-                    CreateSongSelectionMenuGameObject(
-                        GameType::DRUM));
-                        menu->SetRequestDelete(true);
-            }
-        },
-        {
-            [this, menu](Game* g, GameObject* o, int) {
-               g->Exit();
-            }
-        }
-    };
-
-    for (auto i = 0u; i < menu_item_text.size(); ++i) {
-		auto drawable = new sf::Text(*menu_item_text[i], *font, 50);
-		auto menu_item = new GameObject(drawable, 50, 150 + 50 * i, 20, 20);
-		menu_item->SetComponent(new MenuItemComponent{ on_select_lambdas[i] });
-		menu->AddChild(menu_item);
-	}
-
-	auto copyright_string = new std::string{
-		"Copyright (c) Jeremy Collette 2018-2020" };
-	auto copyright_text = new sf::Text(*copyright_string, *font, 25);
-	copyright_text->setFillColor(sf::Color::White);
-	auto copyright = new GameObject{ copyright_text, 150, 650, 20, 20 };
-	copyright->SetComponent(new KeepAliveComponent{ });
-
-    auto version_string = new std::string{ MIDISTAR_VERSION };
-    auto version_text = new sf::Text(*version_string, *font, 25);
-    auto version = new GameObject{ version_text, 900, 720, 20, 20 };
-    version->SetComponent(new KeepAliveComponent{ });
-
-	return std::vector<GameObject*> { menu, copyright, version };
-}
-
-GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
-        GameType game_type) {
-
+    // Create menu
     auto font = new sf::Font();
     if (!font->loadFromFile("PixelMiners-KKal.otf")) {
         throw "Could not load font!";
     }
 
-    auto menu_title = new sf::Text("Select a song", *font, 40);
-    menu_title->setFillColor(sf::Color::White);
-    auto menu = new GameObject{ menu_title, 0, 0, 20, 20 };
-    menu->SetComponent(new MenuComponent{ });
-    menu->SetComponent(new MenuInputHandlerComponent{ });
+    auto factory = MenuFactory{ *font, window };
+    auto piano_menu = factory.CreateMenu("Song selection", 25.0f)
+        .SetTitleFontSize(50);
+    auto drum_menu = factory.CreateMenu("Song selection", 25.0f)
+        .SetTitleFontSize(50);
 
+    // TODO(@jeremy): add subtitle functionality to menu builder
     auto subtitle = new sf::Text("Scanning directory " + fs::current_path()
         .string(), *font, 20);
     subtitle->setFillColor(sf::Color::White);
     auto subtitle_game_object = new GameObject{ subtitle, 0, 80, 20, 20 };
     subtitle_game_object->SetComponent(new KeepAliveComponent{ });
-    menu->AddChild(subtitle_game_object);
+    piano_menu.GetGameObject()->AddChild(subtitle_game_object);
+    drum_menu.GetGameObject()->AddChild(subtitle_game_object);
 
     // Add menu items
     auto menu_item_text = std::vector<std::string*>{ };
@@ -138,42 +71,68 @@ GameObject* IntroSceneGameObjectFactory::CreateSongSelectionMenuGameObject(
     for (const auto & entry : fs::directory_iterator(path)) {
         auto path_string = entry.path().string();
         if (path_string.find(".mid") != std::string::npos) {
-            menu_item_text.push_back(new std::string{ entry.path().string() });
-        }
-    }
-
-    for (auto i = 0u; i < menu_item_text.size(); ++i) {
-        auto drawable = new sf::Text(*menu_item_text[i], *font, 20);
-        auto menu_item = new GameObject(drawable, 50, 150 + 25 * i, 20, 20);
-        menu_item->SetComponent(new MenuItemComponent{
-            [menu_item_text, i, game_type](Game* g, GameObject*, int) {
-                Scene* new_scene = nullptr;
-                if (game_type == GameType::PIANO) {
-                    auto piano_scene_factory = PianoSceneFactory{};
-                    if (!piano_scene_factory.Create(
+            piano_menu.AddMenuItem(
+                factory.CreateMenuItem(path_string)
+                    .SetOnSelect(([path_string](Game* g, GameObject*, int) {
+                        Scene* new_scene = nullptr;
+                        auto piano_scene_factory = PianoSceneFactory{};
+                        if (!piano_scene_factory.Create(
                             g
                             , g->GetWindow()
-                            , *menu_item_text[i]
+                            , path_string
                             , &new_scene)) {
-                        throw "Scene creation failed";
-                    }
-                } else {
+                            throw "Scene creation failed";
+                        }
+                        g->SetScene(new_scene);
+                    }))
+                    .SetFontSize(20));
+
+            drum_menu.AddMenuItem(
+                factory.CreateMenuItem(path_string)
+                .SetOnSelect(([path_string](Game* g, GameObject*, int) {
+                    Scene* new_scene = nullptr;
                     auto drum_scene_factory = DrumSceneFactory{};
                     if (!drum_scene_factory.Create(
                         g
                         , g->GetWindow()
-                        , *menu_item_text[i]
+                        , path_string
                         , &new_scene)) {
                         throw "Scene creation failed";
                     }
-                }
-                g->SetScene(new_scene);
-            }
-        });
-        menu->AddChild(menu_item);
+                    g->SetScene(new_scene);
+                }))
+                .SetFontSize(20));
+        }
     }
 
-    return menu;
+    auto main_menu =
+        factory.CreateMenu("midistar")
+        .SetTitleColour(sf::Color::Green)
+        .AddMenuItem(factory.CreateMenuItem("1. Piano")
+            .SetOnSelect(piano_menu))
+        .AddMenuItem(factory.CreateMenuItem("2. Drums")
+            .SetOnSelect(drum_menu))
+        .AddMenuItem(factory.CreateMenuItem("0. Exit")
+            .SetOnSelect([](Game* g, GameObject*, int) {
+                g->Exit();
+            }));
+
+    auto copyright_string = new std::string{
+        "Copyright (c) Jeremy Collette 2018-2020" };
+    auto copyright_text = new sf::Text(*copyright_string, *font, 25);
+    copyright_text->setFillColor(sf::Color::White);
+    auto copyright = new GameObject{ copyright_text, 150, 650, 20, 20 };
+    copyright->SetComponent(new KeepAliveComponent{ });
+    main_menu.GetGameObject()->AddChild(copyright);
+
+    auto version_string = new std::string{ MIDISTAR_VERSION };
+    auto version_text = new sf::Text(*version_string, *font, 25);
+    auto version = new GameObject{ version_text, 900, 720, 20, 20 };
+    version->SetComponent(new KeepAliveComponent{ });
+    main_menu.GetGameObject()->AddChild(version);
+
+    auto game_objects = std::vector<GameObject*>{ main_menu.GetGameObject() };
+    return game_objects;
 }
 
 }  // End namespace midistar

@@ -24,9 +24,11 @@ MenuFactory::MenuFactory(const sf::Font& font, sf::RenderWindow & window)
     , window_{ window } {
 }
 
-MenuBuilder MenuFactory::CreateMenu(const std::string title) {
+MenuBuilder MenuFactory::CreateMenu(
+        const std::string title
+        , float menu_item_y_gap) {
     auto game_object = new GameObject{ (sf::Text*)nullptr, 0.0, 0.0, 0.0, 0.0 };
-    return MenuBuilder{ title, game_object, font_, window_ };
+    return MenuBuilder{ title, menu_item_y_gap, game_object, font_, window_ };
 }
 
 MenuItemBuilder MenuFactory::CreateMenuItem(const std::string title) {

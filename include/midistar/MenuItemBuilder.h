@@ -37,6 +37,10 @@ class MenuItemBuilder {
          , GameObject* game_object
          , const sf::Font& font);
 
+     GameObject* GetGameObject();
+
+     MenuItemBuilder& SetFontSize(const int size);
+
      MenuItemBuilder& SetOnSelect(MenuBuilder& sub_menu);
 
      MenuItemBuilder& SetOnSelect(std::function<void(Game*, GameObject*, int)>
@@ -45,8 +49,6 @@ class MenuItemBuilder {
      void SetOwningMenu(GameObject* parent);
 
      void SetPosition(const double x_pos, const double y_pos);
-
-     GameObject* GetGameObject();
 
  private:
      GameObject* game_object_;

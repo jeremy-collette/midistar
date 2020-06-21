@@ -22,6 +22,8 @@
 
 namespace midistar {
 
+// TODO(@jeremy): reconsider game and window in constructor -- shouldn't these
+// be method parameters?
 Scene::Scene(
 	Game* game
 	, sf::RenderWindow& render_window
@@ -97,7 +99,9 @@ void Scene::RemoveObject(GameObject* o) {
 	if (itr != game_objects_.end()) {
 		game_objects_.erase(itr);
 	}
-    // TODO(@jez): investigate
+    // TODO(@jeremy): change this method to DeleteObject and delete o.
+    // TODO(@jeremy): add GameObject enable/disable and use that to hide objects
+    // instead of removing them from scene.
 	//delete o;
 }
 

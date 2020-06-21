@@ -37,7 +37,11 @@ bool PianoSceneFactory::Create(
         , sf::RenderWindow& render_window
         , Scene** scene) {
 
-    return Create(game, render_window, Config::GetInstance().GetMidiFileName(), scene);
+    return Create(
+        game
+        , render_window
+        , Config::GetInstance().GetMidiFileName()
+        , scene);
 }
 
 bool PianoSceneFactory::Create(

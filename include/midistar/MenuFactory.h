@@ -32,7 +32,9 @@ class MenuFactory {
         const sf::Font& font
         , sf::RenderWindow& window);
 
-    MenuBuilder CreateMenu(const std::string title);
+    MenuBuilder CreateMenu(
+        const std::string title
+        , float menu_item_y_gap = 50.0f);
 
     MenuItemBuilder CreateMenuItem(const std::string title);
 

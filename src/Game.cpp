@@ -29,9 +29,6 @@
 #include "midistar/PianoSceneFactory.h"
 #include "midistar/IntroSceneFactory.h"
 
-// TODO(@jeremy): remove
-#include "midistar/TestSceneFactory.h"
-
 namespace midistar {
 
 Game::Game()
@@ -46,7 +43,6 @@ Game::Game()
     scene_factories_["Intro"] = new IntroSceneFactory{};
     scene_factories_["Piano"] = new PianoSceneFactory{};
     scene_factories_["Drum"] = new DrumSceneFactory{};
-    scene_factories_["Test"] = new TestSceneFactory{};
 }
 
 Game::~Game() {

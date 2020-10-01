@@ -105,7 +105,7 @@ bool InstrumentAutoPlayComponent::IsInOrPastCentre(
     collider->GetSize(&note_w, &note_h);
 
     auto result = (note_y + (note_h / 2.0)) - (inst_y + (inst_h / 2.0));
-    return result > -DEFAULT_CENTRE_THRESHOLD;
+    return result >= -DEFAULT_CENTRE_THRESHOLD;
 }
 
 }  // End namespace midistar

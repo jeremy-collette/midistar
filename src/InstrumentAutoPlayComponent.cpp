@@ -19,6 +19,7 @@
 #include "midistar/InstrumentAutoPlayComponent.h"
 
 #include "midistar/Config.h"
+#include "midistar/DrumSongNoteCollisionHandlerComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/NoteInfoComponent.h"
@@ -89,6 +90,20 @@ void InstrumentAutoPlayComponent::HandleCollisions(
 
     // If we have a collision with a note, activate instrument
     inpt_handler->SetActive(colliding_note_);
+
+    // Tell drum note it can be played
+    // TODO(@jez): fix this properly. If you want to do this, tell the
+    // instrument what note to play. Not the note to play itself. Otherwise
+    // this will break normal play.
+    if (colliding_note_)
+    {
+        auto drum_collider = colliding_note_->GetComponent<DrumSongNoteCollisionHandlerComponent>(
+            Component::NOTE_COLLISION_HANDLER);
+        if (!drum_collider) {
+            return;
+        }
+        drum_collider->SetCanCollide(true);
+    }
 }
 
 bool InstrumentAutoPlayComponent::IsInOrPastCentre(

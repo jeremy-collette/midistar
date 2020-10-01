@@ -95,7 +95,7 @@ void Game::Run() {
         // Clean up from last tick
 		// TODO(@jeremy): move this to scene
         window_.clear(sf::Color::Black);
-        int delta = clock.getElapsedTime().asMilliseconds();
+        int delta = t == 0 ? 0 : clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
         // Handle updating

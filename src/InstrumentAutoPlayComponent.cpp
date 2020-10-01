@@ -72,7 +72,7 @@ void InstrumentAutoPlayComponent::HandleCollisions(
             if (note->GetKey() == other_note->GetKey()) {
                 if (collision_criteria_ == CollisionCriteria::NONE
                     || (collision_criteria_ == CollisionCriteria::CENTRE &&
-                        IsInCentre(o, collider, delta))) {
+                        IsInOrPastCentre(o, collider, delta))) {
                     colliding_note_ = collider;
                 }
             }
@@ -91,7 +91,7 @@ void InstrumentAutoPlayComponent::HandleCollisions(
     inpt_handler->SetActive(colliding_note_);
 }
 
-bool InstrumentAutoPlayComponent::IsInCentre(
+bool InstrumentAutoPlayComponent::IsInOrPastCentre(
         GameObject* o
         , GameObject* collider
         , int delta) {
@@ -104,19 +104,8 @@ bool InstrumentAutoPlayComponent::IsInCentre(
     collider->GetPosition(&note_x, &note_y);
     collider->GetSize(&note_w, &note_h);
 
-    // We need a threshold for how close we are to the centre, because the note
-    // can move past the centre in one tick.
-    auto threshold = DEFAULT_CENTRE_THRESHOLD;
-    auto physics = collider->GetComponent<PhysicsComponent>(Component::PHYSICS);
-    if (physics) {
-        double x_vel, y_vel;
-        physics->GetVelocity(&x_vel, &y_vel);
-        threshold = y_vel * delta;
-    }
-
-    // Check that note is vertically centred in the instrument
-    return abs((note_y + (note_h / 2.0)) - (inst_y + (inst_h / 2.0)))
-        <= threshold;
+    auto result = (note_y + (note_h / 2.0)) - (inst_y + (inst_h / 2.0));
+    return result > -DEFAULT_CENTRE_THRESHOLD;
 }
 
 }  // End namespace midistar

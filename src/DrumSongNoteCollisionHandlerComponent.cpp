@@ -45,9 +45,10 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         , int
         , std::vector<GameObject*> colliding_with) {
 
-    if (!can_collide_) {
-        return;
-    }
+    // TODO(@jez): fix
+    //if (!can_collide_) {
+    //    return;
+    //}
 
     // Handle each collision
     GameObject* valid_collider = nullptr;

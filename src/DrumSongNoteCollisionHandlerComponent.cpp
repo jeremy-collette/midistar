@@ -34,7 +34,7 @@ namespace midistar {
 
 DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent(
     GameObjectFactory* game_object_factory)
-        : CollisionHandlerComponent{ Component::NOTE_COLLISION_HANDLER }
+        : CollisionHandlerComponent{ Component::DRUM_NOTE_COLLISION_HANDLER }
         , game_object_factory_{ game_object_factory }
         , can_collide_{ false} {
 }

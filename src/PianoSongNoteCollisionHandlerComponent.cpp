@@ -30,7 +30,7 @@ namespace midistar {
 
 PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent(
     GameObjectFactory* game_object_factory)
-        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
+        : CollisionHandlerComponent{Component::PIANO_NOTE_COLLISION_HANDLER}
         , game_object_factory_{ game_object_factory }
         , grinding_{nullptr} {
 }
@@ -115,7 +115,7 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
 
         // We don't want complete note behaviour - this is an
         // unplayable note
-        half->DeleteComponent(Component::NOTE_COLLISION_HANDLER);
+        half->DeleteComponent(Component::PIANO_NOTE_COLLISION_HANDLER);
         half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
         half->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));

@@ -48,7 +48,9 @@ class IntroSceneGameObjectFactory {
        DRUM
    };
 
-   GameObject* CreateSongSelectionMenuGameObject(GameType game_type);
+   GameObject* CreateScanningTextGameObject(sf::Font& font);
+   GameObject* CreateCopyrightTextGameObject(sf::Font& font);
+   GameObject* CreateVersionTextGameObject(sf::Font& font);
 };
 
 }  // End namespace midistar

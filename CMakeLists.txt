@@ -66,6 +66,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteCreatorComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SongNoteComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SpriteAnimatorComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/TextFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Utility.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Version.h
     ${CMAKE_SOURCE_DIR}/include/midistar/VerticalCollisionDetectorComponent.h
@@ -132,6 +133,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/SongNoteComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SongEndWatcherComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SpriteAnimatorComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/TextFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
     ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp
 )

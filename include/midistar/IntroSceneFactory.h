@@ -29,7 +29,6 @@ class IntroSceneFactory : public SceneFactory {
         Game* game
         , sf::RenderWindow& render_window
         , Scene** scene);
-
 };
 
 }   // End namespace midistar

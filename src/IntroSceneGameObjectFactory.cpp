@@ -30,6 +30,7 @@
 #include "midistar/MenuItemComponent.h"
 #include "midistar/PianoSceneFactory.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/TextFactory.h"
 #include "midistar/Version.h"
 
 namespace fs = std::experimental::filesystem;
@@ -57,13 +58,9 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::Rend
         .SetTitleFontSize(50);
 
     // TODO(@jeremy): add subtitle functionality to menu builder
-    auto subtitle = new sf::Text("Scanning directory " + fs::current_path()
-        .string(), *font, 20);
-    subtitle->setFillColor(sf::Color::White);
-    auto subtitle_game_object = new GameObject{ subtitle, 0, 80, 20, 20 };
-    subtitle_game_object->SetComponent(new KeepAliveComponent{ });
-    piano_menu.GetGameObject()->AddChild(subtitle_game_object);
-    drum_menu.GetGameObject()->AddChild(subtitle_game_object);
+    auto scanning_game_object = CreateScanningTextGameObject(*font);
+    piano_menu.GetGameObject()->AddChild(scanning_game_object);
+    drum_menu.GetGameObject()->AddChild(scanning_game_object);
 
     // Add menu items
     auto menu_item_text = std::vector<std::string*>{ };
@@ -117,22 +114,49 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::Rend
                 g->Exit();
             }));
 
-    auto copyright_string = new std::string{
-        "Copyright (c) Jeremy Collette 2018-2020" };
-    auto copyright_text = new sf::Text(*copyright_string, *font, 25);
-    copyright_text->setFillColor(sf::Color::White);
-    auto copyright = new GameObject{ copyright_text, 150, 650, 20, 20 };
-    copyright->SetComponent(new KeepAliveComponent{ });
+    auto copyright = CreateCopyrightTextGameObject(*font);
     main_menu.GetGameObject()->AddChild(copyright);
 
-    auto version_string = new std::string{ MIDISTAR_VERSION };
-    auto version_text = new sf::Text(*version_string, *font, 25);
-    auto version = new GameObject{ version_text, 900, 720, 20, 20 };
-    version->SetComponent(new KeepAliveComponent{ });
+    auto version = CreateVersionTextGameObject(*font);
     main_menu.GetGameObject()->AddChild(version);
 
     auto game_objects = std::vector<GameObject*>{ main_menu.GetGameObject() };
     return game_objects;
+}
+
+GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
+        sf::Font& font) {
+    auto subtitle_string = new std::string{ "Scanning directory "
+        + fs::current_path().string() };
+    TextFactory text_builder{ *subtitle_string, font };
+    text_builder.SetFontSize(20);
+    text_builder.SetColour(sf::Color::White);
+    text_builder.SetXPosition(TextFactory::MIN);
+    text_builder.SetYPosition(TextFactory::MIN, 80);
+    return text_builder.GetGameObject();
+}
+
+GameObject* IntroSceneGameObjectFactory::CreateCopyrightTextGameObject(
+        sf::Font& font) {
+    auto copyright_string = new std::string{
+        "Copyright (c) Jeremy Collette 2018-2020" };
+    TextFactory text_builder{ *copyright_string, font };
+    text_builder.SetFontSize(25);
+    text_builder.SetColour(sf::Color::White);
+    text_builder.SetXPosition(TextFactory::CENTER);
+    text_builder.SetYPosition(TextFactory::MAX, -20.0f);
+    return text_builder.GetGameObject();
+}
+
+GameObject* IntroSceneGameObjectFactory::CreateVersionTextGameObject(
+        sf::Font& font) {
+    auto version_string = new std::string{ MIDISTAR_VERSION };
+    TextFactory text_builder{ *version_string, font };
+    text_builder.SetFontSize(25);
+    text_builder.SetColour(sf::Color::White);
+    text_builder.SetXPosition(TextFactory::MAX);
+    text_builder.SetYPosition(TextFactory::MAX, -20.0f);
+    return text_builder.GetGameObject();
 }
 
 }  // End namespace midistar

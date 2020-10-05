@@ -22,6 +22,7 @@
 #include "midistar/MenuComponent.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/SfmlEventsComponent.h"
+#include "midistar/TextFactory.h"
 
 namespace midistar {
 

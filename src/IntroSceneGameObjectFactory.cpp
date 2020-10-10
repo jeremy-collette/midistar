@@ -72,11 +72,10 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::Rend
                 factory.CreateMenuItem(path_string)
                     .SetOnSelect(([path_string](Game* g, GameObject*, int) {
                         Scene* new_scene = nullptr;
-                        auto piano_scene_factory = PianoSceneFactory{};
+                        auto piano_scene_factory = PianoSceneFactory{ path_string };
                         if (!piano_scene_factory.Create(
                             g
                             , g->GetWindow()
-                            , path_string
                             , &new_scene)) {
                             throw "Scene creation failed";
                         }
@@ -88,11 +87,10 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::Rend
                 factory.CreateMenuItem(path_string)
                 .SetOnSelect(([path_string](Game* g, GameObject*, int) {
                     Scene* new_scene = nullptr;
-                    auto drum_scene_factory = DrumSceneFactory{};
+                    auto drum_scene_factory = DrumSceneFactory{ path_string };
                     if (!drum_scene_factory.Create(
                         g
                         , g->GetWindow()
-                        , path_string
                         , &new_scene)) {
                         throw "Scene creation failed";
                     }

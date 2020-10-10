@@ -31,22 +31,14 @@
 
 namespace midistar {
 
-bool DrumSceneFactory::Create(
-        Game* game
-        , sf::RenderWindow& render_window
-        , Scene** scene) {
-
-    return Create(
-        game
-        , render_window
-        , Config::GetInstance().GetMidiFileName()
-        , scene);
+DrumSceneFactory::DrumSceneFactory(
+    const std::string& midi_file_name)
+        : midi_file_name_{midi_file_name} {
 }
 
 bool DrumSceneFactory::Create(
         Game* game
         , sf::RenderWindow& render_window
-        , const std::string& midi_file_name
         , Scene** scene) {
 
     // Create MIDI instrument GameObject to read input from MIDI instrument
@@ -60,7 +52,7 @@ bool DrumSceneFactory::Create(
     auto midi_file_object_factory = MidiFileGameObjectFactory{};
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
-        midi_file_name,
+        midi_file_name_,
         &midi_file_game_object)) {
         return false;
     }

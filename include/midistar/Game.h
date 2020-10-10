@@ -74,8 +74,6 @@ class Game {
 	Scene* current_scene_;  //!< Current scene
 	Scene* next_scene_;  //!< The scene to swap to
     sf::RenderWindow window_;  //!< SFML window instance
-
-    std::unordered_map<std::string, SceneFactory*> scene_factories_;
 };
 
 }   // End namespace midistar

@@ -94,13 +94,6 @@ class Config {
     std::vector<int> GetMidiFileChannels();
 
     /**
-     * Gets the MIDI file name to be played by the player.
-     *
-     * \return MIDI file name.
-     */
-    const std::string GetMidiFileName();
-
-    /**
      * Gets a value determining if the MIDI file should be continuously
      * repeated.
      *
@@ -209,7 +202,6 @@ class Config {
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play
-    std::string midi_file_name_;  //!< MIDI file being played by user
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
     int screen_height_;  //!< Screen height

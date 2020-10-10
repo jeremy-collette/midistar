@@ -39,7 +39,6 @@ Config::Config()
         , keyboard_first_note_{-1}
         , max_frames_per_second_{-1}
         , midi_file_channels_{}
-        , midi_file_name_{""}
         , midi_file_repeat_{false}
         , midi_file_tracks_{}
         , screen_height_{-1}
@@ -75,10 +74,6 @@ int Config::GetMaximumFramesPerSecond() {
 
 std::vector<int> Config::GetMidiFileChannels() {
     return midi_file_channels_;
-}
-
-const std::string Config::GetMidiFileName() {
-    return midi_file_name_;
 }
 
 bool Config::GetMidiFileRepeat() {
@@ -138,6 +133,7 @@ bool Config::ParseOptions(int argc, char** argv) {
             "have a length perfectly divisble by 2.\n";
         return false;
     }
+
     // Derive mapping from commandline arg list
     for (unsigned i=0; i < instrument_midi_remapping_notes_.size(); i += 2) {
         instrument_midi_remapping_[instrument_midi_remapping_notes_[i]] =
@@ -162,7 +158,6 @@ void Config::InitCliApp(CLI::App* app) {
             "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
             "of times the game will update in one second.");
-    app->add_option("--midi_file", midi_file_name_, "The MIDI file to play.");
     app->add_option("--midi_file_channels", midi_file_channels_, "The MIDI "
             "channels to read notes from. -1 will enable all channels.");
     app->add_option("--midi_file_repeat", midi_file_repeat_, "Determines "

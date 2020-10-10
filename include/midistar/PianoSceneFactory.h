@@ -25,17 +25,15 @@ namespace midistar {
 
 class PianoSceneFactory : public SceneFactory {
  public:
+    PianoSceneFactory(const std::string& midi_file_name);
+
     virtual bool Create(
         Game* game
         , sf::RenderWindow& render_window
         , Scene** scene);
 
-    bool Create(
-        Game* game
-        , sf::RenderWindow& render_window
-        , const std::string& midi_file_name
-        , Scene** scene);
-
+ private:
+     const std::string& midi_file_name_;
 };
 
 }   // End namespace midistar

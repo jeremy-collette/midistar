@@ -34,26 +34,17 @@ namespace midistar {
 Game::Game()
 		: current_scene_{ nullptr }
 		, next_scene_{ nullptr }
-        , scene_factories_{ }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
                  , Config::GetInstance().GetFullScreen() ?
                  sf::Style::Fullscreen : sf::Style::Default} {
-    scene_factories_["Intro"] = new IntroSceneFactory{};
-    scene_factories_["Piano"] = new PianoSceneFactory{};
-    scene_factories_["Drum"] = new DrumSceneFactory{};
 }
 
 Game::~Game() {
 	if (current_scene_) {
 		delete current_scene_;
 	}
-
-    for (auto& itr = scene_factories_.begin(); itr != scene_factories_.end();
-            ++itr) {
-        delete itr->second;
-    }
 }
 
 Scene& Game::GetCurrentScene() {
@@ -107,13 +98,15 @@ void Game::Run() {
 }
 
 bool Game::SetScene(std::string scene_name) {
-    if (scene_factories_.count(scene_name) == 0) {
+    if (scene_name != "Intro") {
         return false;
     }
-    return scene_factories_[scene_name]->Create(this, window_, &next_scene_);
+
+    auto into_scene_factory = IntroSceneFactory{ };
+    return into_scene_factory.Create(this, window_, &next_scene_);
 }
 
-void Game::SetScene(Scene * next_scene) {
+void Game::SetScene(Scene* next_scene) {
     next_scene_ = next_scene;
 }
 

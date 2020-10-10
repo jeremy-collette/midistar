@@ -47,14 +47,14 @@ class DrumSongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , int delta
              , std::vector<GameObject*> colliding_with);
 
-     void SetCanCollide(bool can_collide);
+     void SetDoNotCollide(bool can_collide);
 
  private:
     bool HandleCollision(Game* g, GameObject* o, GameObject* collider);
                //!< Handles a collision returns true if it's a valid collision
 
     GameObjectFactory* game_object_factory_;
-    bool can_collide_;
+    bool dont_collide_;
 };
 
 }  // End namespace midistar

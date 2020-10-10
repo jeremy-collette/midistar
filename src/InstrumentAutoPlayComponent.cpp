@@ -71,6 +71,16 @@ void InstrumentAutoPlayComponent::HandleCollisions(
                 continue;
             }
             if (note->GetKey() == other_note->GetKey()) {
+                // Tell this note not to be played (so we can select which note
+                // to play below).
+                auto drum_collider = collider->GetComponent<
+                    DrumSongNoteCollisionHandlerComponent>(
+                        Component::DRUM_NOTE_COLLISION_HANDLER);
+
+                if (drum_collider) {
+                    drum_collider->SetDoNotCollide(true);
+                }
+
                 if (collision_criteria_ == CollisionCriteria::NONE
                     || (collision_criteria_ == CollisionCriteria::CENTRE &&
                         IsInOrPastCentre(o, collider, delta))) {
@@ -91,17 +101,18 @@ void InstrumentAutoPlayComponent::HandleCollisions(
     // If we have a collision with a note, activate instrument
     inpt_handler->SetActive(colliding_note_);
 
-    // Here we tell the drum note collider what specific note to play in case
-    // there are two notes overlapping
+    // Here we tell the drum note collider that it can be played so that only
+    // this specific note is played.
     if (colliding_note_)
     {
+        // Allow this note to be played
         auto drum_collider = colliding_note_->GetComponent<
             DrumSongNoteCollisionHandlerComponent>(
                 Component::DRUM_NOTE_COLLISION_HANDLER);
         if (!drum_collider) {
             return;
         }
-        drum_collider->SetCanCollide(true);
+        drum_collider->SetDoNotCollide(false);
     }
 }
 

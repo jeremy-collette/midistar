@@ -36,7 +36,7 @@ DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent(
     GameObjectFactory* game_object_factory)
         : CollisionHandlerComponent{ Component::DRUM_NOTE_COLLISION_HANDLER }
         , game_object_factory_{ game_object_factory }
-        , can_collide_{ false} {
+        , dont_collide_{ false } {
 }
 
 void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
@@ -45,10 +45,9 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         , int
         , std::vector<GameObject*> colliding_with) {
 
-    // TODO(@jez): fix
-    //if (!can_collide_) {
-    //    return;
-    //}
+    if (dont_collide_) {
+        return;
+    }
 
     // Handle each collision
     GameObject* valid_collider = nullptr;
@@ -112,8 +111,8 @@ bool DrumSongNoteCollisionHandlerComponent::HandleCollision(
     return true;
 }
 
-void DrumSongNoteCollisionHandlerComponent::SetCanCollide(bool can_collide) {
-    can_collide_ = can_collide;
+void DrumSongNoteCollisionHandlerComponent::SetDoNotCollide(bool dont_collide) {
+    dont_collide_ = dont_collide;
 }
 
 }  // End namespace midistar

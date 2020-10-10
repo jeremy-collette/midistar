@@ -21,21 +21,20 @@
 namespace midistar {
 
 MidiFileInComponent::MidiFileInComponent(MidiFileIn* midi_file_in)
-		: Component{ Component::MIDI_FILE_IN }
-		, midi_file_in_{ midi_file_in } {
+    : Component{ Component::MIDI_FILE_IN }
+        , midi_file_in_{ midi_file_in } {
 }
 
 MidiFileInComponent::~MidiFileInComponent() {
     delete midi_file_in_;
 }
 
-std::vector<MidiMessage>& MidiFileInComponent::GetMessages()
-{
+std::vector<MidiMessage>& MidiFileInComponent::GetMessages() {
     return message_buffer_;
 }
 
 void MidiFileInComponent::Update(Game * g, GameObject * o, int delta) {
-	midi_file_in_->Tick(delta);
+    midi_file_in_->Tick(delta);
 
     message_buffer_.clear();
     MidiMessage message;

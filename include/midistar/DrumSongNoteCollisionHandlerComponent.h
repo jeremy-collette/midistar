@@ -47,7 +47,13 @@ class DrumSongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , int delta
              , std::vector<GameObject*> colliding_with);
 
-     void SetDoNotCollide(bool can_collide);
+     /**
+      * Tells the collision handler whether or not it should not collide.
+      *
+      * \param dont_collide If set to 'true', stops handler from handling
+      * collisions.
+      */
+     void SetDoNotCollide(bool dont_collide);
 
  private:
     bool HandleCollision(Game* g, GameObject* o, GameObject* collider);

@@ -63,10 +63,10 @@ class Component {
         , SPRITE_ANIMATOR
         , FADING_OUTLINE_EFFECT
         , DELAYED_COMPONENT
-		, MENU
-		, MENU_ITEM
-		, MENU_INPUT_HANDLER
-		, MIDI_FILE_IN
+        , MENU
+        , MENU_ITEM
+        , MENU_INPUT_HANDLER
+        , MIDI_FILE_IN
         , MIDI_INSTRUMENT_IN
         , SONG_NOTE_CREATOR
         , SFML_EVENTS

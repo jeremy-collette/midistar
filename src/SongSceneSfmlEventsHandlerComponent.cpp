@@ -18,6 +18,8 @@
 
 #include "midistar/SongSceneSfmlEventsHandlerComponent.h"
 
+#include "midistar/IntroSceneFactory.h"
+
 namespace midistar {
 
 void SongSceneSfmlEventsHandlerComponent::HandleEvent(
@@ -25,10 +27,25 @@ void SongSceneSfmlEventsHandlerComponent::HandleEvent(
         , GameObject* o
         , int delta
         , sf::Event evt) {
-    if (evt.type == sf::Event::Closed || (evt.type == sf::Event::KeyPressed &&
-            evt.key.code == sf::Keyboard::Escape)) {
-        g->SetScene("Intro");
+    if (evt.type != sf::Event::Closed && (evt.type != sf::Event::KeyPressed ||
+            evt.key.code != sf::Keyboard::Escape)) {
+        return;
     }
+
+    // If the user has pressed escape or clicked the X, go back to menu.
+    auto intro_scene_factory = IntroSceneFactory{};
+    auto next_scene = new Scene{
+        g,
+        g->GetWindow(),
+        std::vector<GameObject*>{ }
+    };
+
+    intro_scene_factory.Create(
+        g
+        , g->GetWindow()
+        , &next_scene);
+
+    g->SetScene(next_scene);
 }
 
 }  // End namespace midistar

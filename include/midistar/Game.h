@@ -66,8 +66,6 @@ class Game {
      */
     void Run();
 
-	bool SetScene(std::string scene_name);
-
     void SetScene(Scene* next_scene);
 
  private:

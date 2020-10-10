@@ -61,7 +61,23 @@ bool Game::Init() {
             GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
 
-	return SetScene("Intro");
+    // If the song has finished, set scene to intro
+    auto intro_scene_factory = IntroSceneFactory{};
+    auto next_scene = new Scene{
+        this,
+        GetWindow(),
+        std::vector<GameObject*>{ }
+    };
+
+    if (!intro_scene_factory.Create(
+        this
+        , GetWindow()
+        , &next_scene)) {
+        return false;
+    }
+
+    SetScene(next_scene);
+    return true;
 }
 
 void Game::Run() {
@@ -95,15 +111,6 @@ void Game::Run() {
         window_.display();
         ++t;
     }
-}
-
-bool Game::SetScene(std::string scene_name) {
-    if (scene_name != "Intro") {
-        return false;
-    }
-
-    auto into_scene_factory = IntroSceneFactory{ };
-    return into_scene_factory.Create(this, window_, &next_scene_);
 }
 
 void Game::SetScene(Scene* next_scene) {

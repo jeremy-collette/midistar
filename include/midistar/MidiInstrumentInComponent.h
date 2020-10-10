@@ -31,7 +31,7 @@ namespace midistar {
 
 class MidiInstrumentInComponent : public Component {
  public:
-	 explicit MidiInstrumentInComponent(MidiInstrumentIn* midi_instrument_in);
+     explicit MidiInstrumentInComponent(MidiInstrumentIn* midi_instrument_in);
 
      ~MidiInstrumentInComponent();
 

@@ -30,11 +30,11 @@ GameObject::GameObject(
     , double height)
         : components_{0}
         , drawable_{drawformable}
-		, children_{ }
+        , children_{ }
         , original_height_{height}
         , original_width_{width}
         , request_delete_{false}
-		, tags_{ }
+        , tags_{ }
         , to_delete_{ }
         , transformable_{drawformable} {
 

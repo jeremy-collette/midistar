@@ -79,22 +79,22 @@ class GameObject {
     GameObject(const GameObject& other) = delete;
     GameObject(const GameObject&& other) = delete;
 
-	/**
-	 * Adds a child GameObject. Children GameObjects are updated after the
-	 * parent is updated. Ownership is transferred to the parent and the child
-	 * will be cleaned up when the parent is deleted.
-	 *
-	 * \param game_object[in] The child to add.
-	 */
-	void AddChild(GameObject* const game_object);
+    /**
+     * Adds a child GameObject. Children GameObjects are updated after the
+     * parent is updated. Ownership is transferred to the parent and the child
+     * will be cleaned up when the parent is deleted.
+     *
+     * \param game_object[in] The child to add.
+     */
+    void AddChild(GameObject* const game_object);
 
-	/**
-	 * Adds a tag to the GameObject. Tags are used to identify a specific or
-	 * class of GameObject.
-	 *
-	 * \param tag The tag to add.
-	 */
-	void AddTag(std::string tag);
+    /**
+     * Adds a tag to the GameObject. Tags are used to identify a specific or
+     * class of GameObject.
+     *
+     * \param tag The tag to add.
+     */
+    void AddTag(std::string tag);
 
     /**
      * Removes and deletes the Component with the specified ComponentType from
@@ -112,7 +112,7 @@ class GameObject {
      */
     void Draw(sf::RenderWindow* window);
 
-	std::vector<GameObject*>& GetChildren();
+    std::vector<GameObject*>& GetChildren();
 
     /**
      * Gets the Component with the specified ComponentType.
@@ -172,14 +172,14 @@ class GameObject {
      */
     bool HasComponent(ComponentType type);
 
-	/**
-	 * Determines whether or not the GameObject has a certain tag.
-	 *
-	 * \param tag Checks whether the GameObject has this tag.
-	 *
-	 * \return True if the GameObject has the specified tag. False otherwise.
-	 */
-	bool HasTag(const std::string& tag) const;
+    /**
+     * Determines whether or not the GameObject has a certain tag.
+     *
+     * \param tag Checks whether the GameObject has this tag.
+     *
+     * \return True if the GameObject has the specified tag. False otherwise.
+     */
+    bool HasTag(const std::string& tag) const;
 
     /**
      * Sets the Component in slot determined by the ComponentType.
@@ -217,7 +217,7 @@ class GameObject {
 
     /**
      * Updates the GameObject by updating each of its Components. Subsequently
-	 * updates each child GameObject.
+     * updates each child GameObject.
      *
      * \param g A reference to the current Game instance.
      * \param delta The time in milliseconds since the end of last tick.
@@ -227,12 +227,12 @@ class GameObject {
  private:
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
     sf::Drawable* drawable_;  //!< Holds drawable part of object
-	std::vector<GameObject*>  children_;  //!< Holds children game objects
+    std::vector<GameObject*>  children_;  //!< Holds children game objects
     double original_height_;  //!< Height at creation
     double original_width_;  //!< Width at creation
     bool request_delete_;  //!< Holds deletion request status
     std::vector<Component*> to_delete_;  //!< Holds components to delete
-	std::vector<std::string> tags_;  //!< Holds tags
+    std::vector<std::string> tags_;  //!< Holds tags
     sf::Transformable* transformable_;  //!< Holds transformable part of object
 };
 

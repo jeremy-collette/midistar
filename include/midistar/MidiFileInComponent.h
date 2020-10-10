@@ -34,7 +34,7 @@ namespace midistar {
  */
 class MidiFileInComponent : public Component {
  public:
-	 explicit MidiFileInComponent(MidiFileIn* midi_file_in);
+     explicit MidiFileInComponent(MidiFileIn* midi_file_in);
 
      ~MidiFileInComponent();
 
@@ -47,7 +47,7 @@ class MidiFileInComponent : public Component {
 
  // TODO(@jeremy): remove
  //private:
-	MidiFileIn* midi_file_in_;
+    MidiFileIn* midi_file_in_;
 
 private:
     std::vector<MidiMessage> message_buffer_;

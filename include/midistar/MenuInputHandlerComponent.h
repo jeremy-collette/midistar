@@ -28,7 +28,7 @@ namespace midistar {
  */
 class MenuInputHandlerComponent : public Component {
  public:
-	 MenuInputHandlerComponent();
+     MenuInputHandlerComponent();
 
      /**
       * \copydoc Component::Update()

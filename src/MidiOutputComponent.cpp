@@ -21,8 +21,8 @@
 namespace midistar {
 
 MidiOutputComponent::MidiOutputComponent(MidiOut* midi_out)
-		: Component{ Component::MIDI_OUTPUT }
-		, midi_out_{ midi_out } {
+        : Component{ Component::MIDI_OUTPUT }
+        , midi_out_{ midi_out } {
 }
 
 MidiOutputComponent::~MidiOutputComponent() {

@@ -29,7 +29,7 @@ namespace midistar {
 
 class MidiOutputComponent : public Component {
  public:
-	 explicit MidiOutputComponent(MidiOut* midi_out);
+     explicit MidiOutputComponent(MidiOut* midi_out);
 
      ~MidiOutputComponent();
 

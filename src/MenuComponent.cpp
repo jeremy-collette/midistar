@@ -25,24 +25,24 @@
 namespace midistar {
 
 MenuComponent::MenuComponent()
-		: Component{ Component::MENU }
-		, current_item_{ nullptr }
-		, index_{ 0 }
+        : Component{ Component::MENU }
+        , current_item_{ nullptr }
+        , index_{ 0 }
         , previous_menu_{ nullptr } {
 }
 
 void MenuComponent::OnNextFocus() {
-	++index_;
+    ++index_;
 }
 
 void MenuComponent::OnPreviousFocus() {
-	--index_;
+    --index_;
 }
 
 void MenuComponent::OnSelect() {
-	if (current_item_) {
-		current_item_->OnSelect();
-	}
+    if (current_item_) {
+        current_item_->OnSelect();
+    }
 }
 
 void MenuComponent::OnBack(Game* g, GameObject* o, int delta) {
@@ -63,39 +63,39 @@ void MenuComponent::SetPreviousMenu(GameObject* previous_menu) {
 }
 
 void MenuComponent::Update(Game* g, GameObject* o, int delta) {
-	auto focused_item = GetChildMenuItemComponent(o);
+    auto focused_item = GetChildMenuItemComponent(o);
 
-	// If the focused item has changed, update focus
-	if (current_item_ != focused_item) {
-		if (current_item_) {
-			current_item_->SetFocus(false);
-		}
+    // If the focused item has changed, update focus
+    if (current_item_ != focused_item) {
+        if (current_item_) {
+            current_item_->SetFocus(false);
+        }
 
-		if (focused_item) {
-			focused_item->SetFocus(true);
-		}
-	}
+        if (focused_item) {
+            focused_item->SetFocus(true);
+        }
+    }
 
-	// Update focused item
-	current_item_ = focused_item;
+    // Update focused item
+    current_item_ = focused_item;
 }
 
 MenuItemComponent* MenuComponent::GetChildMenuItemComponent(GameObject* o) {
-	// Get children with MenuItem components
-	auto has_menu_item = std::vector<GameObject*>{ };
+    // Get children with MenuItem components
+    auto has_menu_item = std::vector<GameObject*>{ };
 
-	for (const auto& child : o->GetChildren()) {
-		if (child->HasComponent(Component::MENU_ITEM)) {
-			has_menu_item.push_back(child);
-		}
-	}
+    for (const auto& child : o->GetChildren()) {
+        if (child->HasComponent(Component::MENU_ITEM)) {
+            has_menu_item.push_back(child);
+        }
+    }
 
-	index_ = (index_ + has_menu_item.size()) % has_menu_item.size();
-	auto menu_item_component = has_menu_item[index_]->GetComponent<
-		MenuItemComponent>(Component::MENU_ITEM);
+    index_ = (index_ + has_menu_item.size()) % has_menu_item.size();
+    auto menu_item_component = has_menu_item[index_]->GetComponent<
+        MenuItemComponent>(Component::MENU_ITEM);
 
-	assert(menu_item_component);
-	return menu_item_component;
+    assert(menu_item_component);
+    return menu_item_component;
 }
 
 }  // End namespace midistar

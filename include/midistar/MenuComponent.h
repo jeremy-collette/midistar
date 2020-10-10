@@ -34,13 +34,13 @@ class MenuComponent : public Component {
     /**
      * Constructor.
      */
-	MenuComponent();
+    MenuComponent();
 
-	void OnNextFocus();
+    void OnNextFocus();
 
-	void OnPreviousFocus();
+    void OnPreviousFocus();
 
-	void OnSelect();
+    void OnSelect();
 
     void OnBack(Game* g, GameObject* o, int delta);
 
@@ -52,11 +52,11 @@ class MenuComponent : public Component {
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
-	 MenuItemComponent* GetChildMenuItemComponent(GameObject* o);  //!< Gets
-	   //!< menu item component from child GameObject at index
+     MenuItemComponent* GetChildMenuItemComponent(GameObject* o);  //!< Gets
+       //!< menu item component from child GameObject at index
 
      MenuItemComponent* current_item_;  //!< Currently focused item
-	 int index_;  //!< Menu index
+     int index_;  //!< Menu index
 
      GameObject* previous_menu_;
 };

@@ -30,7 +30,7 @@ namespace midistar {
 
 class SfmlEventsComponent : public Component {
  public:
-	 explicit SfmlEventsComponent(sf::Window& window);
+     explicit SfmlEventsComponent(sf::Window& window);
 
      ~SfmlEventsComponent();
 

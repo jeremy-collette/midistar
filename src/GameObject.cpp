@@ -43,13 +43,13 @@ GameObject::~GameObject() {
         delete drawable_;
     }
 
-	for (auto child : children_) {
-		delete child;
-	}
+    for (auto child : children_) {
+        delete child;
+    }
 }
 
 void GameObject::AddChild(GameObject* const game_object) {
-	this->children_.push_back(game_object);
+    this->children_.push_back(game_object);
 }
 
 void GameObject::AddTag(std::string tag) {
@@ -69,13 +69,13 @@ void GameObject::Draw(sf::RenderWindow* window) {
         window->draw(*drawable_);
     }
 
-	for (const auto& child : children_) {
-		child->Draw(window);
-	}
+    for (const auto& child : children_) {
+        child->Draw(window);
+    }
 }
 
 std::vector<GameObject*>& GameObject::GetChildren() {
-	return children_;
+    return children_;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
@@ -159,21 +159,21 @@ void GameObject::Update(Game* g, int delta) {
         }
     }
 
-	// Cleanup children
-	auto children_to_delete = std::vector<GameObject*>{ };
-	for (const auto& child : children_) {
-		child->Update(g, delta);
-		if (child->GetRequestDelete()) {
-			children_to_delete.push_back(child);
-		} else {
-			has_component = true;
-		}
-	}
-	for (const auto& child : children_to_delete) {
-		children_.erase(std::remove(children_.begin(), children_.end(), child),
-			children_.end());
-		delete child;
-	}
+    // Cleanup children
+    auto children_to_delete = std::vector<GameObject*>{ };
+    for (const auto& child : children_) {
+        child->Update(g, delta);
+        if (child->GetRequestDelete()) {
+            children_to_delete.push_back(child);
+        } else {
+            has_component = true;
+        }
+    }
+    for (const auto& child : children_to_delete) {
+        children_.erase(std::remove(children_.begin(), children_.end(), child),
+            children_.end());
+        delete child;
+    }
 
     // If we don't have any components, delete the GameObject
     if (!has_component) {

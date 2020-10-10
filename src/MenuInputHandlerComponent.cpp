@@ -24,15 +24,15 @@
 
 namespace midistar {
 MenuInputHandlerComponent::MenuInputHandlerComponent()
-		: Component(Component::MENU_INPUT_HANDLER) {
+        : Component(Component::MENU_INPUT_HANDLER) {
 }
 
 void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-	// Check for required component
-	auto menu = o->GetComponent<MenuComponent>(Component::MENU);
-	if (!menu) {
-		return;
-	}
+    // Check for required component
+    auto menu = o->GetComponent<MenuComponent>(Component::MENU);
+    if (!menu) {
+        return;
+    }
 
     // Check SFML events for key presses
     auto& current_scene = g->GetCurrentScene();
@@ -44,31 +44,31 @@ void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
     auto sfml_events_component = game_object->GetComponent<SfmlEventsComponent>(
         Component::SFML_EVENTS);
 
-	for (const auto& e : sfml_events_component->GetEvents()) {
+    for (const auto& e : sfml_events_component->GetEvents()) {
         if (e.type == sf::Event::Closed) {
             g->Exit();
         }
 
-		// Check if the event type is key pressed
-		if (e.type != sf::Event::KeyPressed) {
-			continue;
-		}
+        // Check if the event type is key pressed
+        if (e.type != sf::Event::KeyPressed) {
+            continue;
+        }
 
-		switch (e.key.code) {
-			case sf::Keyboard::Down:
-				menu->OnNextFocus();
-				break;
-			case sf::Keyboard::Up:
-				menu->OnPreviousFocus();
-				break;
-			case sf::Keyboard::Enter:
-				menu->OnSelect();
-				break;
+        switch (e.key.code) {
+            case sf::Keyboard::Down:
+                menu->OnNextFocus();
+                break;
+            case sf::Keyboard::Up:
+                menu->OnPreviousFocus();
+                break;
+            case sf::Keyboard::Enter:
+                menu->OnSelect();
+                break;
             case sf::Keyboard::Escape:
                 menu->OnBack(g, o, delta);
                 break;
-		}
-	}
+        }
+    }
 }
 
 }  // End namespace midistar

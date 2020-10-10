@@ -25,64 +25,64 @@ namespace midistar {
 // TODO(@jeremy): reconsider game and window in constructor -- shouldn't these
 // be method parameters?
 Scene::Scene(
-	Game* game
-	, sf::RenderWindow& render_window
-	, std::vector<GameObject*> game_objects)
-		: game_{game}
-		, game_objects_{ game_objects }
-		, render_window_{ render_window }
-		, new_game_objects_{ } {
+    Game* game
+    , sf::RenderWindow& render_window
+    , std::vector<GameObject*> game_objects)
+        : game_{game}
+        , game_objects_{ game_objects }
+        , render_window_{ render_window }
+        , new_game_objects_{ } {
 
 }
 
 Scene::~Scene()
 {
-	for (auto& o : game_objects_) {
-		delete o;
-	}
+    for (auto& o : game_objects_) {
+        delete o;
+    }
 }
 
 bool Scene::Init() {
-	return true;
+    return true;
 }
 
 bool Scene::Update(int delta) {
-	unsigned num_objects;
-	unsigned i = 0;
-	do {
-		num_objects = game_objects_.size();
-		while (i < game_objects_.size()) {
-			game_objects_[i++]->Update(game_, delta);
-		}
-		FlushNewObjectQueue();
-		// If we've added new objects during updating, we will update them now.
-		// NOTE: This could cause an infinite loop if new objects create new
-		// objects.
-	} while (num_objects != game_objects_.size());
+    unsigned num_objects;
+    unsigned i = 0;
+    do {
+        num_objects = game_objects_.size();
+        while (i < game_objects_.size()) {
+            game_objects_[i++]->Update(game_, delta);
+        }
+        FlushNewObjectQueue();
+        // If we've added new objects during updating, we will update them now.
+        // NOTE: This could cause an infinite loop if new objects create new
+        // objects.
+    } while (num_objects != game_objects_.size());
 
     CleanUpObjects();
 
-	return true;
+    return true;
 }
 
 bool Scene::Draw() {
-	// Handle drawing
-	for (auto obj : game_objects_) {
-		obj->Draw(&render_window_);
-	}
+    // Handle drawing
+    for (auto obj : game_objects_) {
+        obj->Draw(&render_window_);
+    }
 
-	return true;
+    return true;
 }
 
 void Scene::AddGameObject(GameObject* new_game_object) {
-	this->new_game_objects_.push(new_game_object);
+    this->new_game_objects_.push(new_game_object);
 }
 
 void Scene::FlushNewObjectQueue() {
-	while (!new_game_objects_.empty()) {
-		game_objects_.push_back(new_game_objects_.front());
-		new_game_objects_.pop();
-	}
+    while (!new_game_objects_.empty()) {
+        game_objects_.push_back(new_game_objects_.front());
+        new_game_objects_.pop();
+    }
 }
 
 GameObject* Scene::GetFirstGameObjectByTag(std::string tag) {
@@ -95,18 +95,18 @@ GameObject* Scene::GetFirstGameObjectByTag(std::string tag) {
 }
 
 void Scene::RemoveObject(GameObject* o) {
-	auto itr = std::find(game_objects_.begin(), game_objects_.end(), o);
-	if (itr != game_objects_.end()) {
-		game_objects_.erase(itr);
-	}
+    auto itr = std::find(game_objects_.begin(), game_objects_.end(), o);
+    if (itr != game_objects_.end()) {
+        game_objects_.erase(itr);
+    }
     // TODO(@jeremy): change this method to DeleteObject and delete o.
     // TODO(@jeremy): add GameObject enable/disable and use that to hide objects
     // instead of removing them from scene.
-	//delete o;
+    //delete o;
 }
 
 std::vector<GameObject*>& Scene::GetGameObjects() {
-	return game_objects_;
+    return game_objects_;
 }
 
 std::vector<GameObject*> Scene::GetGameObjectsByTag(std::string tag) {
@@ -122,13 +122,13 @@ std::vector<GameObject*> Scene::GetGameObjectsByTag(std::string tag) {
 }
 
 void Scene::CleanUpObjects() {
-	auto game_objects_copy{ game_objects_ };
-	for (auto& o : game_objects_copy) {
-		if (o->GetRequestDelete()) {
-			RemoveObject(o);
+    auto game_objects_copy{ game_objects_ };
+    for (auto& o : game_objects_copy) {
+        if (o->GetRequestDelete()) {
+            RemoveObject(o);
             delete o;
-		}
-	}
+        }
+    }
 }
 
 }   // End namespace midistar

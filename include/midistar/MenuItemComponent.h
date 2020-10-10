@@ -31,14 +31,14 @@ namespace midistar {
  */
 class MenuItemComponent : public Component {
  public:
-	MenuItemComponent(
+    MenuItemComponent(
         std::function<void(Game*, GameObject*, int)> on_select);
 
     explicit MenuItemComponent();
 
-	void OnSelect();
+    void OnSelect();
 
-	void SetFocus(bool has_focus);
+    void SetFocus(bool has_focus);
 
     void SetOnSelect(std::function<void(Game*, GameObject*, int)> on_select);
 
@@ -52,7 +52,7 @@ class MenuItemComponent : public Component {
     void SetOwningMenu(GameObject* parent);
 
  private:
-	 bool has_focus_;  //!< Indicates if this menu item currently has focus
+     bool has_focus_;  //!< Indicates if this menu item currently has focus
      std::function<void(Game*, GameObject*, int)> on_select_;
      bool selected_;  //!< Indicates this item was selected
      GameObject* parent_;

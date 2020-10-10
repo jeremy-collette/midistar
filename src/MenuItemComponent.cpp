@@ -26,8 +26,8 @@ namespace midistar {
 
 MenuItemComponent::MenuItemComponent(
     std::function<void(Game*, GameObject*, int)> on_select)
-		: Component{ Component::MENU_ITEM }
-		, has_focus_{ false }
+        : Component{ Component::MENU_ITEM }
+        , has_focus_{ false }
         , on_select_{ on_select }
         , selected_{ false } {
 }
@@ -39,15 +39,15 @@ MenuItemComponent::MenuItemComponent()
 void MenuItemComponent::OnSelect()
 {
     // TODO(@jeremy): remove
-	//std::cout << "Selected menu item: " << text_ << std::endl;
-	selected_ = true;
+    //std::cout << "Selected menu item: " << text_ << std::endl;
+    selected_ = true;
 }
 
 void MenuItemComponent::SetFocus(bool has_focus)
 {
     // TODO(@jeremy): remove
-	//std::cout << "Menu item: " << text_ << " focus: " << has_focus << std::endl;
-	has_focus_ = has_focus;
+    //std::cout << "Menu item: " << text_ << " focus: " << has_focus << std::endl;
+    has_focus_ = has_focus;
 }
 
 void MenuItemComponent::SetOnSelect(
@@ -57,14 +57,14 @@ void MenuItemComponent::SetOnSelect(
 
 void MenuItemComponent::Update(Game* g, GameObject* o, int delta)
 {
-	auto text = o->GetDrawformable<sf::Text>();
-	auto color = has_focus_ ? sf::Color::White : sf::Color::Red;
-	text->setFillColor(color);
+    auto text = o->GetDrawformable<sf::Text>();
+    auto color = has_focus_ ? sf::Color::White : sf::Color::Red;
+    text->setFillColor(color);
 
-	if (selected_) {
-		selected_ = false;
+    if (selected_) {
+        selected_ = false;
         on_select_(g, o, delta);
-	}
+    }
 }
 
 GameObject* MenuItemComponent::GetOwningMenu() {

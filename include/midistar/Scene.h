@@ -20,8 +20,8 @@
 #define MIDISTAR_SCENE_H_
 
 #include <queue>
-#include <vector>
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 #include "midistar/GameObject.h"
 
@@ -37,61 +37,99 @@ class Scene {
  public:
     /**
      * Constructor.
-	 *
-	 * \param game  The game
-	 * \param render_window The game window
-	 * \param game_objects The GameObjects of the scene
+     *
+     * \param game  The game
+     * \param render_window The game window
+     * \param game_objects The GameObjects of the scene
      */
-	 Scene(
-		 Game* game
-		 , sf::RenderWindow& render_window
-		 , std::vector<GameObject*> game_objects);
+    Scene(
+        Game* game
+        , sf::RenderWindow& render_window
+        , std::vector<GameObject*> game_objects);
 
-	 ~Scene();
+     /**
+      * Destructor.
+      */
+     ~Scene();
+
+     /**
+      * Copy constructor (deleted).
+      */
      Scene(const Scene& other) = delete;
+
+     /**
+      * Move constructor (deleted).
+      */
      Scene(const Scene&& other) = delete;
 
-	 /**
-	  * Initializes the Scene.
-	  *
-	  * \return True indicates success. False indicates failure.
-	  */
-	 bool Init();
+     /**
+      * Adds a GameObject to the scene.
+      *
+      * \param new_game_object The GameObject to add.
+      */
+     void AddGameObject(GameObject* new_game_object);
 
-	 /**
-	  * Updates the Scene.
-	  *
-	  * \param delta Time since last game tick.
-	  *
-	  * \return True indicates success. False indicates failure.
-	  */
-	 bool Update(int delta);
+     /**
+      * Initializes the Scene.
+      *
+      * \return True indicates success. False indicates failure.
+      */
+     bool Init();
 
-	 /**
-	  * Draws the Scene.
-	  *
-	  * \return True indicates success. False indicates failure.
-	  */
-	 bool Draw();
+     /**
+      * Updates the Scene.
+      *
+      * \param delta Time since last game tick.
+      *
+      * \return True indicates success. False indicates failure.
+      */
+     bool Update(int delta);
 
-	 void AddGameObject(GameObject* new_game_object);
+     /**
+      * Draws the Scene.
+      *
+      * \return True indicates success. False indicates failure.
+      */
+     bool Draw();
 
-	 void RemoveObject(GameObject* o);
+     /**
+      * Removes a GameObject from the scene.
+      *
+      * \param new_game_object The GameObject to add.
+      */
+     void RemoveObject(GameObject* o);
 
+     /**
+      * Gets the first GameObject that has the specified tag.
+      *
+      * \param tag The tag to check for.
+      *
+      * \returns The first GameObject with the specified tag.
+      */
      GameObject* GetFirstGameObjectByTag(std::string tag);
 
-	 std::vector<GameObject*>& GetGameObjects();
+     /**
+      * Gets all GameObjects in the Scene.
+      *
+      * \returns All GameObjects in the Scene.
+      */
+     std::vector<GameObject*>& GetGameObjects();
 
+     /**
+      * Gets all GameObjects in the Scene that have a specific tag.
+      *
+      * \returns All GameObjects in the Scene that have a specific tag.
+      */
      std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
 
 private:
     void CleanUpObjects();
     void FlushNewObjectQueue();
 
-	Game* game_;
-	std::vector<GameObject*> game_objects_;
-	sf::RenderWindow& render_window_;
-	std::queue<GameObject*> new_game_objects_;
+    Game* game_;
+    std::vector<GameObject*> game_objects_;
+    sf::RenderWindow& render_window_;
+    std::queue<GameObject*> new_game_objects_;
 };
 
 }   // End namespace midistar

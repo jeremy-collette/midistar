@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_TEXTFACTORY_H_
 #define MIDISTAR_TEXTFACTORY_H_
 
+#include <string>
+
 #include "midistar/GameObject.h"
 #include "midistar/MenuItemBuilder.h"
 

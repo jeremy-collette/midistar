@@ -20,8 +20,9 @@
 #define MIDISTAR_SCENE_H_
 
 #include <queue>
-#include <SFML/Graphics.hpp>
+#include <string>
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 #include "midistar/GameObject.h"
 
@@ -122,7 +123,7 @@ class Scene {
       */
      std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
 
-private:
+ private:
     void CleanUpObjects();
     void FlushNewObjectQueue();
 

@@ -34,7 +34,7 @@ class MenuItemComponent : public Component {
     MenuItemComponent(
         std::function<void(Game*, GameObject*, int)> on_select);
 
-    explicit MenuItemComponent();
+    MenuItemComponent();
 
     void OnSelect();
 
@@ -60,4 +60,4 @@ class MenuItemComponent : public Component {
 
 }  // namespace midistar
 
-#endif  // MIDISTAR_MENUCOMPONENT_H_
+#endif  // MIDISTAR_MENUITEMCOMPONENT_H_

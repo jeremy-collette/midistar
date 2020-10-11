@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_MIDIFILEINCOMPONENT_H_
 #define MIDISTAR_MIDIFILEINCOMPONENT_H_
 
+#include <vector>
+
 #include "midistar/Component.h"
 #include "midistar/GameObject.h"
 #include "midistar/MidiFileIn.h"
@@ -50,12 +52,9 @@ class MidiFileInComponent : public Component {
      */
     virtual void Update(Game* g, GameObject* o, int delta);
 
-private:
-    MidiFileIn* midi_file_in_;
-
-private:
+ private:
     std::vector<MidiMessage> message_buffer_;
-
+    MidiFileIn* midi_file_in_;
 };
 
 }   // End namespace midistar

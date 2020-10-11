@@ -44,7 +44,6 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         , GameObject* o
         , int
         , std::vector<GameObject*> colliding_with) {
-
     if (dont_collide_) {
         return;
     }
@@ -68,7 +67,6 @@ bool DrumSongNoteCollisionHandlerComponent::HandleCollision(
         Game*
         , GameObject* o
         , GameObject* collider) {
-
     // We only want to handle collisions with instruments
     if (!collider->HasComponent(Component::INSTRUMENT)) {
         return false;

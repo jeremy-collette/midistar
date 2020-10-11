@@ -19,6 +19,7 @@
 #ifndef MIDISTAR_MENUFACTORY_H_
 #define MIDISTAR_MENUFACTORY_H_
 
+#include <string>
 #include <SFML/Graphics.hpp>
 
 #include "midistar/MenuBuilder.h"
@@ -36,9 +37,10 @@ class MenuFactory {
         const std::string title
         , float menu_item_y_gap = 50.0f);
 
-    MenuItemBuilder CreateMenuItem(const std::string title);
+    MenuItemBuilder CreateMenuItem(
+        const std::string title);
 
-private:
+ private:
     const sf::Font& font_;
     sf::RenderWindow& window_;
 };

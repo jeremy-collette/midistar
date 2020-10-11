@@ -57,8 +57,7 @@ class MenuComponent : public Component {
 
      MenuItemComponent* current_item_;  //!< Currently focused item
      int index_;  //!< Menu index
-
-     GameObject* previous_menu_;
+     GameObject* previous_menu_;  //!< Menu that brought us here
 };
 
 }  // namespace midistar

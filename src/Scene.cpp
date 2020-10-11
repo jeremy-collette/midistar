@@ -32,11 +32,9 @@ Scene::Scene(
         , game_objects_{ game_objects }
         , render_window_{ render_window }
         , new_game_objects_{ } {
-
 }
 
-Scene::~Scene()
-{
+Scene::~Scene() {
     for (auto& o : game_objects_) {
         delete o;
     }
@@ -102,7 +100,7 @@ void Scene::RemoveObject(GameObject* o) {
     // TODO(@jeremy): change this method to DeleteObject and delete o.
     // TODO(@jeremy): add GameObject enable/disable and use that to hide objects
     // instead of removing them from scene.
-    //delete o;
+    /*delete o;*/
 }
 
 std::vector<GameObject*>& Scene::GetGameObjects() {

@@ -26,7 +26,6 @@ SfmlEventsComponent::SfmlEventsComponent(sf::Window& window)
 }
 
 SfmlEventsComponent::~SfmlEventsComponent() {
-
 }
 
 std::vector<sf::Event>& SfmlEventsComponent::GetEvents() {

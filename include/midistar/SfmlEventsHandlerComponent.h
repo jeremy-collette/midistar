@@ -29,7 +29,7 @@ namespace midistar {
 
 class SfmlEventsHandlerComponent : public Component {
  public:
-     explicit SfmlEventsHandlerComponent();
+     SfmlEventsHandlerComponent();
 
      virtual ~SfmlEventsHandlerComponent();
 
@@ -44,4 +44,4 @@ class SfmlEventsHandlerComponent : public Component {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_SFMLEVENTSCOMPONENT_H_
+#endif  // MIDISTAR_SFMLEVENTSHANDLERCOMPONENT_H_

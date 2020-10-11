@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_MIDIOUTPUTOMPONENT_H_
-#define MIDISTAR_MIDIOUTPUTOMPONENT_H_
+#ifndef MIDISTAR_MIDIOUTPUTCOMPONENT_H_
+#define MIDISTAR_MIDIOUTPUTCOMPONENT_H_
 
 #include "midistar/Component.h"
 #include "midistar/Game.h"
@@ -55,11 +55,10 @@ class MidiOutputComponent : public Component {
      */
     virtual void Update(Game* g, GameObject* o, int delta);
 
-private:
+ private:
     MidiOut* midi_out_;
-
 };
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_MIDIOUTPUTOMPONENT_H_
+#endif  // MIDISTAR_MIDIOUTPUTCOMPONENT_H_

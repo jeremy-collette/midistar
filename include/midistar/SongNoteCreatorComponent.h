@@ -26,9 +26,13 @@ namespace midistar {
 
 class SongNoteCreatorComponent : public Component {
  public:
-    SongNoteCreatorComponent(GameObjectFactory* game_object_factory);
+    explicit SongNoteCreatorComponent(
+        GameObjectFactory* game_object_factory);
 
-    virtual void Update(Game* g, GameObject* o, int delta);
+    virtual void Update(
+        Game* g
+        , GameObject* o
+        , int delta);
 
  private:
     GameObjectFactory* game_object_factory_;

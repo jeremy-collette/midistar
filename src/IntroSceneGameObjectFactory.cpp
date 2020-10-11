@@ -41,7 +41,8 @@ namespace midistar {
 IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 }
 
-std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::RenderWindow& window) {
+std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
+        sf::RenderWindow& window) {
     // TODO(@jeremy): add font to project
     // TODO(@jeremy): resize based on screen size
 
@@ -72,7 +73,8 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(sf::Rend
                 factory.CreateMenuItem(path_string)
                     .SetOnSelect(([path_string](Game* g, GameObject*, int) {
                         Scene* new_scene = nullptr;
-                        auto piano_scene_factory = PianoSceneFactory{ path_string };
+                        auto piano_scene_factory = PianoSceneFactory{
+                            path_string };
                         if (!piano_scene_factory.Create(
                             g
                             , g->GetWindow()

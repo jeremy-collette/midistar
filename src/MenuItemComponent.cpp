@@ -36,17 +36,11 @@ MenuItemComponent::MenuItemComponent()
         : MenuItemComponent([](Game*, GameObject*, int) {}) {
 }
 
-void MenuItemComponent::OnSelect()
-{
-    // TODO(@jeremy): remove
-    //std::cout << "Selected menu item: " << text_ << std::endl;
+void MenuItemComponent::OnSelect() {
     selected_ = true;
 }
 
-void MenuItemComponent::SetFocus(bool has_focus)
-{
-    // TODO(@jeremy): remove
-    //std::cout << "Menu item: " << text_ << " focus: " << has_focus << std::endl;
+void MenuItemComponent::SetFocus(bool has_focus) {
     has_focus_ = has_focus;
 }
 
@@ -55,8 +49,7 @@ void MenuItemComponent::SetOnSelect(
     on_select_ = on_select;
 }
 
-void MenuItemComponent::Update(Game* g, GameObject* o, int delta)
-{
+void MenuItemComponent::Update(Game* g, GameObject* o, int delta) {
     auto text = o->GetDrawformable<sf::Text>();
     auto color = has_focus_ ? sf::Color::White : sf::Color::Red;
     text->setFillColor(color);

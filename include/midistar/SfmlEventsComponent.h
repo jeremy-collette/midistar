@@ -19,8 +19,9 @@
 #ifndef MIDISTAR_SFMLEVENTSCOMPONENT_H_
 #define MIDISTAR_SFMLEVENTSCOMPONENT_H_
 
-#include <SFML/Window.hpp>
 #include <vector>
+
+#include <SFML/Window.hpp>
 
 #include "midistar/Component.h"
 #include "midistar/Game.h"

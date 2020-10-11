@@ -26,7 +26,7 @@ MenuItemBuilder::MenuItemBuilder(
     , GameObject* game_object
     , const sf::Font& font)
         : game_object_{ game_object }
-        , parent_menu_{ nullptr }{
+        , parent_menu_{ nullptr } {
     menu_item_component_ = new MenuItemComponent{ };
     game_object_->SetComponent(menu_item_component_);
     game_object_->SetDrawformable(new sf::Text{ text, font, 50U });
@@ -36,8 +36,7 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(MenuBuilder& sub_menu) {
     auto new_submenu_object = sub_menu.GetGameObject();
 
     menu_item_component_->SetOnSelect(
-        [this, new_submenu_object](Game* g, GameObject* o, int delta)
-        {
+        [this, new_submenu_object](Game* g, GameObject* o, int delta) {
             // Remove existing menu
             auto menu_item = o->GetComponent<MenuItemComponent>(
                 Component::MENU_ITEM);
@@ -52,8 +51,7 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(MenuBuilder& sub_menu) {
                 MenuComponent>(Component::MENU);
             new_submenu->SetPreviousMenu(owning_menu);
             g->GetCurrentScene().AddGameObject(new_submenu_object);
-        }
-    );
+        });
     return *this;
 }
 

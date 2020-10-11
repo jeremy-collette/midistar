@@ -103,8 +103,7 @@ void InstrumentAutoPlayComponent::HandleCollisions(
 
     // Here we tell the drum note collider that it can be played so that only
     // this specific note is played.
-    if (colliding_note_)
-    {
+    if (colliding_note_) {
         // Allow this note to be played
         auto drum_collider = colliding_note_->GetComponent<
             DrumSongNoteCollisionHandlerComponent>(

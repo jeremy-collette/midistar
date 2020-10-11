@@ -27,7 +27,7 @@ namespace midistar {
 
 class KeepAliveComponent : public Component {
  public:
-     explicit KeepAliveComponent();
+     KeepAliveComponent();
 
     /**
      * \copydoc Component::Update()

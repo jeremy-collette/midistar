@@ -52,7 +52,6 @@ void SongEndWatcherComponent::Update(Game* g, GameObject* o, int delta) {
         g
         , g->GetWindow()
         , &next_scene)) {
-
         throw "Could not create Intro scene.";
     }
 

@@ -90,7 +90,8 @@ TextFactory& TextFactory::SetYPosition(TextPosition pos, double offset) {
         y += offset;
         SetYPosition(y);
     } else if (pos == TextPosition::MAX) {
-        double y = (Config::GetInstance().GetScreenHeight()) - text_bounds.height;
+        double y = (Config::GetInstance().GetScreenHeight())
+            - text_bounds.height;
         y += offset;
         SetYPosition(y);
     } else if (pos == TextPosition::MIN) {

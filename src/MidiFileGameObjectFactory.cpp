@@ -41,4 +41,4 @@ bool MidiFileGameObjectFactory::Create(
     return true;
 }
 
-}
+}  // namespace midistar

@@ -20,8 +20,9 @@
 
 #include <cassert>
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include <vector>
+
+#include <SFML/Graphics.hpp>
 
 #include "midistar/Config.h"
 #include "midistar/DrumSceneFactory.h"

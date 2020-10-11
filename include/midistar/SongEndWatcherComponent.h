@@ -37,4 +37,4 @@ class SongEndWatcherComponent : public Component {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_SONGNOTECREATORCOMPONENT_H_
+#endif  // MIDISTAR_SONGENDWATCHERCOMPONENT_H_

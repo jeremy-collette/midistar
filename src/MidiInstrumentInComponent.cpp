@@ -30,19 +30,16 @@ MidiInstrumentInComponent::~MidiInstrumentInComponent() {
     delete midi_instrument_in_;
 }
 
-std::vector<MidiMessage>& MidiInstrumentInComponent::GetMessages()
-{
+std::vector<MidiMessage>& MidiInstrumentInComponent::GetMessages() {
     return message_buffer_;
 }
 
-void MidiInstrumentInComponent::Update(Game* g, GameObject* o, int delta)
-{
+void MidiInstrumentInComponent::Update(Game* g, GameObject* o, int delta) {
     midi_instrument_in_->Tick();
 
     message_buffer_.clear();
     MidiMessage message;
     while (midi_instrument_in_->GetMessage(&message)) {
-
 #ifdef DEBUG
         if (message.IsNoteOn()) {
             std::cout << "Played: " << message.GetKey() << '\n';

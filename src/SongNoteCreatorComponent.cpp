@@ -35,8 +35,7 @@ void SongNoteCreatorComponent::Update(Game* g, GameObject* o, int delta) {
     auto& current_scene = g->GetCurrentScene();
 
     auto game_objects = current_scene.GetGameObjectsByTag("MidiFile");
-    if (game_objects.size())
-    {
+    if (game_objects.size()) {
         auto midi_file_game_object = game_objects[0];
         auto midi_file_in_component = midi_file_game_object->
             GetComponent<MidiFileInComponent>(Component::MIDI_FILE_IN);

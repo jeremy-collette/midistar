@@ -30,4 +30,4 @@ class SongSceneSfmlEventsHandlerComponent : public SfmlEventsHandlerComponent {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_INTROSCENESFMLEVENTSHANDLERCOMPONENT_H_
+#endif  // MIDISTAR_SONGSCENESFMLEVENTSHANDLERCOMPONENT_H_

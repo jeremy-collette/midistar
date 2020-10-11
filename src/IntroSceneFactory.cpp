@@ -30,7 +30,6 @@ bool IntroSceneFactory::Create(
         Game* game
         , sf::RenderWindow& render_window
         , Scene** scene) {
-
     auto intro_scene_object_factory = new IntroSceneGameObjectFactory{};
     auto game_objects = intro_scene_object_factory->CreateGameObjects(
         render_window);
@@ -39,8 +38,6 @@ bool IntroSceneFactory::Create(
     auto sfml_event_object = new GameObject{ rect, 0, 0, 0, 0 };
     sfml_event_object->AddTag("SfmlEvents");
     sfml_event_object->SetComponent(new SfmlEventsComponent{ render_window });
-    //sfml_event_object->SetComponent(
-    //    new IntroSceneSfmlEventsHandlerComponent{ });
     game_objects.push_back(sfml_event_object);
 
     *scene = new Scene{ game, render_window, game_objects };

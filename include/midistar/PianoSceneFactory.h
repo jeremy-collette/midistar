@@ -19,13 +19,15 @@
 #ifndef MIDISTAR_PIANOSCENEFACTORY_H_
 #define MIDISTAR_PIANOSCENEFACTORY_H_
 
+#include <string>
+
 #include "midistar/SceneFactory.h"
 
 namespace midistar {
 
 class PianoSceneFactory : public SceneFactory {
  public:
-    PianoSceneFactory(const std::string& midi_file_name);
+    explicit PianoSceneFactory(const std::string& midi_file_name);
 
     virtual bool Create(
         Game* game

@@ -16,8 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_INTROSCENEOBJECTFACTORY_H_
-#define MIDISTAR_INTROSCENEOBJECTFACTORY_H_
+#ifndef MIDISTAR_INTROSCENEGAMEOBJECTFACTORY_H_
+#define MIDISTAR_INTROSCENEGAMEOBJECTFACTORY_H_
 
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -32,27 +32,26 @@ namespace midistar {
  * The IntroSceneGameObjectFactory class creates GameObjects with default
  * behaviours.
  */
-// TODO(@jeremy): This should be a SceneFactory
 class IntroSceneGameObjectFactory {
  public:
-   /**
+    /**
     * Constructor
     */
-   IntroSceneGameObjectFactory();
+    IntroSceneGameObjectFactory();
 
-   std::vector<GameObject*> CreateGameObjects(sf::RenderWindow& window);
+    std::vector<GameObject*> CreateGameObjects(sf::RenderWindow& window);
 
  private:
-   enum GameType {
-       PIANO,
-       DRUM
-   };
+    enum GameType {
+        PIANO,
+        DRUM
+    };
 
-   GameObject* CreateScanningTextGameObject(sf::Font& font);
-   GameObject* CreateCopyrightTextGameObject(sf::Font& font);
-   GameObject* CreateVersionTextGameObject(sf::Font& font);
+    GameObject* CreateScanningTextGameObject(sf::Font& font);
+    GameObject* CreateCopyrightTextGameObject(sf::Font& font);
+    GameObject* CreateVersionTextGameObject(sf::Font& font);
 };
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_INTROSCENEOBJECTFACTORY_H_
+#endif  // MIDISTAR_INTROSCENEGAMEOBJECTFACTORY_H_

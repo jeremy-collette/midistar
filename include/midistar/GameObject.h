@@ -20,6 +20,8 @@
 #define MIDISTAR_GAMEOBJECT_H_
 
 #include <vector>
+#include <string>
+
 #include <SFML/Graphics.hpp>
 
 #include "midistar/Component.h"

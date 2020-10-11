@@ -60,12 +60,12 @@ bool PianoSceneFactory::Create(
         MidiFileInComponent>(Component::MIDI_FILE_IN);
 
     // Create Drum mode GameObjects
-    double note_speed = (midi_file_in_component->midi_file_in_->
+    double note_speed = (midi_file_in_component->
         GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetFallSpeedMultiplier();
 
-    auto max_note_duration = midi_file_in_component->midi_file_in_->
+    auto max_note_duration = midi_file_in_component->
         GetMaximumNoteDuration();
 
     auto piano_scene_object_factory = new PianoGameObjectFactory(note_speed);

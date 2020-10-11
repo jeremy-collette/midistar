@@ -25,15 +25,13 @@ namespace midistar {
 
 SongEndWatcherComponent::SongEndWatcherComponent()
         : Component{ Component::SONG_END_WATCHER } {
-
 }
 
 void SongEndWatcherComponent::Update(Game* g, GameObject* o, int delta) {
     auto midi_file_component = o->GetComponent<
         MidiFileInComponent>(Component::MIDI_FILE_IN);
 
-    auto midi_file_eof = !midi_file_component || midi_file_component->
-        midi_file_in_->IsEof();
+    auto midi_file_eof = !midi_file_component || midi_file_component->IsEof();
 
     auto has_song_notes = g->GetCurrentScene().GetGameObjectsByTag("SongNote")
         .size();
@@ -60,7 +58,6 @@ void SongEndWatcherComponent::Update(Game* g, GameObject* o, int delta) {
 
     g->SetScene(next_scene);
 }
-
 
 }  // End namespace midistar
 

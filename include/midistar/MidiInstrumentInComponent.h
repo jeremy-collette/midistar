@@ -24,9 +24,6 @@
 #include "midistar/MidiInstrumentIn.h"
 #include "midistar/MidiMessage.h"
 
- // TODO(@jeremy): add proper reference
-class Game;
-
 namespace midistar {
 
 class MidiInstrumentInComponent : public Component {
@@ -42,13 +39,11 @@ class MidiInstrumentInComponent : public Component {
      */
     virtual void Update(Game* g, GameObject* o, int delta);
 
- // TODO(@jeremy): remove
- //private:
+ private:
     MidiInstrumentIn* midi_instrument_in_;
 
 private:
     std::vector<MidiMessage> message_buffer_;
-
 };
 
 }   // End namespace midistar

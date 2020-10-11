@@ -45,7 +45,6 @@ class MidiFileIn : public MidiIn {
 
     /**
      * Gets the maximum duration of all notes in the MIDI file.
-     *
      */
     double GetMaximumNoteDuration() const;
 

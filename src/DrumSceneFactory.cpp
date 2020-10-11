@@ -60,12 +60,12 @@ bool DrumSceneFactory::Create(
         MidiFileInComponent>(Component::MIDI_FILE_IN);
 
     // Create Drum mode GameObjects
-    double note_speed = (midi_file_in_component->midi_file_in_->
+    double note_speed = (midi_file_in_component->
         GetTicksPerQuarterNote() /
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetFallSpeedMultiplier();
 
-    auto unique_notes = midi_file_in_component->midi_file_in_->
+    auto unique_notes = midi_file_in_component->
         GetUniqueMidiNotes();
 
 #ifdef DEBUG
@@ -76,7 +76,7 @@ bool DrumSceneFactory::Create(
     std::cout << '\n';
 #endif
 
-    auto max_note_duration = midi_file_in_component->midi_file_in_->
+    auto max_note_duration = midi_file_in_component->
         GetMaximumNoteDuration();
 
     auto drum_scene_object_factory = new DrumGameObjectFactory(

@@ -41,12 +41,12 @@ int main(int argc, char** argv) {
     if (midistar::Config::GetInstance().GetShowThirdParty()) {
         std::cout << "The following free third-party libraries and utilities "
             << "are used by (and distributed with) midistar:\n";
-        std::cout << "\tCLI11: Copyright(c) 2017-2018 University of Cincinnati."
-            << "\n\tfluidsynth: Copyright(C) 2003  Peter Hanappe and others.\n"
-            << "\tmidifile: Copyright(c) 1999-2018, Craig Stuart Sapp.\n"
-            << "\tRtMidi: Copyright(c) 2003-2017 Gary P.Scavone.\n"
-            << "\tSFML: Copyright(C) 2007-2017 Laurent Gomila.\n"
-            << "\tvcpkg: Copyright(C) Microsoft Corporation.\n";
+        std::cout << "    CLI11: Copyright(c) 2017-2018 University of Cincinnati."
+            << "\n    fluidsynth: Copyright(C) 2003  Peter Hanappe and others.\n"
+            << "    midifile: Copyright(c) 1999-2018, Craig Stuart Sapp.\n"
+            << "    RtMidi: Copyright(c) 2003-2017 Gary P.Scavone.\n"
+            << "    SFML: Copyright(C) 2007-2017 Laurent Gomila.\n"
+            << "    vcpkg: Copyright(C) Microsoft Corporation.\n";
         return 0;
     }
 

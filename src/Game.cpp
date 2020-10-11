@@ -32,8 +32,8 @@
 namespace midistar {
 
 Game::Game()
-		: current_scene_{ nullptr }
-		, next_scene_{ nullptr }
+        : current_scene_{ nullptr }
+        , next_scene_{ nullptr }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
@@ -42,9 +42,9 @@ Game::Game()
 }
 
 Game::~Game() {
-	if (current_scene_) {
-		delete current_scene_;
-	}
+    if (current_scene_) {
+        delete current_scene_;
+    }
 }
 
 Scene& Game::GetCurrentScene() {
@@ -84,30 +84,30 @@ void Game::Run() {
     unsigned int t = 0;
     sf::Clock clock;
     while (window_.isOpen()) {
-		// If we're changing scenes, do it now
-		if (next_scene_) {
-			if (current_scene_) {
+        // If we're changing scenes, do it now
+        if (next_scene_) {
+            if (current_scene_) {
                 // TODO(@jeremy): we need some way of preserving the scene if
                 // we want to re-use it
-				delete current_scene_;
-			}
-			current_scene_ = next_scene_;
-			next_scene_ = nullptr;
+                delete current_scene_;
+            }
+            current_scene_ = next_scene_;
+            next_scene_ = nullptr;
 
             if (!current_scene_->Init()) {
                 throw "Error initializing scene!";
             }
-		}
+        }
 
         // Clean up from last tick
-		// TODO(@jeremy): move this to scene
+        // TODO(@jeremy): move this to scene
         window_.clear(sf::Color::Black);
         int delta = t == 0 ? 0 : clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
         // Handle updating
-		current_scene_->Update(delta);
-		current_scene_->Draw();
+        current_scene_->Update(delta);
+        current_scene_->Draw();
         window_.display();
         ++t;
     }

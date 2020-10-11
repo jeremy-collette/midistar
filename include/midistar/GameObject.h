@@ -24,9 +24,8 @@
 
 #include "midistar/Component.h"
 
-// TODO(@jeremy): GameObject should support null Drawable
-
 namespace midistar {
+// Forward declaration of Game to prevent circular reference
 class Game;
 
 /**
@@ -69,6 +68,9 @@ class GameObject {
             , double width
             , double height);
 
+    /**
+    * Default constructor.
+    */
     GameObject();
 
     /**
@@ -76,7 +78,14 @@ class GameObject {
      */
     ~GameObject();
 
+    /**
+     * Copy constructor (deleted).
+     */
     GameObject(const GameObject& other) = delete;
+
+    /**
+     * Move constructor (deleted).
+     */
     GameObject(const GameObject&& other) = delete;
 
     /**
@@ -188,6 +197,12 @@ class GameObject {
      */
     void SetComponent(Component* c);
 
+    /**
+     * Sets the drawformable object contained in the GameObject, casted to the
+     * provided template type.
+     *
+     * \tparam T The type to cast the drawable component to.
+     */
     template <typename T>
     void SetDrawformable(T* drawformable);
 

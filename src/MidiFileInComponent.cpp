@@ -29,8 +29,24 @@ MidiFileInComponent::~MidiFileInComponent() {
     delete midi_file_in_;
 }
 
-std::vector<MidiMessage>& MidiFileInComponent::GetMessages() {
+double MidiFileInComponent::GetMaximumNoteDuration() const {
+    return midi_file_in_->GetMaximumNoteDuration();
+}
+
+const std::vector<MidiMessage>& MidiFileInComponent::GetMessages() const {
     return message_buffer_;
+}
+
+int MidiFileInComponent::GetTicksPerQuarterNote() const {
+    return midi_file_in_->GetTicksPerQuarterNote();
+}
+
+std::vector<int> MidiFileInComponent::GetUniqueMidiNotes() const {
+    return midi_file_in_->GetUniqueMidiNotes();
+}
+
+bool MidiFileInComponent::IsEof() const {
+    return midi_file_in_->IsEof();
 }
 
 void MidiFileInComponent::Update(Game * g, GameObject * o, int delta) {

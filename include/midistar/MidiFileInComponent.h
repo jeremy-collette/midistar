@@ -24,9 +24,6 @@
 #include "midistar/MidiFileIn.h"
 #include "midistar/MidiMessage.h"
 
-// TODO(@jeremy): add proper reference
-class Game;
-
 namespace midistar {
 
 /**
@@ -38,15 +35,22 @@ class MidiFileInComponent : public Component {
 
      ~MidiFileInComponent();
 
-     std::vector<MidiMessage>& GetMessages();
+     double GetMaximumNoteDuration() const;
+
+     const std::vector<MidiMessage>& GetMessages() const;
+
+     int GetTicksPerQuarterNote() const;
+
+     std::vector<int> GetUniqueMidiNotes() const;
+
+     bool IsEof() const;
 
     /**
      * \copydoc Component::Update()
      */
     virtual void Update(Game* g, GameObject* o, int delta);
 
- // TODO(@jeremy): remove
- //private:
+private:
     MidiFileIn* midi_file_in_;
 
 private:

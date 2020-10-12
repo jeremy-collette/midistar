@@ -44,7 +44,6 @@ IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
         sf::RenderWindow* window) {
     // TODO(@jeremy): add font to project
-    // TODO(@jeremy): resize based on screen size
 
     // Create menu
     auto font = new sf::Font();
@@ -53,9 +52,9 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     }
 
     auto factory = MenuFactory{ *font, window };
-    auto piano_menu = factory.CreateMenu("Song selection", 25.0f)
+    auto piano_menu = factory.CreateMenu("Song selection", 25)
         .SetTitleFontSize(35);
-    auto drum_menu = factory.CreateMenu("Song selection", 25.0f)
+    auto drum_menu = factory.CreateMenu("Song selection", 25)
         .SetTitleFontSize(35);
 
     // TODO(@jeremy): add subtitle functionality to menu builder
@@ -103,7 +102,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     }
 
     auto main_menu =
-        factory.CreateMenu("midistar", 35.0f)
+        factory.CreateMenu("midistar", 35)
         .SetTitleColour(sf::Color::Green)
         .AddMenuItem(factory.CreateMenuItem("1. Piano")
             .SetOnSelect(piano_menu))

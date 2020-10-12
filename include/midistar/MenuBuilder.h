@@ -31,10 +31,10 @@ class MenuBuilder {
  public:
     MenuBuilder(
         const std::string title
-        , const float item_default_font_size
+        , const int item_default_font_size
         , const sf::Font& font
         , sf::RenderWindow* window
-        , const float item_padding);
+        , const int item_padding);
 
     MenuBuilder& AddMenuItem(MenuItemBuilder menu_item);
 
@@ -47,8 +47,8 @@ class MenuBuilder {
  private:
     const sf::Font& font_;
     GameObject* game_object_;
-    const float item_default_font_size_;
-    const float item_padding_;
+    const int item_default_font_size_;
+    const int item_padding_;
     TextFactory title_text_factory_;
     float y_;
 };

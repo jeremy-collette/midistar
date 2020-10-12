@@ -27,10 +27,10 @@ namespace midistar {
 
 MenuBuilder::MenuBuilder(
     const std::string title,
-    const float item_default_font_size,
+    const int item_default_font_size,
     const sf::Font& font,
     sf::RenderWindow* window,
-    const float item_padding)
+    const int item_padding)
         : font_{ font }
         , game_object_{ nullptr }
         , item_default_font_size_{ item_default_font_size }

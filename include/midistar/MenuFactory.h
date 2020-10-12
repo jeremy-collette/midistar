@@ -27,21 +27,46 @@
 
 namespace midistar {
 
+/**
+ * The MenuFactory class allows client to create a menu using a MenuBuilder and
+ * MenuItemBuilders.
+ */
 class MenuFactory {
  public:
+    /**
+     * Constructor.
+     *
+     * \param font The font to use for the menu.
+     * \param window The game window in use.
+     */
     MenuFactory(
         const sf::Font& font
         , sf::RenderWindow* window);
 
+    /**
+     * Creates a MenuBuilder which creates a menu.
+     *
+     * \param title The title of the menu to create.
+     * \param menu_item_default_size The font size of each item in the menu.
+     *
+     * \return A MenuBuilder which creates a menu.
+     */
     MenuBuilder CreateMenu(
         const std::string title
-        , float menu_item_size = 20.0f);
+        , int item_default_font_size = 20);
 
+    /**
+     * Creates a MenuItem which can be added to a menu.
+     *
+     * \param title The title of the menu item to create.
+     *
+     * \return A MenuItem which creates a menu item.
+     */
     MenuItemBuilder CreateMenuItem(
         const std::string title);
 
  private:
-    const float MENU_ITEM_PADDING = 10.0f;
+    const int MENU_ITEM_PADDING = 10;
 
     const sf::Font& font_;
     sf::RenderWindow* window_;

@@ -28,7 +28,7 @@ MenuFactory::MenuFactory(
 
 MenuBuilder MenuFactory::CreateMenu(
         const std::string title
-        , float item_default_font_size) {
+        , int item_default_font_size) {
     return MenuBuilder{
         title
         , item_default_font_size

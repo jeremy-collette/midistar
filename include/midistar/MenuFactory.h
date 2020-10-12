@@ -35,12 +35,14 @@ class MenuFactory {
 
     MenuBuilder CreateMenu(
         const std::string title
-        , float menu_item_y_gap = 50.0f);
+        , float menu_item_size = 20.0f);
 
     MenuItemBuilder CreateMenuItem(
         const std::string title);
 
  private:
+    const float MENU_ITEM_PADDING = 10.0f;
+
     const sf::Font& font_;
     sf::RenderWindow* window_;
 };

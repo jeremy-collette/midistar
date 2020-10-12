@@ -22,37 +22,45 @@
 #include "midistar/MenuComponent.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/SfmlEventsComponent.h"
-#include "midistar/TextFactory.h"
 
 namespace midistar {
 
 MenuBuilder::MenuBuilder(
     const std::string title,
-    const float menu_item_y_gap,
-    GameObject* game_object,
+    const float item_default_font_size,
     const sf::Font& font,
-    sf::RenderWindow* window)
-        : menu_item_y_gap_{ menu_item_y_gap }
-        , game_object_{ game_object }
-        , font_{ font }
+    sf::RenderWindow* window,
+    const float item_padding)
+        : font_{ font }
+        , game_object_{ nullptr }
+        , item_default_font_size_{ item_default_font_size }
+        , item_padding_{ item_padding }
+        , title_text_factory_{ title, font }
         , y_{ 0 } {
-    game_object_->SetDrawformable(new sf::Text(title, font_, 100));
 
-    game_object_->AddTag("Menu");
-    game_object_->SetPosition(0, y_);
+    title_text_factory_.SetFontSize(50);
+    title_text_factory_.SetColour(sf::Color::White);
+    title_text_factory_.SetXPosition(TextFactory::MIN);
+    title_text_factory_.SetYPosition(y_);
     y_ += 150;
+
+    game_object_ = title_text_factory_.GetGameObject();
+    game_object_->AddTag("Menu");
     game_object_->SetComponent(new MenuComponent{ });
     game_object_->SetComponent(new MenuInputHandlerComponent{ });
-
     game_object_->AddTag("SfmlEvents");
     game_object_->SetComponent(new SfmlEventsComponent{ window });
 }
 
 MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder menu_item) {
     menu_item.SetOwningMenu(game_object_);
-    game_object_->AddChild(menu_item.GetGameObject());
+    auto menu_item_game_object = menu_item.GetGameObject();
+    game_object_->AddChild(menu_item_game_object);
     menu_item.SetPosition(50.0, y_);
-    y_ += menu_item_y_gap_;
+    menu_item.SetFontSize(item_default_font_size_);
+    auto menu_item_y_size = menu_item_game_object->GetDrawformable<sf::Text>()
+        ->getGlobalBounds().height;
+    y_ += menu_item_y_size + item_padding_;
     return *this;
 }
 
@@ -61,12 +69,12 @@ GameObject* MenuBuilder::GetGameObject() const {
 }
 
 MenuBuilder& MenuBuilder::SetTitleColour(sf::Color colour) {
-    game_object_->GetDrawformable<sf::Text>()->setFillColor(colour);
+    title_text_factory_.SetColour(colour);
     return *this;
 }
 
 MenuBuilder& MenuBuilder::SetTitleFontSize(int size) {
-    game_object_->GetDrawformable<sf::Text>()->setCharacterSize(size);
+    title_text_factory_.SetFontSize(size);
     return *this;
 }
 

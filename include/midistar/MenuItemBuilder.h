@@ -25,6 +25,7 @@
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"
 #include "midistar/MenuItemComponent.h"
+#include "midistar/TextFactory.h"
 
 namespace midistar {
 
@@ -34,7 +35,6 @@ class MenuItemBuilder {
  public:
      MenuItemBuilder(
          const std::string text
-         , GameObject* game_object
          , const sf::Font& font);
 
      GameObject* GetGameObject() const;
@@ -54,6 +54,7 @@ class MenuItemBuilder {
      GameObject* game_object_;
      MenuItemComponent* menu_item_component_;
      GameObject* parent_menu_;
+     TextFactory text_factory_;
 };
 
 }  // namespace midistar

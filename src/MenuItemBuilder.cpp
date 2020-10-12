@@ -23,13 +23,14 @@
 namespace midistar {
 MenuItemBuilder::MenuItemBuilder(
     const std::string text
-    , GameObject* game_object
     , const sf::Font& font)
-        : game_object_{ game_object }
-        , parent_menu_{ nullptr } {
+        : game_object_{ nullptr }
+        , parent_menu_{ nullptr }
+        , text_factory_{ text, font } {
     menu_item_component_ = new MenuItemComponent{ };
+    text_factory_.SetFontSize(25);
+    game_object_ = text_factory_.GetGameObject();
     game_object_->SetComponent(menu_item_component_);
-    game_object_->SetDrawformable(new sf::Text{ text, font, 50U });
 }
 
 MenuItemBuilder& MenuItemBuilder::SetOnSelect(const MenuBuilder& sub_menu) {
@@ -66,7 +67,8 @@ void MenuItemBuilder::SetOwningMenu(GameObject* parent) {
 }
 
 void MenuItemBuilder::SetPosition(const double x_pos, const double y_pos) {
-    game_object_->SetPosition(x_pos, y_pos);
+    text_factory_.SetXPosition(x_pos);
+    text_factory_.SetYPosition(y_pos);
 }
 
 GameObject* MenuItemBuilder::GetGameObject() const {
@@ -74,7 +76,7 @@ GameObject* MenuItemBuilder::GetGameObject() const {
 }
 
 MenuItemBuilder& MenuItemBuilder::SetFontSize(const int size) {
-    game_object_->GetDrawformable<sf::Text>()->setCharacterSize(size);
+    text_factory_.SetFontSize(size);
     return *this;
 }
 

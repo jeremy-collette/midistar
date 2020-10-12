@@ -19,21 +19,26 @@
 #include "midistar/MenuFactory.h"
 
 namespace midistar {
-MenuFactory::MenuFactory(const sf::Font& font, sf::RenderWindow* window)
-    : font_{ font }
-    , window_{ window } {
+MenuFactory::MenuFactory(
+    const sf::Font& font
+    , sf::RenderWindow* window)
+        : font_{ font }
+        , window_{ window } {
 }
 
 MenuBuilder MenuFactory::CreateMenu(
         const std::string title
-        , float menu_item_y_gap) {
-    auto game_object = new GameObject{ (sf::Text*)nullptr, 0.0, 0.0, 0.0, 0.0 };
-    return MenuBuilder{ title, menu_item_y_gap, game_object, font_, window_ };
+        , float item_default_font_size) {
+    return MenuBuilder{
+        title
+        , item_default_font_size
+        , font_
+        , window_
+        , MENU_ITEM_PADDING };
 }
 
 MenuItemBuilder MenuFactory::CreateMenuItem(const std::string title) {
-    auto game_object = new GameObject{ (sf::Text*)nullptr, 0.0, 0.0, 0.0, 0.0 };
-    return MenuItemBuilder{ title, game_object, font_ };
+    return MenuItemBuilder{ title, font_ };
 }
 
 }  // End namespace midistar

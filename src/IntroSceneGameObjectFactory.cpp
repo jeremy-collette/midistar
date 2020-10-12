@@ -54,9 +54,9 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
 
     auto factory = MenuFactory{ *font, window };
     auto piano_menu = factory.CreateMenu("Song selection", 25.0f)
-        .SetTitleFontSize(50);
+        .SetTitleFontSize(35);
     auto drum_menu = factory.CreateMenu("Song selection", 25.0f)
-        .SetTitleFontSize(50);
+        .SetTitleFontSize(35);
 
     // TODO(@jeremy): add subtitle functionality to menu builder
     auto scanning_game_object = CreateScanningTextGameObject(*font);
@@ -103,7 +103,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     }
 
     auto main_menu =
-        factory.CreateMenu("midistar")
+        factory.CreateMenu("midistar", 35.0f)
         .SetTitleColour(sf::Color::Green)
         .AddMenuItem(factory.CreateMenuItem("1. Piano")
             .SetOnSelect(piano_menu))
@@ -112,7 +112,8 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
         .AddMenuItem(factory.CreateMenuItem("0. Exit")
             .SetOnSelect([](Game* g, GameObject*, int) {
                 g->Exit();
-            }));
+            }))
+        .SetTitleFontSize(50);
 
     auto copyright = CreateCopyrightTextGameObject(*font);
     main_menu.GetGameObject()->AddChild(copyright);

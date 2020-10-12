@@ -23,6 +23,7 @@
 
 #include "midistar/GameObject.h"
 #include "midistar/MenuItemBuilder.h"
+#include "midistar/TextFactory.h"
 
 namespace midistar {
 
@@ -30,10 +31,10 @@ class MenuBuilder {
  public:
     MenuBuilder(
         const std::string title
-        , const float menu_item_y_gap
-        , GameObject* game_object
+        , const float item_default_font_size
         , const sf::Font& font
-        , sf::RenderWindow* window);
+        , sf::RenderWindow* window
+        , const float item_padding);
 
     MenuBuilder& AddMenuItem(MenuItemBuilder menu_item);
 
@@ -44,10 +45,12 @@ class MenuBuilder {
     MenuBuilder& SetTitleFontSize(int size);
 
  private:
-    GameObject* game_object_;
     const sf::Font& font_;
+    GameObject* game_object_;
+    const float item_default_font_size_;
+    const float item_padding_;
+    TextFactory title_text_factory_;
     float y_;
-    const float menu_item_y_gap_;
 };
 
 }  // namespace midistar

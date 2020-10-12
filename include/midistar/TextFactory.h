@@ -22,7 +22,6 @@
 #include <string>
 
 #include "midistar/GameObject.h"
-#include "midistar/MenuItemBuilder.h"
 
 namespace midistar {
 

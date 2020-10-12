@@ -47,9 +47,9 @@ class MenuItemComponent : public Component {
      */
     virtual void Update(Game* g, GameObject* o, int delta);
 
-    GameObject* GetOwningMenu();
+    GameObject* GetParentMenuGameObject();
 
-    void SetOwningMenu(GameObject* parent);
+    void SetParentMenuGameObject(GameObject* parent);
 
  private:
      bool has_focus_;  //!< Indicates if this menu item currently has focus

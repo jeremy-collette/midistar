@@ -35,6 +35,8 @@ MenuItemBuilder::MenuItemBuilder(
 
 MenuItemBuilder& MenuItemBuilder::SetOnSelect(const MenuBuilder& sub_menu) {
     auto new_submenu_object = sub_menu.GetGameObject();
+    // Disable the sub menu until we're ready to show it
+    new_submenu_object->SetEnabled(false);
 
     menu_item_component_->SetOnSelect(
         [this, new_submenu_object](Game* g, GameObject* o, int delta) {
@@ -43,15 +45,14 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(const MenuBuilder& sub_menu) {
                 Component::MENU_ITEM);
 
             // Here we remove the current menu
-            // TODO(@jez): can we do this somewhere else?
-            auto owning_menu = menu_item->GetOwningMenu();
-            g->GetCurrentScene().RemoveObject(owning_menu);
+            auto parent_menu = menu_item->GetParentMenuGameObject();
+            parent_menu->SetEnabled(false);
 
-            // Set new menu and tell it the current menu so it can go back
+            // Set new menu and enable it
             auto new_submenu = new_submenu_object->GetComponent<
                 MenuComponent>(Component::MENU);
-            new_submenu->SetPreviousMenu(owning_menu);
-            g->GetCurrentScene().AddGameObject(new_submenu_object);
+            new_submenu->SetPreviousMenu(parent_menu);
+            new_submenu_object->SetEnabled(true);
         });
     return *this;
 }
@@ -63,7 +64,7 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(
 }
 
 void MenuItemBuilder::SetOwningMenu(GameObject* parent) {
-    menu_item_component_->SetOwningMenu(parent);
+    menu_item_component_->SetParentMenuGameObject(parent);
 }
 
 void MenuItemBuilder::SetPosition(const double x_pos, const double y_pos) {

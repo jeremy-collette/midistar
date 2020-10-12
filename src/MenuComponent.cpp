@@ -52,10 +52,10 @@ void MenuComponent::OnBack(Game* g, GameObject* o, int delta) {
     }
 
     // Remove existing menu
-    g->GetCurrentScene().RemoveObject(o);
+    o->SetEnabled(false);
 
     // Restore parent
-    g->GetCurrentScene().AddGameObject(previous_menu_);
+    previous_menu_->SetEnabled(true);
 }
 
 void MenuComponent::SetPreviousMenu(GameObject* previous_menu) {

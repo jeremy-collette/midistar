@@ -43,10 +43,9 @@ IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 
 std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
         sf::RenderWindow* window) {
-    // TODO(@jeremy): add font to project
-
     // Create menu
     auto font = new sf::Font();
+    // TODO(@jeremy): add font to project
     if (!font->loadFromFile("PixelMiners-KKal.otf")) {
         throw "Could not load font!";
     }
@@ -57,10 +56,10 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     auto drum_menu = factory.CreateMenu("Song selection", 25)
         .SetTitleFontSize(35);
 
-    // TODO(@jeremy): add subtitle functionality to menu builder
-    auto scanning_game_object = CreateScanningTextGameObject(*font);
-    piano_menu.GetGameObject()->AddChild(scanning_game_object);
-    drum_menu.GetGameObject()->AddChild(scanning_game_object);
+    piano_menu.GetGameObject()->AddChild(
+        CreateScanningTextGameObject(*font));
+    drum_menu.GetGameObject()->AddChild(
+        CreateScanningTextGameObject(*font));
 
     // Add menu items
     auto menu_item_text = std::vector<std::string*>{ };
@@ -120,7 +119,10 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     auto version = CreateVersionTextGameObject(*font);
     main_menu.GetGameObject()->AddChild(version);
 
-    auto game_objects = std::vector<GameObject*>{ main_menu.GetGameObject() };
+    auto game_objects = std::vector<GameObject*>{
+        main_menu.GetGameObject()
+        , piano_menu.GetGameObject()
+        , drum_menu.GetGameObject() };
     return game_objects;
 }
 

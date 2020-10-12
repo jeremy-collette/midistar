@@ -149,6 +149,8 @@ class GameObject {
     template <typename T>
     T* GetDrawformable();
 
+    bool GetEnabled();
+
     /**
      * Gets the position of the GameObject.
      *
@@ -208,6 +210,8 @@ class GameObject {
     template <typename T>
     void SetDrawformable(T* drawformable);
 
+    void SetEnabled(bool enabled);
+
     /**
      * Sets the position of the GameObject.
      *
@@ -244,6 +248,7 @@ class GameObject {
  private:
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
     sf::Drawable* drawable_;  //!< Holds drawable part of object
+    bool enabled_;
     std::vector<GameObject*>  children_;  //!< Holds children game objects
     double original_height_;  //!< Height at creation
     double original_width_;  //!< Width at creation

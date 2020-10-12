@@ -60,11 +60,11 @@ void MenuItemComponent::Update(Game* g, GameObject* o, int delta) {
     }
 }
 
-GameObject* MenuItemComponent::GetOwningMenu() {
+GameObject* MenuItemComponent::GetParentMenuGameObject() {
     return parent_;
 }
 
-void MenuItemComponent::SetOwningMenu(GameObject* parent) {
+void MenuItemComponent::SetParentMenuGameObject(GameObject* parent) {
     parent_ = parent;
 }
 

@@ -65,9 +65,11 @@ void GameObject::DeleteComponent(ComponentType type) {
 }
 
 void GameObject::Draw(sf::RenderWindow* window) {
-    if (drawable_) {
-        window->draw(*drawable_);
+    if (!enabled_ || !drawable_) {
+        return;
     }
+
+    window->draw(*drawable_);
 
     for (const auto& child : children_) {
         child->Draw(window);
@@ -76,6 +78,10 @@ void GameObject::Draw(sf::RenderWindow* window) {
 
 std::vector<GameObject*>& GameObject::GetChildren() {
     return children_;
+}
+
+bool GameObject::GetEnabled() {
+    return enabled_;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
@@ -128,6 +134,10 @@ void GameObject::SetComponent(Component* c) {
     components_[c->GetType()] = c;
 }
 
+void GameObject::SetEnabled(bool enabled) {
+    enabled_ = enabled;
+}
+
 void GameObject::SetPosition(double x, double y) {
     if (transformable_) {
         transformable_->setPosition(static_cast<float>(x)
@@ -151,6 +161,10 @@ void GameObject::SetSize(double w, double h) {
 }
 
 void GameObject::Update(Game* g, int delta) {
+    if (!enabled_) {
+        return;
+    }
+
     auto has_component = false;
     for (const auto& c : components_) {
         if (c) {

@@ -27,7 +27,7 @@ class SceneFactory {
  public:
     virtual bool Create(
         Game* game
-        , sf::RenderWindow& render_window
+        , sf::RenderWindow* render_window
         , Scene** scene) = 0;
 };
 

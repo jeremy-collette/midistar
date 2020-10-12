@@ -42,7 +42,7 @@ IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 }
 
 std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
-        sf::RenderWindow& window) {
+        sf::RenderWindow* window) {
     // TODO(@jeremy): add font to project
     // TODO(@jeremy): resize based on screen size
 
@@ -77,7 +77,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
                             path_string };
                         if (!piano_scene_factory.Create(
                             g
-                            , g->GetWindow()
+                            , &g->GetWindow()
                             , &new_scene)) {
                             throw "Scene creation failed";
                         }
@@ -92,7 +92,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
                     auto drum_scene_factory = DrumSceneFactory{ path_string };
                     if (!drum_scene_factory.Create(
                         g
-                        , g->GetWindow()
+                        , &g->GetWindow()
                         , &new_scene)) {
                         throw "Scene creation failed";
                     }
@@ -125,7 +125,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
 }
 
 GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
-        sf::Font& font) {
+        const sf::Font& font) {
     auto subtitle_string = new std::string{ "Scanning directory "
         + fs::current_path().string() };
     TextFactory text_builder{ *subtitle_string, font };
@@ -137,7 +137,7 @@ GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
 }
 
 GameObject* IntroSceneGameObjectFactory::CreateCopyrightTextGameObject(
-        sf::Font& font) {
+        const sf::Font& font) {
     auto copyright_string = new std::string{
         "Copyright (c) Jeremy Collette 2018-2020" };
     TextFactory text_builder{ *copyright_string, font };
@@ -149,7 +149,7 @@ GameObject* IntroSceneGameObjectFactory::CreateCopyrightTextGameObject(
 }
 
 GameObject* IntroSceneGameObjectFactory::CreateVersionTextGameObject(
-        sf::Font& font) {
+        const sf::Font& font) {
     auto version_string = new std::string{ MIDISTAR_VERSION };
     TextFactory text_builder{ *version_string, font };
     text_builder.SetFontSize(25);

@@ -31,7 +31,7 @@ namespace midistar {
 
 class SfmlEventsComponent : public Component {
  public:
-     explicit SfmlEventsComponent(sf::Window& window);
+     explicit SfmlEventsComponent(sf::Window* window);
 
      ~SfmlEventsComponent();
 
@@ -44,7 +44,7 @@ class SfmlEventsComponent : public Component {
 
  private:
      std::vector<sf::Event> event_buffer_;
-     sf::Window& window_;
+     sf::Window* window_;
 };
 
 }   // End namespace midistar

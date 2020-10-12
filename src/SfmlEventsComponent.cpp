@@ -19,7 +19,7 @@
 #include "midistar/SfmlEventsComponent.h"
 
 namespace midistar {
-SfmlEventsComponent::SfmlEventsComponent(sf::Window& window)
+SfmlEventsComponent::SfmlEventsComponent(sf::Window* window)
         : Component{ Component::SFML_EVENTS }
         , event_buffer_{ }
         , window_{ window } {
@@ -36,7 +36,7 @@ void SfmlEventsComponent::Update(Game*, GameObject*, int) {
     event_buffer_.clear();
 
     sf::Event event;
-    while (window_.pollEvent(event)) {
+    while (window_->pollEvent(event)) {
         event_buffer_.push_back(event);
     }
 }

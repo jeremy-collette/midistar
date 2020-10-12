@@ -31,7 +31,7 @@ class MenuFactory {
  public:
     MenuFactory(
         const sf::Font& font
-        , sf::RenderWindow& window);
+        , sf::RenderWindow* window);
 
     MenuBuilder CreateMenu(
         const std::string title
@@ -42,7 +42,7 @@ class MenuFactory {
 
  private:
     const sf::Font& font_;
-    sf::RenderWindow& window_;
+    sf::RenderWindow* window_;
 };
 
 }  // namespace midistar

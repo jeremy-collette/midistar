@@ -31,7 +31,7 @@ MenuBuilder::MenuBuilder(
     const float menu_item_y_gap,
     GameObject* game_object,
     const sf::Font& font,
-    sf::RenderWindow& window)
+    sf::RenderWindow* window)
         : menu_item_y_gap_{ menu_item_y_gap }
         , game_object_{ game_object }
         , font_{ font }
@@ -48,7 +48,7 @@ MenuBuilder::MenuBuilder(
     game_object_->SetComponent(new SfmlEventsComponent{ window });
 }
 
-MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder& menu_item) {
+MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder menu_item) {
     menu_item.SetOwningMenu(game_object_);
     game_object_->AddChild(menu_item.GetGameObject());
     menu_item.SetPosition(50.0, y_);
@@ -56,7 +56,7 @@ MenuBuilder& MenuBuilder::AddMenuItem(MenuItemBuilder& menu_item) {
     return *this;
 }
 
-GameObject* MenuBuilder::GetGameObject() {
+GameObject* MenuBuilder::GetGameObject() const {
     return game_object_;
 }
 

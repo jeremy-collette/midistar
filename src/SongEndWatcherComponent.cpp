@@ -44,13 +44,13 @@ void SongEndWatcherComponent::Update(Game* g, GameObject* o, int delta) {
     auto intro_scene_factory = IntroSceneFactory{};
     auto next_scene = new Scene{
         g,
-        g->GetWindow(),
+        &g->GetWindow(),
         std::vector<GameObject*>{ }
     };
 
     if (!intro_scene_factory.Create(
         g
-        , g->GetWindow()
+        , &g->GetWindow()
         , &next_scene)) {
         throw "Could not create Intro scene.";
     }

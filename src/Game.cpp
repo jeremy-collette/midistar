@@ -66,13 +66,13 @@ bool Game::Init() {
     auto intro_scene_factory = IntroSceneFactory{};
     auto next_scene = new Scene{
         this,
-        GetWindow(),
+        &GetWindow(),
         std::vector<GameObject*>{ }
     };
 
     if (!intro_scene_factory.Create(
         this
-        , GetWindow()
+        , &GetWindow()
         , &next_scene)) {
         return false;
     }

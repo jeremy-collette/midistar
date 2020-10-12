@@ -33,11 +33,11 @@ class MenuBuilder {
         , const float menu_item_y_gap
         , GameObject* game_object
         , const sf::Font& font
-        , sf::RenderWindow& window);
+        , sf::RenderWindow* window);
 
-    MenuBuilder& AddMenuItem(MenuItemBuilder& menu_item);
+    MenuBuilder& AddMenuItem(MenuItemBuilder menu_item);
 
-    GameObject* GetGameObject();
+    GameObject* GetGameObject() const;
 
     MenuBuilder& SetTitleColour(sf::Color colour);
 

@@ -26,7 +26,7 @@ namespace midistar {
 // be method parameters?
 Scene::Scene(
     Game* game
-    , sf::RenderWindow& render_window
+    , sf::RenderWindow* render_window
     , std::vector<GameObject*> game_objects)
         : game_{game}
         , game_objects_{ game_objects }
@@ -66,7 +66,7 @@ bool Scene::Update(int delta) {
 bool Scene::Draw() {
     // Handle drawing
     for (auto obj : game_objects_) {
-        obj->Draw(&render_window_);
+        obj->Draw(render_window_);
     }
 
     return true;

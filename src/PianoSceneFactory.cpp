@@ -38,7 +38,7 @@ PianoSceneFactory::PianoSceneFactory(
 
 bool PianoSceneFactory::Create(
         Game* game
-        , sf::RenderWindow& render_window
+        , sf::RenderWindow* render_window
         , Scene** scene) {
     // Create MIDI instrument GameObject to read input from MIDI instrument
     auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};

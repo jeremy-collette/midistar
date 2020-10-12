@@ -37,11 +37,11 @@ class MenuItemBuilder {
          , GameObject* game_object
          , const sf::Font& font);
 
-     GameObject* GetGameObject();
+     GameObject* GetGameObject() const;
 
      MenuItemBuilder& SetFontSize(const int size);
 
-     MenuItemBuilder& SetOnSelect(MenuBuilder& sub_menu);
+     MenuItemBuilder& SetOnSelect(const MenuBuilder& sub_menu);
 
      MenuItemBuilder& SetOnSelect(std::function<void(Game*, GameObject*, int)>
          on_select_func);

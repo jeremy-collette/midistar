@@ -45,7 +45,7 @@ class Scene {
      */
     Scene(
         Game* game
-        , sf::RenderWindow& render_window
+        , sf::RenderWindow* render_window
         , std::vector<GameObject*> game_objects);
 
      /**
@@ -129,7 +129,7 @@ class Scene {
 
     Game* game_;
     std::vector<GameObject*> game_objects_;
-    sf::RenderWindow& render_window_;
+    sf::RenderWindow* render_window_;
     std::queue<GameObject*> new_game_objects_;
 };
 

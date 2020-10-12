@@ -39,7 +39,7 @@ class IntroSceneGameObjectFactory {
     */
     IntroSceneGameObjectFactory();
 
-    std::vector<GameObject*> CreateGameObjects(sf::RenderWindow& window);
+    std::vector<GameObject*> CreateGameObjects(sf::RenderWindow* window);
 
  private:
     enum GameType {
@@ -47,9 +47,9 @@ class IntroSceneGameObjectFactory {
         DRUM
     };
 
-    GameObject* CreateScanningTextGameObject(sf::Font& font);
-    GameObject* CreateCopyrightTextGameObject(sf::Font& font);
-    GameObject* CreateVersionTextGameObject(sf::Font& font);
+    GameObject* CreateScanningTextGameObject(const sf::Font& font);
+    GameObject* CreateCopyrightTextGameObject(const sf::Font& font);
+    GameObject* CreateVersionTextGameObject(const sf::Font& font);
 };
 
 }  // End namespace midistar

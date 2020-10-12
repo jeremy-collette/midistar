@@ -19,7 +19,7 @@
 #include "midistar/MenuFactory.h"
 
 namespace midistar {
-MenuFactory::MenuFactory(const sf::Font& font, sf::RenderWindow& window)
+MenuFactory::MenuFactory(const sf::Font& font, sf::RenderWindow* window)
     : font_{ font }
     , window_{ window } {
 }

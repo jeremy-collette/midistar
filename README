@@ -8,18 +8,21 @@ midistar uses third-party libraries and utilities that are not considered to be
 part of the midistar project, but are distributed with midistar for ease-of-
 access and completeness. Each sub-folder in the 'external' folder contains the
 source code of a different third-party project that is used by midistar.
+midistar also uses third-party assets are considered to be part of the midistar 
+project for licensing purposes. See the LICENSE file for more information.
 
-The following third-party libraries and utilities are used by (and distributed
-with) midistar:
+The following third-party libraries, utilities, and assets are used by (and 
+distributed with) midistar:
     * CLI11: Copyright (c) 2017-2018 University of Cincinnati.
     * fluidsynth: Copyright (C) 2003 Peter Hanappe and others.
     * midifile: Copyright (c) 1999-2018, Craig Stuart Sapp.
     * RtMidi: Copyright (c) 2003-2017 Gary P. Scavone.
     * SFML: Copyright (C) 2007-2017 Laurent Gomila.
-    * vcpkg: Copyright (C) Microsoft Corporation.
+    * Silkscreen font: Copyright (C) Jason Kottke.
+    * vcpkg: Copyright (C) Microsoft Corporation.    
 
-Thanks to the developers and supporters of these projects! Note that you can see
-these copyright notices in midistar by running the project with the 
+Thanks to the developers, creators, and supporters of these projects! Note that 
+you can see these copyright notices in midistar by running the project with the 
 '--show_third_party' command line flag.
 
 midistar is written in C++ using code (and shared libraries) that are

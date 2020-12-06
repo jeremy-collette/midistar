@@ -97,8 +97,8 @@ class PianoGameObjectFactory : public GameObjectFactory {
         WHITE_KEY_OUTLINE_THICKNESS / 2.0;  //!< Black key outline thickness
     static const int BLACK_KEY_HEIGHT = static_cast<int>(WHITE_KEY_HEIGHT
         * 0.65f);                               //!< Black key height in pixels
-    static constexpr const char* GRINDING_TEXTURE_PATH = "assets/grinding.png";
-                                            //!< Path to metal grinding texture
+    static constexpr const char* GRINDING_TEXTURE_PATH = "assets/images"
+        "/grinding.png";                     //!< Path to metal grinding texture
     static const sf::Color MIDI_TRACK_COLOURS[NUM_TRACK_COLOURS];  //!< Holds
                                                         //!< MIDI track colours
 

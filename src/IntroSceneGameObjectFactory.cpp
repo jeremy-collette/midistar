@@ -21,6 +21,7 @@
 #include <filesystem>
 #include <string>
 
+#include "midistar/Constants.h"
 #include "midistar/DrumSceneFactory.h"
 #include "midistar/Game.h"
 #include "midistar/KeepAliveComponent.h"
@@ -37,7 +38,6 @@ namespace fs = std::experimental::filesystem;
 
 namespace midistar {
 
-// TODO(@jeremy): this should be in the scene factory
 IntroSceneGameObjectFactory::IntroSceneGameObjectFactory() {
 }
 
@@ -45,8 +45,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
         sf::RenderWindow* window) {
     // Create menu
     auto font = new sf::Font();
-    // TODO(@jeremy): add font to project
-    if (!font->loadFromFile("PixelMiners-KKal.otf")) {
+    if (!font->loadFromFile(MIDISTAR_FONT)) {
         throw "Could not load font!";
     }
 
@@ -131,7 +130,7 @@ GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
     auto subtitle_string = new std::string{ "Scanning directory "
         + fs::current_path().string() };
     TextFactory text_builder{ *subtitle_string, font };
-    text_builder.SetFontSize(20);
+    text_builder.SetFontSize(24);
     text_builder.SetColour(sf::Color::White);
     text_builder.SetXPosition(TextFactory::MIN);
     text_builder.SetYPosition(TextFactory::MIN, 80);

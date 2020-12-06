@@ -29,4 +29,5 @@ package
 
 *.sf2
 *.ttf
+!*slkscr.ttf
 *.otf

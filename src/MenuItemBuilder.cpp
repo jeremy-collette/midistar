@@ -39,7 +39,7 @@ MenuItemBuilder& MenuItemBuilder::SetOnSelect(const MenuBuilder& sub_menu) {
     new_submenu_object->SetEnabled(false);
 
     menu_item_component_->SetOnSelect(
-        [this, new_submenu_object](Game* g, GameObject* o, int delta) {
+        [this, new_submenu_object](Game*, GameObject* o, int) {
             // Remove existing menu
             auto menu_item = o->GetComponent<MenuItemComponent>(
                 Component::MENU_ITEM);

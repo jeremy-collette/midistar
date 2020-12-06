@@ -24,7 +24,7 @@ KeepAliveComponent::KeepAliveComponent()
         : Component{ Component::KEEP_ALIVE } {
 }
 
-void KeepAliveComponent::Update(Game* g, GameObject* o, int delta) {
+void KeepAliveComponent::Update(Game*, GameObject*, int) {
     // Do nothing
 }
 

@@ -118,7 +118,7 @@ void InstrumentAutoPlayComponent::HandleCollisions(
 bool InstrumentAutoPlayComponent::IsInOrPastCentre(
         GameObject* o
         , GameObject* collider
-        , int delta) {
+        , int) {
     // Get position and size info
     double inst_x, inst_y, inst_w, inst_h;
     o->GetPosition(&inst_x, &inst_y);

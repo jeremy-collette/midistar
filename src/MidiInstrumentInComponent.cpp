@@ -34,7 +34,7 @@ std::vector<MidiMessage>& MidiInstrumentInComponent::GetMessages() {
     return message_buffer_;
 }
 
-void MidiInstrumentInComponent::Update(Game* g, GameObject* o, int delta) {
+void MidiInstrumentInComponent::Update(Game*, GameObject*, int) {
     midi_instrument_in_->Tick();
 
     message_buffer_.clear();

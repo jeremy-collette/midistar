@@ -24,8 +24,8 @@ namespace midistar {
 
 void SongSceneSfmlEventsHandlerComponent::HandleEvent(
         Game* g
-        , GameObject* o
-        , int delta
+        , GameObject*
+        , int
         , sf::Event evt) {
     if (evt.type != sf::Event::Closed && (evt.type != sf::Event::KeyPressed ||
             evt.key.code != sf::Keyboard::Escape)) {

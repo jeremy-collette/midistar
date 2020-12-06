@@ -49,7 +49,7 @@ bool MidiFileInComponent::IsEof() const {
     return midi_file_in_->IsEof();
 }
 
-void MidiFileInComponent::Update(Game * g, GameObject * o, int delta) {
+void MidiFileInComponent::Update(Game*, GameObject*, int delta) {
     midi_file_in_->Tick(delta);
 
     message_buffer_.clear();

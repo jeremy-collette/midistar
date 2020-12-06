@@ -67,6 +67,8 @@ void MenuInputHandlerComponent::Update(Game* g, GameObject* o, int delta) {
             case sf::Keyboard::Escape:
                 menu->OnBack(g, o, delta);
                 break;
+            default:
+                break;
         }
     }
 }

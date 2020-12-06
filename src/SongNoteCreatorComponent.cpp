@@ -31,7 +31,7 @@ SongNoteCreatorComponent::SongNoteCreatorComponent(
         , game_object_factory_{ game_object_factory } {
 }
 
-void SongNoteCreatorComponent::Update(Game* g, GameObject* o, int delta) {
+void SongNoteCreatorComponent::Update(Game* g, GameObject*, int) {
     auto& current_scene = g->GetCurrentScene();
 
     auto game_objects = current_scene.GetGameObjectsByTag("MidiFile");

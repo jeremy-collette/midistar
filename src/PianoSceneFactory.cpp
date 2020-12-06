@@ -64,9 +64,6 @@ bool PianoSceneFactory::Create(
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetFallSpeedMultiplier();
 
-    auto max_note_duration = midi_file_in_component->
-        GetMaximumNoteDuration();
-
     auto piano_scene_object_factory = new PianoGameObjectFactory(note_speed);
     if (!piano_scene_object_factory->Init()) {
         return false;

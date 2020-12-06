@@ -37,7 +37,7 @@ void MidiOutputComponent::TurnMidiNoteOn(int chan, int note, int vel) {
     midi_out_->SendNoteOn(note, chan, vel);
 }
 
-void MidiOutputComponent::Update(Game* g, GameObject* o, int delta) {
+void MidiOutputComponent::Update(Game*, GameObject*, int) {
     // Do nothing
 }
 

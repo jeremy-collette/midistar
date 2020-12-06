@@ -50,9 +50,10 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     }
 
     auto factory = MenuFactory{ *font, window };
-    auto piano_menu = factory.CreateMenu("Song selection", 25)
+    auto item_default_font_size = 25;
+    auto piano_menu = factory.CreateMenu("Song selection", item_default_font_size)
         .SetTitleFontSize(35);
-    auto drum_menu = factory.CreateMenu("Song selection", 25)
+    auto drum_menu = factory.CreateMenu("Song selection", item_default_font_size)
         .SetTitleFontSize(35);
 
     piano_menu.GetGameObject()->AddChild(
@@ -108,8 +109,9 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
             CreateNoFilesFoundTextGameObject(*font));
     }
 
+    item_default_font_size = 35;
     auto main_menu =
-        factory.CreateMenu("midistar", 35)
+        factory.CreateMenu("midistar", item_default_font_size)
         .SetTitleColour(sf::Color::Green)
         .AddMenuItem(factory.CreateMenuItem("1. Piano")
             .SetOnSelect(piano_menu))
@@ -150,10 +152,10 @@ GameObject* IntroSceneGameObjectFactory::CreateNoFilesFoundTextGameObject(
     const sf::Font& font) {
     auto message = new std::string{ "No .mid files found!" };
     TextFactory text_builder{ *message, font };
-    text_builder.SetFontSize(24);
+    text_builder.SetFontSize(25);
     text_builder.SetColour(sf::Color::Red);
     text_builder.SetXPosition(TextFactory::MIN, 50);
-    text_builder.SetYPosition(TextFactory::MIN, 120);
+    text_builder.SetYPosition(TextFactory::MIN, 150);
     return text_builder.GetGameObject();
 }
 
@@ -162,7 +164,7 @@ GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
     auto subtitle_string = new std::string{ "Scanning directory "
         + fs::current_path().string() };
     TextFactory text_builder{ *subtitle_string, font };
-    text_builder.SetFontSize(24);
+    text_builder.SetFontSize(25);
     text_builder.SetColour(sf::Color::White);
     text_builder.SetXPosition(TextFactory::MIN);
     text_builder.SetYPosition(TextFactory::MIN, 80);

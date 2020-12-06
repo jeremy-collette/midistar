@@ -65,6 +65,11 @@ void MenuComponent::SetPreviousMenu(GameObject* previous_menu) {
 void MenuComponent::Update(Game* g, GameObject* o, int delta) {
     auto focused_item = GetChildMenuItemComponent(o);
 
+    // If the menu has no items, this will be null
+    if (!focused_item) {
+        return;
+    }
+
     // If the focused item has changed, update focus
     if (current_item_ != focused_item) {
         if (current_item_) {
@@ -88,6 +93,10 @@ MenuItemComponent* MenuComponent::GetChildMenuItemComponent(GameObject* o) {
         if (child->HasComponent(Component::MENU_ITEM)) {
             has_menu_item.push_back(child);
         }
+    }
+
+    if (!has_menu_item.size()) {
+        return nullptr;
     }
 
     index_ = (index_ + has_menu_item.size()) % has_menu_item.size();

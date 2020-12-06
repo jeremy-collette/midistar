@@ -63,13 +63,6 @@ class Config {
     bool GetFullScreen();
 
     /**
-     * Gets the game mode name.
-     *
-     * \return Game mode.
-     */
-    const std::string GetGameMode();
-
-    /**
      * Gets the MIDI note re-mapping (if it exists) of a note played on an
      * instrument.
      *
@@ -194,7 +187,6 @@ class Config {
     bool auto_play_;  //!< Auto play setting
     double fall_speed_multiplier_;  //!< Affects fall speed of notes
     bool full_screen_;  //!< Full-screen setting
-    std::string game_mode_;  //!< Game mode name
     std::unordered_map<int, int> instrument_midi_remapping_;  //!< MIDI
                                     //!< remapping derived from commandline arg
     std::vector<int> instrument_midi_remapping_notes_;  //!< MIDI remapping

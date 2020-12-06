@@ -47,8 +47,10 @@ class IntroSceneGameObjectFactory {
         DRUM
     };
 
-    GameObject* CreateScanningTextGameObject(const sf::Font& font);
     GameObject* CreateCopyrightTextGameObject(const sf::Font& font);
+    GameObject* IntroSceneGameObjectFactory::CreateNoFilesFoundTextGameObject(
+        const sf::Font& font);
+    GameObject* CreateScanningTextGameObject(const sf::Font& font);
     GameObject* CreateVersionTextGameObject(const sf::Font& font);
 };
 

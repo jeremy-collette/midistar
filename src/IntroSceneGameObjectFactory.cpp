@@ -63,9 +63,11 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     // Add menu items
     auto menu_item_text = std::vector<std::string*>{ };
     std::string path = ".";
+    auto song_found = false;
     for (const auto & entry : fs::directory_iterator(path)) {
         auto path_string = entry.path().string();
         if (path_string.find(".mid") != std::string::npos) {
+            song_found = true;
             piano_menu.AddMenuItem(
                 factory.CreateMenuItem(path_string)
                     .SetOnSelect(([path_string](Game* g, GameObject*, int) {
@@ -99,6 +101,13 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
         }
     }
 
+    if (!song_found) {
+        piano_menu.GetGameObject()->AddChild(
+            CreateNoFilesFoundTextGameObject(*font));
+        drum_menu.GetGameObject()->AddChild(
+            CreateNoFilesFoundTextGameObject(*font));
+    }
+
     auto main_menu =
         factory.CreateMenu("midistar", 35)
         .SetTitleColour(sf::Color::Green)
@@ -125,6 +134,29 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     return game_objects;
 }
 
+GameObject* IntroSceneGameObjectFactory::CreateCopyrightTextGameObject(
+    const sf::Font& font) {
+    auto copyright_string = new std::string{
+        "Copyright (c) Jeremy Collette 2018-2020" };
+    TextFactory text_builder{ *copyright_string, font };
+    text_builder.SetFontSize(25);
+    text_builder.SetColour(sf::Color::White);
+    text_builder.SetXPosition(TextFactory::CENTER);
+    text_builder.SetYPosition(TextFactory::MAX, -20.0f);
+    return text_builder.GetGameObject();
+}
+
+GameObject* IntroSceneGameObjectFactory::CreateNoFilesFoundTextGameObject(
+    const sf::Font& font) {
+    auto message = new std::string{ "No .mid files found!" };
+    TextFactory text_builder{ *message, font };
+    text_builder.SetFontSize(24);
+    text_builder.SetColour(sf::Color::Red);
+    text_builder.SetXPosition(TextFactory::MIN, 50);
+    text_builder.SetYPosition(TextFactory::MIN, 120);
+    return text_builder.GetGameObject();
+}
+
 GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
         const sf::Font& font) {
     auto subtitle_string = new std::string{ "Scanning directory "
@@ -134,18 +166,6 @@ GameObject* IntroSceneGameObjectFactory::CreateScanningTextGameObject(
     text_builder.SetColour(sf::Color::White);
     text_builder.SetXPosition(TextFactory::MIN);
     text_builder.SetYPosition(TextFactory::MIN, 80);
-    return text_builder.GetGameObject();
-}
-
-GameObject* IntroSceneGameObjectFactory::CreateCopyrightTextGameObject(
-        const sf::Font& font) {
-    auto copyright_string = new std::string{
-        "Copyright (c) Jeremy Collette 2018-2020" };
-    TextFactory text_builder{ *copyright_string, font };
-    text_builder.SetFontSize(25);
-    text_builder.SetColour(sf::Color::White);
-    text_builder.SetXPosition(TextFactory::CENTER);
-    text_builder.SetYPosition(TextFactory::MAX, -20.0f);
     return text_builder.GetGameObject();
 }
 

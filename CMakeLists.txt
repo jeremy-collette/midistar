@@ -10,6 +10,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/CollidableComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/CollisionHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Component.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/Constants.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Config.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DefaultGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DelayedComponentComponent.h

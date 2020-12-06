@@ -45,7 +45,7 @@ void MenuComponent::OnSelect() {
     }
 }
 
-void MenuComponent::OnBack(Game* g, GameObject* o, int delta) {
+void MenuComponent::OnBack(Game* g, GameObject* o, int) {
     if (!this->previous_menu_) {
         g->Exit();
         return;
@@ -62,7 +62,7 @@ void MenuComponent::SetPreviousMenu(GameObject* previous_menu) {
     previous_menu_ = previous_menu;
 }
 
-void MenuComponent::Update(Game* g, GameObject* o, int delta) {
+void MenuComponent::Update(Game*, GameObject* o, int) {
     auto focused_item = GetChildMenuItemComponent(o);
 
     // If the menu has no items, this will be null

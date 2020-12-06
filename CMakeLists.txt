@@ -252,10 +252,10 @@ else() # Linux/OSX
     # Set compiler flags
     if(${build_type} STREQUAL "release")
         message("-- Release mode")
-        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -lstdc++fs")
     else()
         message("-- Debug mode")
-        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0 -lstdc++fs")
     endif()
 
     # Link libraries depending on build type
@@ -265,14 +265,16 @@ else() # Linux/OSX
             rtmidi
             sfml-graphics
             sfml-system
-            sfml-window)
+            sfml-window
+            stdc++fs)
     else()
         target_link_libraries(midistar
             midifile
             rtmidi
             sfml-graphics-d
             sfml-system-d
-            sfml-window-d)
+            sfml-window-d
+            stdc++fs)
     endif()
 
     # Copy Unix 'make' script

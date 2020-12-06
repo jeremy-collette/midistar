@@ -48,7 +48,7 @@ class IntroSceneGameObjectFactory {
     };
 
     GameObject* CreateCopyrightTextGameObject(const sf::Font& font);
-    GameObject* IntroSceneGameObjectFactory::CreateNoFilesFoundTextGameObject(
+    GameObject* CreateNoFilesFoundTextGameObject(
         const sf::Font& font);
     GameObject* CreateScanningTextGameObject(const sf::Font& font);
     GameObject* CreateVersionTextGameObject(const sf::Font& font);

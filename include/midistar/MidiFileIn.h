@@ -41,7 +41,7 @@ class MidiFileIn : public MidiIn {
     /**
      * Destructor.
      */
-    ~MidiFileIn();
+    virtual ~MidiFileIn();
 
     /**
      * Gets the maximum duration of all notes in the MIDI file.

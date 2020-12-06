@@ -22,6 +22,9 @@
 
 namespace midistar {
 
+MidiInstrumentIn::~MidiInstrumentIn() {	
+}
+
 bool MidiInstrumentIn::GetMessage(MidiMessage* message) {
     if (!MidiPortIn::GetMessage(message)) {
         return false;

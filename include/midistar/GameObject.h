@@ -253,8 +253,8 @@ class GameObject {
     double original_height_;  //!< Height at creation
     double original_width_;  //!< Width at creation
     bool request_delete_;  //!< Holds deletion request status
-    std::vector<Component*> to_delete_;  //!< Holds components to delete
     std::vector<std::string> tags_;  //!< Holds tags
+    std::vector<Component*> to_delete_;  //!< Holds components to delete
     sf::Transformable* transformable_;  //!< Holds transformable part of object
 };
 

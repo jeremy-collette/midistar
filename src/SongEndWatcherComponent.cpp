@@ -27,7 +27,7 @@ SongEndWatcherComponent::SongEndWatcherComponent()
         : Component{ Component::SONG_END_WATCHER } {
 }
 
-void SongEndWatcherComponent::Update(Game* g, GameObject* o, int delta) {
+void SongEndWatcherComponent::Update(Game* g, GameObject* o, int) {
     auto midi_file_component = o->GetComponent<
         MidiFileInComponent>(Component::MIDI_FILE_IN);
 

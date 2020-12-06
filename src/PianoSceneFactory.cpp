@@ -104,8 +104,6 @@ bool PianoSceneFactory::Create(
 
     // Create Scene
     *scene = new Scene{ game, render_window, game_objects };
-
-    // TODO(@jeremy): should we init here or in the Game?
     return true;
 }
 

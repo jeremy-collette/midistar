@@ -19,6 +19,6 @@
 #ifndef MIDISTAR_CONSTANTS_H_
 #define MIDISTAR_CONSTANTS_H_
 
-#define MIDISTAR_FONT "assets\\fonts\\slkscr.ttf"
+#define MIDISTAR_FONT "assets/fonts/slkscr.ttf"
 
 #endif  // MIDISTAR_CONSTANTS_H_

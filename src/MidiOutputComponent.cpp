@@ -38,9 +38,6 @@ void MidiOutputComponent::TurnMidiNoteOn(int chan, int note, int vel) {
 }
 
 void MidiOutputComponent::Update(Game* g, GameObject* o, int delta) {
-    // TODO(@jeremy): we should probably be buffering on/off events and applying
-    // them here.
-
     // Do nothing
 }
 

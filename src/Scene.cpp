@@ -95,8 +95,7 @@ void Scene::RemoveObject(GameObject* o) {
     if (itr != game_objects_.end()) {
         game_objects_.erase(itr);
     }
-    // TODO(@jez): fix memory error
-    //delete o;
+    delete o;
 }
 
 std::vector<GameObject*>& Scene::GetGameObjects() {
@@ -120,7 +119,6 @@ void Scene::CleanUpObjects() {
     for (auto& o : game_objects_copy) {
         if (o->GetRequestDelete()) {
             RemoveObject(o);
-            delete o;
         }
     }
 }

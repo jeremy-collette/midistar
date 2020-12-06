@@ -23,6 +23,7 @@
 
 #include "midistar/Config.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
+#include "midistar/GameObjectFactory.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/OutlineEffectComponent.h"
@@ -31,8 +32,11 @@
 
 namespace midistar {
 
-DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent()
-        : CollisionHandlerComponent{ Component::NOTE_COLLISION_HANDLER } {
+DrumSongNoteCollisionHandlerComponent::DrumSongNoteCollisionHandlerComponent(
+    GameObjectFactory* game_object_factory)
+        : CollisionHandlerComponent{ Component::DRUM_NOTE_COLLISION_HANDLER }
+        , game_object_factory_{ game_object_factory }
+        , dont_collide_{ false } {
 }
 
 void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
@@ -40,6 +44,10 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         , GameObject* o
         , int
         , std::vector<GameObject*> colliding_with) {
+    if (dont_collide_) {
+        return;
+    }
+
     // Handle each collision
     GameObject* valid_collider = nullptr;
     for (auto& collider : colliding_with) {
@@ -50,8 +58,8 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
 
     // If we are being played, let's add a drum play effect
     if (valid_collider) {
-        auto play_effect = g->GetGameObjectFactory().CreateNotePlayEffect(o);
-        g->AddGameObject(play_effect);
+        auto play_effect = game_object_factory_->CreateNotePlayEffect(o);
+        g->GetCurrentScene().AddGameObject(play_effect);
     }
 }
 
@@ -99,6 +107,10 @@ bool DrumSongNoteCollisionHandlerComponent::HandleCollision(
     o->SetComponent(new ResizeComponent{0, 0});
     o->DeleteComponent(GetType());
     return true;
+}
+
+void DrumSongNoteCollisionHandlerComponent::SetDoNotCollide(bool dont_collide) {
+    dont_collide_ = dont_collide;
 }
 
 }  // End namespace midistar

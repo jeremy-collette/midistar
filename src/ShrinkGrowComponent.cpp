@@ -26,7 +26,7 @@
 namespace midistar {
 
 ShrinkGrowComponent::ShrinkGrowComponent(double target_w, double target_h)
-        : Component{SHRINK_GROW_COMPONENT}
+        : Component{SHRINK_GROW}
         , target_h_{target_h}
         , target_w_{target_w} {
 }

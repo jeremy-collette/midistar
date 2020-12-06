@@ -19,6 +19,7 @@
 #include "midistar/InstrumentAutoPlayComponent.h"
 
 #include "midistar/Config.h"
+#include "midistar/DrumSongNoteCollisionHandlerComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/NoteInfoComponent.h"
@@ -70,9 +71,19 @@ void InstrumentAutoPlayComponent::HandleCollisions(
                 continue;
             }
             if (note->GetKey() == other_note->GetKey()) {
+                // Tell this note not to be played (so we can select which note
+                // to play below).
+                auto drum_collider = collider->GetComponent<
+                    DrumSongNoteCollisionHandlerComponent>(
+                        Component::DRUM_NOTE_COLLISION_HANDLER);
+
+                if (drum_collider) {
+                    drum_collider->SetDoNotCollide(true);
+                }
+
                 if (collision_criteria_ == CollisionCriteria::NONE
                     || (collision_criteria_ == CollisionCriteria::CENTRE &&
-                        IsInCentre(o, collider, delta))) {
+                        IsInOrPastCentre(o, collider, delta))) {
                     colliding_note_ = collider;
                 }
             }
@@ -89,9 +100,22 @@ void InstrumentAutoPlayComponent::HandleCollisions(
 
     // If we have a collision with a note, activate instrument
     inpt_handler->SetActive(colliding_note_);
+
+    // Here we tell the drum note collider that it can be played so that only
+    // this specific note is played.
+    if (colliding_note_) {
+        // Allow this note to be played
+        auto drum_collider = colliding_note_->GetComponent<
+            DrumSongNoteCollisionHandlerComponent>(
+                Component::DRUM_NOTE_COLLISION_HANDLER);
+        if (!drum_collider) {
+            return;
+        }
+        drum_collider->SetDoNotCollide(false);
+    }
 }
 
-bool InstrumentAutoPlayComponent::IsInCentre(
+bool InstrumentAutoPlayComponent::IsInOrPastCentre(
         GameObject* o
         , GameObject* collider
         , int delta) {
@@ -104,19 +128,8 @@ bool InstrumentAutoPlayComponent::IsInCentre(
     collider->GetPosition(&note_x, &note_y);
     collider->GetSize(&note_w, &note_h);
 
-    // We need a threshold for how close we are to the centre, because the note
-    // can move past the centre in one tick.
-    auto threshold = DEFAULT_CENTRE_THRESHOLD;
-    auto physics = collider->GetComponent<PhysicsComponent>(Component::PHYSICS);
-    if (physics) {
-        double x_vel, y_vel;
-        physics->GetVelocity(&x_vel, &y_vel);
-        threshold = y_vel * delta;
-    }
-
-    // Check that note is vertically centred in the instrument
-    return abs((note_y + (note_h / 2.0)) - (inst_y + (inst_h / 2.0)))
-        <= threshold;
+    auto result = (note_y + (note_h / 2.0)) - (inst_y + (inst_h / 2.0));
+    return result >= -DEFAULT_CENTRE_THRESHOLD;
 }
 
 }  // End namespace midistar

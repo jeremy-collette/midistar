@@ -33,13 +33,11 @@ Config::Config()
         , auto_play_{false}
         , fall_speed_multiplier_{0}
         , full_screen_{false}
-        , game_mode_{""}
         , instrument_midi_remapping_{}
         , instrument_midi_remapping_notes_{}
         , keyboard_first_note_{-1}
         , max_frames_per_second_{-1}
         , midi_file_channels_{}
-        , midi_file_name_{""}
         , midi_file_repeat_{false}
         , midi_file_tracks_{}
         , screen_height_{-1}
@@ -60,10 +58,6 @@ bool Config::GetFullScreen() {
     return full_screen_;
 }
 
-const std::string Config::GetGameMode() {
-    return game_mode_;
-}
-
 int Config::GetInstrumentMidiNoteRemapping(int note) {
     return instrument_midi_remapping_.count(note) ?
         instrument_midi_remapping_[note] : note;
@@ -75,10 +69,6 @@ int Config::GetMaximumFramesPerSecond() {
 
 std::vector<int> Config::GetMidiFileChannels() {
     return midi_file_channels_;
-}
-
-const std::string Config::GetMidiFileName() {
-    return midi_file_name_;
 }
 
 bool Config::GetMidiFileRepeat() {
@@ -138,6 +128,7 @@ bool Config::ParseOptions(int argc, char** argv) {
             "have a length perfectly divisble by 2.\n";
         return false;
     }
+
     // Derive mapping from commandline arg list
     for (unsigned i=0; i < instrument_midi_remapping_notes_.size(); i += 2) {
         instrument_midi_remapping_[instrument_midi_remapping_notes_[i]] =
@@ -155,14 +146,12 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
-    app->add_option("--game_mode", game_mode_, "Determines the game mode.");
     app->add_option("--full_screen", full_screen_, "Determines whether or not "
            "to enable full-screen mode.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
             "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
             "of times the game will update in one second.");
-    app->add_option("--midi_file", midi_file_name_, "The MIDI file to play.");
     app->add_option("--midi_file_channels", midi_file_channels_, "The MIDI "
             "channels to read notes from. -1 will enable all channels.");
     app->add_option("--midi_file_repeat", midi_file_repeat_, "Determines "

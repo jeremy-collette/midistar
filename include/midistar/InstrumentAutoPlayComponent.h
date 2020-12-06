@@ -69,8 +69,8 @@ class InstrumentAutoPlayComponent : public CollisionHandlerComponent {
 
     void HandleCollision(Game* g, GameObject* o, GameObject* collider);
                                                      //!< Handles a collision
-    bool IsInCentre(GameObject* o, GameObject* collider, int delta);  //!<
-                                //!< Checks if a collision is in the centre of o
+    bool IsInOrPastCentre(GameObject* o, GameObject* collider, int delta);  //!<
+                        //!< Checks if a collision is in or past the centre of o
 
     CollisionCriteria collision_criteria_;  //!< Indicates collision criteria to
       //!< that needs to be met before auto play will begin for a specific note.

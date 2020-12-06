@@ -22,6 +22,7 @@
 #include <vector>
 
 #include "midistar/CollisionHandlerComponent.h"
+#include "midistar/GameObjectFactory.h"
 
 namespace midistar {
 
@@ -34,7 +35,8 @@ class DrumSongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
      /**
       * Constructor.
       */
-     DrumSongNoteCollisionHandlerComponent();
+     DrumSongNoteCollisionHandlerComponent(
+         GameObjectFactory* game_object_factory);
 
      /**
       * \copydoc CollisionHandlerComponent::HandleCollisions()
@@ -45,9 +47,20 @@ class DrumSongNoteCollisionHandlerComponent : public CollisionHandlerComponent {
              , int delta
              , std::vector<GameObject*> colliding_with);
 
+     /**
+      * Tells the collision handler whether or not it should not collide.
+      *
+      * \param dont_collide If set to 'true', stops handler from handling
+      * collisions.
+      */
+     void SetDoNotCollide(bool dont_collide);
+
  private:
     bool HandleCollision(Game* g, GameObject* o, GameObject* collider);
                //!< Handles a collision returns true if it's a valid collision
+
+    GameObjectFactory* game_object_factory_;
+    bool dont_collide_;
 };
 
 }  // End namespace midistar

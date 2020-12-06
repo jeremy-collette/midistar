@@ -28,8 +28,10 @@
 
 namespace midistar {
 
-PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent()
-        : CollisionHandlerComponent{Component::NOTE_COLLISION_HANDLER}
+PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent(
+    GameObjectFactory* game_object_factory)
+        : CollisionHandlerComponent{Component::PIANO_NOTE_COLLISION_HANDLER}
+        , game_object_factory_{ game_object_factory }
         , grinding_{nullptr} {
 }
 
@@ -51,9 +53,9 @@ void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         if (grinding_) {
             return;
         }
-        grinding_ = g->GetGameObjectFactory().CreateNotePlayEffect(
+        grinding_ = game_object_factory_->CreateNotePlayEffect(
             valid_collider);
-        g->AddGameObject(grinding_);
+        g->GetCurrentScene().AddGameObject(grinding_);
     } else if (grinding_) {  // Otherwise remove the grinding effect
         grinding_->SetRequestDelete(true);
         grinding_ = nullptr;
@@ -104,7 +106,7 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
             return true;
         }
 
-        GameObject* half = g->GetGameObjectFactory().CreateSongNote(
+        GameObject* half = game_object_factory_->CreateSongNote(
                     note->GetTrack()
                     , note->GetChannel()
                     , note->GetKey()
@@ -113,11 +115,11 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
 
         // We don't want complete note behaviour - this is an
         // unplayable note
-        half->DeleteComponent(Component::NOTE_COLLISION_HANDLER);
+        half->DeleteComponent(Component::PIANO_NOTE_COLLISION_HANDLER);
         half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
         half->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));
-        g->AddGameObject(half);
+        g->GetCurrentScene().AddGameObject(half);
     }
 
     // Now we are guaranteed to have a note that ends before the bottom

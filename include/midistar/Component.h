@@ -56,12 +56,24 @@ class Component {
         , PHYSICS
         , DELETE_OFFSCREEN
         , VERTICAL_COLLISION_DETECTOR
-        , NOTE_COLLISION_HANDLER
-        , SHRINK_GROW_COMPONENT
+        , PIANO_NOTE_COLLISION_HANDLER
+        , DRUM_NOTE_COLLISION_HANDLER
+        , SHRINK_GROW
         , RESIZE
         , SPRITE_ANIMATOR
         , FADING_OUTLINE_EFFECT
         , DELAYED_COMPONENT
+        , MENU
+        , MENU_ITEM
+        , MENU_INPUT_HANDLER
+        , MIDI_FILE_IN
+        , MIDI_INSTRUMENT_IN
+        , SONG_NOTE_CREATOR
+        , SFML_EVENTS
+        , SFML_EVENTS_HANDLER
+        , MIDI_OUTPUT
+        , SONG_END_WATCHER
+        , KEEP_ALIVE
         , NUM_COMPONENTS
     };
 

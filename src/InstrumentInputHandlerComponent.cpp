@@ -23,8 +23,10 @@
 #include "midistar/Config.h"
 #include "midistar/Game.h"
 #include "midistar/InvertColourComponent.h"
+#include "midistar/MidiFileInComponent.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
+#include "midistar/SfmlEventsComponent.h"
 
 namespace midistar {
 
@@ -66,7 +68,16 @@ void InstrumentInputHandlerComponent::Update(
     }
 
     // Check SFML events for key presses
-    for (const auto& e : g->GetSfEvents()) {
+    auto& current_scene = g->GetCurrentScene();
+    auto game_objects = current_scene.GetGameObjectsByTag("SfmlEvents");
+    if (!game_objects.size()) {
+        return;
+    }
+    auto game_object = game_objects[0];
+    auto sfml_events_component = game_object->GetComponent<SfmlEventsComponent>(
+        Component::SFML_EVENTS);
+
+    for (const auto& e : sfml_events_component->GetEvents()) {
         // Check if its the right key and event type
         if (e.key.code != key_ || (e.type != sf::Event::KeyPressed
                     && e.type != sf::Event::KeyReleased)) {
@@ -83,7 +94,12 @@ void InstrumentInputHandlerComponent::Update(
     // Handle MIDI input port events.
     // If we find a note on event that matches this instruments MIDI note,
     // activate this instrument!
-    for (const auto& msg : g->GetMidiInMessages()) {
+    auto midi_instrument_game_object = g->GetCurrentScene().
+        GetFirstGameObjectByTag("MidiInstrument");
+    auto midi_instrument_in = midi_instrument_game_object->GetComponent<
+        MidiFileInComponent>(Component::MIDI_INSTRUMENT_IN);
+
+    for (const auto& msg : midi_instrument_in->GetMessages()) {
         if (msg.IsNote() && msg.GetKey() == note->GetKey()) {
             key_down_ = msg.IsNoteOn();
         }

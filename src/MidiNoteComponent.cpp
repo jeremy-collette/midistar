@@ -18,6 +18,8 @@
 
 #include "midistar/MidiNoteComponent.h"
 
+#include "midistar/MidiOutputComponent.h"
+
 namespace midistar {
 
 MidiNoteComponent::MidiNoteComponent(bool on, int chan, int note, int vel)
@@ -29,10 +31,15 @@ MidiNoteComponent::MidiNoteComponent(bool on, int chan, int note, int vel)
 }
 
 void MidiNoteComponent::Update(Game* g, GameObject* o, int) {
+    auto midi_out_game_object = g->GetCurrentScene().GetFirstGameObjectByTag(
+        "MidiOut");
+    auto midi_out_component = midi_out_game_object->GetComponent<
+        MidiOutputComponent>(Component::MIDI_OUTPUT);
+
     if (on_) {
-        g->TurnMidiNoteOn(chan_, note_, vel_);
+        midi_out_component->TurnMidiNoteOn(chan_, note_, vel_);
     } else {
-        g->TurnMidiNoteOff(chan_, note_);
+        midi_out_component->TurnMidiNoteOff(chan_, note_);
     }
     o->DeleteComponent(GetType());
 }

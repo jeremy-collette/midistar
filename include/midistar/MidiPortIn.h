@@ -47,6 +47,8 @@ class MidiPortIn : public MidiIn {
      */
     MidiPortIn();
 
+    ~MidiPortIn();
+
     /**
      * Initialises class.
      *

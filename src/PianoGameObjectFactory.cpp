@@ -16,9 +16,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
-
 #include "midistar/PianoGameObjectFactory.h"
+
+#include <cassert>
 
 #include "midistar/CollidableComponent.h"
 #include "midistar/Config.h"
@@ -77,12 +77,11 @@ GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
     double sprite_scale_y = sprite_scale_x / 2.0f;  // Reduce height
     double sprite_w = sprite_scale_x * GRINDING_SPRITE_SIZE;
     double sprite_h = sprite_scale_y * GRINDING_SPRITE_SIZE;
-    sprite->setScale(static_cast<float>(sprite_scale_x), static_cast<float>(
-        sprite_scale_y));
 
     // Create the GameObject to hold the sprite
     auto obj = new GameObject{sprite, x + (w / 2.0f) - (sprite_w / 2.0f)
-        , y - sprite_h, sprite_w, sprite_h};
+        , y - sprite_h, GRINDING_SPRITE_SIZE, GRINDING_SPRITE_SIZE };
+    obj->SetSize(sprite_w, sprite_h);
 
     // Animate the sprite
     int frame = static_cast<int>(x) % static_cast<int>(
@@ -131,6 +130,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
 
     // Create actual note
     auto song_note = new GameObject{rect, x, -height, width, height};
+    song_note->AddTag("SongNote");
 
     // Add components
     song_note->SetComponent(new SongNoteComponent{});
@@ -139,7 +139,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PhysicsComponent{0, GetNoteSpeed()});
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{});
+    song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
     return song_note;
 }
 

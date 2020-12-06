@@ -18,13 +18,42 @@
 
 #include "midistar/GameObject.h"
 
+#include <algorithm>
+#include <SFML/Graphics.hpp>
+
 namespace midistar {
+
+// We have to do some magic here and cast the nullptr to get the compiler to
+// call the delegate constructor
+GameObject::GameObject()
+    : GameObject{
+        static_cast<sf::RectangleShape*>(nullptr)
+        , 0.0
+        , 0.0
+        , 0.0
+        , 0.0 } {
+}
 
 GameObject::~GameObject() {
     for (auto c : components_) {
         delete c;
     }
-    delete drawable_;
+
+    if (drawable_) {
+        delete drawable_;
+    }
+
+    for (auto child : children_) {
+        delete child;
+    }
+}
+
+void GameObject::AddChild(GameObject* const game_object) {
+    this->children_.push_back(game_object);
+}
+
+void GameObject::AddTag(std::string tag) {
+    tags_.push_back(tag);
 }
 
 void GameObject::DeleteComponent(ComponentType type) {
@@ -36,10 +65,32 @@ void GameObject::DeleteComponent(ComponentType type) {
 }
 
 void GameObject::Draw(sf::RenderWindow* window) {
+    if (!enabled_ || !drawable_) {
+        return;
+    }
+
     window->draw(*drawable_);
+
+    for (const auto& child : children_) {
+        child->Draw(window);
+    }
+}
+
+std::vector<GameObject*>& GameObject::GetChildren() {
+    return children_;
+}
+
+bool GameObject::GetEnabled() {
+    return enabled_;
 }
 
 void GameObject::GetPosition(double* x, double* y) {
+    if (!transformable_) {
+        *x = 0;
+        *y = 0;
+        return;
+    }
+
     auto pos = transformable_->getPosition();
     *x = pos.x;
     *y = pos.y;
@@ -54,6 +105,12 @@ void GameObject::GetSize(double* w, double* h) {
         *w = size.x;
         *h = size.y;
     } else {
+        if (!transformable_) {
+            *w = 0;
+            *h = 0;
+            return;
+        }
+
         auto scale = transformable_->getScale();
         *w = original_width_ * scale.x;
         *h = original_height_ * scale.y;
@@ -68,13 +125,24 @@ bool GameObject::HasComponent(ComponentType type) {
     return components_[type];
 }
 
+bool GameObject::HasTag(const std::string& tag) const {
+    return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
+}
+
 void GameObject::SetComponent(Component* c) {
     DeleteComponent(c->GetType());
     components_[c->GetType()] = c;
 }
 
+void GameObject::SetEnabled(bool enabled) {
+    enabled_ = enabled;
+}
+
 void GameObject::SetPosition(double x, double y) {
-    transformable_->setPosition(static_cast<float>(x), static_cast<float>(y));
+    if (transformable_) {
+        transformable_->setPosition(static_cast<float>(x)
+            , static_cast<float>(y));
+    }
 }
 
 void GameObject::SetRequestDelete(bool del) {
@@ -86,19 +154,39 @@ void GameObject::SetSize(double w, double h) {
     auto* rect = GetDrawformable<sf::RectangleShape>();
     if (rect) {
         rect->setSize({static_cast<float>(w), static_cast<float>(h)});
-    } else {
+    } else if (transformable_) {
         transformable_->setScale(static_cast<float>(w / original_width_)
             , static_cast<float>(h / original_height_));
     }
 }
 
 void GameObject::Update(Game* g, int delta) {
+    if (!enabled_) {
+        return;
+    }
+
     auto has_component = false;
     for (const auto& c : components_) {
         if (c) {
             c->Update(g, this, delta);
             has_component = true;
         }
+    }
+
+    // Cleanup children
+    auto children_to_delete = std::vector<GameObject*>{ };
+    for (const auto& child : children_) {
+        child->Update(g, delta);
+        if (child->GetRequestDelete()) {
+            children_to_delete.push_back(child);
+        } else {
+            has_component = true;
+        }
+    }
+    for (const auto& child : children_to_delete) {
+        children_.erase(std::remove(children_.begin(), children_.end(), child),
+            children_.end());
+        delete child;
     }
 
     // If we don't have any components, delete the GameObject

@@ -34,14 +34,7 @@ bool IntroSceneFactory::Create(
     auto game_objects = intro_scene_object_factory->CreateGameObjects(
         render_window);
 
-    //auto rect = new sf::RectangleShape{ {0, 0} };
-    //auto sfml_event_object = new GameObject{ rect, 0, 0, 0, 0 };
-    //sfml_event_object->AddTag("SfmlEvents");
-    //sfml_event_object->SetComponent(new SfmlEventsComponent{ render_window });
-    //game_objects.push_back(sfml_event_object);
-
     *scene = new Scene{ game, render_window, game_objects };
-
     return true;
 }
 

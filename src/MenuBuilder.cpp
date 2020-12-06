@@ -37,7 +37,6 @@ MenuBuilder::MenuBuilder(
         , item_padding_{ item_padding }
         , title_text_factory_{ title, font }
         , y_{ 0 } {
-
     title_text_factory_.SetFontSize(50);
     title_text_factory_.SetColour(sf::Color::White);
     title_text_factory_.SetXPosition(TextFactory::MIN);

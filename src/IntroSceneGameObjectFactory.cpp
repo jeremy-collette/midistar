@@ -51,9 +51,11 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
 
     auto factory = MenuFactory{ *font, window };
     auto item_default_font_size = 25;
-    auto piano_menu = factory.CreateMenu("Song selection", item_default_font_size)
+    auto piano_menu = factory.CreateMenu("Song selection"
+        , item_default_font_size)
         .SetTitleFontSize(35);
-    auto drum_menu = factory.CreateMenu("Song selection", item_default_font_size)
+    auto drum_menu = factory.CreateMenu("Song selection"
+        , item_default_font_size)
         .SetTitleFontSize(35);
 
     piano_menu.GetGameObject()->AddChild(

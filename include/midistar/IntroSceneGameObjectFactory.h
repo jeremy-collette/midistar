@@ -47,6 +47,7 @@ class IntroSceneGameObjectFactory {
         DRUM
     };
 
+    GameObject* CreateBackgroundMusicPlayer();
     GameObject* CreateCopyrightTextGameObject(const sf::Font& font);
     GameObject* CreateNoFilesFoundTextGameObject(
         const sf::Font& font);

@@ -22,6 +22,7 @@
 #include <iostream>
 #include <string>
 
+#include "midistar/BackgroundSongPlayer.h"
 #include "midistar/Constants.h"
 #include "midistar/DrumSceneFactory.h"
 #include "midistar/Game.h"
@@ -30,6 +31,9 @@
 #include "midistar/MenuFactory.h"
 #include "midistar/MenuInputHandlerComponent.h"
 #include "midistar/MenuItemComponent.h"
+#include "midistar/MidiOut.h"
+#include "midistar/MidiOutputComponent.h"
+#include "midistar/MidiFileGameObjectFactory.h"
 #include "midistar/PianoSceneFactory.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/TextFactory.h"
@@ -133,11 +137,39 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     auto version = CreateVersionTextGameObject(*font);
     main_menu.GetGameObject()->AddChild(version);
 
-    auto game_objects = std::vector<GameObject*>{
+    auto background_music_player = CreateBackgroundMusicPlayer();
+
+    auto game_objects = std::vector<GameObject*>
+    {
         main_menu.GetGameObject()
         , piano_menu.GetGameObject()
-        , drum_menu.GetGameObject() };
+        , drum_menu.GetGameObject()
+        , background_music_player
+    };
     return game_objects;
+}
+
+GameObject* IntroSceneGameObjectFactory::CreateBackgroundMusicPlayer() {
+    // Create MIDI file GameObject to read notes from MIDI file
+    // TODO(@jez): add to constants or header
+    auto midi_file_object_factory = MidiFileGameObjectFactory{};
+    GameObject* midi_file_game_object = nullptr;
+    if (!midi_file_object_factory.Create(
+            "songs/piano/nocturne_op9.mid",
+            &midi_file_game_object)) {
+        return false;
+    }
+
+    // TODO(jez): move MidiOutput component creation to factory
+    auto midi_out = new MidiOut{ };
+    if (!midi_out->Init()) {
+        return false;
+    }
+    midi_file_game_object->SetComponent(new MidiOutputComponent{ midi_out });
+    midi_file_game_object->AddTag("MidiOut");
+
+    midi_file_game_object->SetComponent(new BackgroundSongPlayer{});
+    return midi_file_game_object;
 }
 
 GameObject* IntroSceneGameObjectFactory::CreateCopyrightTextGameObject(
@@ -181,7 +213,8 @@ GameObject* IntroSceneGameObjectFactory::CreateVersionTextGameObject(
     TextFactory text_builder{ *version_string, font };
     text_builder.SetFontSize(25);
     text_builder.SetColour(sf::Color::White);
-    text_builder.SetXPosition(TextFactory::MAX);
+    // TODO(@jez): investigate why this is slightly off
+    text_builder.SetXPosition(TextFactory::MAX, -10.0f);
     text_builder.SetYPosition(TextFactory::MAX, -20.0f);
     return text_builder.GetGameObject();
 }

@@ -74,6 +74,7 @@ class Component {
         , MIDI_OUTPUT
         , SONG_END_WATCHER
         , KEEP_ALIVE
+        , BACKGROUND_SONG_PLAYER
         , NUM_COMPONENTS
     };
 

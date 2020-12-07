@@ -6,6 +6,7 @@ include_directories(include)
 
 # Set headers
 set(HEADERS
+    ${CMAKE_SOURCE_DIR}/include/midistar/BackgroundSongPlayer.h
     ${CMAKE_SOURCE_DIR}/include/midistar/BarComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/CollidableComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/CollisionHandlerComponent.h
@@ -75,6 +76,7 @@ set(HEADERS
 
 # Set source
 set(SOURCE
+    ${CMAKE_SOURCE_DIR}/src/BackgroundSongPlayer.cpp
     ${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollidableComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollisionHandlerComponent.cpp

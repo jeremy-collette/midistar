@@ -4,32 +4,33 @@ midistar Copyright (C) 2018-2019 Jeremy Collette.
 midistar is a free music game that challenges users play a MIDI file with their
 computer keyboard or a MIDI instrument, such as an electronic piano or drums.
 
-midistar uses third-party libraries and utilities that are not considered to be
-part of the midistar project, but are distributed with midistar for ease-of-
-access and completeness. Each sub-folder in the 'external' folder contains the
-source code of a different third-party project that is used by midistar.
-midistar also uses third-party assets that are considered to be part of the
-midistar project for licensing purposes. See the LICENSE file for more
-information.
+midistar uses third-party libraries, utilities, and assets that are not
+considered to be part of the midistar project, but are distributed with midistar
+for ease-of-access and completeness. Each sub-folder in the 'external' folder
+contains the source code of a different third-party project that is used by
+midistar. The 'external/assets' folder contains third-party assets that are used
+by midistar. See the LICENSE file for more information.
 
-The following third-party libraries, utilities, and assets are used by (and 
-distributed with) midistar:
+The following third-party libraries and utilities are used by (and distributed
+with) midistar:
     * CLI11: Copyright (c) 2017-2018 University of Cincinnati.
     * fluidsynth: Copyright (C) 2003 Peter Hanappe and others.
     * midifile: Copyright (c) 1999-2018, Craig Stuart Sapp.
     * RtMidi: Copyright (c) 2003-2017 Gary P. Scavone.
     * SFML: Copyright (C) 2007-2017 Laurent Gomila.
-    * Silkscreen font: Copyright (C) Jason Kottke.
-    * vcpkg: Copyright (C) Microsoft Corporation.    
+    * vcpkg: Copyright (C) Microsoft Corporation.
 
-Thanks to the developers, creators, and supporters of these projects! Note that 
-you can see these copyright notices in midistar by running the project with the 
+The following third-party assets are used by (and distributed with) midistar:
+    * Silkscreen font: Copyright (C) Jason Kottke.
+
+Thanks to the developers, creators, and supporters of these projects! Note that
+you can see these copyright notices in midistar by running the project with the
 '--show_third_party' command line flag.
 
 midistar is written in C++ using code (and shared libraries) that are
 compatible with Linux, OSX, and Windows. However, at the current time, only 64-
 bit Debian Linux, Ubuntu Linux, Mojave OSX, and Windows 10 are supported. That
-being said, building and running on unsupported platforms / architectures is 
+being said, building and running on unsupported platforms / architectures is
 possible.
 
 The instructions in this README are written for the supported platforms listed
@@ -221,8 +222,8 @@ BUILDING MIDISTAR before you can use this command.
 
 4.6 BUILDING DOCUMENTATION
 If you would like to build midistar documentation, you can do so using doxygen.
-Before building documentation, you must install doxygen and Graphviz. If you're 
-on Debian or Ubuntu, you can install doxygen and Graphviz using the following 
+Before building documentation, you must install doxygen and Graphviz. If you're
+on Debian or Ubuntu, you can install doxygen and Graphviz using the following
 command:
     sudo apt-get install doxygen graphviz
 

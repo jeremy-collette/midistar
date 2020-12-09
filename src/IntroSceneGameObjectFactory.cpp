@@ -19,6 +19,7 @@
 #include "midistar/IntroSceneGameObjectFactory.h"
 
 #include <experimental/filesystem>
+#include <iostream>
 #include <string>
 
 #include "midistar/Constants.h"
@@ -46,6 +47,7 @@ std::vector<GameObject*> IntroSceneGameObjectFactory::CreateGameObjects(
     // Create menu
     auto font = new sf::Font();
     if (!font->loadFromFile(MIDISTAR_FONT)) {
+        std::cerr << "Could not load font \"" << MIDISTAR_FONT << "\"!\n";
         throw "Could not load font!";
     }
 

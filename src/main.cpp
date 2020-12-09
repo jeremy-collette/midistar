@@ -46,8 +46,11 @@ int main(int argc, char** argv) {
             << "\tmidifile: Copyright(c) 1999-2018, Craig Stuart Sapp.\n"
             << "\tRtMidi: Copyright(c) 2003-2017 Gary P.Scavone.\n"
             << "\tSFML: Copyright(C) 2007-2017 Laurent Gomila.\n"
-            << "\tSilkscreen font: Copyright (C) Jason Kottke.\n"
             << "\tvcpkg: Copyright(C) Microsoft Corporation.\n";
+
+        std::cout << "\nThe following free third-party assets are used by (and "
+            << "distributed with) midistar:\n";
+        std::cout << "\tSilkscreen font: Copyright (C) Jason Kottke.\n";
         return 0;
     }
 

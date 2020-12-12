@@ -1,8 +1,9 @@
 midistar Copyright (C) 2018-2019 Jeremy Collette.
 
 1. ABOUT MIDISTAR
-midistar is a free music game that challenges users play a MIDI file with their
-computer keyboard or a MIDI instrument, such as an electronic piano or drums.
+midistar is a free music game that challenges users to play a MIDI file with 
+their computer keyboard or a MIDI instrument, such as an electronic piano or 
+drums.
 
 midistar uses third-party libraries, utilities, and assets that are not
 considered to be part of the midistar project, but are distributed with midistar

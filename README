@@ -22,6 +22,7 @@ with) midistar:
     * vcpkg: Copyright (C) Microsoft Corporation.
 
 The following third-party assets are used by (and distributed with) midistar:
+    * Fluid SoundFont: Copyright (C) 2000-2002, 2008, 2013 Frank Wen.
     * Silkscreen font: Copyright (C) Jason Kottke.
 
 Thanks to the developers, creators, and supporters of these projects! Note that

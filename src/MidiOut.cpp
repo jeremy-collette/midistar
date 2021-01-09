@@ -62,6 +62,19 @@ bool MidiOut::Init() {
         std::cerr << "Error: could not load SoundFont file!\n";
     }
 
+    auto instrument_mappings = Config::GetInstance()
+        .GetMidiOutputInstrumentMapping();
+    for (auto kvp : instrument_mappings) {
+        std::cout << "Setting channel " << kvp.first << " instrument to "
+            << kvp.second << "...\n";
+
+        if (fluid_synth_program_change(synth_, kvp.first, kvp.second)
+                == FLUID_FAILED) {
+            std::cerr << "Setting channel " << kvp.first << " instrument to "
+                << kvp.second << "failed!\n";
+        }
+    }
+
     return synth_ && a_driver_ && s_font_id_ != -1;
 }
 

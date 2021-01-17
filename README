@@ -147,16 +147,20 @@ activated by playing the correlating note on the MIDI instrument.
 
 4. BUILDING
 4.1 CMAKE
-'cmake' is required to build midistar and some of its third-party libraries. If
-you are on Debian or Ubuntu, you can install cmake by using the command:
-    sudo apt-get install cmake
+'cmake' and 'curl' are required to build midistar and some of its third-party
+libraries on Unix-based systems. If you are on Debian or Ubuntu, you can install
+them by using the command:
+    sudo apt-get install cmake curl
+
 The command may vary across distributions.
 
-On OSX, you can install cmake by first installing Homebrew and then using the
-command:
+On OSX, you can install cmake and curl by first installing Homebrew and then
+using the commands:
     brew install cmake
+    brew install curl
 
-On Windows, you will have to download CMake online.
+On Windows, you will have to download CMake online. curl is not required on
+Windows.
 
 4.2 INSTALLING BUILD DEPENDENCIES
 If you are developing midistar on OSX and Windows, third-party libraries should

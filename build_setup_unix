@@ -63,7 +63,7 @@ find "gcc"
 find "pkg-config"
 find "autoconf"
 find "automake"
-find "curl"
+find "wget"
 find "unzip"
 
 # Resetting lib folder
@@ -95,7 +95,7 @@ cd "$ext_dir/assets/fluid"
 if [[ -f "$ext_dir/assets/fluid/FluidR3_GM.sf2" ]]; then
     cecho "Already installed!"
 else
-    curl "https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip" > fluid.zip
+    wget -O "fluid.zip" "https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip"
     unzip "fluid.zip" -d "extracted"
     mv "extracted/FluidR3_GM.sf2" "."
     rm -rf "extracted" "fluid.zip"

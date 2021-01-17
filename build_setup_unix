@@ -89,17 +89,14 @@ inc_dir=$PWD/include
 midistar_dir=$PWD
 ext_dir=$PWD/external
 
-# Installing SoundFont
-cecho "\nInstalling Fluid SoundFont..."
-cd "$ext_dir/assets/fluid"
-if [[ -f "$ext_dir/assets/fluid/FluidR3_GM.sf2" ]]; then
-    cecho "Already installed!"
-else
-    wget -O "fluid.zip" "https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip"
-    unzip "fluid.zip" -d "extracted"
-    mv "extracted/FluidR3_GM.sf2" "."
-    rm -rf "extracted" "fluid.zip"
-    cecho "Done!"
+# Install SoundFont
+echo " "
+. ./scripts/unix/install_soundfont
+
+# If we found the binary...
+if [[ $? -ne 0 ]]; then
+    cecho "Error installing SoundFont!"
+    exit 1
 fi
 
 # Building...
@@ -183,3 +180,4 @@ else
     cecho "Debug the latest debug build using the './debug' command."
 fi
 cd $midistar_dir
+exit 0

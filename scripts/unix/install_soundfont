@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+
+# Text colours
+col="[32m"  # Green
+def="[0m"   # Default
+
+# Coloured echo function
+cecho() {
+    echo -e "\x1B$col$1\x1B$def"
+    sleep 1
+}
+
+# Change to script directory
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [[ $dir == 'unix' ]] || [[ $dir == 'debian' ]]; then
+    cd ../..
+fi
+
+midistar_dir=$PWD
+ext_dir=$PWD/external
+
+# Installing SoundFont
+cecho "Installing Fluid SoundFont..."
+cd "$ext_dir/assets/fluid"
+if [[ -f "$ext_dir/assets/fluid/FluidR3_GM.sf2" ]]; then
+    cecho "Already installed!"
+else
+    wget -O "fluid.zip" "https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip"
+    unzip "fluid.zip" -d "extracted"
+    mv "extracted/FluidR3_GM.sf2" "."
+    rm -rf "extracted" "fluid.zip"
+    cecho "Done!"
+fi
+
+return 0

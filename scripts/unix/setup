@@ -44,7 +44,7 @@ ext_dir=$PWD/external
 # Install SoundFont
 . ./scripts/unix/install_soundfont
 
-# If we found the binary...
+# If we failed to install the SoundFont...
 if [[ $? -ne 0 ]]; then
     cecho "Error installing SoundFont!"
     exit 1

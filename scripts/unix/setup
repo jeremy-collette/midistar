@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+# Text colours
+col="[32m"  # Green
+def="[0m"   # Default
+
+# Coloured echo function
+cecho() {
+    echo -e "\x1B$col$1\x1B$def"
+    sleep 1
+}
+
+# Change to script directory
+cd "$(dirname "$0")"
+
+# Check directory
+dir=${PWD##*/}
+if [[ $dir == 'unix' ]] || [[ $dir == 'debian' ]]; then
+    cd ../..
+fi
+
+# Platform detection
+if [ "$(uname)" == "Darwin" ]; then
+    echo "OSX detected."
+    run_file="./scripts/osx/run_release"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    echo "Linux detected."
+    run_file="./scripts/debian/run_release"
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+    echo "Use setup.bat in the \"scripts\win32\" folder for Windows platforms."
+    exit
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    echo "Use setup.bat in the \"scripts\win32\" folder for Windows platforms."
+    exit
+else
+	echo "Unrecognised platform."
+	exit
+fi
+
+midistar_dir=$PWD
+ext_dir=$PWD/external
+
+# Install SoundFont
+. ./scripts/unix/install_soundfont
+
+# If we found the binary...
+if [[ $? -ne 0 ]]; then
+    cecho "Error installing SoundFont!"
+    exit 1
+fi
+
+# Copy run_release script
+cd "$midistar_dir"
+cp "$run_file" run
+
+cecho "\nSetup complete! Run \"./run\" to play."

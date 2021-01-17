@@ -83,6 +83,10 @@ std::vector<int> Config::GetMidiFileTracks() {
     return midi_file_tracks_;
 }
 
+const std::unordered_map<int, int>& Config::GetMidiOutputInstrumentMapping() {
+    return midi_output_inst_map_;
+}
+
 int Config::GetMidiOutVelocity() {
     return MIDI_OUT_VELOCITY;
 }
@@ -123,16 +127,36 @@ bool Config::ParseOptions(int argc, char** argv) {
         return false;
     }
 
+    // Derive MIDI note mapping from commandline arg list
     if (instrument_midi_remapping_notes_.size() % 2) {
         std::cerr << "Error: \"instrument_midi_remapping\" config option must "
             "have a length perfectly divisble by 2.\n";
         return false;
     }
 
-    // Derive mapping from commandline arg list
-    for (unsigned i=0; i < instrument_midi_remapping_notes_.size(); i += 2) {
+    for (auto i=0U; i < instrument_midi_remapping_notes_.size(); i += 2) {
+        if (instrument_midi_remapping_[i] == -1) {
+            continue;
+        }
+
         instrument_midi_remapping_[instrument_midi_remapping_notes_[i]] =
             instrument_midi_remapping_notes_[i+1];
+    }
+
+    // Derive MIDI insturment mapping from comandline arg list
+    if (midi_output_inst_indexes_.size() % 2) {
+        std::cerr << "Error: \"midi_output_instrument_mapping\" config option "
+            "must have a length perfectly divisble by 2.\n";
+        return false;
+    }
+
+    for (auto i = 0U; i < midi_output_inst_indexes_.size(); i += 2) {
+        if (midi_output_inst_indexes_[i] == -1) {
+            continue;
+        }
+
+        midi_output_inst_map_[midi_output_inst_indexes_[i]] =
+            midi_output_inst_indexes_[i + 1];
     }
 
     return true;
@@ -147,34 +171,42 @@ void Config::InitCliApp(CLI::App* app) {
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
     app->add_option("--full_screen", full_screen_, "Determines whether or not "
-           "to enable full-screen mode.");
+        "to enable full-screen mode.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
-            "MIDI note to bind to the keyboard.");
+        "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
-            "of times the game will update in one second.");
+        "of times the game will update in one second.");
     app->add_option("--midi_file_channels", midi_file_channels_, "The MIDI "
-            "channels to read notes from. -1 will enable all channels.");
+        "channels to read notes from. -1 will enable all channels.");
     app->add_option("--midi_file_repeat", midi_file_repeat_, "Determines "
-            "whether or not to continuously repeat the MIDI file.");
+        "whether or not to continuously repeat the MIDI file.");
     app->add_option("--midi_file_tracks", midi_file_tracks_, "The MIDI tracks "
-            "to read notes from. -1 will enable all tracks.");
+        "to read notes from. -1 will enable all tracks.");
+    app->add_option("--midi_output_instrument_mapping"
+        , midi_output_inst_indexes_,
+        "Maps specified MIDI channel to SoundFont instrument. Mappings "
+        "are formatted as a list of pairs of notes, where the first note "
+        "in a pair is the original note, and the second note is the "
+        "mapped note. This size of this list must be perfectly divisible "
+        "by two. Please note instrument support is dependent on the SoundFont "
+        "in use.");
     app->add_option("--instrument_midi_remapping"
-            , instrument_midi_remapping_notes_,
-            "Remaps specified instrument MIDI notes to another note. Mappings "
-            "are formatted as a list of pairs of notes, where the first note "
-            "in a pair is the original note, and the second note is the "
-            "mapped note. This size of this list must be perfectly divisible "
-            "by two.");
+        , instrument_midi_remapping_notes_,
+        "Remaps specified instrument MIDI notes to another note. Mappings "
+        "are formatted as a list of pairs of notes, where the first note "
+        "in a pair is the original note, and the second note is the "
+        "mapped note. This size of this list must be perfectly divisible "
+        "by two.");
     app->add_option("--fall_speed_multiplier", fall_speed_multiplier_,
-            "Affects the falling speed of notes on the screen. Fall speed "
-            "is also dependent on the speed of the MIDI file being played.");
+        "Affects the falling speed of notes on the screen. Fall speed "
+        "is also dependent on the speed of the MIDI file being played.");
     app->add_option("--screen_height", screen_height_, "The screen height.");
     app->add_option("--screen_width", screen_width_, "The screen width.");
     app->add_option("--soundfont_path", soundfont_path_, "The SoundFont file "
-            "to use for MIDI output.");
+        "to use for MIDI output.");
     app->add_flag("--show_third_party", show_third_party_, "Adding this flag "
-            "prints out the copyright notices of third-party projects that are "
-            "used by midistar.");
+        "prints out the copyright notices of third-party projects that are "
+        "used by midistar.");
 }
 
 }  // End namespace midistar

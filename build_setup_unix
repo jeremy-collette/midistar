@@ -63,6 +63,8 @@ find "gcc"
 find "pkg-config"
 find "autoconf"
 find "automake"
+find "wget"
+find "unzip"
 
 # Resetting lib folder
 rm -rf lib
@@ -83,10 +85,24 @@ rm -rf include/rtmidi
 rm -rf include/SFML
 inc_dir=$PWD/include
 
-# Building...
+# Setting up vars
 midistar_dir=$PWD
 ext_dir=$PWD/external
 
+# Installing SoundFont
+cecho "\nInstalling Fluid SoundFont..."
+cd "$ext_dir/assets/fluid"
+if [[ -f "$ext_dir/assets/fluid/FluidR3_GM.sf2" ]]; then
+    cecho "Already installed!"
+else
+    wget -O "fluid.zip" "https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip"
+    unzip "fluid.zip" -d "extracted"
+    mv "extracted/FluidR3_GM.sf2" "."
+    rm -rf "extracted" "fluid.zip"
+    cecho "Done!"
+fi
+
+# Building...
 cecho "\nSetting up git submodules..."
 git submodule init
 git submodule update

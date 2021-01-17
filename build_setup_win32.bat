@@ -72,6 +72,24 @@ RD /q /s "%inc_dir%\rtmidi"
 RD /q /s "%inc_dir%\SFML"
 DEL "%inc_dir%\fluidsynth.h"
 
+REM Download SoundFont:
+ECHO.
+ECHO Installing Fluid SoundFont...
+CD "%ext_dir%\assets\fluid" || GOTO :error
+IF EXIST "FluidR3_GM.sf2" (
+    ECHO Fluid SoundFont already installed!
+) ELSE (
+    ECHO Downloading...
+    powershell -c "Invoke-WebRequest -Uri \"https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip\" -OutFile \"fluid.zip\""
+    ECHO Extracting...
+    powershell -c "Expand-Archive -Force \"fluid.zip\" \"extracted\""
+    ECHO Copying...
+    MOVE "extracted\FluidR3_GM.sf2" "." || GOTO :error
+    RD /q /s "extracted" || GOTO :error
+    DEL "fluid.zip" || GOTO :error
+    ECHO Done!
+)
+
 REM Setup git submodules:
 ECHO.
 ECHO Setting up git submodules...

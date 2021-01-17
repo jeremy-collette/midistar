@@ -110,6 +110,14 @@ class Config {
      */
     std::vector<int> GetMidiFileTracks();
 
+
+    /**
+     * Gets the MIDI output insturment mapping (channel -> instrument).
+     *
+     * \return MIDI output insturment mapping.
+     */
+    const std::unordered_map<int, int>& GetMidiOutputInstrumentMapping();
+
     /**
      * Gets the velocity of MIDI notes output by the game.
      *
@@ -193,6 +201,9 @@ class Config {
                                                            //!< commandline arg
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
+    std::unordered_map<int, int> midi_output_inst_map_;  //!< Mapping from MIDI
+                                                    //!< channel to instrument
+    std::vector<int> midi_output_inst_indexes_;  //!< Raw MIDI instrument map
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play

@@ -33,7 +33,7 @@ else
     unzip "fluid.zip" -d "extracted"
     mv "extracted/FluidR3_GM.sf2" "."
     rm -rf "extracted" "fluid.zip"
-    cecho "Done!"    
+    cecho "Done!"
 fi
 
 return 0

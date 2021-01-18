@@ -6,7 +6,7 @@ include_directories(include)
 
 # Set headers
 set(HEADERS
-    ${CMAKE_SOURCE_DIR}/include/midistar/BackgroundSongPlayer.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/BackgroundSongPlayerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/BarComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/CollidableComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/CollisionHandlerComponent.h
@@ -27,8 +27,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentAutoPlayComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentInputHandlerComponent.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneFactory.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneFactory.h    
     ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneSfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/KeepAliveComponent.h
@@ -76,7 +75,7 @@ set(HEADERS
 
 # Set source
 set(SOURCE
-    ${CMAKE_SOURCE_DIR}/src/BackgroundSongPlayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/BackgroundSongPlayerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/BarComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollidableComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/CollisionHandlerComponent.cpp
@@ -93,8 +92,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentAutoPlayComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/IntroSceneFactory.cpp
-    ${CMAKE_SOURCE_DIR}/src/IntroSceneGameObjectFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/IntroSceneFactory.cpp    
     ${CMAKE_SOURCE_DIR}/src/IntroSceneSfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentInputHandlerComponent.cpp

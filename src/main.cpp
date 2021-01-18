@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018-2019 Jeremy Collette.
+ * Copyright (C) 2018-2021 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -23,7 +23,7 @@
 #include "midistar/Version.h"
 
 int main(int argc, char** argv) {
-    std::cout << "midistar " << MIDISTAR_VERSION << " Copyright (C) 2018-2019 "
+    std::cout << "midistar " << MIDISTAR_VERSION << " Copyright (C) 2018-2021 "
     << "Jeremy Collette.\nThis program comes with ABSOLUTELY NO WARRANTY. "
     << "This is free software, and you are welcome to redistribute it under "
     << "certain conditions. midistar uses free third-party software, that you "
@@ -49,8 +49,12 @@ int main(int argc, char** argv) {
             << "\tvcpkg: Copyright(C) Microsoft Corporation.\n";
 
         std::cout << "\nThe following free third-party assets are used by (and "
-            << "distributed with) midistar:\n";
-        std::cout << "\tSilkscreen font: Copyright (C) Jason Kottke.\n";
+            << "distributed with or downloaded by) midistar:\n";
+        std::cout << "\tFluid SoundFont: Copyright(C) 2000-2002, 2008, 2013 "
+            << "Frank Wen."
+            << "\n\tNocturne MIDI: Copyright(C) 1881 G. Schirmer."
+            << "\n\tSilkscreen font: Copyright (C) Jason Kottke.\n";
+
         return 0;
     }
 

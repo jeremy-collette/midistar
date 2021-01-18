@@ -91,8 +91,8 @@ bool MidiFileIn::Init(const std::string& file_name) {
     file_.linkNotePairs();
     file_.doTimeAnalysis();
     if (!success) {
-        std::cerr << "Error! Could not load MIDI file \"" << file_name << "\""
-        << ".\n";
+        std::cerr << "Error: Could not load MIDI file \"" << file_name << "\""
+        << "!\n";
     }
     return success;
 }

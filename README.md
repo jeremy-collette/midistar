@@ -25,6 +25,7 @@ with) midistar:
 The following third-party assets are used by (and distributed with or downloaded
 by) midistar:
  * Fluid SoundFont: Copyright (C) 2000-2002, 2008, 2013 Frank Wen.
+ * Nocturne MIDI: Copyright (C) 1881 G. Schirmer.
  * Silkscreen font: Copyright (C) Jason Kottke.
 
 Thanks to the developers, creators, and supporters of these projects! Note that

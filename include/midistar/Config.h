@@ -56,6 +56,14 @@ class Config {
     bool GetAutomaticallyPlay();
 
     /**
+     * Gets a bool indicating whether or not title screen background music
+     * should be played.
+     *
+     * \return Play title screen background music.
+     */
+    bool GetEnableTitleMusic();
+
+    /**
      * Gets a bool indicating whether or not full-screen mode is enabled.
      *
      * \return Full-screen mode.
@@ -109,7 +117,6 @@ class Config {
      * \return MIDI file tracks.
      */
     std::vector<int> GetMidiFileTracks();
-
 
     /**
      * Gets the MIDI output insturment mapping (channel -> instrument).
@@ -171,6 +178,14 @@ class Config {
     const std::string GetSoundFontPath();
 
     /**
+     * Returns the path to the MIDI file to be played as title screen background
+     * music.
+     *
+     * \return Title screen background music MIDI file path.
+     */
+    const std::string GetTitleMusicMidiFilePath();
+
+    /**
      * Parses commandline arguments.
      *
      * \param argc Number of arguments.
@@ -193,6 +208,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    bool enable_title_music_;  //!< Enable title background music
     double fall_speed_multiplier_;  //!< Affects fall speed of notes
     bool full_screen_;  //!< Full-screen setting
     std::unordered_map<int, int> instrument_midi_remapping_;  //!< MIDI
@@ -212,6 +228,8 @@ class Config {
     bool show_third_party_;  //!< Determines whether or not to print out third-
                                                     //!< party copyright notices
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes
+    std::string title_music_midi_file_;  //!< Path to MIDI file to use for title
+                                                                      //!< music
 };
 
 }   // End namespace midistar

@@ -19,16 +19,35 @@
 #ifndef MIDISTAR_INTROSCENEFACTORY_H_
 #define MIDISTAR_INTROSCENEFACTORY_H_
 
-#include "midistar/SceneFactory.h"
+#include <SFML/Graphics.hpp>
+
+#include "midistar/GameObject.h"
+#include "midistar/Scene.h"
 
 namespace midistar {
 
-class IntroSceneFactory : public SceneFactory {
+class IntroSceneFactory {
  public:
-    virtual bool Create(
+    bool Create(
         Game* game
         , sf::RenderWindow* render_window
-        , Scene** scene);
+        , Scene** scene
+        , bool background_music = false);
+
+ private:
+     enum GameType {
+         PIANO,
+         DRUM
+     };
+
+     bool CreateBackgroundMusicPlayer(GameObject** game_object_out);
+     GameObject* CreateCopyrightTextGameObject(const sf::Font& font);
+     std::vector<GameObject*> CreateGameObjects(sf::RenderWindow* window
+        , bool background_music);
+     GameObject* CreateNoFilesFoundTextGameObject(
+         const sf::Font& font);
+     GameObject* CreateScanningTextGameObject(const sf::Font& font);
+     GameObject* CreateVersionTextGameObject(const sf::Font& font);
 };
 
 }   // End namespace midistar

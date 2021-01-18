@@ -16,16 +16,16 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_BACKGROUNDSONGPLAYER_H_
-#define MIDISTAR_BACKGROUNDSONGPLAYER_H_
+#ifndef MIDISTAR_BACKGROUNDSONGPLAYERCOMPONENT_H_
+#define MIDISTAR_BACKGROUNDSONGPLAYERCOMPONENT_H_
 
 #include "midistar/Component.h"
 
 namespace midistar {
 
-class BackgroundSongPlayer : public Component {
+class BackgroundSongPlayerComponent : public Component {
  public:
-    BackgroundSongPlayer();
+    BackgroundSongPlayerComponent();
 
     virtual void Update(
         Game* g
@@ -35,4 +35,4 @@ class BackgroundSongPlayer : public Component {
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_BACKGROUNDSONGPLAYER_H_
+#endif  // MIDISTAR_BACKGROUNDSONGPLAYERCOMPONENT_H_

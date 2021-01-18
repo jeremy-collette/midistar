@@ -16,7 +16,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/BackgroundSongPlayer.h"
+#include "midistar/BackgroundSongPlayerComponent.h"
 
 #include <iostream>
 
@@ -26,11 +26,11 @@
 
 namespace midistar {
 
-BackgroundSongPlayer::BackgroundSongPlayer()
+BackgroundSongPlayerComponent::BackgroundSongPlayerComponent()
     : Component{ Component::BACKGROUND_SONG_PLAYER } {
 }
 
-void BackgroundSongPlayer::Update(Game* g, GameObject*, int) {
+void BackgroundSongPlayerComponent::Update(Game* g, GameObject*, int) {
     auto& current_scene = g->GetCurrentScene();
 
     auto game_objects = current_scene.GetGameObjectsByTag("MidiFile");

@@ -70,10 +70,12 @@ bool Game::Init() {
         std::vector<GameObject*>{ }
     };
 
+    auto background_music = true;
     if (!intro_scene_factory.Create(
         this
         , &GetWindow()
-        , &next_scene)) {
+        , &next_scene
+        , background_music)) {
         return false;
     }
 

@@ -54,6 +54,10 @@ bool Config::GetAutomaticallyPlay() {
     return auto_play_;
 }
 
+bool Config::GetEnableTitleMusic() {
+    return enable_title_music_;
+}
+
 bool Config::GetFullScreen() {
     return full_screen_;
 }
@@ -116,6 +120,10 @@ const std::string Config::GetSoundFontPath() {
     return soundfont_path_;
 }
 
+const std::string Config::GetTitleMusicMidiFilePath() {
+    return title_music_midi_file_;
+}
+
 bool Config::ParseOptions(int argc, char** argv) {
     CLI::App app {};
     InitCliApp(&app);
@@ -170,6 +178,8 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
+    app->add_option("--enable_title_music", enable_title_music_, "Determines "
+        "whether or not to play background music on the title screen.");
     app->add_option("--full_screen", full_screen_, "Determines whether or not "
         "to enable full-screen mode.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
@@ -207,6 +217,9 @@ void Config::InitCliApp(CLI::App* app) {
     app->add_flag("--show_third_party", show_third_party_, "Adding this flag "
         "prints out the copyright notices of third-party projects that are "
         "used by midistar.");
+    app->add_option("--title_music_midi_file", title_music_midi_file_, "The "
+        "path to a MIDI file to use for title screen background music (if "
+        "enabled).");
 }
 
 }  // End namespace midistar

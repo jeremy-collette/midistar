@@ -24,6 +24,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "midistar/BackgroundSongPlayerComponent.h"
+#include "midistar/Config.h"
 #include "midistar/Constants.h"
 #include "midistar/DrumSceneFactory.h"
 #include "midistar/Game.h"
@@ -158,25 +159,29 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
             , drum_menu.GetGameObject()
         };
 
-        if (background_music) {
-            auto background_music_player = CreateBackgroundMusicPlayer();
-            game_objects.push_back(background_music_player);
+        if (background_music && Config::GetInstance().GetEnableTitleMusic()) {
+            GameObject* background_music_game_object;
+            if (CreateBackgroundMusicPlayer(&background_music_game_object)) {
+                game_objects.push_back(background_music_game_object);
+            } else {
+                std::cerr << "Warning: Could not create title screen background"
+                    << " music player!\n";
+            }
         }
         return game_objects;
 }
 
-GameObject* IntroSceneFactory::CreateBackgroundMusicPlayer() {
+bool IntroSceneFactory::CreateBackgroundMusicPlayer(
+    GameObject** game_object_out) {
     // Create MIDI file GameObject to read notes from MIDI file
-    // TODO(@jez): add to constants or header
     auto midi_file_object_factory = MidiFileGameObjectFactory{};
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
-        "external/assets/nocturne/chopin_nocturne_op9_n2.mid",
+        Config::GetInstance().GetTitleMusicMidiFilePath(),
         &midi_file_game_object)) {
         return false;
     }
 
-    // TODO(jez): move MidiOutput component creation to factory
     auto midi_out = new MidiOut{ };
     if (!midi_out->Init()) {
         return false;
@@ -185,7 +190,8 @@ GameObject* IntroSceneFactory::CreateBackgroundMusicPlayer() {
     midi_file_game_object->AddTag("MidiOut");
 
     midi_file_game_object->SetComponent(new BackgroundSongPlayerComponent{});
-    return midi_file_game_object;
+    *game_object_out = midi_file_game_object;
+    return true;
 }
 
 GameObject* IntroSceneFactory::CreateCopyrightTextGameObject(

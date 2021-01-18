@@ -55,6 +55,8 @@ class Config {
      */
     bool GetAutomaticallyPlay();
 
+    bool GetEnableTitleMusic();
+
     /**
      * Gets a bool indicating whether or not full-screen mode is enabled.
      *
@@ -170,6 +172,8 @@ class Config {
      */
     const std::string GetSoundFontPath();
 
+    const std::string GetTitleMusicMidiFilePath();
+
     /**
      * Parses commandline arguments.
      *
@@ -193,6 +197,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    bool enable_title_music_;  //!< Enable title background music
     double fall_speed_multiplier_;  //!< Affects fall speed of notes
     bool full_screen_;  //!< Full-screen setting
     std::unordered_map<int, int> instrument_midi_remapping_;  //!< MIDI
@@ -212,6 +217,8 @@ class Config {
     bool show_third_party_;  //!< Determines whether or not to print out third-
                                                     //!< party copyright notices
     std::string soundfont_path_;  //!< Path of SoundFont file for MIDI notes
+    std::string title_music_midi_file_;  //!< Path to MIDI file to use for title
+                                                                      //!< music
 };
 
 }   // End namespace midistar

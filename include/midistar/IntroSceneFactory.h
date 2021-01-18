@@ -40,7 +40,7 @@ class IntroSceneFactory {
          DRUM
      };
 
-     GameObject* CreateBackgroundMusicPlayer();
+     bool CreateBackgroundMusicPlayer(GameObject** game_object_out);
      GameObject* CreateCopyrightTextGameObject(const sf::Font& font);
      std::vector<GameObject*> CreateGameObjects(sf::RenderWindow* window
         , bool background_music);

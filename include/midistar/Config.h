@@ -55,6 +55,12 @@ class Config {
      */
     bool GetAutomaticallyPlay();
 
+    /**
+     * Gets a bool indicating whether or not title screen background music
+     * should be played.
+     *
+     * \return Play title screen background music.
+     */
     bool GetEnableTitleMusic();
 
     /**
@@ -111,7 +117,6 @@ class Config {
      * \return MIDI file tracks.
      */
     std::vector<int> GetMidiFileTracks();
-
 
     /**
      * Gets the MIDI output insturment mapping (channel -> instrument).
@@ -172,6 +177,12 @@ class Config {
      */
     const std::string GetSoundFontPath();
 
+    /**
+     * Returns the path to the MIDI file to be played as title screen background
+     * music.
+     *
+     * \return Title screen background music MIDI file path.
+     */
     const std::string GetTitleMusicMidiFilePath();
 
     /**

@@ -252,30 +252,31 @@ else() # Linux/OSX
     # Set compiler flags
     if(${build_type} STREQUAL "release")
         message("-- Release mode")
-        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -lstdc++fs")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
     else()
         message("-- Debug mode")
-        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0 -lstdc++fs")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
+    endif()
+
+    # Add stdc++ filesystem flag
+    if(NOT APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++fs")
     endif()
 
     # Link libraries depending on build type
     if(${build_type} STREQUAL "release")
-        target_link_libraries(midistar
-            midifile
-            rtmidi
-            sfml-graphics
-            sfml-system
-            sfml-window
-            stdc++fs)
+        set(UNIX_LIBS midifile rtmidi sfml-graphics sfml-system sfml-window)
     else()
-        target_link_libraries(midistar
-            midifile
-            rtmidi
-            sfml-graphics-d
-            sfml-system-d
-            sfml-window-d
-            stdc++fs)
+        set(UNIX_LIBS midifile rtmidi sfml-graphics-d sfml-system-d sfml-window-d)
     endif()
+
+    # Add stdc++ filesystem flag
+    if(NOT APPLE)
+        list(APPEND UNIX_LIBS stdc++fs)
+    endif()
+
+    # Link libraries
+    target_link_libraries(midistar ${UNIX_LIBS})
 
     # Copy Unix 'make' script
     add_custom_command(TARGET midistar POST_BUILD

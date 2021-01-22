@@ -255,7 +255,7 @@ else() # Linux/OSX
         set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
     else()
         message("-- Debug mode")
-        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -DDEBUG -g -O0")
+        set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -DDEBUG -g -O0")
     endif()
 
     # Add stdc++ filesystem flag

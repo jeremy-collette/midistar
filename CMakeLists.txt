@@ -281,7 +281,7 @@ else() # Linux/OSX
                 rtmidi
                 sfml-graphics
                 sfml-system
-                sfml-window)
+                sfml-window
                 stdc++fs)
         endif()
     else()
@@ -296,9 +296,9 @@ else() # Linux/OSX
             target_link_libraries(midistar
                 midifile
                 rtmidi
-                sfml-graphics
-                sfml-system
-                sfml-window)
+                sfml-graphics-d
+                sfml-system-d
+                sfml-window-d
                 stdc++fs)
         endif()
     endif()

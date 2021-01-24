@@ -59,6 +59,8 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Scene.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SceneFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ScoreComponentFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ScoreManagerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SfmlEventsComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ShrinkGrowComponent.h
@@ -126,6 +128,8 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/PianoSongNoteCollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Scene.cpp
+    ${CMAKE_SOURCE_DIR}/src/ScoreComponentFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/ScoreManagerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SfmlEventsComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SongSceneSfmlEventsHandlerComponent.cpp

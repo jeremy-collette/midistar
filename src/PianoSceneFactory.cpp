@@ -24,9 +24,10 @@
 #include "midistar/MidiInstrumentGameObjectFactory.h"
 #include "midistar/MidiOutputComponent.h"
 #include "midistar/PianoGameObjectFactory.h"
+#include "midistar/ScoreComponentFactory.h"
+#include "midistar/SfmlEventsComponent.h"
 #include "midistar/SongEndWatcherComponent.h"
 #include "midistar/SongSceneSfmlEventsHandlerComponent.h"
-#include "midistar/SfmlEventsComponent.h"
 #include "midistar/SongNoteCreatorComponent.h"
 
 namespace midistar {
@@ -98,6 +99,12 @@ bool PianoSceneFactory::Create(
     sfml_event_object->SetComponent(
         new SongSceneSfmlEventsHandlerComponent{ });
     game_objects.push_back(midi_out_game_object);
+
+    // Create score renderer
+    auto score_component_factory = ScoreComponentFactory{};
+    auto score_renderer_game_object = new GameObject{};
+    score_component_factory.CreateScoreManager(&score_renderer_game_object);
+    game_objects.push_back(score_renderer_game_object);
 
     // Create Scene
     *scene = new Scene{ game, render_window, game_objects };

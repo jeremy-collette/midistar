@@ -6,8 +6,8 @@ midistar is a free music game that challenges users to play a MIDI file with
 their computer keyboard or a MIDI instrument, such as an electronic piano or
 drums.
 
-![Title Screen](images/midistar_title_screen.png | width=250)
-![Piano Game Mode](images/midistar_piano_song.png | width=250)
+<img src="images/midistar_title_screen.png" width="250">
+<img src="images/midistar_piano_song.png" width="250">
 
 midistar uses third-party libraries, utilities, and assets that are not
 considered to be part of the midistar project, but are distributed with midistar

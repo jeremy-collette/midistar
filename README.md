@@ -54,7 +54,7 @@ package.
 
 On Windows or OSX, extract the pre-built binaries from the compressed archive
 after downloading. If you're using Debian or Ubuntu, install the .deb package on
-your system. You're done! See the RUNNING MIDISTAR section of this README to 
+your system. You're done! See the RUNNING MIDISTAR section of this README to
 start playing.
 
 If you're using another distribution of Linux or an unsupported platform /
@@ -89,11 +89,14 @@ configuration settings.
 ### 3.2 Initial setup
 midistar requires a brief initial setup which is mostly automated. If you are
 running a copy of midistar that you built from scratch, this is already
-completed during build setup. If you are running a pre-built binary that you
-downloaded as a release, simply navigate to the extracted release folder and run
-the setup command. To do this, open a terminal and change directories to the
-extracted release folder. On Windows run the `setup.bat` command and on
-Linux/OSX run the `./setup` command.
+completed during build setup. If you are running a copy of midistar that you
+installed using a ".deb" package, you can skip this section.
+
+Otherwise, if you are running a pre-built binary that you downloaded as a
+release, simply navigate to the extracted release folder and run the setup
+command. To do this, open a terminal and change directories to the extracted
+release folder. On Windows run the `setup.bat` command and on Linux/OSX run the
+`./setup` command.
 
 ### 3.3 Starting from terminal
 Once you have completed the initial setup as described above, you're ready to
@@ -103,7 +106,8 @@ is in the midistar directory.
 
 If you installed a midistar release using a .deb package, you can start midistar
 by running the `midistar` command in any terminal. This is a wrapper that calls
-the 'run' script mentioned above.
+the 'run' script mentioned above. It will also handle initial setup the first
+time it is called.
 
 If there is not a midistar release with pre-built binaries for your platform,
 or you have cloned the midistar repository, you will have to build midistar

@@ -3,7 +3,7 @@ EXECUTABLE_NAME = rtmidi-d.lib
 rtmidi.obj : RtMidi.cpp
  @echo.
  @echo Compiling...
- cl /c /EHsc /DDEBUG /D__WINDOWS_MM__ /MDd RtMidi.cpp
+ cl /c /EHsc /DDEBUG /D__WINDOWS_MM__ /MDd /D_AMD64_ RtMidi.cpp
  @echo Compiling done!
 
 $(EXECUTABLE_NAME) : rtmidi.obj

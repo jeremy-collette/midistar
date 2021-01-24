@@ -187,8 +187,9 @@ and find equivalent packages using your system package manager.
 If you're building midistar for the first time, some setup is required. If you
 are on Linux or OSX, you can try running the `./build_setup_unix` command from a
 terminal in the midistar directory. If you are on Windows, run the
-`build_setup_win32.bat` command from a Developer Command Prompt. You will have
-to install Visual Studio to access a Developer Command Prompt on Windows.
+`build_setup_win32.bat` command from the "x64 Native Tools Command Prompt for VS
+2017" Developer Command Prompt. You will have to install Visual Studio to access
+this Developer Command Prompt on Windows.
 
 Please note that this command does not install prerequisites for the third-
 party libraries. As such, they may fail to build. When a build failure occurs,

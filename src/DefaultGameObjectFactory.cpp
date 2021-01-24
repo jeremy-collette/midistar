@@ -122,7 +122,7 @@ void DefaultGameObjectFactory::GetInstrumentKeyBinding(
         , bool* ctrl
         , bool* shift) {
     const std::vector<sf::Keyboard::Key>& keys = Utility::GetQwertyKeys();
-    int num_keys = keys.size();
+    auto num_keys = static_cast<int>(keys.size());
 
     // We don't have enough unique keys to assign each instrument one key, so
     // we break the key bindings up in to three equal sections. The first

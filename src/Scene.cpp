@@ -46,7 +46,7 @@ bool Scene::Update(int delta) {
     unsigned num_objects;
     unsigned i = 0;
     do {
-        num_objects = game_objects_.size();
+        num_objects = static_cast<unsigned>(game_objects_.size());
         while (i < game_objects_.size()) {
             game_objects_[i++]->Update(game_, delta);
         }

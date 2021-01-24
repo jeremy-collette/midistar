@@ -187,7 +187,7 @@ void DrumGameObjectFactory::GetInstrumentKeyBinding(
 int DrumGameObjectFactory::GetNoteUniqueIndex(int note) {
     auto pos = std::find(song_notes_.begin(), song_notes_.end(), note);
     assert(pos != song_notes_.end());
-    return pos - song_notes_.begin();
+    return static_cast<int>(pos - song_notes_.begin());
 }
 
 double DrumGameObjectFactory::GetXPosition(int note) {

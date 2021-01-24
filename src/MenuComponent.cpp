@@ -99,7 +99,8 @@ MenuItemComponent* MenuComponent::GetChildMenuItemComponent(GameObject* o) {
         return nullptr;
     }
 
-    index_ = (index_ + has_menu_item.size()) % has_menu_item.size();
+    index_ = static_cast<int>((index_ + has_menu_item.size())
+        % has_menu_item.size());
     auto menu_item_component = has_menu_item[index_]->GetComponent<
         MenuItemComponent>(Component::MENU_ITEM);
 

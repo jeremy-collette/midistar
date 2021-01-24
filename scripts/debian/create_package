@@ -64,7 +64,12 @@ if [[ $? -eq 0 ]]; then
 
     # Add setup script
     echo Adding setup script...
-    cp midistar_$version/scripts/unix/setup setup
+    cp midistar_$version/scripts/unix/setup midistar_$version/setup
+
+    # Wait for user to be ready
+    echo Generated package data in "package" folder.
+    echo Press enter when ready to create dpkg.
+    read ready
 
     # Create .deb
     cd $package_dir

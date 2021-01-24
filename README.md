@@ -2,8 +2,8 @@
 midistar Copyright (C) 2018-2021 Jeremy Collette.
 
 ## 1. About midistar
-midistar is a free music game that challenges users to play a MIDI file with 
-their computer keyboard or a MIDI instrument, such as an electronic piano or 
+midistar is a free music game that challenges users to play a MIDI file with
+their computer keyboard or a MIDI instrument, such as an electronic piano or
 drums.
 
 midistar uses third-party libraries, utilities, and assets that are not
@@ -62,11 +62,14 @@ architecture, or you don't want to use a pre-built binary, you can still build
 midistar from source. See the BUILDING section of this README.
 
 ### 2.2 Installing additional SoundFont files
-When you run the midistar initial setup, the Fluid SoundFont (Release 3) will automatically be installed on your machine. If you want to install additional SoundFont files, simply place them on your machine and update the `soundfont_path` setting in the midistar `config.cfg`. See INITIAL SETUP and CONFIGURING MIDISTAR for more information.
+When you run the midistar initial setup, the Fluid SoundFont (Release 3) will
+automatically be installed on your machine. If you want to install additional
+SoundFont files, simply place them on your machine and update the
+`soundfont_path` setting in the midistar `config.cfg`. See INITIAL SETUP and
+CONFIGURING MIDISTAR for more information.
 
 
 ## 3. Running midistar
-
 ### 3.1 Configuring midistar
 midistar has configuration options that can be configured for varying levels of
 customisation. Run midistar with the `--help` option to see a list of
@@ -78,13 +81,23 @@ If you have installed a midistar release using a .deb package, you will find
 'pkg-version' is the version of the .deb package that you installed. You can
 find the version in the file name of the package.
 
-If you are building midistar from scratch, please note that the 'config.cfg' file will not be created until midistar has been built for the first time. Also note that it is recommended to use absolute paths instead of relative paths in configuration settings.
+If you are building midistar from scratch, please note that the 'config.cfg'
+file will not be created until midistar has been built for the first time. Also
+note that it is recommended to use absolute paths instead of relative paths in
+configuration settings.
 
 ### 3.2 Initial setup
-midistar requires a brief initial setup which is mostly automated. If you are running a copy of midistar that you built from scratch, this is already completed during build setup. If you are running a pre-built binary that you downloaded as a release, simply navigate to the extracted release folder and run the setup command. To do this, open a terminal and change directories to the extracted release folder. On Windows run the `setup.bat` command and on Linux/OSX run the `./setup` command.
+midistar requires a brief initial setup which is mostly automated. If you are
+running a copy of midistar that you built from scratch, this is already
+completed during build setup. If you are running a pre-built binary that you
+downloaded as a release, simply navigate to the extracted release folder and run
+the setup command. To do this, open a terminal and change directories to the
+extracted release folder. On Windows run the `setup.bat` command and on
+Linux/OSX run the `./setup` command.
 
 ### 3.3 Starting from terminal
-Once you have completed the initial setup as described above, you're ready to play. If you have downloaded a midistar release with pre-built binaries for your
+Once you have completed the initial setup as described above, you're ready to
+play. If you have downloaded a midistar release with pre-built binaries for your
 platform, you can start midistar with the `./run` command from a terminal that
 is in the midistar directory.
 
@@ -102,9 +115,13 @@ or you have cloned the midistar repository, you will have to build midistar
 from scratch before running. See the BUILDING section in this README.
 
 ### 3.4 Playing midistar
-When you play midistar, you will select a MIDI file to play from the main menu. The MIDI notes from this file will be rendered on the game screen in
-real-time, falling from top to bottom. While falling, each MIDI note will
-pass through the instrument bar near the bottom of the screen. When MIDI notes are passing through the instrument bar, they can be played by activating the corresponding note. The aim of midistar is to play each MIDI note as it passes through the instrument bar, as precisely as possible.
+When you play midistar, you will select a MIDI file to play from the main menu.
+The MIDI notes from this file will be rendered on the game screen in real-time,
+falling from top to bottom. While falling, each MIDI note will pass through the
+instrument bar near the bottom of the screen. When MIDI notes are passing
+through the instrument bar, they can be played by activating the corresponding
+note. The aim of midistar is to play each MIDI note as it passes through the
+instrument bar, as precisely as possible.
 
 The instrument bar can be activated in two ways. The first way is by using the
 computer keyboard. The A-Z, 0-9, and some punctuation keys (dash, equals,
@@ -133,7 +150,8 @@ On OSX, you can install cmake by first installing Homebrew and then using the
 command:
     `brew install cmake`
 
-On Windows, you will have to download CMake online and follow the installation instructions.
+On Windows, you will have to download CMake online and follow the installation
+instructions.
 
 ### 4.2 Installing build dependencies
 If you are developing midistar on OSX and Windows, third-party libraries should
@@ -162,8 +180,8 @@ If you're building midistar for the first time, some setup is required. If you
 are on Linux or OSX, you can try running the `./build_setup_unix` command from a
 terminal in the midistar directory. If you are on Windows, run the
 `build_setup_win32.bat` command from the "x64 Native Tools Command Prompt for VS
-2017" Developer Command Prompt. You will have to install Visual Studio 2017 to access
-this Developer Command Prompt on Windows.
+2017" Developer Command Prompt. You will have to install Visual Studio 2017 to
+access this Developer Command Prompt on Windows.
 
 Please note that this command does not install prerequisites for the third-
 party libraries. As such, they may fail to build. When a build failure occurs,

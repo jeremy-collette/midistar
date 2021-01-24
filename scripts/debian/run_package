@@ -2,15 +2,15 @@
 
 start_dir=$PWD
 cd "$(dirname "$0")"
-cd midistar_*
+cd midistar_0.6.0
 
 # If 'run' script doesn't exist, run setup.
 # Then copy 'run' script.
 if [[ ! -f "run" ]]; then
 	echo "Running initial setup..."
-	. ./setup
+	bash ./setup
 	cp ./scripts/debian/run_release run
 fi
 
-. ./run "$@"
+bash ./run "$@"
 cd $start_dir

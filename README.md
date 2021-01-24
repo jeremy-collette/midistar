@@ -105,11 +105,6 @@ If you installed a midistar release using a .deb package, you can start midistar
 by running the `midistar` command in any terminal. This is a wrapper that calls
 the 'run' script mentioned above.
 
-The 'run' script calls the actual binary (in the 'build' folder). It is
-recommended to always use this script instead of calling the binary directly.
-This allows the configuration file to be found, ensures consistency of the
-working directory, and allows environment variables to be set if required.
-
 If there is not a midistar release with pre-built binaries for your platform,
 or you have cloned the midistar repository, you will have to build midistar
 from scratch before running. See the BUILDING section in this README.

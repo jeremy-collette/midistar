@@ -5,7 +5,9 @@ cd "$(dirname "$0")"
 cd midistar_*
 
 # If 'run' script doesn't exist, run setup.
-if [[ ! -d "run" ]]; then
+# Then copy 'run' script.
+if [[ ! -f "run" ]]; then
+	echo "Running initial setup..."
 	. ./setup
 	cp ./scripts/debian/run_release run
 fi

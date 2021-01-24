@@ -217,7 +217,7 @@ building midistar in debug mode, see the BUILDING section in this README.
 ### 4.5 Opening midistar in Visual Studio
 If you are on Windows, you can open midistar in Visual Studio by running the
 `startvs.bat` command from the midistar project folder. Please note that you
-must have already successfully build midistar following the instructions in
+must have already successfully built midistar following the instructions in
 BUILDING MIDISTAR before you can use this command.
 
 ### 4.6 Building Documentation
@@ -227,7 +227,7 @@ on Debian or Ubuntu, you can install doxygen and Graphviz using the following
 command:
     `sudo apt-get install doxygen graphviz`
 
-If you're own OSX, you can use Homebrew:
+If you're on OSX, you can use Homebrew:
     `brew install doxygen graphviz`
 
 On Windows, you will have to download and doxygen and Graphviz online.

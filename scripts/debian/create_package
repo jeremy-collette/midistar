@@ -49,7 +49,6 @@ if [[ $? -eq 0 ]]; then
     mkdir DEBIAN
     cp $debian_script_dir/control DEBIAN/.
 
-
     # Add source and binaries
     echo Adding source and binaries...
     mkdir usr
@@ -59,9 +58,13 @@ if [[ $? -eq 0 ]]; then
     mkdir midistar_$version
     cp -r $midistar_dir/* midistar_$version/.
 
-    # Add symlink
+    # Add run script
     echo Adding run script...
     cp midistar_$version/scripts/debian/run_package midistar
+
+    # Add setup script
+    echo Adding setup script...
+    cp midistar_$version/scripts/unix/setup setup
 
     # Create .deb
     cd $package_dir

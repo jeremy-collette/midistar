@@ -54,8 +54,8 @@ package.
 
 On Windows or OSX, extract the pre-built binaries from the compressed archive
 after downloading. If you're using Debian or Ubuntu, install the .deb package on
-your system. You're done! See the INSTALLING A SOUNDFONT FILE and RUNNING
-MIDISTAR sections of this README before playing.
+your system. You're done! See the RUNNING MIDISTAR section of this README to 
+start playing.
 
 If you're using another distribution of Linux or an unsupported platform /
 architecture, or you don't want to use a pre-built binary, you can still build

@@ -27,7 +27,7 @@ REM Build project:
 ECHO Building midistar in %build_type% mode...
 MKDIR build
 CD build
-cmake .. || GOTO :error
+cmake -A x64 .. || GOTO :error
 msbuild midistar.sln /p:Configuration=%build_type% || GOTO :error
 SET makeerror=0
 GOTO :fin

@@ -97,7 +97,7 @@ CALL bootstrap-vcpkg.bat
 IF NOT %errorlevel%==0 (
     GOTO :error
 )
-vcpkg install glib || GOTO :error
+vcpkg install glib --triplet x64-windows || GOTO :error
 
 ECHO.
 ECHO Preparing CLI11...
@@ -111,7 +111,7 @@ CD "%ext_dir%\fluidsynth"
 git clean -fdx
 MKDIR build
 CD build
-cmake .. -DCMAKE_TOOLCHAIN_FILE="%ext_dir%\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || GOTO :error
+cmake -A x64 .. -DCMAKE_TOOLCHAIN_FILE="%ext_dir%\vcpkg\scripts\buildsystems\vcpkg.cmake" -Denable-pkgconfig:BOOL="0" || GOTO :error
 msbuild FluidSynth.sln /p:Configuration=Debug || GOTO :error
 COPY "src\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "src\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error
@@ -128,7 +128,7 @@ CD "%ext_dir%\midifile" || GOTO :error
 git clean -fdx
 MKDIR build
 CD build
-cmake .. || GOTO :error
+cmake -A x64 .. || GOTO :error
 msbuild midifile.sln /p:Configuration=Debug || GOTO :error
 COPY "Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
 msbuild midifile.sln /p:Configuration=Release || GOTO :error
@@ -155,7 +155,7 @@ CD "%ext_dir%\SFML" || GOTO :error
 git clean -fdx
 MKDIR build
 CD build
-cmake .. || GOTO :error
+cmake -A x64 .. || GOTO :error
 msbuild SFML.sln /p:Configuration=Debug || GOTO :error
 COPY "lib\Debug\*.lib" "%lib_dir_debug%\." || GOTO :error
 COPY "lib\Debug\*.dll" "%lib_dir_debug%\." || GOTO :error

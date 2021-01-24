@@ -2,9 +2,11 @@
 midistar Copyright (C) 2018-2021 Jeremy Collette.
 
 ## 1. About midistar
-midistar is a free music game that challenges users to play a MIDI file with 
-their computer keyboard or a MIDI instrument, such as an electronic piano or 
+midistar is a free music game that challenges users to play a MIDI file with
+their computer keyboard or a MIDI instrument, such as an electronic piano or
 drums.
+
+<img src="images/midistar_title_screen.png" width="400"> <img src="images/midistar_piano_song.png" width="400">
 
 midistar uses third-party libraries, utilities, and assets that are not
 considered to be part of the midistar project, but are distributed with midistar
@@ -34,7 +36,7 @@ you can see these copyright notices in midistar by running the project with the
 
 midistar is written in C++ using code (and shared libraries) that are
 compatible with Linux, OSX, and Windows. However, at the current time, only 64-
-bit Debian Linux, Ubuntu Linux, Mojave OSX, and Windows 10 are supported. That
+bit Debian Linux, Ubuntu Linux, Catalina OSX, and Windows 10 are supported. That
 being said, building and running on unsupported platforms / architectures is
 possible.
 
@@ -54,30 +56,19 @@ package.
 
 On Windows or OSX, extract the pre-built binaries from the compressed archive
 after downloading. If you're using Debian or Ubuntu, install the .deb package on
-your system. You're done! See the INSTALLING A SOUNDFONT FILE and RUNNING
-MIDISTAR sections of this README before playing.
+your system. You're done! See the RUNNING MIDISTAR section of this README to
+start playing.
 
 If you're using another distribution of Linux or an unsupported platform /
 architecture, or you don't want to use a pre-built binary, you can still build
 midistar from source. See the BUILDING section of this README.
 
-### 2.2 Installing a SoundFont file
-Before running midistar, you will need to install a SoundFont file to use for
-playing MIDI sounds. If you are using Debian or Ubuntu, you can run the
-following command to install the FluidSynth general SoundFont:
-    `sudo apt-get install fluid-soundfont-gm`
-
-This should install a SoundFont file at the following location:
-    `/usr/share/sounds/sf2/FluidR3_GM.sf2`
-
-On OSX and Windows, you will have to find a SoundFont file online to download.
-Please ensure it supports the instrument you want to play.
-
-Once downloaded, configure midistar so that the `soundfont_path` configuration
-option points to the location of the newly installed SoundFont file. On Linux,
-the default midistar configuration will point to the above location by default.
-For information on configuring midistar, see the CONFIGURING MIDISTAR section of
-this README.
+### 2.2 Installing additional SoundFont files
+When you run the midistar initial setup, the Fluid SoundFont (Release 3) will
+automatically be installed on your machine. If you want to install additional
+SoundFont files, simply place them on your machine and update the
+`soundfont_path` setting in the midistar `config.cfg`. See INITIAL SETUP and
+CONFIGURING MIDISTAR for more information.
 
 
 ## 3. Running midistar
@@ -92,43 +83,46 @@ If you have installed a midistar release using a .deb package, you will find
 'pkg-version' is the version of the .deb package that you installed. You can
 find the version in the file name of the package.
 
-If you have downloaded the midistar source instead of a release, please note
-that the 'config.cfg' file will not be created until midistar has been built. It
-is recommended to use absolute paths instead of relative paths in configuration
-settings.
+If you are building midistar from scratch, please note that the 'config.cfg'
+file will not be created until midistar has been built for the first time. Also
+note that it is recommended to use absolute paths instead of relative paths in
+configuration settings.
 
-### 3.2 Starting from terminal
-If you have downloaded a midistar release with pre-built binaries for your
+### 3.2 Initial setup
+midistar requires a brief initial setup which is mostly automated. If you are
+running a copy of midistar that you built from scratch, this is already
+completed during build setup. If you are running a copy of midistar that you
+installed using a ".deb" package, you can skip this section.
+
+Otherwise, if you are running a pre-built binary that you downloaded as a
+release, simply navigate to the extracted release folder and run the setup
+command. To do this, open a terminal and change directories to the extracted
+release folder. On Windows run the `setup.bat` command and on Linux/OSX run the
+`./setup` command.
+
+### 3.3 Starting from terminal
+Once you have completed the initial setup as described above, you're ready to
+play. If you have downloaded a midistar release with pre-built binaries for your
 platform, you can start midistar with the `./run` command from a terminal that
 is in the midistar directory.
 
 If you installed a midistar release using a .deb package, you can start midistar
 by running the `midistar` command in any terminal. This is a wrapper that calls
-the 'run' script mentioned above.
-
-The 'run' script calls the actual binary (in the 'build' folder). It is
-recommended to always use this script instead of calling the binary directly.
-This allows the configuration file to be found, ensures consistency of the
-working directory, and allows environment variables to be set if required.
-
-You will have to provide the path to a MIDI file that you'd like to play using
-the `--midi_file` command line option when using the `./run` command. If you
-would like to set a default, you can do so by setting the `midi_file` parameter
-in the 'config.cfg' file. See the CONFIGURING MIDISTAR section of this README
-for more information.
+the 'run' script mentioned above. It will also handle initial setup the first
+time it is called.
 
 If there is not a midistar release with pre-built binaries for your platform,
 or you have cloned the midistar repository, you will have to build midistar
 from scratch before running. See the BUILDING section in this README.
 
-### 3.3 Playing midistar
-midistar will load the MIDI file supplied using the `--midi_file` command line
-argument. The MIDI notes from this file will be rendered on the game screen in
-real-time, falling from top to bottom. During its fall, each MIDI note will
-collide with the instrument bar near the bottom of the screen. During
-collision, MIDI notes may be played by activating the corresponding note on the
-instrument bar. The aim of midistar is to play each MIDI note as it collides
-with the instrument bar, as precisely as possible.
+### 3.4 Playing midistar
+When you play midistar, you will select a MIDI file to play from the main menu.
+The MIDI notes from this file will be rendered on the game screen in real-time,
+falling from top to bottom. While falling, each MIDI note will pass through the
+instrument bar near the bottom of the screen. When MIDI notes are passing
+through the instrument bar, they can be played by activating the corresponding
+note. The aim of midistar is to play each MIDI note as it passes through the
+instrument bar, as precisely as possible.
 
 The instrument bar can be activated in two ways. The first way is by using the
 computer keyboard. The A-Z, 0-9, and some punctuation keys (dash, equals,
@@ -153,13 +147,12 @@ activated by playing the correlating note on the MIDI instrument.
 you are on Debian or Ubuntu, you can install cmake by using the command:
     `sudo apt-get install cmake`
 
-The command may vary across distributions.
-
 On OSX, you can install cmake by first installing Homebrew and then using the
 command:
     `brew install cmake`
 
-On Windows, you will have to download CMake online.
+On Windows, you will have to download CMake online and follow the installation
+instructions.
 
 ### 4.2 Installing build dependencies
 If you are developing midistar on OSX and Windows, third-party libraries should
@@ -188,8 +181,8 @@ If you're building midistar for the first time, some setup is required. If you
 are on Linux or OSX, you can try running the `./build_setup_unix` command from a
 terminal in the midistar directory. If you are on Windows, run the
 `build_setup_win32.bat` command from the "x64 Native Tools Command Prompt for VS
-2017" Developer Command Prompt. You will have to install Visual Studio to access
-this Developer Command Prompt on Windows.
+2017" Developer Command Prompt. You will have to install Visual Studio 2017 to
+access this Developer Command Prompt on Windows.
 
 Please note that this command does not install prerequisites for the third-
 party libraries. As such, they may fail to build. When a build failure occurs,
@@ -224,7 +217,7 @@ building midistar in debug mode, see the BUILDING section in this README.
 ### 4.5 Opening midistar in Visual Studio
 If you are on Windows, you can open midistar in Visual Studio by running the
 `startvs.bat` command from the midistar project folder. Please note that you
-must have already successfully build midistar following the instructions in
+must have already successfully built midistar following the instructions in
 BUILDING MIDISTAR before you can use this command.
 
 ### 4.6 Building Documentation
@@ -234,7 +227,7 @@ on Debian or Ubuntu, you can install doxygen and Graphviz using the following
 command:
     `sudo apt-get install doxygen graphviz`
 
-If you're own OSX, you can use Homebrew:
+If you're on OSX, you can use Homebrew:
     `brew install doxygen graphviz`
 
 On Windows, you will have to download and doxygen and Graphviz online.

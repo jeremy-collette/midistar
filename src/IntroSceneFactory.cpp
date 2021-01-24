@@ -197,7 +197,7 @@ bool IntroSceneFactory::CreateBackgroundMusicPlayer(
 GameObject* IntroSceneFactory::CreateCopyrightTextGameObject(
     const sf::Font& font) {
     auto copyright_string = new std::string{
-        "Copyright (c) Jeremy Collette 2018-2020" };
+        "Copyright (c) Jeremy Collette 2018-2021" };
     TextFactory text_builder{ *copyright_string, font };
     text_builder.SetFontSize(25);
     text_builder.SetColour(sf::Color::White);

@@ -16,7 +16,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/ScoreComponentFactory.h"
+#include "midistar/ScoreManagerFactory.h"
 
 #include <iostream>
 
@@ -26,15 +26,15 @@
 
 namespace midistar {
 
-bool ScoreComponentFactory::CreateScoreManager(GameObject** game_object_out) {
+bool ScoreManagerFactory::CreateScoreManager(GameObject** game_object_out) {
 
     auto font = new sf::Font();
     if (!font->loadFromFile(MIDISTAR_FONT)) {
         std::cerr << "Could not load font \"" << MIDISTAR_FONT << "\"!\n";
-        throw "Could not load font!";
+        return false;
     }
 
-    const auto text = std::string{ "Score: 0 " };
+    const auto text = std::string{ "Score: 0" };
     auto text_factory = TextFactory{ text, *font };
 
     text_factory

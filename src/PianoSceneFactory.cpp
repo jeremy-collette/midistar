@@ -24,7 +24,7 @@
 #include "midistar/MidiInstrumentGameObjectFactory.h"
 #include "midistar/MidiOutputComponent.h"
 #include "midistar/PianoGameObjectFactory.h"
-#include "midistar/ScoreComponentFactory.h"
+#include "midistar/ScoreManagerFactory.h"
 #include "midistar/SfmlEventsComponent.h"
 #include "midistar/SongEndWatcherComponent.h"
 #include "midistar/SongSceneSfmlEventsHandlerComponent.h"
@@ -101,9 +101,9 @@ bool PianoSceneFactory::Create(
     game_objects.push_back(midi_out_game_object);
 
     // Create score renderer
-    auto score_component_factory = ScoreComponentFactory{};
+    auto score_manager_factory = ScoreManagerFactory{};
     auto score_renderer_game_object = new GameObject{};
-    score_component_factory.CreateScoreManager(&score_renderer_game_object);
+    score_manager_factory.CreateScoreManager(&score_renderer_game_object);
     game_objects.push_back(score_renderer_game_object);
 
     // Create Scene

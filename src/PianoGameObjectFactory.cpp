@@ -31,7 +31,9 @@
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/PianoScoreDeltaProvider.h"
 #include "midistar/PianoSongNoteCollisionHandlerComponent.h"
+#include "midistar/ScoreComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
@@ -140,6 +142,8 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
     song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
+    song_note->SetComponent(new ScoreComponent{
+        new PianoScoreDeltaProvider{ } });
     return song_note;
 }
 

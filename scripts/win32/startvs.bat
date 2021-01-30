@@ -11,7 +11,7 @@ REM Check for Visual Studio
 ECHO Finding Visual Studio...
 WHERE devenv.exe
 if %errorLevel% == 1 (
-    ECHO Could not find Visual Studio^! Please install Visual Studio 2017, open "Developer Command Prompt For VS 2017", and run this script there.
+    ECHO Could not find Visual Studio^! Please install Visual Studio 2017, open "x64 Native Tools Command Prompt For VS 2017", and run this script there.
     GOTO :fin
 )
 ECHO.

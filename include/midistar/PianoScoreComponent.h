@@ -16,28 +16,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/ScoreManagerComponent.h"
+#ifndef MIDISTAR_PIANOSCORECOMPONENT_H_
+#define MIDISTAR_PIANOSCORECOMPONENT_H_
 
-#include <sstream>
+#include "midistar/ScoreComponent.h"
 
 namespace midistar {
 
-ScoreManagerComponent::ScoreManagerComponent()
-    : Component{ Component::SCORE_MANAGER },
-        score_{ 0 } {
-}
+class PianoScoreComponent : public ScoreComponent {
+ public:
+    virtual void Update(Game* g, GameObject* o, int delta);
+};
 
-void ScoreManagerComponent::Update(Game*, GameObject* o, int delta) {
-    auto ss = std::stringstream();
-    ss << "Score: " << score_;
+}   // End namespace midistar
 
-    text_ = ss.str();
-    auto sf_text = o->GetDrawformable<sf::Text>();
-    sf_text->setString(text_);
-}
-
-void ScoreManagerComponent::ModifyScore(int score_delta) {
-    score_ += score_delta;
-}
-
-}  // End namespace midistar
+#endif  // MIDISTAR_SCORECOMPONENT_H_

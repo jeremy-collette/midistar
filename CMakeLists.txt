@@ -55,12 +55,15 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/PhysicsComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoSceneFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PianoScoreDeltaProvider.h    
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoSongNoteCollisionHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Scene.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SceneFactory.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/ScoreComponentFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ScoreComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ScoreDeltaProvider.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ScoreManagerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/ScoreManagerFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SfmlEventsComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/SfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ShrinkGrowComponent.h
@@ -123,13 +126,15 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/NoteInfoComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/OutlineEffectComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PhysicsComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp    
     ${CMAKE_SOURCE_DIR}/src/PianoSceneFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/PianoScoreDeltaProvider.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoSongNoteCollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/ResizeComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Scene.cpp
-    ${CMAKE_SOURCE_DIR}/src/ScoreComponentFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/ScoreComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/ScoreManagerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/ScoreManagerFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/SfmlEventsComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/SongSceneSfmlEventsHandlerComponent.cpp

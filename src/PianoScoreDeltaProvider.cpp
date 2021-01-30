@@ -16,28 +16,29 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/ScoreManagerComponent.h"
-
-#include <sstream>
+#include "midistar/PianoScoreDeltaProvider.h"
+#include <iostream>
 
 namespace midistar {
 
-ScoreManagerComponent::ScoreManagerComponent()
-    : Component{ Component::SCORE_MANAGER },
-        score_{ 0 } {
+PianoScoreDeltaProvider::PianoScoreDeltaProvider()
+    : remainder_{ 0 } {
 }
 
-void ScoreManagerComponent::Update(Game*, GameObject* o, int delta) {
-    auto ss = std::stringstream();
-    ss << "Score: " << score_;
+int PianoScoreDeltaProvider::GetScoreDelta(
+    Game* g
+    , GameObject* o
+    , int delta
+    , bool is_colliding) {
 
-    text_ = ss.str();
-    auto sf_text = o->GetDrawformable<sf::Text>();
-    sf_text->setString(text_);
-}
 
-void ScoreManagerComponent::ModifyScore(int score_delta) {
-    score_ += score_delta;
+    int score_delta = is_colliding * (delta + remainder_);
+    // Hang on to the remainder so we don't lose precision
+    remainder_ = score_delta
+        % PianoScoreDeltaProvider::DEFAULT_SCORE_DIVISOR;
+
+    return score_delta
+        / PianoScoreDeltaProvider::DEFAULT_SCORE_DIVISOR;
 }
 
 }  // End namespace midistar

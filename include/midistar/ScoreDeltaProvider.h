@@ -16,20 +16,23 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_SCORECOMPONENTFACTORY_H_
-#define MIDISTAR_SCORECOMPONENTFACTORY_H_
+#ifndef MIDISTAR_SCOREDELTAPROVIDER_H_
+#define MIDISTAR_SCOREDELTAPROVIDER_H_
 
+#include "midistar/Game.h"
 #include "midistar/GameObject.h"
 
 namespace midistar {
 
-class ScoreComponentFactory {
+class ScoreDeltaProvider {
  public:
-    bool CreateScoreManager(GameObject** game_object_out);
-
-    bool AddScoreComponent(GameObject* game_object);
+    virtual int GetScoreDelta(
+        Game* g
+        , GameObject* o
+        , int delta
+        , bool is_colliding) = 0;
 };
 
-}  // End namespace midistar
+}   // End namespace midistar
 
-#endif  // MIDISTAR_MIDIINSTRUMENTGAMEOBJECTFACTORY_H_
+#endif  // MIDISTAR_SCOREDELTAPROVIDER_H_

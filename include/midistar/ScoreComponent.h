@@ -16,28 +16,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/ScoreManagerComponent.h"
+#ifndef MIDISTAR_SCORECOMPONENT_H_
+#define MIDISTAR_SCORECOMPONENT_H_
 
-#include <sstream>
+#include <vector>
+
+#include "midistar/Component.h"
+#include "midistar/Game.h"
+#include "midistar/GameObject.h"
+#include "midistar/ScoreDeltaProvider.h"
 
 namespace midistar {
 
-ScoreManagerComponent::ScoreManagerComponent()
-    : Component{ Component::SCORE_MANAGER },
-        score_{ 0 } {
-}
+class ScoreComponent : public Component {
+ public:
+    ScoreComponent(ScoreDeltaProvider* score_delta_provider);
 
-void ScoreManagerComponent::Update(Game*, GameObject* o, int delta) {
-    auto ss = std::stringstream();
-    ss << "Score: " << score_;
+    virtual void Update(Game* g, GameObject* o, int delta);
 
-    text_ = ss.str();
-    auto sf_text = o->GetDrawformable<sf::Text>();
-    sf_text->setString(text_);
-}
+    virtual void SetIsBeingPlayed(bool being_played);
 
-void ScoreManagerComponent::ModifyScore(int score_delta) {
-    score_ += score_delta;
-}
+ private:
+    bool being_played_;
+    ScoreDeltaProvider* score_delta_provider_;
+};
 
-}  // End namespace midistar
+}   // End namespace midistar
+
+#endif  // MIDISTAR_SCORECOMPONENT_H_

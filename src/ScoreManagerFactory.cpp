@@ -27,7 +27,6 @@
 namespace midistar {
 
 bool ScoreManagerFactory::CreateScoreManager(GameObject** game_object_out) {
-
     auto font = new sf::Font();
     if (!font->loadFromFile(MIDISTAR_FONT)) {
         std::cerr << "Could not load font \"" << MIDISTAR_FONT << "\"!\n";

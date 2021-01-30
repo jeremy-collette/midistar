@@ -17,7 +17,6 @@
  */
 
 #include "midistar/PianoScoreDeltaProvider.h"
-#include <iostream>
 
 namespace midistar {
 

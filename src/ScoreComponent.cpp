@@ -25,7 +25,7 @@
 namespace midistar {
 
 ScoreComponent::ScoreComponent(ScoreDeltaProvider* score_delta_provider)
-    : Component{ Component::SCORE_COMPONENT }
+    : Component{ Component::SCORE }
         , being_played_{ false }
         , score_delta_provider_{ score_delta_provider } {
 }

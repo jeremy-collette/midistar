@@ -27,6 +27,10 @@ ScoreManagerComponent::ScoreManagerComponent()
         score_{ 0 } {
 }
 
+void ScoreManagerComponent::ModifyScore(int score_delta) {
+    score_ += score_delta;
+}
+
 void ScoreManagerComponent::Update(Game*, GameObject* o, int delta) {
     auto ss = std::stringstream();
     ss << "Score: " << score_;
@@ -34,10 +38,6 @@ void ScoreManagerComponent::Update(Game*, GameObject* o, int delta) {
     text_ = ss.str();
     auto sf_text = o->GetDrawformable<sf::Text>();
     sf_text->setString(text_);
-}
-
-void ScoreManagerComponent::ModifyScore(int score_delta) {
-    score_ += score_delta;
 }
 
 }  // End namespace midistar

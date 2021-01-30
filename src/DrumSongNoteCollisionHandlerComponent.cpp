@@ -59,7 +59,7 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
 
     // Increment score
     auto score_component = o->GetComponent<ScoreComponent>(
-        Component::SCORE_COMPONENT);
+        Component::SCORE);
     if (score_component) {
         score_component->SetIsBeingPlayed(valid_collider);
     }

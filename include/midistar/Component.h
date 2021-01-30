@@ -75,7 +75,7 @@ class Component {
         , SONG_END_WATCHER
         , KEEP_ALIVE
         , BACKGROUND_SONG_PLAYER
-        , SCORE_COMPONENT
+        , SCORE
         , SCORE_MANAGER
         , NUM_COMPONENTS
     };

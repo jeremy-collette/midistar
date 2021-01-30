@@ -120,7 +120,9 @@ bool DrumSceneFactory::Create(
     // Create score renderer
     auto score_manager_factory = ScoreManagerFactory{};
     GameObject* score_renderer_game_object;
-    score_manager_factory.CreateScoreManager(&score_renderer_game_object);
+    if (!score_manager_factory.CreateScoreManager(&score_renderer_game_object)){
+        return false;
+    }
     game_objects.push_back(score_renderer_game_object);
 
     *scene = new Scene{ game, render_window, game_objects };

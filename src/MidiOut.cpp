@@ -65,8 +65,10 @@ bool MidiOut::Init() {
     auto instrument_mappings = Config::GetInstance()
         .GetMidiOutputInstrumentMapping();
     for (auto kvp : instrument_mappings) {
+#ifdef DEBUG
         std::cout << "Setting channel " << kvp.first << " instrument to "
             << kvp.second << "...\n";
+#endif
 
         if (fluid_synth_program_change(synth_, kvp.first, kvp.second)
                 == FLUID_FAILED) {

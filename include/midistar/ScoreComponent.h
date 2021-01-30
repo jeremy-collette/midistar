@@ -19,8 +19,6 @@
 #ifndef MIDISTAR_SCORECOMPONENT_H_
 #define MIDISTAR_SCORECOMPONENT_H_
 
-#include <vector>
-
 #include "midistar/Component.h"
 #include "midistar/Game.h"
 #include "midistar/GameObject.h"

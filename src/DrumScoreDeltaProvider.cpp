@@ -18,8 +18,6 @@
 
 #include "midistar/DrumScoreDeltaProvider.h"
 
-#include <iostream>
-
 namespace midistar {
 
 DrumScoreDeltaProvider::DrumScoreDeltaProvider()

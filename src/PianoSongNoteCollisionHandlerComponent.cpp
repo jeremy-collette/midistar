@@ -19,11 +19,14 @@
 #include "midistar/PianoSongNoteCollisionHandlerComponent.h"
 
 #include <algorithm>
+#include <cassert>
 
 #include "midistar/Config.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/ScoreComponent.h"
+#include "midistar/ScoreManagerComponent.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
@@ -38,7 +41,7 @@ PianoSongNoteCollisionHandlerComponent::PianoSongNoteCollisionHandlerComponent(
 void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         Game* g
         , GameObject* o
-        , int
+        , int delta
         , std::vector<GameObject*> colliding_with) {
     // Handle each collision
     GameObject* valid_collider = nullptr;
@@ -46,6 +49,13 @@ void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
          if (HandleCollision(g, o, collider)) {
             valid_collider = collider;
         }
+    }
+
+    // Increment score
+    auto score_component = o->GetComponent<ScoreComponent>(
+        Component::SCORE);
+    if (score_component) {
+        score_component->SetIsBeingPlayed(valid_collider);
     }
 
     // If we are being played, let's add a grinding effect
@@ -56,6 +66,7 @@ void PianoSongNoteCollisionHandlerComponent::HandleCollisions(
         grinding_ = game_object_factory_->CreateNotePlayEffect(
             valid_collider);
         g->GetCurrentScene().AddGameObject(grinding_);
+
     } else if (grinding_) {  // Otherwise remove the grinding effect
         grinding_->SetRequestDelete(true);
         grinding_ = nullptr;

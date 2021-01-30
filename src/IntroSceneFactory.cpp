@@ -151,7 +151,6 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
         auto version = CreateVersionTextGameObject(*font);
         main_menu.GetGameObject()->AddChild(version);
 
-
         auto game_objects = std::vector<GameObject*>
         {
             main_menu.GetGameObject()

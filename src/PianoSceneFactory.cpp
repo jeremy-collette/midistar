@@ -102,7 +102,7 @@ bool PianoSceneFactory::Create(
 
     // Create score renderer
     auto score_manager_factory = ScoreManagerFactory{};
-    auto score_renderer_game_object = new GameObject{};
+    GameObject* score_renderer_game_object;
     score_manager_factory.CreateScoreManager(&score_renderer_game_object);
     game_objects.push_back(score_renderer_game_object);
 

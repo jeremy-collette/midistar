@@ -24,6 +24,7 @@
 #include "midistar/CollidableComponent.h"
 #include "midistar/Config.h"
 #include "midistar/DeleteOffscreenComponent.h"
+#include "midistar/DrumScoreDeltaProvider.h"
 #include "midistar/DrumSongNoteCollisionHandlerComponent.h"
 #include "midistar/FadeOutEffectComponent.h"
 #include "midistar/Game.h"
@@ -34,6 +35,7 @@
 #include "midistar/OutlineEffectComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/ScoreComponent.h"
 #include "midistar/ShrinkGrowComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/Utility.h"
@@ -130,6 +132,7 @@ GameObject* DrumGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new DeleteOffscreenComponent{});
     song_note->SetComponent(new VerticalCollisionDetectorComponent{});
     song_note->SetComponent(new DrumSongNoteCollisionHandlerComponent{ this });
+    song_note->SetComponent(new ScoreComponent{ new DrumScoreDeltaProvider{} });
     return song_note;
 }
 

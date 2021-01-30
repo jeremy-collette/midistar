@@ -30,6 +30,10 @@ ScoreComponent::ScoreComponent(ScoreDeltaProvider* score_delta_provider)
         , score_delta_provider_{ score_delta_provider } {
 }
 
+ScoreComponent::~ScoreComponent() {
+    delete score_delta_provider_;
+}
+
 void ScoreComponent::Update(Game* g, GameObject* o, int delta) {
     auto score_game_object = g->GetCurrentScene()
         .GetFirstGameObjectByTag("ScoreManager");

@@ -28,6 +28,7 @@
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/OutlineEffectComponent.h"
 #include "midistar/ResizeComponent.h"
+#include "midistar/ScoreComponent.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
 
 namespace midistar {
@@ -54,6 +55,13 @@ void DrumSongNoteCollisionHandlerComponent::HandleCollisions(
         if (HandleCollision(g, o, collider)) {
             valid_collider = collider;
         }
+    }
+
+    // Increment score
+    auto score_component = o->GetComponent<ScoreComponent>(
+        Component::SCORE_COMPONENT);
+    if (score_component) {
+        score_component->SetIsBeingPlayed(valid_collider);
     }
 
     // If we are being played, let's add a drum play effect

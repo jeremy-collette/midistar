@@ -16,33 +16,29 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_SCORECOMPONENT_H_
-#define MIDISTAR_SCORECOMPONENT_H_
+#ifndef MIDISTAR_DRUMSCOREDELTAPROVIDER_H_
+#define MIDISTAR_DRUMSCOREDELTAPROVIDER_H_
 
-#include <vector>
-
-#include "midistar/Component.h"
-#include "midistar/Game.h"
-#include "midistar/GameObject.h"
 #include "midistar/ScoreDeltaProvider.h"
 
 namespace midistar {
 
-class ScoreComponent : public Component {
+class DrumScoreDeltaProvider : public ScoreDeltaProvider {
  public:
-    ScoreComponent(ScoreDeltaProvider* score_delta_provider);
+     DrumScoreDeltaProvider();
 
-    ~ScoreComponent();
-
-    virtual void Update(Game* g, GameObject* o, int delta);
-
-    virtual void SetIsBeingPlayed(bool being_played);
+     virtual int GetScoreDelta(
+         Game* g
+         , GameObject* o
+         , int delta
+         , bool is_colliding);
 
  private:
-    bool being_played_;
-    ScoreDeltaProvider* score_delta_provider_;
+     const static int DEFAULT_DRUM_SCORE = 100;
+
+     bool already_scored_;
 };
 
 }   // End namespace midistar
 
-#endif  // MIDISTAR_SCORECOMPONENT_H_
+#endif  // MIDISTAR_DRUMSCOREDELTAPROVIDER_H_

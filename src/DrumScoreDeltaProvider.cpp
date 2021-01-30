@@ -16,18 +16,28 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_PIANOSCORECOMPONENT_H_
-#define MIDISTAR_PIANOSCORECOMPONENT_H_
+#include "midistar/DrumScoreDeltaProvider.h"
 
-#include "midistar/ScoreComponent.h"
+#include <iostream>
 
 namespace midistar {
 
-class PianoScoreComponent : public ScoreComponent {
- public:
-    virtual void Update(Game* g, GameObject* o, int delta);
-};
+DrumScoreDeltaProvider::DrumScoreDeltaProvider()
+    : already_scored_{ false } {
+}
 
-}   // End namespace midistar
+int DrumScoreDeltaProvider::GetScoreDelta(
+    Game* g
+    , GameObject* o
+    , int delta
+    , bool is_colliding) {
 
-#endif  // MIDISTAR_SCORECOMPONENT_H_
+    if (!is_colliding || already_scored_) {
+        return 0;
+    }
+    already_scored_ = true;
+
+    return DEFAULT_DRUM_SCORE;
+}
+
+}  // End namespace midistar

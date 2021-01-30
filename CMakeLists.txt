@@ -28,7 +28,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentAutoPlayComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentInputHandlerComponent.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneFactory.h    
+    ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/IntroSceneSfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/InvertColourComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/KeepAliveComponent.h
@@ -56,7 +56,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/PhysicsComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoSceneFactory.h
-    ${CMAKE_SOURCE_DIR}/include/midistar/PianoScoreDeltaProvider.h    
+    ${CMAKE_SOURCE_DIR}/include/midistar/PianoScoreDeltaProvider.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoSongNoteCollisionHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/ResizeComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Scene.h
@@ -99,7 +99,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentAutoPlayComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/IntroSceneFactory.cpp    
+    ${CMAKE_SOURCE_DIR}/src/IntroSceneFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/IntroSceneSfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/InstrumentInputHandlerComponent.cpp
@@ -128,7 +128,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/NoteInfoComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/OutlineEffectComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PhysicsComponent.cpp
-    ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp    
+    ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoSceneFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoScoreDeltaProvider.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoSongNoteCollisionHandlerComponent.cpp

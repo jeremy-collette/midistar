@@ -18,6 +18,7 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/DeleteOffscreenComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumSceneFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/DrumScoreDeltaProvider.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumSongNoteCollisionHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/FadeOutEffectComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Game.h
@@ -91,6 +92,7 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/DeleteOffscreenComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumSceneFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/DrumScoreDeltaProvider.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumSongNoteCollisionHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/FadeOutEffectComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Game.cpp

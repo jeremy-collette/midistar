@@ -29,7 +29,7 @@ cd "$ext_dir/assets/fluid"
 if [[ -f "$ext_dir/assets/fluid/FluidR3_GM.sf2" ]]; then
     cecho "Already installed!"
 else
-    wget -O "fluid.zip" "https://member.keymusician.com/Member/FluidR3_GM/FluidR3_GM.zip"
+    wget -O "fluid.zip" "https://github.com/jeremy-collette/fluidsoundfont/releases/download/v1.0/FluidR3_GM.zip"
     unzip "fluid.zip" -d "extracted"
     mv "extracted/FluidR3_GM.sf2" "."
     rm -rf "extracted" "fluid.zip"

@@ -1,0 +1,186 @@
+#!/bin/bash
+
+ITEMS_TO_COPY=(
+    ".git/modules/"
+    "assets/"
+    "build/release"
+    "doc/"
+    "external/"
+    "images/"
+    "include/"
+    "lib/release"
+    "scripts/debian"
+    "scripts/osx"
+    "scripts/unix"    
+    "src/"
+    "GPLv3"
+    "LICENSE"
+    "README.md"
+)
+
+EXTERNAL_REPOS=(
+    "CLI11"
+    "fluidsynth"
+    "midifile"
+    "rtmidi"
+    "SFML"
+    "vcpkg"
+)
+
+ITEMS_TO_DELETE=(
+    ".git/"
+    "doc/doxygen.config"
+    "external/assets/fluid/FluidR3_GM.sf2"
+)
+
+function Print()
+{
+	Text=$1
+    echo -e "\033[0;32m$Text\033[0m">&2
+}
+
+function GetScriptDirectory
+{
+    scriptDir=$(dirname "$0")
+    echo "Script dir: $scriptDir">&2
+    echo "$scriptDir"
+    return
+}
+
+function GetMidistarDirectory
+{
+    scriptDir=$(GetScriptDirectory)
+    parentDir="$(dirname "$scriptDir")" 
+    midistarDir="$(dirname "$parentDir")"
+    echo "midistar dir: $midistarDir">&2
+    echo "$midistarDir"
+    return
+}
+
+function CreateReleaseFolder()    
+{
+	MidistarDir=$1
+	Version=$2
+    Print "Creating release folder..."
+    releaseDir="$MidistarDir/package/midistar-${Version}_x86_64-platform"
+    if [ -d $releaseDir ]; then
+        Print "Release directory $releaseDir already exists!">&2
+        return 1
+    fi
+    mkdir "$releaseDir"
+    echo "Release folder: $releaseDir">&2    
+
+    echo "Creating scripts folder inside release folder...">&2    
+    mkdir -p "$releaseDir/scripts/win32"
+    echo "$releaseDir"
+    return
+}
+
+function CopyToReleaseFolder()
+{
+	MidistarDir=$1
+	ReleaseDir=$2
+    Print "Copying items to release folder $ReleaseDir..."
+    for item in "${ITEMS_TO_COPY[@]}"
+	do
+        Print "Copying $item..."
+        itemInputPath="$MidistarDir/$item"
+        itemOutputPath="$ReleaseDir/$item"
+        if [ -d $itemInputPath ]; then
+        	echo "$itemInputPath is a directory. Creating parent folders in package folder...">&2
+        	mkdir -p $itemOutputPath
+        fi
+        cp -r $itemInputPath $ReleaseDir
+	done
+}
+
+function CleanUpExternalGitRepos()
+{
+	ReleaseDir=$1
+    originalLocation=$(pwd)
+    echo "Original loc: $originalLocation">&2
+    echo "Cleaning up git submodules...">&2
+    externalDir="$ReleaseDir/external"
+
+    for repo in "${EXTERNAL_REPOS[@]}"
+	do
+        echo "Cleaning up $repo...">&2
+        repoDir="$externalDir/$repo"
+        echo "Repo dir: $repoDir">&2
+        cd $repoDir
+        git clean -fdx
+
+        if [ -f ".git" ]; then        
+            rm ".git"            
+        else
+            echo "No .git folder found in $repo.">&2
+        fi
+
+        if [ -f ".gitignore" ]; then
+            rm ".gitignore"            
+        else      
+            echo "No .gitignore file found in $repo.">&2
+        fi
+        cd $originalLocation
+	done
+}
+
+function CleanUpReleaseFolder()
+{
+	MidistarDir=$1
+	RelaseDir=$2
+    CleanUpExternalGitRepos $ReleaseDir
+
+    Print "Cleaning up $ReleaseDir..."
+
+    for item in "${ITEMS_TO_DELETE[@]}"
+	do
+        echo "Deleting $item...">&2
+        itemPath="$ReleaseDir/$item"
+        echo "$itemPath">&2
+        #rm $itemPath
+    done
+}
+
+function FinalizeReleaseFolder()
+{
+	ReleaseDir=$1
+    originalLocation=pwd
+    
+    Print "Finalizing release directoy..."
+    cd $ReleaseDir
+    mv "scripts/win32/config.cfg" .
+    mv "scripts/win32/setup.bat" .
+    cd $originalLocation
+}
+
+function CreateNewRelease()    
+{
+	Version=$1
+    midistarDir=$(GetMidistarDirectory)
+    releaseDir=$(CreateReleaseFolder $midistarDir $Version)
+    if [ $? == 1 ]; then
+    	echo "Exiting..."
+    	exit 1
+    fi
+    CopyToReleaseFolder $midistarDir $releaseDir
+    #CleanUpReleaseFolder $midistarDir $releaseDir
+    #FinalizeReleaseFolder $releaseDir
+    Print "New release created at $releaseDir"
+    Print "Congratulations on releasing midistar v$Version!"
+}
+
+Print "This script will create a new midistar release. Ensure the Release binaries are up-to-date and the source folder has been prepared for release. You may want to build documentation or update the source version.\n"
+
+echo "Press enter to continue or CTRL+C to quit"
+read input
+
+if [ "$1" == "" ]; then
+	echo "Enter version (#.#.#)"
+    read version
+else
+    version=$args[0]
+fi
+
+Print "Preparing release for midistar v$version..."
+CreateNewRelease $version

@@ -105,6 +105,19 @@ void Game::Run() {
         int delta = t == 0 ? 0 : clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
+        // Ignore frames with massive deltas (to prevent music skipping etc).
+        // We see massive deltas after main thread has been blocked
+        // (e.g. window was dragged).
+        //
+        // TODO(@jez): should we just handle SFML events and check for Window drag?
+        if (delta >= 100)
+        {
+            std::cout << delta << "\n";
+        }
+        if (delta >= 250) {
+            continue;
+        }
+
         // Handle updating
         current_scene_->Update(delta);
         current_scene_->Draw();

@@ -9,13 +9,12 @@ if [[ $dir == 'debian' ]]; then
     cd ../..
 fi
 
-# Get version
+# Get args
 if [[ $# != 1 ]]; then
-    echo "Usage: create_package <version> <binaries_path>"
+    echo "Usage: create_package <binaries_path>"
     exit
 fi
-version=$1
-binaries_path=$2
+binaries_path=$1
 
 # Find binary
 midistar_dir=$PWD
@@ -31,15 +30,15 @@ if [[ $? -eq 0 ]]; then
     package_dir=$midistar_dir/package
     mkdir package
     cd package
-    mkdir midistar_${version}_deb
-    cd midistar_${version}_deb
+    mkdir temp
+    cd temp
 
-    # Check control file version matches version supplied
-    match=$(cat $debian_script_dir/control | grep -c "^Version: $version\$")
-    if [[ $match -eq 0 ]]; then
-        echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
-        exit 1
-    fi
+    ## Check control file version matches version supplied
+    #match=$(cat $debian_script_dir/control | grep -c "^Version: $version\$")
+    #if [[ $match -eq 0 ]]; then
+    #    echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
+    #    exit 1
+    #fi
 
     # Add control file   
     echo Adding control file...
@@ -52,8 +51,7 @@ if [[ $? -eq 0 ]]; then
     mkdir usr/local
     mkdir usr/local/bin
     cd usr/local/bin
-    mkdir midistar_$version
-    cp -r "${binaries_path}/*" "midistar_$version/."
+    cp -r "${binaries_path}" "."
 
     ## Add run script
     #echo Adding run script...
@@ -70,6 +68,11 @@ if [[ $? -eq 0 ]]; then
 
     # Create .deb
     cd $package_dir
-    dpkg-deb --build midistar_${version}_deb
+    dpkg-deb --build temp
+    
+    # Rename
+    release_name=$(basename $binaries_path)
+    mv "temp.deb" "${release_name}.deb"
+    rm -rf temp    
 fi
 

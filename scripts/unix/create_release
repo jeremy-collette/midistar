@@ -112,7 +112,7 @@ function CreateReleaseFolder()
 	MidistarDir=$1
 	Version=$2
     Print "Creating release folder..."
-    releaseDir="$MidistarDir/package/midistar-${Version}_x86_64-platform"
+    releaseDir="$MidistarDir/package/midistar-${Version}"
     if [ -d $releaseDir ]; then
         Print "Release directory $releaseDir already exists!">&2
         return 1

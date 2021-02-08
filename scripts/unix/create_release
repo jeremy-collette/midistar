@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 ITEMS_TO_COPY=(
     ".git/modules/"
@@ -9,13 +10,25 @@ ITEMS_TO_COPY=(
     "images/"
     "include/"
     "lib/release"
-    "scripts/debian"
-    "scripts/osx"
-    "scripts/unix"    
+    "scripts/unix/install_soundfont"
+    "scripts/unix/find_binary"
+    "scripts/unix/setup"
     "src/"
     "GPLv3"
     "LICENSE"
     "README.md"
+)
+
+DEBIAN_TO_COPY=(
+    "scripts/debian/config.cfg"
+    "scripts/debian/run_release"
+    "scripts/debian/set_env"
+)
+
+OSX_TO_COPY=(
+    "scripts/osx/config.cfg"
+    "scripts/osx/run_release"
+    "scripts/osx/set_env"
 )
 
 EXTERNAL_REPOS=(
@@ -36,7 +49,44 @@ ITEMS_TO_DELETE=(
 function Print()
 {
 	Text=$1
-    echo -e "\033[0;32m$Text\033[0m">&2
+    Color=$2
+    color="0;32m"
+
+    if [ "$Color" != "" ]; then
+        color=$Color
+    fi 
+    
+    echo -e "\033[$color$Text\033[0m">&2
+}
+
+function GetPlatform
+{
+    if [ "$(uname)" == "Darwin" ]; then
+        echo "OSX detected.">&2
+        echo "osx"
+        return 0
+    fi                
+    
+    if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+        echo "Linux detected.">&2
+        echo "linux"
+        return 0
+    fi        
+
+    if [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+        echo "Windows x86 detected.">&2
+        echo "win-x86"
+        return 0
+    fi        
+
+    if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+        echo "Windows x64 detected.">&2
+        echo "win-x64"
+        return 0
+    fi                
+
+    echo "Unrecognised platform.">&2
+    return 1
 }
 
 function GetScriptDirectory
@@ -70,8 +120,6 @@ function CreateReleaseFolder()
     mkdir "$releaseDir"
     echo "Release folder: $releaseDir">&2    
 
-    echo "Creating scripts folder inside release folder...">&2    
-    mkdir -p "$releaseDir/scripts/win32"
     echo "$releaseDir"
     return
 }
@@ -80,26 +128,35 @@ function CopyToReleaseFolder()
 {
 	MidistarDir=$1
 	ReleaseDir=$2
+    IsLinux=$3
     Print "Copying items to release folder $ReleaseDir..."
-    for item in "${ITEMS_TO_COPY[@]}"
+
+    items=("${ITEMS_TO_COPY[@]}")
+    if [ $IsLinux -eq 1 ]; then
+        echo "Including Linux specific items...">&2
+        items=("${items[@]}" "${DEBIAN_TO_COPY[@]}")
+    else
+        echo "Including OSX specific items...">&2
+        items=("${items[@]}" "${OSX_TO_COPY[@]}")
+    fi
+
+    for item in "${items[@]}"
 	do
         Print "Copying $item..."
         itemInputPath="$MidistarDir/$item"
         itemOutputPath="$ReleaseDir/$item"
-        if [ -d $itemInputPath ]; then
-        	echo "$itemInputPath is a directory. Creating parent folders in package folder...">&2
-        	mkdir -p $itemOutputPath
-        fi
-        cp -r $itemInputPath $ReleaseDir
+        outputPathParent="$(dirname "$itemOutputPath")"
+        mkdir -p $outputPathParent
+        cp -r $itemInputPath $itemOutputPath
 	done
 }
 
 function CleanUpExternalGitRepos()
 {
-	ReleaseDir=$1
+    ReleaseDir=$1
+
+    Print "Cleaning up git submodules...">&2
     originalLocation=$(pwd)
-    echo "Original loc: $originalLocation">&2
-    echo "Cleaning up git submodules...">&2
     externalDir="$ReleaseDir/external"
 
     for repo in "${EXTERNAL_REPOS[@]}"
@@ -132,46 +189,68 @@ function CleanUpReleaseFolder()
     CleanUpExternalGitRepos $ReleaseDir
 
     Print "Cleaning up $ReleaseDir..."
-
     for item in "${ITEMS_TO_DELETE[@]}"
 	do
         echo "Deleting $item...">&2
         itemPath="$ReleaseDir/$item"
         echo "$itemPath">&2
-        #rm $itemPath
+        rm -rf $itemPath
     done
 }
 
 function FinalizeReleaseFolder()
 {
 	ReleaseDir=$1
-    originalLocation=pwd
+    originalLocation=$(pwd)
     
     Print "Finalizing release directoy..."
     cd $ReleaseDir
-    mv "scripts/win32/config.cfg" .
-    mv "scripts/win32/setup.bat" .
+
+    if [ -f "./scripts/debian/config.cfg" ]; then
+        mv ./scripts/debian/config.cfg .
+    else
+        mv ./scripts/osx/config.cfg .
+    fi
+    mv "scripts/unix/setup" .
+
     cd $originalLocation
 }
 
 function CreateNewRelease()    
 {
 	Version=$1
+    IsLinux=$2
     midistarDir=$(GetMidistarDirectory)
     releaseDir=$(CreateReleaseFolder $midistarDir $Version)
     if [ $? == 1 ]; then
     	echo "Exiting..."
     	exit 1
     fi
-    CopyToReleaseFolder $midistarDir $releaseDir
-    #CleanUpReleaseFolder $midistarDir $releaseDir
-    #FinalizeReleaseFolder $releaseDir
+    CopyToReleaseFolder $midistarDir $releaseDir $IsLinux
+    CleanUpReleaseFolder $midistarDir $releaseDir
+    FinalizeReleaseFolder $releaseDir
     Print "New release created at $releaseDir"
-    Print "Congratulations on releasing midistar v$Version!"
+    Print "Congratulations on releasing midistar v$Version!" "1;32m"
 }
 
-Print "This script will create a new midistar release. Ensure the Release binaries are up-to-date and the source folder has been prepared for release. You may want to build documentation or update the source version.\n"
+platform=$(GetPlatform)
+if [ $? == 1 ]; then
+    Print "Unsupported platform. Exiting..."
+    exit 1
+fi
 
+Print "Platform: $platform\n"
+if [ "$platform" == "windows" ]; then
+    Print "This script is not supported on Windows. Use 'CreateRelease.ps1' instead in the Windows scripts folder."
+    exit 1
+fi
+
+is_linux=0
+if [ "$platform" == "linux" ]; then
+    is_linux=1
+fi
+
+Print "This script will create a new midistar release. Ensure the Release binaries are up-to-date and the source folder has been prepared for release. You may want to build documentation or update the source version.\n"
 echo "Press enter to continue or CTRL+C to quit"
 read input
 
@@ -183,4 +262,9 @@ else
 fi
 
 Print "Preparing release for midistar v$version..."
-CreateNewRelease $version
+CreateNewRelease $version $is_linux
+
+if [ $? == 1 ]; then
+    exit 1
+fi
+exit 0

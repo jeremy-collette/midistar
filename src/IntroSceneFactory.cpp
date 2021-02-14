@@ -48,7 +48,7 @@ namespace fs = std::experimental::filesystem;
 
 namespace midistar {
 
-// These are defined in the header but we have to re-declare here due to
+// These are defined in the header but we have to re-define here due to
 // constexpr weirdness.
 constexpr const char* IntroSceneFactory::DRUM_MIDI_DIR;
 

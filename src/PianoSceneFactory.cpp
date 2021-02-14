@@ -33,8 +33,8 @@
 namespace midistar {
 
 PianoSceneFactory::PianoSceneFactory(
-    const std::string& midi_file_name)
-    : midi_file_name_{ midi_file_name } {
+    const std::string midi_file_name)
+        : midi_file_name_{ midi_file_name } {
 }
 
 bool PianoSceneFactory::Create(

@@ -78,40 +78,67 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
         , item_default_font_size)
         .SetTitleFontSize(35);
 
+    auto midistar_dir = fs::current_path();
+    auto piano_dir = midistar_dir;
+    // The '/=' operator appends paths in the correct native format.
+    // Don't ask me why.
+    piano_dir /= PIANO_MIDI_DIR;
     piano_menu.GetGameObject()->AddChild(
-        CreateScanningTextGameObject(*font));
-    drum_menu.GetGameObject()->AddChild(
-        CreateScanningTextGameObject(*font));
+        CreateScanningTextGameObject(
+            *font
+            , piano_dir.string()));
 
-    // Add menu items
-    auto menu_item_text = std::vector<std::string*>{ };
-    std::string path = ".";
+    auto drum_dir = midistar_dir;
+    // The '/=' operator appends paths in the correct native format.
+    // Don't ask me why.
+    drum_dir /= DRUM_MIDI_DIR;
+    drum_menu.GetGameObject()->AddChild(
+        CreateScanningTextGameObject(
+            *font
+            , drum_dir.string()));
+
+    // Add menu items for Piano songs
+    std::string path = PIANO_MIDI_DIR;
     auto song_found = false;
     for (const auto & entry : fs::directory_iterator(path)) {
-        auto path_string = entry.path().string();
-        if (path_string.find(".mid") != std::string::npos) {
+        auto path = entry.path();
+        if (path.string().find(".mid") != std::string::npos) {
             song_found = true;
             piano_menu.AddMenuItem(
-                factory.CreateMenuItem(path_string)
-                .SetOnSelect(([path_string](Game* g, GameObject*, int) {
-                    Scene* new_scene = nullptr;
-                    auto piano_scene_factory = PianoSceneFactory{
-                        path_string };
-                    if (!piano_scene_factory.Create(
-                        g
-                        , &g->GetWindow()
-                        , &new_scene)) {
-                        throw "Scene creation failed";
-                    }
-                    g->SetScene(new_scene);
-                    }))
-                .SetFontSize(20));
+                factory.CreateMenuItem(path.filename().string())
+                    .SetOnSelect(([path](Game* g, GameObject*, int) {
+                        Scene* new_scene = nullptr;
+                        auto piano_scene_factory = PianoSceneFactory{
+                            path.string() };
+                        if (!piano_scene_factory.Create(
+                            g
+                            , &g->GetWindow()
+                            , &new_scene)) {
+                            throw "Scene creation failed";
+                        }
+                        g->SetScene(new_scene);
+                        }))
+                    .SetFontSize(20));
+        }
+    }
 
+    if (!song_found) {
+        piano_menu.GetGameObject()->AddChild(
+            CreateNoFilesFoundTextGameObject(*font));
+    }
+
+    // Add menu items for Drum songs
+    path = DRUM_MIDI_DIR;
+    song_found = false;
+    for (const auto & entry : fs::directory_iterator(path)) {
+        auto path = entry.path();
+        if (path.string().find(".mid") != std::string::npos) {
+            song_found = true;
             drum_menu.AddMenuItem(
-                factory.CreateMenuItem(path_string)
-                .SetOnSelect(([path_string](Game* g, GameObject*, int) {
+                factory.CreateMenuItem(path.filename().string())
+                .SetOnSelect(([path](Game* g, GameObject*, int) {
                     Scene* new_scene = nullptr;
-                    auto drum_scene_factory = DrumSceneFactory{ path_string };
+                    auto drum_scene_factory = DrumSceneFactory{ path.string() };
                     if (!drum_scene_factory.Create(
                         g
                         , &g->GetWindow()
@@ -125,8 +152,6 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
     }
 
     if (!song_found) {
-        piano_menu.GetGameObject()->AddChild(
-            CreateNoFilesFoundTextGameObject(*font));
         drum_menu.GetGameObject()->AddChild(
             CreateNoFilesFoundTextGameObject(*font));
     }
@@ -217,9 +242,10 @@ GameObject* IntroSceneFactory::CreateNoFilesFoundTextGameObject(
 }
 
 GameObject* IntroSceneFactory::CreateScanningTextGameObject(
-    const sf::Font& font) {
+    const sf::Font& font
+    , std::string directory) {
     auto subtitle_string = new std::string{ "Scanning directory "
-        + fs::current_path().string() };
+        + directory };
     TextFactory text_builder{ *subtitle_string, font };
     text_builder.SetFontSize(25);
     text_builder.SetColour(sf::Color::White);

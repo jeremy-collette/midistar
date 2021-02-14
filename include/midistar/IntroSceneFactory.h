@@ -36,7 +36,6 @@ class IntroSceneFactory {
 
  private:
      static constexpr const char* DRUM_MIDI_DIR = "songs/drums";
-
      static constexpr const char* PIANO_MIDI_DIR = "songs/piano";
 
      enum GameType {

@@ -107,15 +107,13 @@ void Game::Run() {
 
         // Ignore frames with massive deltas (to prevent music skipping etc).
         // We see massive deltas after main thread has been blocked
-        // (e.g. window was dragged).
-        //
-        // TODO(@jez): should we just handle SFML events and check for Window drag?
-        if (delta >= 100)
+        // (e.g. window was dragged or disk IO).
+        if (delta >= MAX_FRAME_DELTA)
         {
-            std::cout << delta << "\n";
-        }
-        if (delta >= 250) {
-            continue;
+#ifdef DEBUG
+            std::cout << "Frame delta: " << delta << "\n";
+#endif
+            delta = MAX_FRAME_DELTA;
         }
 
         // Handle updating

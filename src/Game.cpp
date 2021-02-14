@@ -105,15 +105,14 @@ void Game::Run() {
         int delta = t == 0 ? 0 : clock.getElapsedTime().asMilliseconds();
         clock.restart();
 
-        // Ignore frames with massive deltas (to prevent music skipping etc).
-        // We see massive deltas after main thread has been blocked
+        // Ignore massive deltas (to prevent music skipping etc). We see massive
+        // deltas after main thread has been blocked.
         // (e.g. window was dragged or disk IO).
-        if (delta >= MAX_FRAME_DELTA)
-        {
-#ifdef DEBUG
-            std::cout << "Frame delta: " << delta << "\n";
-#endif
-            delta = MAX_FRAME_DELTA;
+        auto frame_max_delta = Config::GetInstance().GetFrameMaxDelta();
+        if (frame_max_delta != -1
+                && delta >= frame_max_delta) {
+            std::cout << "Warning: ignoring frame delta: " << delta << "\n";
+            delta = 0;
         }
 
         // Handle updating

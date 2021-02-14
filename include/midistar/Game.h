@@ -69,8 +69,6 @@ class Game {
     void SetScene(Scene* next_scene);
 
  private:
-    const int MAX_FRAME_DELTA = 250;  //!< Max amount of time between frames
-
     Scene* current_scene_;  //!< Current scene
     Scene* next_scene_;  //!< The scene to swap to
     sf::RenderWindow window_;  //!< SFML window instance

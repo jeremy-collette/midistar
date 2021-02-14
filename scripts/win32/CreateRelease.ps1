@@ -69,8 +69,13 @@ function CreateReleaseFolder(
     }
     Write-Verbose "Release folder: $releaseDir" -Verbose
 
-    Write-Verbose "Creating scripts folder inside release folder..."
+    # TODO: automatically create required folders
+    Write-Verbose "Creating scripts folder inside release folder..." -Verbose
     $scriptsDir = New-Item -Type "Directory" -Path (Join-Path $releaseDir (Join-Path "scripts" "win32")) -Verbose
+
+    Write-Verbose "Creating songs folder inside release folder..." -Verbose
+    $drumsDir = New-Item -Type "Directory" -Path (Join-Path $releaseDir (Join-Path "songs" "drums")) -Verbose
+    $pianoDir = New-Item -Type "Directory" -Path (Join-Path $releaseDir (Join-Path "songs" "piano")) -Verbose
     return $releaseDir
 }
 

@@ -35,6 +35,9 @@ class IntroSceneFactory {
         , bool background_music = false);
 
  private:
+     static constexpr const char* DRUM_MIDI_DIR = "songs/drums";
+     static constexpr const char* PIANO_MIDI_DIR = "songs/piano";
+
      enum GameType {
          PIANO,
          DRUM
@@ -46,7 +49,9 @@ class IntroSceneFactory {
         , bool background_music);
      GameObject* CreateNoFilesFoundTextGameObject(
          const sf::Font& font);
-     GameObject* CreateScanningTextGameObject(const sf::Font& font);
+     GameObject* CreateScanningTextGameObject(
+         const sf::Font& font
+        , std::string directory);
      GameObject* CreateVersionTextGameObject(const sf::Font& font);
 };
 

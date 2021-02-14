@@ -4,75 +4,61 @@
 cd "$(dirname "$0")"
 
 # Check directory
-dir=${PWD##*/}
+dir="${PWD##*/}"
 if [[ $dir == 'debian' ]]; then
     cd ../..
 fi
 
-# Get version
+# Get args
 if [[ $# != 1 ]]; then
-    echo "Usage: create_package <version>"
+    echo "Usage: create_package <binaries_path>"
     exit
 fi
-version=$1
+binaries_path=$1
 
 # Find binary
-midistar_dir=$PWD
-script_dir=$midistar_dir/scripts
-unix_script_dir=$script_dir/unix
-debian_script_dir=$script_dir/debian
+midistar_dir="${PWD}"
+script_dir="${midistar_dir}/scripts"
+unix_script_dir="${script_dir}/unix"
+debian_script_dir="${script_dir}/debian"
 . $unix_script_dir/find_binary "release"
 
 # If we found the binary...
 if [[ $? -eq 0 ]]; then
-    # Reset package folder
-    echo Resetting package folder...
-    rm -rf package
-
     # Make a folder for the package
     echo Creating folders...
-    package_dir=$midistar_dir/package
+    package_dir="${midistar_dir}/package"
     mkdir package
     cd package
-    mkdir midistar_$version
-    cd midistar_$version
+    mkdir temp
 
-    # Check control file version matches version supplied
-    match=$(cat $debian_script_dir/control | grep -c "^Version: $version\$")
-    if [[ $match -eq 0 ]]; then
-        echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
-        exit 1
-    fi
-
-    # Add control file   
+    # Add control file
     echo Adding control file...
-    mkdir DEBIAN
-    cp $debian_script_dir/control DEBIAN/.
+    mkdir temp/DEBIAN
+    cp "${debian_script_dir}/control" "temp/DEBIAN/."
 
     # Add source and binaries
     echo Adding source and binaries...
-    mkdir usr
-    mkdir usr/local
-    mkdir usr/local/bin
-    cd usr/local/bin
-    mkdir midistar_$version
-    cp -r $midistar_dir/* midistar_$version/.
+    mkdir "temp/usr"
+    mkdir "temp/usr/local"
+    mkdir "temp/usr/local/bin"
+    cp -r "${binaries_path}" "temp/usr/local/bin/."
 
     # Add run script
     echo Adding run script...
-    cp midistar_$version/scripts/debian/run_package midistar
-
-    # Add setup script
-    echo Adding setup script...
-    cp midistar_$version/scripts/unix/setup midistar_$version/setup
-
-    # Wait for user to be ready
-    echo Generated package data in "package" folder.
-    echo Press enter when ready to create dpkg.
-    read ready
+    cp "${midistar_dir}/scripts/debian/run_package" "temp/usr/local/bin/midistar"
 
     # Create .deb
-    cd $package_dir
-    dpkg-deb --build midistar_$version
+    echo Creating temp.deb...
+    dpkg-deb --build temp
+
+    # Rename
+    echo Renaming to ${release_name}.deb...
+    release_name=$(basename $binaries_path)
+    mv "temp.deb" "${release_name}.deb"
+    rm -rf temp
+
+    cd "${midistar_dir}"
+    echo Done!
 fi
 

@@ -2,7 +2,7 @@
 
 start_dir=$PWD
 cd "$(dirname "$0")"
-cd midistar_0.6.1
+cd midistar-0.6.1
 
 # If 'run' script doesn't exist, run setup.
 # Then copy 'run' script.

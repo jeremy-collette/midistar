@@ -48,14 +48,14 @@ ITEMS_TO_DELETE=(
 
 function Print()
 {
-	Text=$1
+    Text=$1
     Color=$2
     color="0;32m"
 
     if [ "$Color" != "" ]; then
         color=$Color
-    fi 
-    
+    fi
+
     echo -e "\033[$color$Text\033[0m">&2
 }
 
@@ -65,25 +65,25 @@ function GetPlatform
         echo "OSX detected.">&2
         echo "osx"
         return 0
-    fi                
-    
+    fi
+
     if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
         echo "Linux detected.">&2
         echo "linux"
         return 0
-    fi        
+    fi
 
     if [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
         echo "Windows x86 detected.">&2
         echo "win-x86"
         return 0
-    fi        
+    fi
 
     if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
         echo "Windows x64 detected.">&2
         echo "win-x64"
         return 0
-    fi                
+    fi
 
     echo "Unrecognised platform.">&2
     return 1
@@ -100,17 +100,17 @@ function GetScriptDirectory
 function GetMidistarDirectory
 {
     scriptDir=$(GetScriptDirectory)
-    parentDir="$(dirname "$scriptDir")" 
+    parentDir="$(dirname "$scriptDir")"
     midistarDir="$(dirname "$parentDir")"
     echo "midistar dir: $midistarDir">&2
     echo "$midistarDir"
     return
 }
 
-function CreateReleaseFolder()    
+function CreateReleaseFolder()
 {
-	MidistarDir=$1
-	Version=$2
+    MidistarDir=$1
+    Version=$2
     Print "Creating release folder..."
     releaseDir="$MidistarDir/package/midistar-${Version}"
     if [ -d $releaseDir ]; then
@@ -118,7 +118,7 @@ function CreateReleaseFolder()
         return 1
     fi
     mkdir "$releaseDir"
-    echo "Release folder: $releaseDir">&2    
+    echo "Release folder: $releaseDir">&2
 
     echo "$releaseDir"
     return
@@ -126,8 +126,8 @@ function CreateReleaseFolder()
 
 function CopyToReleaseFolder()
 {
-	MidistarDir=$1
-	ReleaseDir=$2
+    MidistarDir=$1
+    ReleaseDir=$2
     IsLinux=$3
     Print "Copying items to release folder $ReleaseDir..."
 
@@ -141,14 +141,14 @@ function CopyToReleaseFolder()
     fi
 
     for item in "${items[@]}"
-	do
+    do
         Print "Copying $item..."
         itemInputPath="$MidistarDir/$item"
         itemOutputPath="$ReleaseDir/$item"
         outputPathParent="$(dirname "$itemOutputPath")"
         mkdir -p $outputPathParent
         cp -r $itemInputPath $itemOutputPath
-	done
+    done
 }
 
 function CleanUpExternalGitRepos()
@@ -160,37 +160,37 @@ function CleanUpExternalGitRepos()
     externalDir="$ReleaseDir/external"
 
     for repo in "${EXTERNAL_REPOS[@]}"
-	do
+    do
         echo "Cleaning up $repo...">&2
         repoDir="$externalDir/$repo"
         echo "Repo dir: $repoDir">&2
         cd $repoDir
         git clean -fdx
 
-        if [ -f ".git" ]; then        
-            rm ".git"            
+        if [ -f ".git" ]; then
+            rm ".git"
         else
             echo "No .git folder found in $repo.">&2
         fi
 
         if [ -f ".gitignore" ]; then
-            rm ".gitignore"            
-        else      
+            rm ".gitignore"
+        else
             echo "No .gitignore file found in $repo.">&2
         fi
         cd $originalLocation
-	done
+    done
 }
 
 function CleanUpReleaseFolder()
 {
-	MidistarDir=$1
-	RelaseDir=$2
+    MidistarDir=$1
+    RelaseDir=$2
     CleanUpExternalGitRepos $ReleaseDir
 
     Print "Cleaning up $ReleaseDir..."
     for item in "${ITEMS_TO_DELETE[@]}"
-	do
+    do
         echo "Deleting $item...">&2
         itemPath="$ReleaseDir/$item"
         echo "$itemPath">&2
@@ -200,9 +200,9 @@ function CleanUpReleaseFolder()
 
 function FinalizeReleaseFolder()
 {
-	ReleaseDir=$1
+    ReleaseDir=$1
     originalLocation=$(pwd)
-    
+
     Print "Finalizing release directoy..."
     cd $ReleaseDir
 
@@ -216,15 +216,15 @@ function FinalizeReleaseFolder()
     cd $originalLocation
 }
 
-function CreateNewRelease()    
+function CreateNewRelease()
 {
-	Version=$1
+    Version=$1
     IsLinux=$2
     midistarDir=$(GetMidistarDirectory)
     releaseDir=$(CreateReleaseFolder $midistarDir $Version)
     if [ $? == 1 ]; then
-    	echo "Exiting..."
-    	exit 1
+        echo "Exiting..."
+        exit 1
     fi
     CopyToReleaseFolder $midistarDir $releaseDir $IsLinux
     CleanUpReleaseFolder $midistarDir $releaseDir
@@ -255,7 +255,7 @@ echo "Press enter to continue or CTRL+C to quit"
 read input
 
 if [ "$1" == "" ]; then
-	echo "Enter version (#.#.#)"
+    echo "Enter version (#.#.#)"
     read version
 else
     version=$args[0]

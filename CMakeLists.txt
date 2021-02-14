@@ -164,7 +164,7 @@ if(NOT ${build_type} STREQUAL "debug" AND NOT ${build_type} STREQUAL "release")
 endif()
 
 # Inject git revision to Version.h
-set (MIDISTAR_VERSION_REVISION 0)
+set(MIDISTAR_VERSION_REVISION 0)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
   find_package(Git)
   if (GIT_FOUND)
@@ -174,7 +174,7 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
       OUTPUT_VARIABLE "MIDISTAR_VERSION_REVISION"
       ERROR_QUIET
       OUTPUT_STRIP_TRAILING_WHITESPACE)
-    message (STATUS "Git revision: ${MIDISTAR_VERSION_REVISION}" )
+    message(STATUS "Git revision: ${MIDISTAR_VERSION_REVISION}" )
   endif()
 endif()
 

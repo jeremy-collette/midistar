@@ -12,6 +12,8 @@ $ITEMS_TO_COPY = @(
     "scripts\win32\install_soundfont.bat",
     "scripts\win32\run_release.bat",
     "scripts\win32\setup.bat",
+    "songs\drums\NOTE",
+    "songs\piano\NOTE",
     "src\",
     "GPLv3",
     "LICENSE",

@@ -4,7 +4,7 @@
 cd "$(dirname "$0")"
 
 # Check directory
-dir=${PWD##*/}
+dir="${PWD##*/}"
 if [[ $dir == 'debian' ]]; then
     cd ../..
 fi
@@ -17,62 +17,48 @@ fi
 binaries_path=$1
 
 # Find binary
-midistar_dir=$PWD
-script_dir=$midistar_dir/scripts
-unix_script_dir=$script_dir/unix
-debian_script_dir=$script_dir/debian
+midistar_dir="${PWD}"
+script_dir="${midistar_dir}/scripts"
+unix_script_dir="${script_dir}/unix"
+debian_script_dir="${script_dir}/debian"
 . $unix_script_dir/find_binary "release"
 
 # If we found the binary...
 if [[ $? -eq 0 ]]; then
     # Make a folder for the package
     echo Creating folders...
-    package_dir=$midistar_dir/package
+    package_dir="${midistar_dir}/package"
     mkdir package
     cd package
     mkdir temp
-    cd temp
 
-    ## Check control file version matches version supplied
-    #match=$(cat $debian_script_dir/control | grep -c "^Version: $version\$")
-    #if [[ $match -eq 0 ]]; then
-    #    echo "Error! Version supplied does not match the one in $debian_script_dir/control!"
-    #    exit 1
-    #fi
-
-    # Add control file   
+    # Add control file
     echo Adding control file...
-    mkdir DEBIAN
-    cp $debian_script_dir/control DEBIAN/.
+    mkdir temp/DEBIAN
+    cp "${debian_script_dir}/control" "temp/DEBIAN/."
 
     # Add source and binaries
     echo Adding source and binaries...
-    mkdir usr
-    mkdir usr/local
-    mkdir usr/local/bin
-    cd usr/local/bin
-    cp -r "${binaries_path}" "."
+    mkdir "temp/usr"
+    mkdir "temp/usr/local"
+    mkdir "temp/usr/local/bin"
+    cp -r "${binaries_path}" "temp/usr/local/bin/."
 
-    ## Add run script
-    #echo Adding run script...
-    #cp midistar_$version/scripts/debian/run_package midistar
-
-    ## Add setup script
-    #echo Adding setup script...
-    #cp midistar_$version/scripts/unix/setup midistar_$version/setup
-
-    # Wait for user to be ready
-    echo Generated package data in "package" folder.
-    echo Press enter when ready to create dpkg.
-    read ready
+    # Add run script
+    echo Adding run script...
+    cp "${midistar_dir}/scripts/debian/run_package" "temp/usr/local/bin/midistar"
 
     # Create .deb
-    cd $package_dir
+    echo Creating temp.deb...
     dpkg-deb --build temp
-    
+
     # Rename
+    echo Renaming to ${release_name}.deb...
     release_name=$(basename $binaries_path)
     mv "temp.deb" "${release_name}.deb"
-    rm -rf temp    
+    rm -rf temp
+
+    cd "${midistar_dir}"
+    echo Done!
 fi
 

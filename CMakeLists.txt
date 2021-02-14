@@ -163,6 +163,27 @@ if(NOT ${build_type} STREQUAL "debug" AND NOT ${build_type} STREQUAL "release")
     set(build_type "debug")
 endif()
 
+# Inject git revision to Version.h
+set(MIDISTAR_VERSION_REVISION 0)
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
+  find_package(Git)
+  if (GIT_FOUND)
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+      OUTPUT_VARIABLE "MIDISTAR_VERSION_REVISION"
+      ERROR_QUIET
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    message(STATUS "Git revision: ${MIDISTAR_VERSION_REVISION}" )
+  endif()
+endif()
+
+if ("${MIDISTAR_VERSION_REVISION}" EQUAL "0")
+    message("Warning: could not set git revision in Version.h.")
+endif()
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/midistar/Version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/midistar/Version.h @ONLY)
+
 # Specify platform
 if (WIN32)
     message("-- Windows detected")

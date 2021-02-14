@@ -48,6 +48,12 @@ namespace fs = std::experimental::filesystem;
 
 namespace midistar {
 
+// These are defined in the header but we have to re-declare here due to 
+// constexpr weirdness.
+constexpr const char* IntroSceneFactory::DRUM_MIDI_DIR;
+
+constexpr const char* IntroSceneFactory::PIANO_MIDI_DIR;
+
 bool IntroSceneFactory::Create(
         Game* game
         , sf::RenderWindow* render_window

@@ -99,6 +99,10 @@ double Config::GetFallSpeedMultiplier() {
     return fall_speed_multiplier_;
 }
 
+int Config::GetFrameMaxDelta() {
+    return frame_max_delta_;
+}
+
 int Config::GetScreenHeight() {
     return screen_height_;
 }
@@ -180,6 +184,9 @@ void Config::InitCliApp(CLI::App* app) {
             false);
     app->add_option("--enable_title_music", enable_title_music_, "Determines "
         "whether or not to play background music on the title screen.");
+    app->add_option("--frame_max_delta", frame_max_delta_, "The maximum time "
+        "between two frames before the latter is dropped. -1 means no frames "
+        "will ever be dropped.");
     app->add_option("--full_screen", full_screen_, "Determines whether or not "
         "to enable full-screen mode.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "

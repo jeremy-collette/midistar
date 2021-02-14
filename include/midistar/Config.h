@@ -141,6 +141,13 @@ class Config {
     double GetFallSpeedMultiplier();
 
     /**
+     * Gets the max delta before frame delta should be ignored.
+     *
+     * \return Max frame delta.
+     */
+    int GetFrameMaxDelta();
+
+    /**
      * Gets the height of the screen.
      *
      * \return Screen height.
@@ -210,6 +217,8 @@ class Config {
     bool auto_play_;  //!< Auto play setting
     bool enable_title_music_;  //!< Enable title background music
     double fall_speed_multiplier_;  //!< Affects fall speed of notes
+    int frame_max_delta_;  //!< Max delta before delta is ignored (game not
+                                                                 //!< updated).
     bool full_screen_;  //!< Full-screen setting
     std::unordered_map<int, int> instrument_midi_remapping_;  //!< MIDI
                                     //!< remapping derived from commandline arg

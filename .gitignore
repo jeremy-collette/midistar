@@ -14,6 +14,7 @@ package
 
 /config.cfg
 /debug
+/include/midistar/Version.h
 /tags
 /TODO
 /make

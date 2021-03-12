@@ -18,7 +18,8 @@
 
 #include "midistar/IntroSceneFactory.h"
 
-#include <experimental/filesystem>
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -104,48 +105,18 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
             , drum_dir.string()));
 
     // Add menu items for Piano songs
-    std::string path = PIANO_MIDI_DIR;
-    auto song_found = false;
-    for (const auto & entry : fs::directory_iterator(path)) {
-        auto path = entry.path();
-        if (path.string().find(".mid") != std::string::npos) {
-            song_found = true;
-            piano_menu.AddMenuItem(
-                factory.CreateMenuItem(path.filename().string())
-                    .SetOnSelect(([path](Game* g, GameObject*, int) {
-                        Scene* new_scene = nullptr;
-                        auto piano_scene_factory = PianoSceneFactory{
-                            path.string() };
-                        if (!piano_scene_factory.Create(
-                            g
-                            , &g->GetWindow()
-                            , &new_scene)) {
-                            throw "Scene creation failed";
-                        }
-                        g->SetScene(new_scene);
-                        }))
-                    .SetFontSize(20));
-        }
-    }
+    // Get songs recursively from song dir and sort
+    auto songs = GetSortedMidiSongs(PIANO_MIDI_DIR);
 
-    if (!song_found) {
-        piano_menu.GetGameObject()->AddChild(
-            CreateNoFilesFoundTextGameObject(*font));
-    }
-
-    // Add menu items for Drum songs
-    path = DRUM_MIDI_DIR;
-    song_found = false;
-    for (const auto & entry : fs::directory_iterator(path)) {
+    for (const auto & entry : songs) {
         auto path = entry.path();
-        if (path.string().find(".mid") != std::string::npos) {
-            song_found = true;
-            drum_menu.AddMenuItem(
-                factory.CreateMenuItem(path.filename().string())
+        piano_menu.AddMenuItem(
+            factory.CreateMenuItem(path.filename().string())
                 .SetOnSelect(([path](Game* g, GameObject*, int) {
                     Scene* new_scene = nullptr;
-                    auto drum_scene_factory = DrumSceneFactory{ path.string() };
-                    if (!drum_scene_factory.Create(
+                    auto piano_scene_factory = PianoSceneFactory{
+                        path.string() };
+                    if (!piano_scene_factory.Create(
                         g
                         , &g->GetWindow()
                         , &new_scene)) {
@@ -154,10 +125,34 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
                     g->SetScene(new_scene);
                     }))
                 .SetFontSize(20));
-        }
     }
 
-    if (!song_found) {
+    if (!songs.size()) {
+        piano_menu.GetGameObject()->AddChild(
+            CreateNoFilesFoundTextGameObject(*font));
+    }
+
+    // Add menu items for Drum songs
+    songs = GetSortedMidiSongs(DRUM_MIDI_DIR);
+    for (const auto & entry : songs) {
+        auto path = entry.path();
+        drum_menu.AddMenuItem(
+            factory.CreateMenuItem(path.filename().string())
+            .SetOnSelect(([path](Game* g, GameObject*, int) {
+                Scene* new_scene = nullptr;
+                auto drum_scene_factory = DrumSceneFactory{ path.string() };
+                if (!drum_scene_factory.Create(
+                    g
+                    , &g->GetWindow()
+                    , &new_scene)) {
+                    throw "Scene creation failed";
+                }
+                g->SetScene(new_scene);
+                }))
+            .SetFontSize(20));
+    }
+
+    if (!songs.size()) {
         drum_menu.GetGameObject()->AddChild(
             CreateNoFilesFoundTextGameObject(*font));
     }
@@ -270,6 +265,57 @@ GameObject* IntroSceneFactory::CreateVersionTextGameObject(
     text_builder.SetXPosition(TextFactory::MAX, -10.0f);
     text_builder.SetYPosition(TextFactory::MAX, -20.0f);
     return text_builder.GetGameObject();
+}
+
+std::vector<fs::directory_entry> IntroSceneFactory::GetSortedMidiSongs(
+        const std::string & path) {
+    // Get songs recursively from song dir and sort
+    auto songs_itr = fs::recursive_directory_iterator(path);
+    auto songs = std::vector<fs::directory_entry>(
+        fs::begin(songs_itr)
+        , fs::end(songs_itr));
+
+    // Remove files that aren't midi files
+    songs.erase(
+        std::remove_if(songs.begin(), songs.end()
+            , [](const fs::v1::directory_entry& e)
+            {
+                // Convert to lower case
+                auto filename = e.path().filename().string();
+                std::transform(filename.begin(), filename.end()
+                    , filename.begin()
+                    , [](unsigned char c) {
+                        return std::tolower(c);
+                    });
+
+                std::string suffix = ".mid";
+                if (filename.size() < suffix.size())
+                {
+                    return true;
+                }
+                return !std::equal(suffix.rbegin(), suffix.rend(),
+                    filename.rbegin());
+            }),
+        songs.end());
+
+    // This is some outrageous fun to sort a list of strings case-insensitively.
+    std::sort(songs.begin(), songs.end(),
+        [](const fs::v1::directory_entry& a, const fs::v1::directory_entry& b) {
+            auto filenameA = a.path().filename().string();
+            std::transform(filenameA.begin(), filenameA.end(), filenameA.begin()
+                , [](unsigned char c) {
+                    return std::tolower(c);
+                });
+
+            auto filenameB = b.path().filename().string();
+            std::transform(filenameB.begin(), filenameB.end(), filenameB.begin()
+                , [](unsigned char c) {
+                    return std::tolower(c);
+                });
+
+            return filenameA < filenameB;
+        });
+    return songs;
 }
 
 }   // End namespace midistar

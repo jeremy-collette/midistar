@@ -19,10 +19,13 @@
 #ifndef MIDISTAR_INTROSCENEFACTORY_H_
 #define MIDISTAR_INTROSCENEFACTORY_H_
 
+#include <experimental/filesystem>
 #include <SFML/Graphics.hpp>
 
 #include "midistar/GameObject.h"
 #include "midistar/Scene.h"
+
+namespace fs = std::experimental::filesystem;
 
 namespace midistar {
 
@@ -53,6 +56,8 @@ class IntroSceneFactory {
          const sf::Font& font
         , std::string directory);
      GameObject* CreateVersionTextGameObject(const sf::Font& font);
+     std::vector<fs::directory_entry> GetSortedMidiSongs(
+         const std::string& song_path);
 };
 
 }   // End namespace midistar

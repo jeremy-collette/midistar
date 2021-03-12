@@ -13,7 +13,8 @@ considered to be part of the midistar project, but are distributed with midistar
 for ease-of-access and completeness. Each sub-folder in the 'external' folder
 contains the source code of a different third-party project that is used by
 midistar. The 'external/assets' folder contains third-party assets that are used
-by midistar. See the LICENSE file for more information.
+by midistar. The 'songs' folder may contain MIDI files from third-party 
+composers. See the LICENSE file for more information. 
 
 The following third-party libraries and utilities are used by (and distributed
 with) midistar:
@@ -27,12 +28,15 @@ with) midistar:
 The following third-party assets are used by (and distributed with or downloaded
 by) midistar:
  * Fluid SoundFont: Copyright (C) 2000-2002, 2008, 2013 Frank Wen.
- * Nocturne MIDI: Copyright (C) 1881 G. Schirmer.
  * Silkscreen font: Copyright (C) Jason Kottke.
 
-Thanks to the developers, creators, and supporters of these projects! Note that
-you can see these copyright notices in midistar by running the project with the
-`--show_third_party` command line flag.
+The following third-party MIDI files are used by (and distributed with) 
+midistar:
+ * Nocturne MIDI: Copyright (C) 1881 G. Schirmer.
+
+Thanks to the developers, creators, composers, and supporters of these projects!
+Note that you can see these copyright notices in midistar by running the project
+with the `--show_third_party` command line flag.
 
 midistar is written in C++ using code (and shared libraries) that are
 compatible with Linux, OSX, and Windows. However, at the current time, only 64-

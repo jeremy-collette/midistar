@@ -52,8 +52,11 @@ int main(int argc, char** argv) {
             << "distributed with or downloaded by) midistar:\n";
         std::cout << "\tFluid SoundFont: Copyright(C) 2000-2002, 2008, 2013 "
             << "Frank Wen."
-            << "\n\tNocturne MIDI: Copyright(C) 1881 G. Schirmer."
             << "\n\tSilkscreen font: Copyright (C) Jason Kottke.\n";
+
+        std::cout << "\nThe following third-party MIDI files are used by (and "
+            << "distributed with) midistar:\n";
+        std::cout << "\tNocturne MIDI: Copyright(C) 1881 G. Schirmer.\n";
 
         return 0;
     }

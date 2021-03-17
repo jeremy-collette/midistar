@@ -224,23 +224,6 @@ If you are on Windows, you can open midistar in Visual Studio by running the
 must have already successfully built midistar following the instructions in
 BUILDING MIDISTAR before you can use this command.
 
-### 4.6 Building Documentation
-If you would like to build midistar documentation, you can do so using doxygen.
-Before building documentation, you must install doxygen and Graphviz. If you're
-on Debian or Ubuntu, you can install doxygen and Graphviz using the following
-command:
-    `sudo apt-get install doxygen graphviz`
-
-If you're on OSX, you can use Homebrew:
-    `brew install doxygen graphviz`
-
-On Windows, you will have to download and doxygen and Graphviz online.
-
-Once installed, navigate to the 'doc' folder, and type the command:
-    `doxygen doxygen.config`
-
-This will build the midistar documentation in the 'doc' folder.
-
 
 ## 5. License
 Refer to the 'LICENSE' file for more information.

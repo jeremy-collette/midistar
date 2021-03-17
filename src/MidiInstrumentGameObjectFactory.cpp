@@ -23,8 +23,10 @@
 
 namespace midistar {
 
-bool MidiInstrumentGameObjectFactory::Create(GameObject** game_object_out) {
-    auto midi_instrument_in = new MidiInstrumentIn{ };
+bool MidiInstrumentGameObjectFactory::Create(
+        int midi_port
+        , GameObject** game_object_out) {
+    auto midi_instrument_in = new MidiInstrumentIn{ midi_port };
     if (!midi_instrument_in->Init()) {
         return false;
     }

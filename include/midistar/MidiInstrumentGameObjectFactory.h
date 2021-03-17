@@ -25,7 +25,7 @@ namespace midistar {
 
 class MidiInstrumentGameObjectFactory {
  public:
-    bool Create(GameObject** game_object_out);
+    bool Create(int midi_port, GameObject** game_object_out);
 };
 
 }  // End namespace midistar

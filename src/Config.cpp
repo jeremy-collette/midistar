@@ -37,6 +37,7 @@ Config::Config()
         , instrument_midi_remapping_notes_{}
         , keyboard_first_note_{-1}
         , max_frames_per_second_{-1}
+        , midi_input_port_{ 0 }
         , midi_file_channels_{}
         , midi_file_repeat_{false}
         , midi_file_tracks_{}
@@ -85,6 +86,10 @@ int Config::GetMidiFileTicksPerUnitOfSpeed() {
 
 std::vector<int> Config::GetMidiFileTracks() {
     return midi_file_tracks_;
+}
+
+int Config::GetMidiInputPort() {
+    return midi_input_port_;
 }
 
 const std::unordered_map<int, int>& Config::GetMidiOutputInstrumentMapping() {
@@ -193,6 +198,8 @@ void Config::InitCliApp(CLI::App* app) {
         "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "
         "of times the game will update in one second.");
+    app->add_option("--midi_input_port", midi_input_port_, "The MIDI port to "
+        "read instrument notes from.");
     app->add_option("--midi_file_channels", midi_file_channels_, "The MIDI "
         "channels to read notes from. -1 will enable all channels.");
     app->add_option("--midi_file_repeat", midi_file_repeat_, "Determines "

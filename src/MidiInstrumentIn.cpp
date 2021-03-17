@@ -22,7 +22,11 @@
 
 namespace midistar {
 
-MidiInstrumentIn::~MidiInstrumentIn() {	
+MidiInstrumentIn::MidiInstrumentIn(int midi_port)
+        : MidiPortIn{ midi_port } {
+}
+
+MidiInstrumentIn::~MidiInstrumentIn() {
 }
 
 bool MidiInstrumentIn::GetMessage(MidiMessage* message) {

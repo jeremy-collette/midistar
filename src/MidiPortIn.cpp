@@ -23,13 +23,16 @@
 
 namespace midistar {
 
-MidiPortIn::MidiPortIn(bool extend_same_tick_notes)
+MidiPortIn::MidiPortIn(
+    bool extend_same_tick_notes
+    , int midi_port)
         : extend_same_tick_notes_{extend_same_tick_notes}
+        , midi_port_{ midi_port }
         , midi_in_{nullptr} {
 }
 
-MidiPortIn::MidiPortIn()
-        : MidiPortIn(true) {
+MidiPortIn::MidiPortIn(int midi_port)
+        : MidiPortIn(true, midi_port) {
 }
 
 MidiPortIn::~MidiPortIn() {
@@ -42,10 +45,10 @@ bool MidiPortIn::Init() {
     midi_in_ = new RtMidiIn();
 
     try {
-        midi_in_->openPort(0, "midistar Input");
+        midi_in_->openPort(midi_port_, "midistar Input");
     } catch (...) {
-        std::cerr << "Warning: error opening MIDI input port. MIDI input "
-            << "disabled.\n";
+        std::cerr << "Warning: error opening MIDI input port " << midi_port_
+            << ". MIDI input disabled.\n";
     }
     midi_in_->ignoreTypes(false, false, false);
     return midi_in_;

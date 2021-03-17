@@ -119,6 +119,13 @@ class Config {
     std::vector<int> GetMidiFileTracks();
 
     /**
+     * Gets the MIDI port to read instrument notes from.
+     *
+     * \return MIDI input port.
+     */
+    int GetMidiInputPort();
+
+    /**
      * Gets the MIDI output insturment mapping (channel -> instrument).
      *
      * \return MIDI output insturment mapping.
@@ -226,6 +233,7 @@ class Config {
                                                            //!< commandline arg
     int keyboard_first_note_;  //!< The first MIDI note to map on the keyboard
     int max_frames_per_second_;  //!< Max FPS
+    int midi_input_port_;  //!< MIDI input port for instrument input
     std::unordered_map<int, int> midi_output_inst_map_;  //!< Mapping from MIDI
                                                     //!< channel to instrument
     std::vector<int> midi_output_inst_indexes_;  //!< Raw MIDI instrument map

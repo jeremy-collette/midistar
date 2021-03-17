@@ -39,13 +39,21 @@ class MidiPortIn : public MidiIn {
      * \param extend_same_tick_notes Determines whether or not notes that start
      * and finish in the same tick should be extended to finish in the next
      * tick.
+     * \param midi_port The index/ID of the MIDI port to connect to, as
+     * identified by the operating system.
      */
-    explicit MidiPortIn(bool extend_same_tick_notes);
+    MidiPortIn(
+        bool extend_same_tick_notes
+        , int midi_port);
 
     /**
-     * Default constructor.
+     * Constructor.
+     *
+     * \param midi_port The index/ID of the MIDI port to connect to, as
+     * identified by the operating system.
      */
-    MidiPortIn();
+    explicit MidiPortIn(
+        int midi_port);
 
     ~MidiPortIn();
 
@@ -65,6 +73,7 @@ class MidiPortIn : public MidiIn {
      bool extend_same_tick_notes_;  //!< Extends notes that start / finish in
                                                               //!< the same tick
      RtMidiIn* midi_in_;  //!< MIDI port instance
+     int midi_port_;  //!< MIDI port ID to connect to
      std::queue<MidiMessage> same_tick_buffer_;  //!< Holds note end events that
                            //!< occured in the same tick as the note start
 };

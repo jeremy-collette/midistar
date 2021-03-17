@@ -43,8 +43,11 @@ bool PianoSceneFactory::Create(
         , Scene** scene) {
     // Create MIDI instrument GameObject to read input from MIDI instrument
     auto midi_instrument_object_factory = MidiInstrumentGameObjectFactory{};
+    auto midi_port = Config::GetInstance().GetMidiInputPort();
     GameObject* midi_instrument_game_object = nullptr;
-    if (!midi_instrument_object_factory.Create(&midi_instrument_game_object)) {
+    if (!midi_instrument_object_factory.Create(
+        midi_port
+        , &midi_instrument_game_object)) {
         return false;
     }
 

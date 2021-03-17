@@ -27,8 +27,10 @@ namespace midistar {
 /**
  * The MidiIn class provides an interface for MIDI stream readers.
  */
-class MidiInstrumentIn : public MidiPortIn {	
+class MidiInstrumentIn : public MidiPortIn {
  public:
+    explicit MidiInstrumentIn(int midi_port);
+
     virtual ~MidiInstrumentIn();
 
     /**

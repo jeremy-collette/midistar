@@ -33,4 +33,5 @@ package
 *.otf
 
 !*chopin_nocturne_op9_n2.mid
+!*rock1.mid
 !*slkscr.ttf

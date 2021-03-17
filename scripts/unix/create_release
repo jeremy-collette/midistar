@@ -5,7 +5,6 @@ ITEMS_TO_COPY=(
     ".git/modules/"
     "assets/"
     "build/release"
-    "doc/"
     "external/"
     "images/"
     "include/"

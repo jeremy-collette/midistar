@@ -2,7 +2,6 @@ $ITEMS_TO_COPY = @(
     ".git\modules\",
     "assets\",
     "build\Release",
-    "doc\",
     "external\",
     "images\",
     "include\",

@@ -41,12 +41,19 @@ bool PauseSongGameObjectFactory::CreatePauseSongGameObject(
         return false;
     }
 
-    auto text_factory = TextFactory{ "Song paused. Press enter when ready."
-        , *font };
+    auto text_factory = TextFactory{ "Song paused.", *font };
     text_factory.SetXPosition(TextFactory::CENTER);
     text_factory.SetYPosition(TextFactory::CENTER);
     auto game_object = text_factory.GetGameObject();
-    game_object->DeleteComponent(Component::KEEP_ALIVE);
+
+    auto child_text_factory = TextFactory{ "Test your instrument and press "
+        "enter when ready.", *font };
+    child_text_factory.SetXPosition(TextFactory::CENTER);
+    double text_width, text_height;
+    game_object->GetSize(&text_width, &text_height);
+    child_text_factory.SetYPosition(TextFactory::CENTER, text_height + 10.0);
+    game_object->AddChild(child_text_factory.GetGameObject());
+
     game_object->AddTag("PauseGame");
     game_object->SetComponent(new PauseSongSfmlEventsHandlerComponent{});
 

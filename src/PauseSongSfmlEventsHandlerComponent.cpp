@@ -33,7 +33,7 @@ void PauseSongSfmlEventsHandlerComponent::HandleEvent(
     auto midi_file_game_object = g->GetCurrentScene().GetFirstGameObjectByTag(
         "MidiFile");
     midi_file_game_object->SetTimeScale(1.0f);
-    o->DeleteComponent(this->GetType());
+    o->SetRequestDelete(true);
 }
 
 }  // End namespace midistar

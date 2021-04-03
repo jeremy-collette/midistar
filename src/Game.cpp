@@ -35,6 +35,7 @@ namespace midistar {
 Game::Game()
         : current_scene_{ nullptr }
         , next_scene_{ nullptr }
+        , time_scale_{ 1.0f }
         , window_{sf::VideoMode(Config::GetInstance().GetScreenWidth()
                  , Config::GetInstance().GetScreenHeight())
                  , "midistar"
@@ -116,7 +117,7 @@ void Game::Run() {
         }
 
         // Handle updating
-        current_scene_->Update(delta);
+        current_scene_->Update(delta * time_scale_);
         current_scene_->Draw();
         window_.display();
         ++t;
@@ -125,6 +126,10 @@ void Game::Run() {
 
 void Game::SetScene(Scene* next_scene) {
     next_scene_ = next_scene;
+}
+
+void Game::SetTimeScale(float time_scale) {
+    time_scale_ = time_scale;
 }
 
 void Game::Exit() {

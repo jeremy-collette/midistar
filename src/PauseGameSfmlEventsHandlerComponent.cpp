@@ -16,32 +16,24 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/SfmlEventsHandlerComponent.h"
+#include "midistar/PauseGameSfmlEventsHandlerComponent.h"
 
-#include "midistar/SfmlEventsComponent.h"
+#include "midistar/UnpauseGameComponent.h"
 
 namespace midistar {
 
-SfmlEventsHandlerComponent::SfmlEventsHandlerComponent()
-        : Component{ Component::SFML_EVENTS_HANDLER } {
-}
-
-SfmlEventsHandlerComponent::~SfmlEventsHandlerComponent() {
-}
-
-void SfmlEventsHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-    auto sfml_events_object = g->GetCurrentScene().GetFirstGameObjectByTag(
-        "SfmlEvents");
-    auto sfml_events_component = sfml_events_object->GetComponent<
-        SfmlEventsComponent>(Component::SFML_EVENTS);
-
-    if (!sfml_events_component) {
+void PauseGameSfmlEventsHandlerComponent::HandleEvent(
+        Game* g
+        , GameObject* o
+        , int
+        , sf::Event evt) {
+    if (evt.type != sf::Event::KeyPressed
+            || evt.key.code != sf::Keyboard::Enter) {
         return;
     }
 
-    for (const auto& sfml_event : sfml_events_component->GetEvents()) {
-        this->HandleEvent(g, o, delta, sfml_event);
-    }
+    o->SetComponent(new UnpauseGameComponent{ });
+    o->DeleteComponent(this->GetType());
 }
 
 }  // End namespace midistar

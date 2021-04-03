@@ -23,8 +23,8 @@
 #include "midistar/MidiFileInComponent.h"
 #include "midistar/MidiInstrumentGameObjectFactory.h"
 #include "midistar/MidiOutputComponent.h"
-#include "midistar/PauseGameObjectFactory.h"
 #include "midistar/PianoGameObjectFactory.h"
+#include "midistar/PauseSongGameObjectFactory.h"
 #include "midistar/ScoreManagerFactory.h"
 #include "midistar/SfmlEventsComponent.h"
 #include "midistar/SongEndWatcherComponent.h"
@@ -110,10 +110,12 @@ bool PianoSceneFactory::Create(
     }
     game_objects.push_back(score_renderer_game_object);
 
-    // Create pause game object
-    auto pause_factory = PauseGameObjectFactory{ };
+    // Create pause song object
+    auto pause_factory = PauseSongGameObjectFactory{ };
     GameObject* pause_game_object;
-    if (!pause_factory.CreatePauseGameObject(&pause_game_object)) {
+    if (!pause_factory.CreatePauseSongGameObject(
+        midi_file_game_object
+        , &pause_game_object)) {
         return false;
     }
     game_objects.push_back(pause_game_object);

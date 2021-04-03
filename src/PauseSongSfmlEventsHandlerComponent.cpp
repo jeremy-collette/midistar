@@ -16,13 +16,11 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/PauseGameSfmlEventsHandlerComponent.h"
-
-#include "midistar/UnpauseGameComponent.h"
+#include "midistar/PauseSongSfmlEventsHandlerComponent.h"
 
 namespace midistar {
 
-void PauseGameSfmlEventsHandlerComponent::HandleEvent(
+void PauseSongSfmlEventsHandlerComponent::HandleEvent(
         Game* g
         , GameObject* o
         , int
@@ -32,7 +30,9 @@ void PauseGameSfmlEventsHandlerComponent::HandleEvent(
         return;
     }
 
-    o->SetComponent(new UnpauseGameComponent{ });
+    auto midi_file_game_object = g->GetCurrentScene().GetFirstGameObjectByTag(
+        "MidiFile");
+    midi_file_game_object->SetTimeScale(1.0f);
     o->DeleteComponent(this->GetType());
 }
 

@@ -16,21 +16,23 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/PauseGameObjectFactory.h"
+#include "midistar/PauseSongGameObjectFactory.h"
 
 #include "midistar/Config.h"
 #include "midistar/Constants.h"
 #include "midistar/KeepAliveComponent.h"
 #include "midistar/LambdaComponent.h"
 #include "midistar/SfmlEventsComponent.h"
-#include "midistar/PauseGameComponent.h"
-#include "midistar/PauseGameSfmlEventsHandlerComponent.h"
+#include "midistar/PauseSongSfmlEventsHandlerComponent.h"
 #include "midistar/TextFactory.h"
 
 namespace midistar {
 
-bool PauseGameObjectFactory::CreatePauseGameObject(
-    GameObject** game_object_out) {
+bool PauseSongGameObjectFactory::CreatePauseSongGameObject(
+    GameObject* midi_file_in
+    , GameObject** game_object_out) {
+
+    midi_file_in->SetTimeScale(0.0f);
 
     // Note: this is not getting cleaned up.
     auto font = new sf::Font();
@@ -46,9 +48,7 @@ bool PauseGameObjectFactory::CreatePauseGameObject(
     auto game_object = text_factory.GetGameObject();
     game_object->DeleteComponent(Component::KEEP_ALIVE);
     game_object->AddTag("PauseGame");
-
-    game_object->SetComponent(new PauseGameComponent{});
-    game_object->SetComponent(new PauseGameSfmlEventsHandlerComponent{});
+    game_object->SetComponent(new PauseSongSfmlEventsHandlerComponent{});
 
     *game_object_out = game_object;
     return true;

@@ -23,9 +23,11 @@
 
 namespace midistar {
 
-class PauseGameObjectFactory {
+class PauseSongGameObjectFactory {
  public:
-    bool CreatePauseGameObject(GameObject** game_object_out);
+    bool CreatePauseSongGameObject(
+        GameObject* midi_file_in
+        , GameObject** game_object_out);
 };
 
 }  // End namespace midistar

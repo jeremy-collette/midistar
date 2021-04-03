@@ -16,17 +16,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/UnpauseGameComponent.h"
+#ifndef MIDISTAR_PAUSESONGSFMLEVENTSHANDLERCOMPONENT_H_
+#define MIDISTAR_PAUSESONGSFMLEVENTSHANDLERCOMPONENT_H_
+
+#include "midistar/SfmlEventsHandlerComponent.h"
 
 namespace midistar {
 
-UnpauseGameComponent::UnpauseGameComponent()
-        : Component{Component::UNPAUSE} {
-}
+class PauseSongSfmlEventsHandlerComponent : public SfmlEventsHandlerComponent {
+ public:
+     virtual void HandleEvent(Game* g, GameObject* o, int delta, sf::Event evt);
+};
 
-void UnpauseGameComponent::Update(Game* g, GameObject* o, int) {
-    g->SetTimeScale(1.0f);
-    o->DeleteComponent(this->GetType());
-}
+}   // End namespace midistar
 
-}  // End namespace midistar
+#endif  // MIDISTAR_PAUSESONGSFMLEVENTSHANDLERCOMPONENT_H_

@@ -34,7 +34,8 @@ bool PauseSongGameObjectFactory::CreatePauseSongGameObject(
 
     midi_file_in->SetTimeScale(0.0f);
 
-    // Note: this is not getting cleaned up.
+    // TODO: load fonts higher up and pass down where needed. Then clean-up
+    // on exit.
     auto font = new sf::Font();
     if (!font->loadFromFile(MIDISTAR_FONT)) {
         std::cerr << "Could not load font \"" << MIDISTAR_FONT << "\"!\n";

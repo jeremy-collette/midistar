@@ -97,6 +97,7 @@ std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {
     }
 
     // [WIP] Add phantom instruments
+    // TODO: reduce perf hit
     // (Instruments for keys that are not in the song -- this allows the user
     // to "play" regardless if the song uses it).
     for (auto key = 0U; key < 128; ++key)

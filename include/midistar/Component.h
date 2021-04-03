@@ -77,8 +77,6 @@ class Component {
         , BACKGROUND_SONG_PLAYER
         , SCORE
         , SCORE_MANAGER
-        , PAUSE
-        , UNPAUSE
         , NUM_COMPONENTS
     };
 

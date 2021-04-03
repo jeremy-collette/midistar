@@ -236,6 +236,8 @@ class GameObject {
      */
     void SetSize(double w, double h);
 
+    void SetTimeScale(float time_scale);
+
     /**
      * Updates the GameObject by updating each of its Components. Subsequently
      * updates each child GameObject.
@@ -254,6 +256,7 @@ class GameObject {
     double original_width_;  //!< Width at creation
     bool request_delete_;  //!< Holds deletion request status
     std::vector<std::string> tags_;  //!< Holds tags
+    float time_scale_;
     std::vector<Component*> to_delete_;  //!< Holds components to delete
     sf::Transformable* transformable_;  //!< Holds transformable part of object
 };

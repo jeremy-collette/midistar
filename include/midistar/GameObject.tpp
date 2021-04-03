@@ -36,6 +36,7 @@ GameObject::GameObject(
         , original_width_{ width }
         , request_delete_{ false }
         , tags_{ }
+        , time_scale_{1.0f}
         , to_delete_{ }
         , transformable_{ drawformable } {
 

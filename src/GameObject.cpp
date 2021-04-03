@@ -160,15 +160,20 @@ void GameObject::SetSize(double w, double h) {
     }
 }
 
+void GameObject::SetTimeScale(float time_scale) {
+    time_scale_ = time_scale;
+}
+
 void GameObject::Update(Game* g, int delta) {
     if (!enabled_) {
         return;
     }
 
+    auto scaled_delta = static_cast<int>(delta * time_scale_);
     auto has_component = false;
     for (const auto& c : components_) {
         if (c) {
-            c->Update(g, this, delta);
+            c->Update(g, this, scaled_delta);
             has_component = true;
         }
     }
@@ -176,7 +181,7 @@ void GameObject::Update(Game* g, int delta) {
     // Cleanup children
     auto children_to_delete = std::vector<GameObject*>{ };
     for (const auto& child : children_) {
-        child->Update(g, delta);
+        child->Update(g, scaled_delta);
         if (child->GetRequestDelete()) {
             children_to_delete.push_back(child);
         } else {

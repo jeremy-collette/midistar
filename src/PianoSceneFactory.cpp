@@ -24,6 +24,7 @@
 #include "midistar/MidiInstrumentGameObjectFactory.h"
 #include "midistar/MidiOutputComponent.h"
 #include "midistar/PianoGameObjectFactory.h"
+#include "midistar/PauseSongGameObjectFactory.h"
 #include "midistar/ScoreManagerFactory.h"
 #include "midistar/SfmlEventsComponent.h"
 #include "midistar/SongEndWatcherComponent.h"
@@ -99,8 +100,6 @@ bool PianoSceneFactory::Create(
         return false;
     }
     sfml_event_object->SetComponent(new MidiOutputComponent{ midi_out });
-    sfml_event_object->SetComponent(
-        new SongSceneSfmlEventsHandlerComponent{ });
     game_objects.push_back(midi_out_game_object);
 
     // Create score renderer
@@ -110,6 +109,16 @@ bool PianoSceneFactory::Create(
         return false;
     }
     game_objects.push_back(score_renderer_game_object);
+
+    // Create pause song object
+    auto pause_factory = PauseSongGameObjectFactory{ };
+    GameObject* pause_game_object;
+    if (!pause_factory.CreatePauseSongGameObject(
+        midi_file_game_object
+        , &pause_game_object)) {
+        return false;
+    }
+    game_objects.push_back(pause_game_object);
 
     // Create Scene
     *scene = new Scene{ game, render_window, game_objects };

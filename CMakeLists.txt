@@ -53,6 +53,8 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/MidiPortIn.h
     ${CMAKE_SOURCE_DIR}/include/midistar/NoteInfoComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/OutlineEffectComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PauseSongGameObjectFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PauseSongSfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PhysicsComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoGameObjectFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/PianoSceneFactory.h
@@ -127,6 +129,8 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/MidiPortIn.cpp
     ${CMAKE_SOURCE_DIR}/src/NoteInfoComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/OutlineEffectComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/PauseSongGameObjectFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/PauseSongSfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PhysicsComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoGameObjectFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/PianoSceneFactory.cpp

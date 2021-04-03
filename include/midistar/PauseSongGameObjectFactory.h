@@ -16,32 +16,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/SfmlEventsHandlerComponent.h"
+#ifndef MIDISTAR_PAUSEGAMEOBJECTFACTORY_H_
+#define MIDISTAR_PAUSEGAMEOBJECTFACTORY_H_
 
-#include "midistar/SfmlEventsComponent.h"
+#include "midistar/GameObject.h"
 
 namespace midistar {
 
-SfmlEventsHandlerComponent::SfmlEventsHandlerComponent()
-        : Component{ Component::SFML_EVENTS_HANDLER } {
-}
-
-SfmlEventsHandlerComponent::~SfmlEventsHandlerComponent() {
-}
-
-void SfmlEventsHandlerComponent::Update(Game* g, GameObject* o, int delta) {
-    auto sfml_events_object = g->GetCurrentScene().GetFirstGameObjectByTag(
-        "SfmlEvents");
-    auto sfml_events_component = sfml_events_object->GetComponent<
-        SfmlEventsComponent>(Component::SFML_EVENTS);
-
-    if (!sfml_events_component) {
-        return;
-    }
-
-    for (const auto& sfml_event : sfml_events_component->GetEvents()) {
-        this->HandleEvent(g, o, delta, sfml_event);
-    }
-}
+class PauseSongGameObjectFactory {
+ public:
+    bool CreatePauseSongGameObject(
+        GameObject* midi_file_in
+        , GameObject** game_object_out);
+};
 
 }  // End namespace midistar
+
+#endif  // MIDISTAR_PAUSEGAMEOBJECTFACTORY_H_

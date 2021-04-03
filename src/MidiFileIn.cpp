@@ -102,6 +102,10 @@ bool MidiFileIn::IsEof() {
 }
 
 void MidiFileIn::Tick(int delta) {
+    if (!delta) {
+        return;
+    }
+
     time_ += delta;
 
     smf::MidiEvent* mev;

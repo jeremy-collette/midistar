@@ -95,6 +95,17 @@ std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {
     for (int key : song_notes_) {
         result.push_back(CreateInstrumentNote(key));
     }
+
+    // [WIP] Add phantom instruments
+    // (Instruments for keys that are not in the song -- this allows the user
+    // to "play" regardless if the song uses it).
+    for (auto key = 0U; key < 128; ++key)
+    {
+        if (std::find(song_notes_.begin(), song_notes_.end(), key)
+                == song_notes_.end()) {
+            result.push_back(CreatePhantomInstrumentNote(key));
+        }
+    }
     return result;
 }
 
@@ -169,6 +180,19 @@ GameObject* DrumGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentAutoPlayComponent{
             InstrumentAutoPlayComponent::CollisionCriteria::CENTRE});
+    return ins_note;
+}
+
+GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNote(int note) {
+    // Create GameObject
+    auto ins_note = new GameObject{};
+
+    // Add components
+    ins_note->SetComponent(new InstrumentComponent{});
+    ins_note->SetComponent(new NoteInfoComponent{ -1, 9, note
+            , Config::GetInstance().GetMidiOutVelocity() });
+    ins_note->SetComponent(new InstrumentInputHandlerComponent{
+        sf::Keyboard::F1, true, true});;
     return ins_note;
 }
 

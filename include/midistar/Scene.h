@@ -101,11 +101,11 @@ class Scene {
      void RemoveObject(GameObject* o);
 
      /**
-      * Gets the first GameObject that has the specified tag.
+      * Gets the first top-level GameObject that has the specified tag.
       *
       * \param tag The tag to check for.
       *
-      * \returns The first GameObject with the specified tag.
+      * \returns The first top-level GameObject with the specified tag.
       */
      GameObject* GetFirstGameObjectByTag(std::string tag);
 
@@ -117,18 +117,20 @@ class Scene {
      std::vector<GameObject*>& GetGameObjects();
 
      /**
-      * Gets all GameObjects in the Scene that have a specific tag.
+      * Gets all top-level GameObjects in the Scene that have a specific tag.
       *
-      * \returns All GameObjects in the Scene that have a specific tag.
+      * \returns All top-level GameObjects in the Scene that have a specific
+      * tag.
       */
      std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
 
      /**
       * Recursively gets all GameObjects in the Scene that have a specific tag.
-      * This means that GameObject children are also searched, not just the
-      * top-level GameObjects of the Scene.
+      * "Recursively" means that GameObject children are also searched, not just
+      * the top-level GameObjects of the Scene.
       *
-      * \returns All GameObjects in the Scene that have a specific tag.
+      * \returns All GameObjects in the Scene (including children) that have
+      * have a specific tag.
       */
      std::vector<GameObject*> GetGameObjectsByTagRecursively(std::string tag);
 

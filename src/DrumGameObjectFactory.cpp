@@ -33,6 +33,7 @@
 #include "midistar/InstrumentInputHandlerComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/OutlineEffectComponent.h"
+#include "midistar/PhantomNoteComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
 #include "midistar/ScoreComponent.h"
@@ -100,13 +101,15 @@ std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {
     // TODO: reduce perf hit
     // (Instruments for keys that are not in the song -- this allows the user
     // to "play" regardless if the song uses it).
+    auto phantom_midi_keys = std::set<int>();
     for (auto key = 0U; key < 128; ++key)
     {
         if (std::find(song_notes_.begin(), song_notes_.end(), key)
                 == song_notes_.end()) {
-            result.push_back(CreatePhantomInstrumentNote(key));
+            phantom_midi_keys.insert(key);
         }
     }
+    result.push_back(CreatePhantomInstrumentNote(phantom_midi_keys));
     return result;
 }
 
@@ -184,17 +187,14 @@ GameObject* DrumGameObjectFactory::CreateInstrumentNote(int note) {
     return ins_note;
 }
 
-GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNote(int note) {
+GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNote(
+        std::set<int> midi_keys) {
     // Create GameObject
-    auto ins_note = new GameObject{};
+    auto phantom_ins = new GameObject{};
 
     // Add components
-    ins_note->SetComponent(new InstrumentComponent{});
-    ins_note->SetComponent(new NoteInfoComponent{ -1, 9, note
-            , Config::GetInstance().GetMidiOutVelocity() });
-    ins_note->SetComponent(new InstrumentInputHandlerComponent{
-        sf::Keyboard::F1, true, true});;
-    return ins_note;
+    phantom_ins->SetComponent(new PhantomNoteComponent{ midi_keys });
+    return phantom_ins;
 }
 
 void DrumGameObjectFactory::GetInstrumentKeyBinding(

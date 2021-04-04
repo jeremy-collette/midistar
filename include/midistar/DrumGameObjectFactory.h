@@ -19,6 +19,7 @@
 #ifndef MIDISTAR_DRUMGAMEOBJECTFACTORY_H_
 #define MIDISTAR_DRUMGAMEOBJECTFACTORY_H_
 
+#include <set>
 #include <vector>
 #include <SFML/Window.hpp>
 
@@ -91,7 +92,8 @@ class DrumGameObjectFactory : public GameObjectFactory {
     static const sf::Color DRUM_COLOURS[NUM_DRUM_COLOURS];  //!< Holds drum
                                                                   //!< colours
 
-    GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNote(int note);
+    GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNote(
+        std::set<int> midi_keys);
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                  //!< the instrument with the given MIDI key
     void GetInstrumentKeyBinding(int midi_key, sf::Keyboard::Key* key,

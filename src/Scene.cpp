@@ -17,6 +17,7 @@
  */
 
 #include <algorithm>
+#include <queue>
 
 #include "midistar/Scene.h"
 
@@ -112,6 +113,34 @@ std::vector<GameObject*> Scene::GetGameObjectsByTag(std::string tag) {
     }
 
     return game_objects;
+}
+
+std::vector<GameObject*> Scene::GetGameObjectsByTagRecursively(std::string tag){
+    auto result = std::vector<GameObject*>{ };
+
+    auto to_visit = std::queue<GameObject*>{ };
+    for (const auto& game_object : this->game_objects_) {
+        to_visit.push(game_object);
+    }
+
+    while (!to_visit.empty()) {
+        auto visiting = to_visit.front();
+        to_visit.pop();
+
+        if (!visiting->GetEnabled()) {
+            continue;
+        }
+
+        if (visiting->HasTag(tag)) {
+            result.push_back(visiting);
+        }
+
+        for (auto child : visiting->GetChildren()) {
+            to_visit.push(child);
+        }
+    }
+
+    return result;
 }
 
 void Scene::CleanUpObjects() {

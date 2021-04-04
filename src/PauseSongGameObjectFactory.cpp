@@ -22,6 +22,7 @@
 #include "midistar/Constants.h"
 #include "midistar/KeepAliveComponent.h"
 #include "midistar/LambdaComponent.h"
+#include "midistar/NoteInfoComponent.h"
 #include "midistar/SfmlEventsComponent.h"
 #include "midistar/PauseSongSfmlEventsHandlerComponent.h"
 #include "midistar/TextFactory.h"
@@ -30,12 +31,13 @@ namespace midistar {
 
 bool PauseSongGameObjectFactory::CreatePauseSongGameObject(
     GameObject* midi_file_in
+    , std::vector<GameObject*> scene_game_objects
     , GameObject** game_object_out) {
 
     midi_file_in->SetTimeScale(0.0f);
 
-    // TODO: load fonts higher up and pass down where needed. Then clean-up
-    // on exit.
+    // TODO(@jez): load fonts higher up and pass down where needed. Then clean-
+    // up on exit.
     auto font = new sf::Font();
     if (!font->loadFromFile(MIDISTAR_FONT)) {
         std::cerr << "Could not load font \"" << MIDISTAR_FONT << "\"!\n";
@@ -58,7 +60,47 @@ bool PauseSongGameObjectFactory::CreatePauseSongGameObject(
     game_object->AddTag("PauseGame");
     game_object->SetComponent(new PauseSongSfmlEventsHandlerComponent{});
 
+    AddMidiKeyTextToInstruments(scene_game_objects, *font);
+
     *game_object_out = game_object;
+    return true;
+}
+
+bool PauseSongGameObjectFactory::AddMidiKeyTextToInstruments(
+    std::vector<GameObject*> scene_game_objects
+    , const sf::Font& font) {
+
+    for (auto instrument : scene_game_objects) {
+        if (!instrument->HasTag("Drum")) {
+            continue;
+        }
+
+        auto note_info_component = instrument->GetComponent<NoteInfoComponent>(
+            Component::NOTE_INFO);
+        if (!note_info_component) {
+            continue;
+        }
+
+        auto note_annotation = std::to_string(note_info_component->GetKey());
+        auto instrument_text_factory = TextFactory{ note_annotation, font };
+        double ins_x, ins_y;
+        instrument->GetPosition(&ins_x, &ins_y);
+        double ins_w, ins_h;
+        instrument->GetSize(&ins_w, &ins_h);
+
+        auto text_game_object = instrument_text_factory.GetGameObject();
+        double text_w, text_h;
+        text_game_object->GetSize(&text_w, &text_h);
+        // TODO(@jez): investigate why font placement is slightly off
+        auto text_x = ins_x + ins_w / 2.0f - text_w / 2.0f - 5.0f;
+        auto text_y = ins_y + ins_h / 2.0f - text_h / 2.0f - 5.0f;
+        instrument_text_factory
+            .SetXPosition(text_x)
+            .SetYPosition(text_y);
+        text_game_object->AddTag("MidiKeyText");
+        instrument->AddChild(text_game_object);
+    }
+
     return true;
 }
 

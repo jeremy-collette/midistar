@@ -30,9 +30,17 @@ void PauseSongSfmlEventsHandlerComponent::HandleEvent(
         return;
     }
 
+    // Start playing MIDI file
     auto midi_file_game_object = g->GetCurrentScene().GetFirstGameObjectByTag(
         "MidiFile");
     midi_file_game_object->SetTimeScale(1.0f);
+
+    // Remove MIDI key annotations
+    auto midi_key_texts = g->GetCurrentScene().GetGameObjectsByTagRecursively(
+        "MidiKeyText");
+    for (auto game_object : midi_key_texts) {
+        game_object->SetRequestDelete(true);
+    }
     o->SetRequestDelete(true);
 }
 

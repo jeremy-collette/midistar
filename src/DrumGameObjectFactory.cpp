@@ -168,6 +168,7 @@ GameObject* DrumGameObjectFactory::CreateInstrumentNote(int note) {
     // Create GameObject
     auto ins_note = new GameObject{circle, x + padding_px, y
         , padded_radius * 2.0f, padded_radius * 2.0f};
+    ins_note->AddTag("Drum");
 
     // Get key binding
     sf::Keyboard::Key key;

@@ -103,6 +103,8 @@ class DrumGameObjectFactory : public GameObjectFactory {
                                                  //!< unique notes for the song
     double GetXPosition(int note);  //!< Gets the X position of a song
                                                          //!< note / instrument
+    void SortDrumInstrumentNotes(); //!< Sorts drum instrument notes by the
+    //!< order specified in the Config (if it has been specified)
 
     double drum_radius_;  //!< Holds the radius of drum notes / instruments
     std::vector<int> song_notes_;  //!< Unique MIDI notes in the song

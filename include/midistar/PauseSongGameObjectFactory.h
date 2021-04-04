@@ -19,6 +19,8 @@
 #ifndef MIDISTAR_PAUSEGAMEOBJECTFACTORY_H_
 #define MIDISTAR_PAUSEGAMEOBJECTFACTORY_H_
 
+#include <vector>
+
 #include "midistar/GameObject.h"
 
 namespace midistar {
@@ -27,6 +29,7 @@ class PauseSongGameObjectFactory {
  public:
     bool CreatePauseSongGameObject(
         GameObject* midi_file_in
+        , std::vector<GameObject*> instruments
         , GameObject** game_object_out);
 };
 

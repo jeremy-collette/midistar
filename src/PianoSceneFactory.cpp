@@ -115,6 +115,7 @@ bool PianoSceneFactory::Create(
     GameObject* pause_game_object;
     if (!pause_factory.CreatePauseSongGameObject(
         midi_file_game_object
+        , game_objects
         , &pause_game_object)) {
         return false;
     }

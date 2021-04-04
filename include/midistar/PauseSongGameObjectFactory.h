@@ -20,6 +20,7 @@
 #define MIDISTAR_PAUSEGAMEOBJECTFACTORY_H_
 
 #include <vector>
+#include <SFML/Graphics/Font.hpp>
 
 #include "midistar/GameObject.h"
 
@@ -29,8 +30,13 @@ class PauseSongGameObjectFactory {
  public:
     bool CreatePauseSongGameObject(
         GameObject* midi_file_in
-        , std::vector<GameObject*> instruments
+        , std::vector<GameObject*> scene_game_objects
         , GameObject** game_object_out);
+
+ private:
+    bool AddMidiKeyTextToInstruments(
+        std::vector<GameObject*> scene_game_objects,
+        const sf::Font& font);
 };
 
 }  // End namespace midistar

@@ -77,6 +77,7 @@ class Component {
         , BACKGROUND_SONG_PLAYER
         , SCORE
         , SCORE_MANAGER
+        , PHANTOM_NOTE
         , NUM_COMPONENTS
     };
 

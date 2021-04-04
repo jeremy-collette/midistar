@@ -55,6 +55,11 @@ class Config {
      */
     bool GetAutomaticallyPlay();
 
+    /**
+     * Gets the specified order of drums by MIDI key.
+     *
+     * \return Drum instrument order using MIDI key.
+     */
     std::vector<int> GetDrumMidiOrder();
 
     /**

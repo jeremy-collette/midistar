@@ -37,7 +37,7 @@ void PauseSongSfmlEventsHandlerComponent::HandleEvent(
 
     // Remove MIDI key annotations
     auto midi_key_texts = g->GetCurrentScene().GetGameObjectsByTag(
-        "MidiKeyText");
+        "MidiKeyText", true);
     for (auto game_object : midi_key_texts) {
         game_object->SetRequestDelete(true);
     }

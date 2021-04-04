@@ -22,7 +22,6 @@
 #include "midistar/Component.h"
 
 #include <set>
-#include <vector>
 
 namespace midistar {
 

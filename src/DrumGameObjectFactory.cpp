@@ -192,7 +192,7 @@ GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNotes(
     auto phantom_ins = new GameObject{};
 
     // Add components
-    phantom_ins->SetComponent(new PhantomNoteComponent{ midi_keys });
+    phantom_ins->SetComponent(new PhantomNoteComponent{ midi_keys, 9 });
     return phantom_ins;
 }
 

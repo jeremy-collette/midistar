@@ -27,11 +27,12 @@ namespace midistar {
 
 class PhantomNoteComponent : public Component {
  public:
-    PhantomNoteComponent(std::set<int> midi_keys);
+    PhantomNoteComponent(std::set<int> midi_keys, int midi_channel);
 
     virtual void Update(Game* g, GameObject* o, int delta);
 
  private:
+    int midi_channel_;
     std::set<int> midi_keys_;
 };
 

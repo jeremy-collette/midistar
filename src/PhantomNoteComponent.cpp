@@ -24,8 +24,11 @@
 
 namespace midistar {
 
-PhantomNoteComponent::PhantomNoteComponent(std::set<int> midi_keys)
-    : Component{Component::PHANTOM_NOTE}
+PhantomNoteComponent::PhantomNoteComponent(
+    std::set<int> midi_keys
+    , int midi_channel)
+        : Component{Component::PHANTOM_NOTE}
+        , midi_channel_{ midi_channel }
         , midi_keys_{ midi_keys } {
 }
 
@@ -43,7 +46,7 @@ void PhantomNoteComponent::Update(Game* g, GameObject* o, int) {
             auto child = new GameObject{};
             child->SetComponent(new MidiNoteComponent{
                     msg.IsNoteOn()
-                    , 9
+                    , midi_channel_
                     , msg.GetKey()
                     , Config::GetInstance().GetMidiOutVelocity() });
 

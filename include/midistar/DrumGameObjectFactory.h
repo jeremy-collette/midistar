@@ -92,7 +92,7 @@ class DrumGameObjectFactory : public GameObjectFactory {
     static const sf::Color DRUM_COLOURS[NUM_DRUM_COLOURS];  //!< Holds drum
                                                                   //!< colours
 
-    GameObject* DrumGameObjectFactory::CreatePhantomInstrument(
+    GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNotes(
         std::set<int> midi_keys);  //!< Handles MIDI input for non-visible drums
                         //!< (i.e. drums that are not used in the current song).
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for

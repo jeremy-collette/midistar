@@ -123,6 +123,13 @@ class Scene {
       */
      std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
 
+     /**
+      * Recursively gets all GameObjects in the Scene that have a specific tag.
+      * This means that GameObject children are also searched, not just the
+      * top-level GameObjects of the Scene.
+      *
+      * \returns All GameObjects in the Scene that have a specific tag.
+      */
      std::vector<GameObject*> GetGameObjectsByTagRecursively(std::string tag);
 
  private:

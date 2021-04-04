@@ -33,7 +33,7 @@ PhantomNoteComponent::PhantomNoteComponent(
 }
 
 void PhantomNoteComponent::Update(Game* g, GameObject* o, int) {
-    // Here we handle MIDI keys that are not handled by instruments.
+    // Here we handle MIDI keys that are not handled by visible instruments.
     // This allows the playing of instrument notes that aren't shown on screen
     // (e.g. a drum that isn't part of the current song).
     auto midi_instrument_game_object = g->GetCurrentScene().
@@ -43,6 +43,7 @@ void PhantomNoteComponent::Update(Game* g, GameObject* o, int) {
 
     for (const auto& msg : midi_instrument_in->GetMessages()) {
         if (msg.IsNote() && midi_keys_.count(msg.GetKey())) {
+            // Create child so there is no MidiNoteComponent clash
             auto child = new GameObject{};
             child->SetComponent(new MidiNoteComponent{
                     msg.IsNoteOn()

@@ -55,6 +55,10 @@ bool Config::GetAutomaticallyPlay() {
     return auto_play_;
 }
 
+std::vector<int> Config::GetDrumMidiOrder() {
+    return drum_midi_order_;
+}
+
 bool Config::GetEnableTitleMusic() {
     return enable_title_music_;
 }
@@ -187,6 +191,9 @@ void Config::InitCliApp(CLI::App* app) {
             "automatically play song notes.");
     app->set_config("--config", "config.cfg", "Read a config file.")->required(
             false);
+    app->add_option("--drum_midi_order", drum_midi_order_, "Determines the "
+        "order of drums on the screen with the specified MIDI keys. -1 will "
+        "order the drums in ascending order of their MIDI key.");
     app->add_option("--enable_title_music", enable_title_music_, "Determines "
         "whether or not to play background music on the title screen.");
     app->add_option("--frame_max_delta", frame_max_delta_, "The maximum time "

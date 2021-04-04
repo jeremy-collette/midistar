@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <unordered_map>
 
 #include "midistar/CollidableComponent.h"
 #include "midistar/Config.h"
@@ -93,6 +94,11 @@ GameObject* DrumGameObjectFactory::CreateNotePlayEffect(GameObject* note) {
 
 std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {
     std::vector<GameObject*> result;
+
+    // Sort the instrument notes by the order specified in the Config
+    // (if it has been specified).
+    SortDrumInstrumentNotes();
+
     for (int key : song_notes_) {
         result.push_back(CreateInstrumentNote(key));
     }
@@ -220,6 +226,34 @@ int DrumGameObjectFactory::GetNoteUniqueIndex(int note) {
 
 double DrumGameObjectFactory::GetXPosition(int note) {
     return x_pos_offset_ + GetNoteUniqueIndex(note) * (drum_radius_ * 2);
+}
+
+void DrumGameObjectFactory::SortDrumInstrumentNotes() {
+    // Sort drums by config specification (if it exists)
+    auto drum_order = Config::GetInstance().GetDrumMidiOrder();
+    if (drum_order.size() && drum_order[0] != -1) {
+        // Convert drum order to map for use below
+        auto drum_order_map = std::unordered_map<int, int>{};
+        for (auto i = 0U; i < drum_order.size(); ++i) {
+            drum_order_map[drum_order[i]] = i;
+        }
+
+        // Sort by position in map or size of map + value (MIDI key)
+        std::sort(song_notes_.begin(), song_notes_.end(),
+            [drum_order_map](int noteA, int noteB) {
+                auto aVal = drum_order_map.size() + noteA;
+                if (drum_order_map.count(noteA)) {
+                    aVal = drum_order_map.at(noteA);
+                }
+
+                auto bVal = drum_order_map.size() + noteB;
+                if (drum_order_map.count(noteB)) {
+                    bVal = drum_order_map.at(noteB);
+                }
+
+                return aVal < bVal;
+            });
+    }
 }
 
 bool DrumGameObjectFactory::Init() {

@@ -97,10 +97,9 @@ std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {
         result.push_back(CreateInstrumentNote(key));
     }
 
-    // [WIP] Add phantom instruments
-    // TODO: reduce perf hit
-    // (Instruments for keys that are not in the song -- this allows the user
-    // to "play" regardless if the song uses it).
+    // Add phantom instrument notes
+    // (Handles MIDI keys that are not in the song -- this allows the user
+    // to "play" regardless of if the song uses it).
     auto phantom_midi_keys = std::set<int>();
     for (auto key = 0U; key < 128; ++key)
     {
@@ -109,7 +108,7 @@ std::vector<GameObject*> DrumGameObjectFactory::CreateInstrument() {
             phantom_midi_keys.insert(key);
         }
     }
-    result.push_back(CreatePhantomInstrumentNote(phantom_midi_keys));
+    result.push_back(CreatePhantomInstrumentNotes(phantom_midi_keys));
     return result;
 }
 
@@ -187,7 +186,7 @@ GameObject* DrumGameObjectFactory::CreateInstrumentNote(int note) {
     return ins_note;
 }
 
-GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNote(
+GameObject* DrumGameObjectFactory::CreatePhantomInstrumentNotes(
         std::set<int> midi_keys) {
     // Create GameObject
     auto phantom_ins = new GameObject{};

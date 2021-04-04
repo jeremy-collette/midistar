@@ -55,6 +55,8 @@ class Config {
      */
     bool GetAutomaticallyPlay();
 
+    std::vector<int> GetDrumMidiOrder();
+
     /**
      * Gets a bool indicating whether or not title screen background music
      * should be played.
@@ -222,6 +224,7 @@ class Config {
 
     std::string audio_driver_;  //!< Audio driver name
     bool auto_play_;  //!< Auto play setting
+    std::vector<int> drum_midi_order_;  //!< Order of drums on screen by key
     bool enable_title_music_;  //!< Enable title background music
     double fall_speed_multiplier_;  //!< Affects fall speed of notes
     int frame_max_delta_;  //!< Max delta before delta is ignored (game not

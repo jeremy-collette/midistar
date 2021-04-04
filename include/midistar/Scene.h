@@ -107,9 +107,7 @@ class Scene {
       *
       * \returns The first GameObject with the specified tag.
       */
-     GameObject* GetFirstGameObjectByTag(
-         std::string tag
-        , bool recursive = false);
+     GameObject* GetFirstGameObjectByTag(std::string tag);
 
      /**
       * Gets all GameObjects in the Scene.
@@ -123,9 +121,9 @@ class Scene {
       *
       * \returns All GameObjects in the Scene that have a specific tag.
       */
-     std::vector<GameObject*> GetGameObjectsByTag(
-         std::string tag
-        , bool recursive = false);
+     std::vector<GameObject*> GetGameObjectsByTag(std::string tag);
+
+     std::vector<GameObject*> GetGameObjectsByTagRecursively(std::string tag);
 
  private:
     void CleanUpObjects();

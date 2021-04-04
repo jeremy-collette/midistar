@@ -82,10 +82,8 @@ void Scene::FlushNewObjectQueue() {
     }
 }
 
-GameObject* Scene::GetFirstGameObjectByTag(
-        std::string tag
-        , bool recursive) {
-    auto game_objects = GetGameObjectsByTag(tag, recursive);
+GameObject* Scene::GetFirstGameObjectByTag(std::string tag) {
+    auto game_objects = GetGameObjectsByTag(tag);
     if (!game_objects.size()) {
         return nullptr;
     }
@@ -105,9 +103,19 @@ std::vector<GameObject*>& Scene::GetGameObjects() {
     return game_objects_;
 }
 
-std::vector<GameObject*> Scene::GetGameObjectsByTag(
-        std::string tag
-        , bool recursive) {
+std::vector<GameObject*> Scene::GetGameObjectsByTag(std::string tag) {
+    auto game_objects = std::vector<GameObject*>{ };
+
+    for (const auto& game_object : this->game_objects_) {
+        if (game_object->GetEnabled() && game_object->HasTag(tag)) {
+            game_objects.push_back(game_object);
+        }
+    }
+
+    return game_objects;
+}
+
+std::vector<GameObject*> Scene::GetGameObjectsByTagRecursively(std::string tag){
     auto result = std::vector<GameObject*>{ };
 
     auto to_visit = std::queue<GameObject*>{ };
@@ -127,10 +135,8 @@ std::vector<GameObject*> Scene::GetGameObjectsByTag(
             result.push_back(visiting);
         }
 
-        if (recursive) {
-            for (auto child : visiting->GetChildren()) {
-                to_visit.push(child);
-            }
+        for (auto child : visiting->GetChildren()) {
+            to_visit.push(child);
         }
     }
 

@@ -42,8 +42,8 @@ elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     echo "Use build_setup.bat in the \"scripts\win32\" folder for Windows platforms."
     exit
 else
-	echo "Unrecognised platform."
-	exit
+    echo "Unrecognised platform."
+    exit
 fi
 
 # Change to script dir
@@ -168,6 +168,11 @@ cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
 cp lib/*.$lib_ext $lib_release_dir/.
 cp -r ../../include/SFML $inc_dir/.
+
+cecho "\nCopying SFML external libraries..."
+cd $ext_dir/SFML
+cp -r extlibs/libs-osx/Frameworks/* $lib_debug_dir/.
+cp -r extlibs/libs-osx/Frameworks/* $lib_release_dir/.
 
 cd $unix_script_dir
 ./make debug

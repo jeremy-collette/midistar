@@ -81,7 +81,8 @@ bool PauseSongGameObjectFactory::AddMidiKeyTextToInstruments(
             continue;
         }
 
-        auto note_annotation = std::to_string(note_info_component->GetKey());
+        auto note_annotation = "MIDI\nNote\n#" + std::to_string(
+            note_info_component->GetKey());
         auto instrument_text_factory = TextFactory{ note_annotation, font };
         double ins_x, ins_y;
         instrument->GetPosition(&ins_x, &ins_y);

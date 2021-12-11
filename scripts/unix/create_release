@@ -12,10 +12,10 @@ ITEMS_TO_COPY=(
     "scripts/unix/install_soundfont"
     "scripts/unix/find_binary"
     "scripts/unix/setup"
-    "songs/drums/NOTE",
-    "songs/drums/rock1.mid",
-    "songs/piano/NOTE",
-    "songs/piano/nocturne",
+    "songs/drums/NOTE"
+    "songs/drums/rock1.mid"
+    "songs/piano/NOTE"
+    "songs/piano/nocturne"
     "src/"
     "GPLv3"
     "LICENSE"

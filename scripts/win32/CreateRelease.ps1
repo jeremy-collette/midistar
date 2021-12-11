@@ -12,7 +12,9 @@ $ITEMS_TO_COPY = @(
     "scripts\win32\run_release.bat",
     "scripts\win32\setup.bat",
     "songs\drums\NOTE",
+    "songs\drums\rock1.mid",
     "songs\piano\NOTE",
+    "songs\piano\nocturne",
     "src\",
     "GPLv3",
     "LICENSE",
@@ -30,7 +32,6 @@ $EXTERNAL_REPOS = @(
 
 $ITEMS_TO_DELETE = @(
     ".git\",
-    "doc\doxygen.config",
     "external\assets\fluid\FluidR3_GM.sf2"
 )
 

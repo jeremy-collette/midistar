@@ -21,7 +21,7 @@
 namespace midistar {
 
 PracticeModePlayedComponent::PracticeModePlayedComponent()
-        : Component{ Component::SONG_NOTE_PRACTICE_MODE } {
+        : Component{ Component::PRACTICE_MODE_PLAYED } {
 }
 
 void PracticeModePlayedComponent::Update(

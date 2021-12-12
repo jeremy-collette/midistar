@@ -128,6 +128,7 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
         // We don't want complete note behaviour - this is an
         // unplayable note
         half->DeleteComponent(Component::PIANO_NOTE_COLLISION_HANDLER);
+        half->SetComponent(new PracticeModePlayedComponent{});
         half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
         half->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));

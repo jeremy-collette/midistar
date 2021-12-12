@@ -205,4 +205,8 @@ void GameObject::Update(Game* g, int delta) {
     to_delete_.clear();
 }
 
+float GameObject::GetTimeScale() {
+    return time_scale_;
+}
+
 }   // End namespace midistar

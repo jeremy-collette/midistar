@@ -53,6 +53,7 @@ void InstrumentPracticeModeComponent::HandleCollisions(
             || collider->HasComponent(Component::PRACTICE_MODE_PLAYED)) {
             continue;
         }
+
         auto other_note = collider->GetComponent<NoteInfoComponent>(
             Component::NOTE_INFO);
         if (!other_note) {

@@ -24,6 +24,7 @@
 #include "midistar/Config.h"
 #include "midistar/MidiNoteComponent.h"
 #include "midistar/NoteInfoComponent.h"
+#include "midistar/PracticeModePlayedComponent.h"
 #include "midistar/ResizeComponent.h"
 #include "midistar/ScoreComponent.h"
 #include "midistar/ScoreManagerComponent.h"
@@ -127,16 +128,15 @@ bool PianoSongNoteCollisionHandlerComponent::HandleCollision(
         // We don't want complete note behaviour - this is an
         // unplayable note
         half->DeleteComponent(Component::PIANO_NOTE_COLLISION_HANDLER);
-        half->DeleteComponent(Component::SONG_NOTE_PRACTICE_MODE);
         half->SetPosition(x, inst_y + NOTE_COLLISION_CUTOFF);
         half->SetSize(width, (y + height) - (inst_y
                     + NOTE_COLLISION_CUTOFF));
         g->GetCurrentScene().AddGameObject(half);
     }
+
     // Once we start playing the note, we don't want to stop for practice
     // mode.
-    o->DeleteComponent(Component::SONG_NOTE_PRACTICE_MODE);
-    o->SetTimeScale(1.0f);
+    o->SetComponent(new PracticeModePlayedComponent{});
 
     // Now we are guaranteed to have a note that ends before the bottom
     // of the instrument (see above).

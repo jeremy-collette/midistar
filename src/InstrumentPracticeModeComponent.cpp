@@ -49,7 +49,8 @@ void InstrumentPracticeModeComponent::HandleCollisions(
 
     for (auto collider : colliding_with) {
         if (!collider->HasComponent(Component::SONG_NOTE)
-            || !collider->HasComponent(Component::SONG_NOTE_PRACTICE_MODE)) {
+            || !collider->HasComponent(Component::SONG_NOTE_PRACTICE_MODE)
+            || collider->HasComponent(Component::PRACTICE_MODE_PLAYED)) {
             continue;
         }
         auto other_note = collider->GetComponent<NoteInfoComponent>(

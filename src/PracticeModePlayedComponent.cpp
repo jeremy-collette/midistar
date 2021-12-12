@@ -16,39 +16,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/SongNotePracticeModeComponent.h"
-
-#include "midistar/InstrumentPracticeModeComponent.h"
+#include "midistar/PracticeModePlayedComponent.h"
 
 namespace midistar {
 
-SongNotePracticeModeComponent::SongNotePracticeModeComponent()
+PracticeModePlayedComponent::PracticeModePlayedComponent()
         : Component{ Component::SONG_NOTE_PRACTICE_MODE } {
 }
 
-void SongNotePracticeModeComponent::Update(
+void PracticeModePlayedComponent::Update(
         Game* g
         , GameObject* o
         , int delta) {
-
-    if (g->GetCurrentScene().GetGameObjectsByTag("PauseGame").size()) {
-        return;
-    }
-
-    auto instrument_notes = g->GetCurrentScene().GetGameObjectsByTag(
-        "InstrumentNote");
-    bool pause_game = false;
-    for (auto inst_note : instrument_notes) {
-        auto inst_practice_mode =
-            inst_note->GetComponent<InstrumentPracticeModeComponent>(
-                Component::INSTRUMENT_PRACTICE_MODE);
-        if (inst_practice_mode->GetInstrumentIsCollidingWithNote()) {
-            pause_game = true;
-        }
-    }
-
-    auto time_scale = pause_game ? 0.0f : 1.0f;
-    o->SetTimeScale(time_scale);
+    return;
 }
 
 }  // End namespace midistar

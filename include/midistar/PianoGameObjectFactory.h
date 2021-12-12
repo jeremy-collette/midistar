@@ -19,11 +19,13 @@
 #ifndef MIDISTAR_PIANOGAMEOBJECTFACTORY_H_
 #define MIDISTAR_PIANOGAMEOBJECTFACTORY_H_
 
+#include <unordered_set>
 #include <vector>
 #include <SFML/Graphics.hpp>
 
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
+#include "midistar/SongNoteComponent.h"
 
 namespace midistar {
 
@@ -117,6 +119,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
 
     sf::Texture grinding_texture_;  //!< Holds texture to represent metal grind
     double white_width_;  //!< Holds the width of white keys and notes
+    std::unordered_set<SongNoteComponent*> practice_mode_notes;
 };
 
 }  // End namespace midistar

@@ -33,6 +33,7 @@
 #include "midistar/ResizeComponent.h"
 #include "midistar/PianoScoreDeltaProvider.h"
 #include "midistar/PianoSongNoteCollisionHandlerComponent.h"
+#include "midistar/PracticeModeComponent.h"
 #include "midistar/ScoreComponent.h"
 #include "midistar/SongNoteComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
@@ -62,7 +63,8 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed, BACKGROUND_COLOUR}
         , grinding_texture_{}
         , white_width_{Config::GetInstance().GetScreenWidth() /
-            static_cast<double>(NUM_WHITE_KEYS)} {
+            static_cast<double>(NUM_WHITE_KEYS)}
+        , practice_mode_notes{} {
 }
 
 GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
@@ -144,6 +146,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
     song_note->SetComponent(new ScoreComponent{
         new PianoScoreDeltaProvider{ } });
+    song_note->SetComponent(new PracticeModeComponent{ &practice_mode_notes });
     return song_note;
 }
 

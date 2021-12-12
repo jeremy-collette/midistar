@@ -119,7 +119,6 @@ class PianoGameObjectFactory : public GameObjectFactory {
 
     sf::Texture grinding_texture_;  //!< Holds texture to represent metal grind
     double white_width_;  //!< Holds the width of white keys and notes
-    std::unordered_set<SongNoteComponent*> practice_mode_notes;
 };
 
 }  // End namespace midistar

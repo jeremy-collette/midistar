@@ -27,15 +27,16 @@
 #include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
+#include "midistar/InstrumentPracticeModeComponent.h"
 #include "midistar/InvertColourComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
 #include "midistar/ResizeComponent.h"
 #include "midistar/PianoScoreDeltaProvider.h"
 #include "midistar/PianoSongNoteCollisionHandlerComponent.h"
-#include "midistar/PracticeModeComponent.h"
 #include "midistar/ScoreComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/SongNotePracticeModeComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
@@ -63,8 +64,7 @@ PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
         : GameObjectFactory{note_speed, BACKGROUND_COLOUR}
         , grinding_texture_{}
         , white_width_{Config::GetInstance().GetScreenWidth() /
-            static_cast<double>(NUM_WHITE_KEYS)}
-        , practice_mode_notes{} {
+            static_cast<double>(NUM_WHITE_KEYS)} {
 }
 
 GameObject* PianoGameObjectFactory::CreateNotePlayEffect(GameObject* inst) {
@@ -146,7 +146,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
     song_note->SetComponent(new ScoreComponent{
         new PianoScoreDeltaProvider{ } });
-    song_note->SetComponent(new PracticeModeComponent{ &practice_mode_notes });
+    song_note->SetComponent(new SongNotePracticeModeComponent{ });
     return song_note;
 }
 
@@ -242,6 +242,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
 
     // Create the actual note
     auto ins_note = new GameObject{rect, x, y, width, height};
+    ins_note->AddTag("InstrumentNote");
 
     // Get the instrument key binding
     sf::Keyboard::Key key;
@@ -256,6 +257,8 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentAutoPlayComponent{});
+    ins_note->SetComponent(new InstrumentPracticeModeComponent{});
+
     return ins_note;
 }
 

@@ -16,11 +16,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MIDISTAR_PRACTICEMODECOMPONENT_H_
-#define MIDISTAR_PRACTICEMODECOMPONENT_H_
-
-#include <memory>
-#include <unordered_set>
+#ifndef MIDISTAR_SONGNOTEPRACTICEMODECOMPONENT_H_
+#define MIDISTAR_SONGNOTEPRACTICEMODECOMPONENT_H_
 
 #include "midistar/CollisionHandlerComponent.h"
 #include "midistar/SongNoteComponent.h"
@@ -28,31 +25,17 @@
 namespace midistar {
 
 /**
-  * The PracticeModeComponent class enables Practice Mode, where all notes will
-  * stop moving when any note is colliding with the instrument without being
-  * played.
+  * The SongNotePracticeModeComponent  class enables Practice Mode, where all
+  * notes will stop moving when any note is colliding with the instrument
+  * without played being.
   */
-class PracticeModeComponent : public CollisionHandlerComponent {
+class SongNotePracticeModeComponent : public Component {
  public:
-     PracticeModeComponent(
-         std::unordered_set<SongNoteComponent*>* to_play);
-
-     virtual void HandleCollisions(
-             Game* g
-             , GameObject* o
-             , int delta
-             , std::vector<GameObject*> colliding_with);
+     SongNotePracticeModeComponent();
 
      virtual void Update(Game* g, GameObject* o, int delta) override;
-
- private:
-    void HandleCollision(Game* g, GameObject* o, GameObject* collider);
-
-    std::unordered_set<SongNoteComponent*>* to_play_;
-
-    bool colliding_instrument_;
 };
 
 }  // End namespace midistar
 
-#endif  // MIDISTAR_PRACTICEMODECOMPONENT_H_
+#endif  // MIDISTAR_SONGNOTEPRACTICEMODECOMPONENT_H_

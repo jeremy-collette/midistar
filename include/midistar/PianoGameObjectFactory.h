@@ -24,7 +24,6 @@
 
 #include "midistar/GameObject.h"
 #include "midistar/GameObjectFactory.h"
-#include "midistar/SongNoteComponent.h"
 
 namespace midistar {
 

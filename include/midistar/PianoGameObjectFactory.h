@@ -19,7 +19,6 @@
 #ifndef MIDISTAR_PIANOGAMEOBJECTFACTORY_H_
 #define MIDISTAR_PIANOGAMEOBJECTFACTORY_H_
 
-#include <unordered_set>
 #include <vector>
 #include <SFML/Graphics.hpp>
 

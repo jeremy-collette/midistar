@@ -247,6 +247,8 @@ class GameObject {
      */
     void Update(Game* g, int delta);
 
+    float GetTimeScale();
+
  private:
     Component* components_[Component::NUM_COMPONENTS];  //!< Holds components
     sf::Drawable* drawable_;  //!< Holds drawable part of object

@@ -80,6 +80,9 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/Utility.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Version.h
     ${CMAKE_SOURCE_DIR}/include/midistar/VerticalCollisionDetectorComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/PracticeModePlayedComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/SongNotePracticeModeComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/InstrumentPracticeModeComponent.h
 )
 
 # Set source
@@ -154,6 +157,9 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/TextFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/Utility.cpp
     ${CMAKE_SOURCE_DIR}/src/VerticalCollisionDetectorComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/PracticeModePlayedComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/SongNotePracticeModeComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/InstrumentPracticeModeComponent.cpp
 )
 
 # If build type is not set, default to Debug

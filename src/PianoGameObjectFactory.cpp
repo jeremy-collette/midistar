@@ -27,6 +27,7 @@
 #include "midistar/InstrumentAutoPlayComponent.h"
 #include "midistar/InstrumentComponent.h"
 #include "midistar/InstrumentInputHandlerComponent.h"
+#include "midistar/InstrumentPracticeModeComponent.h"
 #include "midistar/InvertColourComponent.h"
 #include "midistar/NoteInfoComponent.h"
 #include "midistar/PhysicsComponent.h"
@@ -35,6 +36,7 @@
 #include "midistar/PianoSongNoteCollisionHandlerComponent.h"
 #include "midistar/ScoreComponent.h"
 #include "midistar/SongNoteComponent.h"
+#include "midistar/SongNotePracticeModeComponent.h"
 #include "midistar/SpriteAnimatorComponent.h"
 #include "midistar/Utility.h"
 #include "midistar/VerticalCollisionDetectorComponent.h"
@@ -144,6 +146,10 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
     song_note->SetComponent(new ScoreComponent{
         new PianoScoreDeltaProvider{ } });
+    if (Config::GetInstance().GetPracticeMode()) {
+        song_note->SetComponent(new SongNotePracticeModeComponent{ });
+    }
+
     return song_note;
 }
 
@@ -239,6 +245,7 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
 
     // Create the actual note
     auto ins_note = new GameObject{rect, x, y, width, height};
+    ins_note->AddTag("InstrumentNote");
 
     // Get the instrument key binding
     sf::Keyboard::Key key;
@@ -253,6 +260,10 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentAutoPlayComponent{});
+    if (Config::GetInstance().GetPracticeMode()) {
+        ins_note->SetComponent(new InstrumentPracticeModeComponent{});
+    }
+
     return ins_note;
 }
 

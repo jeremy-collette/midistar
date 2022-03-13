@@ -41,6 +41,7 @@ Config::Config()
         , midi_file_channels_{}
         , midi_file_repeat_{false}
         , midi_file_tracks_{}
+        , practice_mode_{ false }
         , screen_height_{-1}
         , screen_width_{-1}
         , show_third_party_{false}
@@ -61,6 +62,14 @@ std::vector<int> Config::GetDrumMidiOrder() {
 
 bool Config::GetEnableTitleMusic() {
     return enable_title_music_;
+}
+
+double Config::GetFallSpeedMultiplier() {
+    return fall_speed_multiplier_;
+}
+
+int Config::GetFrameMaxDelta() {
+    return frame_max_delta_;
 }
 
 bool Config::GetFullScreen() {
@@ -104,12 +113,8 @@ int Config::GetMidiOutVelocity() {
     return MIDI_OUT_VELOCITY;
 }
 
-double Config::GetFallSpeedMultiplier() {
-    return fall_speed_multiplier_;
-}
-
-int Config::GetFrameMaxDelta() {
-    return frame_max_delta_;
+bool Config::GetPracticeMode() {
+    return practice_mode_ && !auto_play_;
 }
 
 int Config::GetScreenHeight() {
@@ -221,6 +226,10 @@ void Config::InitCliApp(CLI::App* app) {
         "mapped note. This size of this list must be perfectly divisible "
         "by two. Please note instrument support is dependent on the SoundFont "
         "in use.");
+    app->add_option("--practice_mode"
+        , practice_mode_,
+        "Enables practice mode. Pauses the game until all current notes have "
+        "been played. Only supported in piano mode.");
     app->add_option("--instrument_midi_remapping"
         , instrument_midi_remapping_notes_,
         "Remaps specified instrument MIDI notes to another note. Mappings "

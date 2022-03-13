@@ -78,6 +78,9 @@ class Component {
         , SCORE
         , SCORE_MANAGER
         , PHANTOM_NOTE
+        , INSTRUMENT_PRACTICE_MODE
+        , SONG_NOTE_PRACTICE_MODE
+        , PRACTICE_MODE_PLAYED
         , NUM_COMPONENTS
     };
 

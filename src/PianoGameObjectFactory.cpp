@@ -260,7 +260,6 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentAutoPlayComponent{});
-
     if (Config::GetInstance().GetPracticeMode()) {
         ins_note->SetComponent(new InstrumentPracticeModeComponent{});
     }

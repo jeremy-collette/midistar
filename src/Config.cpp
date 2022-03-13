@@ -229,7 +229,7 @@ void Config::InitCliApp(CLI::App* app) {
     app->add_option("--practice_mode"
         , practice_mode_,
         "Enables practice mode. Pauses the game until all current notes have "
-        "been played.");
+        "been played. Only supported in piano mode.");
     app->add_option("--instrument_midi_remapping"
         , instrument_midi_remapping_notes_,
         "Remaps specified instrument MIDI notes to another note. Mappings "

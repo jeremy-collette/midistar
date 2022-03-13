@@ -1,5 +1,5 @@
 # midistar
-midistar Copyright (C) 2018-2021 Jeremy Collette.
+midistar Copyright (C) 2018-2022 Jeremy Collette.
 
 ## 1. About midistar
 midistar is a free music game that challenges users to play a MIDI file with

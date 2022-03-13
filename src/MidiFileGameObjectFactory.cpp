@@ -18,6 +18,7 @@
 
 #include "midistar/MidiFileGameObjectFactory.h"
 
+#include "midistar/Config.h"
 #include "midistar/MidiFileIn.h"
 #include "midistar/MidiFileInComponent.h"
 #include "midistar/SongNotePracticeModeComponent.h"
@@ -38,7 +39,9 @@ bool MidiFileGameObjectFactory::Create(
     *game_object_out = new GameObject{ rect, 0, 0, 0, 0 };
     (*game_object_out)->AddTag("MidiFile");
     (*game_object_out)->SetComponent(midi_file_in_component);
-    (*game_object_out)->SetComponent(new SongNotePracticeModeComponent{});
+    if (Config::GetInstance().GetPracticeMode()) {
+        (*game_object_out)->SetComponent(new SongNotePracticeModeComponent{});
+    }
 
     return true;
 }

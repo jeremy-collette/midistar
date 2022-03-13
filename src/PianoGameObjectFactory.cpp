@@ -146,7 +146,10 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
     song_note->SetComponent(new ScoreComponent{
         new PianoScoreDeltaProvider{ } });
-    song_note->SetComponent(new SongNotePracticeModeComponent{ });
+    if (Config::GetInstance().GetPracticeMode()) {
+        song_note->SetComponent(new SongNotePracticeModeComponent{ });
+    }
+
     return song_note;
 }
 
@@ -257,7 +260,10 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentAutoPlayComponent{});
-    ins_note->SetComponent(new InstrumentPracticeModeComponent{});
+
+    if (Config::GetInstance().GetPracticeMode()) {
+        ins_note->SetComponent(new InstrumentPracticeModeComponent{});
+    }
 
     return ins_note;
 }

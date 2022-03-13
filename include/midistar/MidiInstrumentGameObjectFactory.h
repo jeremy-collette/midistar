@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018-2021 Jeremy Collette.
+ * Copyright (C) 2018-2022 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free

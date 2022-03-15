@@ -34,8 +34,10 @@
 namespace midistar {
 
 PianoSceneFactory::PianoSceneFactory(
-    const std::string midi_file_name)
-        : midi_file_name_{ midi_file_name } {
+    const std::string midi_file_name,
+    bool practice_mode)
+        : midi_file_name_{ midi_file_name }
+        , practice_mode_{ practice_mode } {
 }
 
 bool PianoSceneFactory::Create(
@@ -57,7 +59,8 @@ bool PianoSceneFactory::Create(
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
         midi_file_name_,
-        &midi_file_game_object)) {
+        &midi_file_game_object,
+        practice_mode_)) {
         return false;
     }
     auto midi_file_in_component = midi_file_game_object->GetComponent<
@@ -69,7 +72,9 @@ bool PianoSceneFactory::Create(
         Config::GetInstance().GetMidiFileTicksPerUnitOfSpeed()) *
         Config::GetInstance().GetFallSpeedMultiplier();
 
-    auto piano_scene_object_factory = new PianoGameObjectFactory(note_speed);
+    auto piano_scene_object_factory = new PianoGameObjectFactory(
+        note_speed,
+        practice_mode_);
     if (!piano_scene_object_factory->Init()) {
         return false;
     }

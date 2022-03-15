@@ -78,7 +78,10 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
 
     auto factory = MenuFactory{ *font, window };
     auto item_default_font_size = 25;
-    auto piano_menu = factory.CreateMenu("Song selection"
+    auto piano_menu_normal = factory.CreateMenu("Song selection"
+        , item_default_font_size)
+        .SetTitleFontSize(35);
+    auto piano_menu_practice = factory.CreateMenu("Song selection"
         , item_default_font_size)
         .SetTitleFontSize(35);
     auto drum_menu = factory.CreateMenu("Song selection"
@@ -90,7 +93,11 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
     // The '/=' operator appends paths in the correct native format.
     // Don't ask me why.
     piano_dir /= PIANO_MIDI_DIR;
-    piano_menu.GetGameObject()->AddChild(
+    piano_menu_normal.GetGameObject()->AddChild(
+        CreateScanningTextGameObject(
+            *font
+            , piano_dir.string()));
+    piano_menu_practice.GetGameObject()->AddChild(
         CreateScanningTextGameObject(
             *font
             , piano_dir.string()));
@@ -108,14 +115,17 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
     // Get songs recursively from song dir and sort
     auto songs = GetSortedMidiSongs(PIANO_MIDI_DIR);
 
+    bool* practice_mode = new bool(false);
+
     for (const auto & entry : songs) {
         auto path = entry.path();
-        piano_menu.AddMenuItem(
+        piano_menu_normal.AddMenuItem(
             factory.CreateMenuItem(path.filename().string())
-                .SetOnSelect(([path](Game* g, GameObject*, int) {
+                .SetOnSelect(([path, practice_mode](Game* g, GameObject*, int) {
                     Scene* new_scene = nullptr;
                     auto piano_scene_factory = PianoSceneFactory{
-                        path.string() };
+                        path.string()
+                        , false };
                     if (!piano_scene_factory.Create(
                         g
                         , &g->GetWindow()
@@ -123,12 +133,31 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
                         throw "Scene creation failed";
                     }
                     g->SetScene(new_scene);
-                    }))
+                }))
+                .SetFontSize(20));
+
+        piano_menu_practice.AddMenuItem(
+            factory.CreateMenuItem(path.filename().string())
+                .SetOnSelect(([path, practice_mode](Game* g, GameObject*, int) {
+                    Scene* new_scene = nullptr;
+                    auto piano_scene_factory = PianoSceneFactory{
+                        path.string()
+                        , true };
+                    if (!piano_scene_factory.Create(
+                        g
+                        , &g->GetWindow()
+                        , &new_scene)) {
+                        throw "Scene creation failed";
+                    }
+                    g->SetScene(new_scene);
+                }))
                 .SetFontSize(20));
     }
 
     if (!songs.size()) {
-        piano_menu.GetGameObject()->AddChild(
+        piano_menu_normal.GetGameObject()->AddChild(
+            CreateNoFilesFoundTextGameObject(*font));
+        piano_menu_practice.GetGameObject()->AddChild(
             CreateNoFilesFoundTextGameObject(*font));
     }
 
@@ -138,18 +167,18 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
         auto path = entry.path();
         drum_menu.AddMenuItem(
             factory.CreateMenuItem(path.filename().string())
-            .SetOnSelect(([path](Game* g, GameObject*, int) {
-                Scene* new_scene = nullptr;
-                auto drum_scene_factory = DrumSceneFactory{ path.string() };
-                if (!drum_scene_factory.Create(
-                    g
-                    , &g->GetWindow()
-                    , &new_scene)) {
-                    throw "Scene creation failed";
-                }
-                g->SetScene(new_scene);
+                .SetOnSelect(([path](Game* g, GameObject*, int) {
+                    Scene* new_scene = nullptr;
+                    auto drum_scene_factory = DrumSceneFactory{ path.string() };
+                    if (!drum_scene_factory.Create(
+                        g
+                        , &g->GetWindow()
+                        , &new_scene)) {
+                        throw "Scene creation failed";
+                    }
+                    g->SetScene(new_scene);
                 }))
-            .SetFontSize(20));
+                .SetFontSize(20));
     }
 
     if (!songs.size()) {
@@ -157,12 +186,20 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
             CreateNoFilesFoundTextGameObject(*font));
     }
 
+    auto piano_mode_menu = factory.CreateMenu("Select mode"
+        , item_default_font_size)
+        .SetTitleFontSize(35)
+        .AddMenuItem(factory.CreateMenuItem("1. Normal")
+            .SetOnSelect(piano_menu_normal))
+        .AddMenuItem(factory.CreateMenuItem("2. Practice")
+            .SetOnSelect(piano_menu_practice));
+
     item_default_font_size = 35;
     auto main_menu =
         factory.CreateMenu("midistar", item_default_font_size)
         .SetTitleColour(sf::Color::Green)
         .AddMenuItem(factory.CreateMenuItem("1. Piano")
-            .SetOnSelect(piano_menu))
+            .SetOnSelect(piano_mode_menu))
         .AddMenuItem(factory.CreateMenuItem("2. Drums")
             .SetOnSelect(drum_menu))
         .AddMenuItem(factory.CreateMenuItem("0. Exit")
@@ -180,8 +217,10 @@ std::vector<GameObject*> IntroSceneFactory::CreateGameObjects(
         auto game_objects = std::vector<GameObject*>
         {
             main_menu.GetGameObject()
-            , piano_menu.GetGameObject()
+            , piano_menu_normal.GetGameObject()
+            , piano_menu_practice.GetGameObject()
             , drum_menu.GetGameObject()
+            , piano_mode_menu.GetGameObject()
         };
 
         if (background_music && Config::GetInstance().GetEnableTitleMusic()) {
@@ -203,7 +242,8 @@ bool IntroSceneFactory::CreateBackgroundMusicPlayer(
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
         Config::GetInstance().GetTitleMusicMidiFilePath(),
-        &midi_file_game_object)) {
+        &midi_file_game_object,
+        false)) {
         return false;
     }
 

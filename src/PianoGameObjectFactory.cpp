@@ -60,9 +60,12 @@ const char PianoGameObjectFactory::OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE] {
     0, 0, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6
 };
 
-PianoGameObjectFactory::PianoGameObjectFactory(double note_speed)
+PianoGameObjectFactory::PianoGameObjectFactory(
+    double note_speed
+    , bool practice_mode)
         : GameObjectFactory{note_speed, BACKGROUND_COLOUR}
         , grinding_texture_{}
+        , practice_mode_{ practice_mode }
         , white_width_{Config::GetInstance().GetScreenWidth() /
             static_cast<double>(NUM_WHITE_KEYS)} {
 }
@@ -146,7 +149,7 @@ GameObject* PianoGameObjectFactory::CreateSongNote(
     song_note->SetComponent(new PianoSongNoteCollisionHandlerComponent{ this });
     song_note->SetComponent(new ScoreComponent{
         new PianoScoreDeltaProvider{ } });
-    if (Config::GetInstance().GetPracticeMode()) {
+    if (practice_mode_) {
         song_note->SetComponent(new SongNotePracticeModeComponent{ });
     }
 
@@ -259,9 +262,10 @@ GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl,
             shift});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
-    ins_note->SetComponent(new InstrumentAutoPlayComponent{});
-    if (Config::GetInstance().GetPracticeMode()) {
+    if (practice_mode_) {
         ins_note->SetComponent(new InstrumentPracticeModeComponent{});
+    } else {
+        ins_note->SetComponent(new InstrumentAutoPlayComponent{});
     }
 
     return ins_note;

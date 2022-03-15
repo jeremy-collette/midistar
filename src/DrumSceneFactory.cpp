@@ -57,7 +57,8 @@ bool DrumSceneFactory::Create(
     GameObject* midi_file_game_object = nullptr;
     if (!midi_file_object_factory.Create(
         midi_file_name_,
-        &midi_file_game_object)) {
+        &midi_file_game_object,
+        false)) {
         return false;
     }
     auto midi_file_in_component = midi_file_game_object->GetComponent<

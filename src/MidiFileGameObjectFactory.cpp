@@ -27,7 +27,8 @@ namespace midistar {
 
 bool MidiFileGameObjectFactory::Create(
         std::string file_name
-        , GameObject** game_object_out) {
+        , GameObject** game_object_out
+        , bool practice_mode) {
     auto midi_file_in = new MidiFileIn{ };
     if (!midi_file_in->Init(file_name)) {
         return false;
@@ -39,7 +40,7 @@ bool MidiFileGameObjectFactory::Create(
     *game_object_out = new GameObject{ rect, 0, 0, 0, 0 };
     (*game_object_out)->AddTag("MidiFile");
     (*game_object_out)->SetComponent(midi_file_in_component);
-    if (Config::GetInstance().GetPracticeMode()) {
+    if (practice_mode) {
         (*game_object_out)->SetComponent(new SongNotePracticeModeComponent{});
     }
 

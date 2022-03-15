@@ -38,7 +38,9 @@ class PianoGameObjectFactory : public GameObjectFactory {
     *
     * \param note_speed Used to calculate the falling speed of notes.
     */
-    explicit PianoGameObjectFactory(double note_speed);
+    explicit PianoGameObjectFactory(
+        double note_speed
+        , bool practice_mode);
 
    /**
      * \copydoc GameObjectFactory::CreateNotePlayEffect()
@@ -115,6 +117,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
     GameObject* CreateInstrumentNote(int midi_key);  //!< Creates a note for
                                                                  //!< the piano
 
+    bool practice_mode_;
     sf::Texture grinding_texture_;  //!< Holds texture to represent metal grind
     double white_width_;  //!< Holds the width of white keys and notes
 };

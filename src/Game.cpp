@@ -62,6 +62,16 @@ bool Game::Init() {
             GetMaximumFramesPerSecond());
     window_.setKeyRepeatEnabled(false);
 
+    // Set SFML window icon
+    sf::Image icon;
+    auto icon_path = Config::GetInstance().GetIconPath();
+    if (!icon.loadFromFile(icon_path)) {
+        std::cout << "Warning: could not load icon from \"" << icon_path
+            << "\"\n";
+    } else {
+        window_.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    }
+
     // If the song has finished, set scene to intro
     auto intro_scene_factory = IntroSceneFactory{};
     auto next_scene = new Scene{

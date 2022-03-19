@@ -74,7 +74,7 @@ class PianoGameObjectFactory : public GameObjectFactory {
     static const int GRINDING_FRAMES_PER_SECOND = 18;  //!< Grinding sprite FPS
     static const sf::Color GRINDING_SPRITE_COLOUR;  //!< Grinding sprite colour
     static constexpr float GRINDING_SPRITE_SIZE = 64.0f;  //!< Sprite size
-    static constexpr float KEY_HOVER_PERCENTAGE = 0.1f;  //!< Percentage of the
+    static constexpr float KEY_HOVER_PERCENTAGE = 0.0f;  //!< Percentage of the
                                   //!< screen height that the piano will hover
     static constexpr float NOTE_OUTLINE_THICKNESS = -2.0f;  //!< Note outline
     static const char NOTES_PER_OCTAVE = 12;  //!< Notes in an octave

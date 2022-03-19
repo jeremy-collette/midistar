@@ -221,25 +221,47 @@ double PianoGameObjectFactory::CalculateXPosition(int midi_key) {
 GameObject* PianoGameObjectFactory::CreateInstrumentNote(int note) {
     bool is_black = IsBlackKey(note);
 
+    // We scale certain values depending on the resolution. Game was developed
+    // initially using 1024x768, so we work out the scale here.
+    // We use this to work out the height of piano notes, seeing as the width
+    // depends on the size of the screen.
+    auto width_scale = (Config::GetInstance().GetScreenWidth()
+        / 1024.0f);
+
     // Black and white keys have slightly different atributes
     double height, width, outline_thickness;
     sf::Color colour;
     if (is_black) {
-        height = BLACK_KEY_HEIGHT;
+        height = BLACK_KEY_HEIGHT * width_scale;
         colour = sf::Color::Black;
         width = white_width_ * BLACK_WIDTH_MULTIPLIER;
-        outline_thickness = WHITE_KEY_OUTLINE_THICKNESS;
+        // We want to scale outline thickness with screen width too, but keep
+        // in mind we use negative thickness so here we use a min to ensure
+        // that the outline has a minimum thickness
+        outline_thickness = std::min(WHITE_KEY_OUTLINE_THICKNESS * width_scale,
+            WHITE_KEY_OUTLINE_THICKNESS);
     } else {
-        height = WHITE_KEY_HEIGHT;
+        height = WHITE_KEY_HEIGHT * width_scale;
         width = white_width_;
         colour = sf::Color::White;
-        outline_thickness = BLACK_KEY_OUTLINE_THICKNESS;
+        // Same applies as mentioned above in outline_thickness comments
+        outline_thickness = std::min(BLACK_KEY_OUTLINE_THICKNESS * width_scale,
+            BLACK_KEY_OUTLINE_THICKNESS);
     }
 
     // Create the underlying shape
     double x = CalculateXPosition(note);
-    double y = Config::GetInstance().GetScreenHeight() - WHITE_KEY_HEIGHT -
-        (Config::GetInstance().GetScreenHeight() * KEY_HOVER_PERCENTAGE);
+    double y = Config::GetInstance().GetScreenHeight() - WHITE_KEY_HEIGHT *
+        width_scale - (Config::GetInstance().GetScreenHeight() *
+            KEY_HOVER_PERCENTAGE);
+
+    // The piano should not take up more than 30% of the screen
+    double min_y = Config::GetInstance().GetScreenHeight() -
+        Config::GetInstance().GetScreenHeight() * 0.3f;
+    if (y < min_y) {
+        y = min_y;
+    }
+
     sf::RectangleShape* rect = new sf::RectangleShape{{static_cast<float>(
             width), static_cast<float>(height)}};
     rect->setFillColor(colour);

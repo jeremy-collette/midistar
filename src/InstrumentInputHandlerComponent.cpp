@@ -171,7 +171,7 @@ void InstrumentInputHandlerComponent::Update(
         was_active_ = false;
     }
     // Reset activation time
-    if (!key_down_) {
+    if (!key_down_ && !set_active_) {
         current_activation_time_ = 0.0f;
     }
 }

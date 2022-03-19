@@ -29,6 +29,8 @@ class ScoreManagerComponent : public Component {
  public:
     ScoreManagerComponent();
 
+    int GetScore();
+
     void ModifyScore(int delta);
 
     virtual void Update(Game* g, GameObject* o, int delta);

@@ -18,8 +18,9 @@
 
 #include "midistar/SongEndWatcherComponent.h"
 
-#include "midistar/IntroSceneFactory.h"
+#include "midistar/EndOfSongSceneFactory.h"
 #include "midistar/MidiFileInComponent.h"
+#include "midistar/ScoreManagerComponent.h"
 
 namespace midistar {
 
@@ -41,17 +42,24 @@ void SongEndWatcherComponent::Update(Game* g, GameObject* o, int) {
     }
 
     // If the song has finished, set scene to intro
-    auto intro_scene_factory = IntroSceneFactory{};
+    auto intro_scene_factory = EndOfSongSceneFactory{};
     auto next_scene = new Scene{
         g,
         &g->GetWindow(),
         std::vector<GameObject*>{ }
     };
 
+    auto score_object = g->GetCurrentScene().GetFirstGameObjectByTag(
+        "ScoreManager");
+    auto score_manager_component = score_object->GetComponent<
+        ScoreManagerComponent>(Component::SCORE_MANAGER);
+    auto score = score_manager_component->GetScore();
+
     if (!intro_scene_factory.Create(
         g
         , &g->GetWindow()
-        , &next_scene)) {
+        , &next_scene
+        , score)) {
         throw "Could not create Intro scene.";
     }
 

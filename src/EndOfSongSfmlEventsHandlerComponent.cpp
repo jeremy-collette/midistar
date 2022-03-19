@@ -16,32 +16,37 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midistar/ScoreManagerComponent.h"
+#include "midistar/EndOfSongSfmlEventsHandlerComponent.h"
 
-#include <sstream>
+#include "midistar/IntroSceneFactory.h"
 
 namespace midistar {
 
-ScoreManagerComponent::ScoreManagerComponent()
-    : Component{ Component::SCORE_MANAGER },
-        score_{ 0 } {
-}
+void EndOfSongSongSfmlEventsHandlerComponent::HandleEvent(
+        Game* g
+        , GameObject* o
+        , int
+        , sf::Event evt) {
+    if (evt.type != sf::Event::KeyPressed
+            || evt.key.code != sf::Keyboard::Enter) {
+        return;
+    }
 
-int ScoreManagerComponent::GetScore() {
-    return score_;
-}
+    // Set scene to intro
+    auto intro_scene_factory = IntroSceneFactory{};
+    auto next_scene = new Scene{
+        g,
+        &g->GetWindow(),
+        std::vector<GameObject*>{ }
+    };
 
-void ScoreManagerComponent::ModifyScore(int score_delta) {
-    score_ += score_delta;
-}
-
-void ScoreManagerComponent::Update(Game*, GameObject* o, int delta) {
-    auto ss = std::stringstream();
-    ss << "Score: " << score_;
-
-    text_ = ss.str();
-    auto sf_text = o->GetDrawformable<sf::Text>();
-    sf_text->setString(text_);
+    if (!intro_scene_factory.Create(
+        g
+        , &g->GetWindow()
+        , &next_scene)) {
+        throw "Could not create Intro scene.";
+    }
+    g->SetScene(next_scene);
 }
 
 }  // End namespace midistar

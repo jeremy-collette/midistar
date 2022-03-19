@@ -20,6 +20,8 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumSceneFactory.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumScoreDeltaProvider.h
     ${CMAKE_SOURCE_DIR}/include/midistar/DrumSongNoteCollisionHandlerComponent.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/EndOfSongSceneFactory.h
+    ${CMAKE_SOURCE_DIR}/include/midistar/EndOfSongSfmlEventsHandlerComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/FadeOutEffectComponent.h
     ${CMAKE_SOURCE_DIR}/include/midistar/Game.h
     ${CMAKE_SOURCE_DIR}/include/midistar/GameObject.h
@@ -100,6 +102,8 @@ set(SOURCE
     ${CMAKE_SOURCE_DIR}/src/DrumSceneFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumScoreDeltaProvider.cpp
     ${CMAKE_SOURCE_DIR}/src/DrumSongNoteCollisionHandlerComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/EndOfSongSceneFactory.cpp
+    ${CMAKE_SOURCE_DIR}/src/EndOfSongSfmlEventsHandlerComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/FadeOutEffectComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/Game.cpp
     ${CMAKE_SOURCE_DIR}/src/GameObject.cpp

@@ -76,6 +76,10 @@ bool Config::GetFullScreen() {
     return full_screen_;
 }
 
+const std::string Config::GetIconPath() {
+    return icon_path_;
+}
+
 int Config::GetInstrumentMidiNoteRemapping(int note) {
     return instrument_midi_remapping_.count(note) ?
         instrument_midi_remapping_[note] : note;
@@ -206,6 +210,8 @@ void Config::InitCliApp(CLI::App* app) {
         "will ever be dropped.");
     app->add_option("--full_screen", full_screen_, "Determines whether or not "
         "to enable full-screen mode.");
+    app->add_option("--icon_path", icon_path_, "The path to the icon used for "
+        "the game window.");
     app->add_option("--keyboard_first_note", keyboard_first_note_, "The first "
         "MIDI note to bind to the keyboard.");
     app->add_option("--max_fps", max_frames_per_second_, "The maximum number "

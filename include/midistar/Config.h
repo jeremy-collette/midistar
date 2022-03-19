@@ -92,6 +92,8 @@ class Config {
      */
     bool GetFullScreen();
 
+    const std::string GetIconPath();
+
     /**
      * Gets the MIDI note re-mapping (if it exists) of a note played on an
      * instrument.
@@ -237,6 +239,7 @@ class Config {
     int frame_max_delta_;  //!< Max delta before delta is ignored (game not
                                                                  //!< updated).
     bool full_screen_;  //!< Full-screen setting
+    std::string icon_path_;
     std::unordered_map<int, int> instrument_midi_remapping_;  //!< MIDI
                                     //!< remapping derived from commandline arg
     std::vector<int> instrument_midi_remapping_notes_;  //!< MIDI remapping

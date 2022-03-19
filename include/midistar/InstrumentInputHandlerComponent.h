@@ -46,7 +46,8 @@ class InstrumentInputHandlerComponent : public Component {
      InstrumentInputHandlerComponent(
              sf::Keyboard::Key key
             , bool ctrl
-            , bool shift);
+            , bool shift
+            , float max_activation_time = -1.0f);
 
      /**
       * Indicates if a note has been played by this instrument this tick.
@@ -83,8 +84,10 @@ class InstrumentInputHandlerComponent : public Component {
                                        //!< before uninverting instrument colour
      const bool ctrl_;  //!< Determines if the 'control' modifier has to be
                                   //!< pressed in conjunction with key binding
+     float current_activation_time_;
      const sf::Keyboard::Key key_;  //!< The key bound to this instrument
      bool key_down_;  //!< Determines if the instrument is currently activated
+     float max_activation_time_;
      bool note_played_;  //!< Indicates if a note has been played within the
                                                                   //!< last tick
      bool set_active_;  //!< Determines if the instrument has been activated

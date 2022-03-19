@@ -109,7 +109,8 @@ void InstrumentInputHandlerComponent::Update(
     }
 
     // Handle max activation time
-    auto played_too_long = current_activation_time_ >= max_activation_time_;
+    auto played_too_long = max_activation_time_ > 0
+        && current_activation_time_ >= max_activation_time_;
 
     // If we've already played a note with this key press, disable collision (so
     // the player will have to play the instrument again).

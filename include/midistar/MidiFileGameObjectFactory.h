@@ -27,7 +27,10 @@ namespace midistar {
 
 class MidiFileGameObjectFactory {
  public:
-    bool Create(std::string file_name, GameObject** game_object_out);
+    bool Create(
+        std::string file_name
+        , GameObject** game_object_out
+        , bool practice_mode);
 };
 
 }  // End namespace midistar

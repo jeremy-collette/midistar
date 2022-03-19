@@ -28,7 +28,8 @@ namespace midistar {
 class PianoSceneFactory : public SceneFactory {
  public:
     explicit PianoSceneFactory(
-        const std::string midi_file_name);
+        const std::string midi_file_name
+        , bool practice_mode);
 
     virtual bool Create(
         Game* game
@@ -37,6 +38,7 @@ class PianoSceneFactory : public SceneFactory {
 
  private:
      const std::string midi_file_name_;
+     bool practice_mode_;
 };
 
 }   // End namespace midistar

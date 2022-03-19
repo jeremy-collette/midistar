@@ -163,8 +163,6 @@ class Config {
      */
     int GetMidiOutVelocity();
 
-    bool GetPracticeMode();
-
     /**
      * Gets the height of the screen.
      *
@@ -253,7 +251,6 @@ class Config {
     std::vector<int> midi_file_channels_;  //!< MIDI file channels to play
     bool midi_file_repeat_;  //!< Continuously repeats MIDI file being played
     std::vector<int> midi_file_tracks_;  //!< MIDI tracks to play
-    bool practice_mode_;
     int screen_height_;  //!< Screen height
     int screen_width_;  //!< Screen width
     bool show_third_party_;  //!< Determines whether or not to print out third-

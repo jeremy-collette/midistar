@@ -33,11 +33,14 @@ namespace midistar {
 InstrumentInputHandlerComponent::InstrumentInputHandlerComponent(
     sf::Keyboard::Key key
     , bool ctrl
-    , bool shift)
+    , bool shift
+    , float max_activation_time)
         : Component{Component::INSTRUMENT_INPUT_HANDLER}
         , ctrl_{ctrl}
+        , current_activation_time_{ 0.0f }
         , key_{key}
         , key_down_{false}
+        , max_activation_time_{max_activation_time}
         , note_played_{false}
         , set_active_{false}
         , shift_{shift}
@@ -105,6 +108,9 @@ void InstrumentInputHandlerComponent::Update(
         }
     }
 
+    // Handle max activation time
+    auto played_too_long = current_activation_time_ >= max_activation_time_;
+
     // If we've already played a note with this key press, disable collision (so
     // the player will have to play the instrument again).
     if (note_played_) {
@@ -112,7 +118,7 @@ void InstrumentInputHandlerComponent::Update(
     }
 
     // If this instrument is activated...
-    if (key_down_ || set_active_) {
+    if ((key_down_ || set_active_) && !played_too_long) {
         // Set the GraphicsComponent and send a note on event
         if (!was_active_) {
             // If we've played another note before the instrument colour
@@ -138,6 +144,10 @@ void InstrumentInputHandlerComponent::Update(
             // If we were activated in a previous tick, let's start counting
             // down our uninvert delay.
             uninvert_delay_ -= delta;
+
+            // Increment our activation time so we can handle max activation
+            // time.
+            current_activation_time_ += delta;
         }
     // If it's not activated and the CollidableComponent is set... (just played
     // a note).
@@ -159,6 +169,10 @@ void InstrumentInputHandlerComponent::Update(
         // Add reset logic here.
         note_played_ = false;
         was_active_ = false;
+    }
+    // Reset activation time
+    if (!key_down_) {
+        current_activation_time_ = 0.0f;
     }
 }
 

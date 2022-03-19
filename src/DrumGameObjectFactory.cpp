@@ -185,8 +185,9 @@ GameObject* DrumGameObjectFactory::CreateInstrumentNote(int note) {
     ins_note->SetComponent(new InstrumentComponent{});
     ins_note->SetComponent(new NoteInfoComponent{-1, 9, note
             , Config::GetInstance().GetMidiOutVelocity()});
+    auto max_drum_activation_time = 100.0f;
     ins_note->SetComponent(new InstrumentInputHandlerComponent{key, ctrl
-            , shift});
+            , shift, max_drum_activation_time});
     ins_note->SetComponent(new VerticalCollisionDetectorComponent{});
     ins_note->SetComponent(new InstrumentAutoPlayComponent{
             InstrumentAutoPlayComponent::CollisionCriteria::CENTRE});

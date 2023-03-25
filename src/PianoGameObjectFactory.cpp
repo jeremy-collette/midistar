@@ -60,6 +60,10 @@ const char PianoGameObjectFactory::OCTAVE_KEY_TO_WHITE_KEY[NOTES_PER_OCTAVE] {
     0, 0, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6
 };
 
+constexpr float PianoGameObjectFactory::WHITE_KEY_OUTLINE_THICKNESS;
+
+constexpr float PianoGameObjectFactory::BLACK_KEY_OUTLINE_THICKNESS;
+
 PianoGameObjectFactory::PianoGameObjectFactory(
     double note_speed
     , bool practice_mode)

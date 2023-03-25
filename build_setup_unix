@@ -116,13 +116,13 @@ mkdir -p build
 cd build
 mkdir -p debug
 cd debug
-cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug -Denable-portaudio=on
 make
 cp -r src/$fluidlib $lib_debug_dir/.
 cd ..
 mkdir -p release
 cd release
-cmake ../.. -DCMAKE_BUILD_TYPE=Release
+cmake ../.. -DCMAKE_BUILD_TYPE=Release -Denable-portaudio=on
 make
 cp -r src/$fluidlib $lib_release_dir/.
 cp -r ../../include/fluidsynth $inc_dir

@@ -165,14 +165,14 @@ packaged with their dependencies and work out of the box. This means that
 no extra software should be required (except build tools), so you can skip this
 step.
 
-OSX requires additional software to build midistar. Note that building midistar
-in arm64 is not supported. If you are using an M1 Mac (or any other Mac using
-arm64), you should build midistar in x64 mode by using Rosetta 2 and the
-`arch -x86_64` command. Using `homebrew` (in x64 mode), you can install requried
+However, OSX requires additional software to build midistar. Note that building
+midistar in arm64 is not supported. If you are using an M1 Mac (or any other Mac
+using arm64), you should build midistar in x64 mode by using Rosetta 2 and the
+`arch -x86_64` command. With `homebrew` (in x64 mode), you can install requried
 software using the following command:
     `brew install libtool freetype portaudio`
 
-Linux also requires additional software must be installed to meet build
+Linux also requires additional software to be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install
 the majority of build dependencies with the following command:
     `sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev build-essential pkg-config cmake libtool automake autoconf`

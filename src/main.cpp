@@ -1,6 +1,6 @@
 /*
  * midistar
- * Copyright (C) 2018-2022 Jeremy Collette.
+ * Copyright (C) 2018-2023 Jeremy Collette.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -24,7 +24,7 @@
 
 int main(int argc, char** argv) {
     std::cout << "midistar " << MIDISTAR_VERSION_FULL << " Copyright (C) 2018-"
-    << "2022 Jeremy Collette.\nThis program comes with ABSOLUTELY NO WARRANTY. "
+    << "2023 Jeremy Collette.\nThis program comes with ABSOLUTELY NO WARRANTY. "
     << "This is free software, and you are welcome to redistribute it under "
     << "certain conditions. midistar uses free third-party software, that you "
     << "have obtained a copy of. Run with the '--show_third_party' argument to "

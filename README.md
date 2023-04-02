@@ -14,8 +14,8 @@ considered to be part of the midistar project, but are distributed with midistar
 for ease-of-access and completeness. Each sub-folder in the 'external' folder
 contains the source code of a different third-party project that is used by
 midistar. The 'external/assets' folder contains third-party assets that are used
-by midistar. The 'songs' folder may contain MIDI files from third-party 
-composers. See the LICENSE file for more information. 
+by midistar. The 'songs' folder may contain MIDI files from third-party
+composers. See the LICENSE file for more information.
 
 The following third-party libraries and utilities are used by (and distributed
 with) midistar:
@@ -31,7 +31,7 @@ by) midistar:
  * Fluid SoundFont: Copyright (C) 2000-2002, 2008, 2013 Frank Wen.
  * Silkscreen font: Copyright (C) Jason Kottke.
 
-The following third-party MIDI files are used by (and distributed with) 
+The following third-party MIDI files are used by (and distributed with)
 midistar:
  * Nocturne MIDI: Copyright (C) 1881 G. Schirmer.
 
@@ -41,7 +41,7 @@ with the `--show_third_party` command line flag.
 
 midistar is written in C++ using code (and shared libraries) that are
 compatible with Linux, OSX, and Windows. However, at the current time, only 64-
-bit Debian Linux, Ubuntu Linux, Catalina OSX, and Windows 10 are supported. That
+bit Debian Linux, Ubuntu Linux, OSX Monterey, and Windows 10 are supported. That
 being said, building and running on unsupported platforms / architectures is
 possible.
 
@@ -160,12 +160,19 @@ On Windows, you will have to download CMake online and follow the installation
 instructions.
 
 ### 4.2 Installing build dependencies
-If you are developing midistar on OSX and Windows, third-party libraries should
-come packaged with their dependencies and work out of the box. This means that
+If you are developing midistar on Windows, third-party libraries should come
+packaged with their dependencies and work out of the box. This means that
 no extra software should be required (except build tools), so you can skip this
 step.
 
-However, on Linux, additional software must be installed to meet build
+OSX requires additional software to build midistar. Note that building midistar
+in arm64 is not supported. If you are using an M1 Mac (or any other Mac using
+arm64), you should build midistar in x64 mode by using Rosetta 2 and the
+`arch -x86_64` command. Using `homebrew` (in x64 mode), you can install requried
+software using the following command:
+    `brew install libtool freetype portaudio`
+
+Linux also requires additional software must be installed to meet build
 dependencies. If you're running Debian or Ubuntu, you should be able to install
 the majority of build dependencies with the following command:
     `sudo apt-get install libasound2-dev libbsd-dev libc6-dev libflac-dev libfreetype6-dev libgl1-mesa-dev libglib2.0-dev libogg-dev libopenal-dev libpcre3-dev libpng-dev libsndfile1-dev libudev-dev libvorbis-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-image0-dev libxcb-randr0-dev libxcb1-dev libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev zlib1g-dev build-essential pkg-config cmake libtool automake autoconf`

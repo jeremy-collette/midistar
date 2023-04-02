@@ -25,11 +25,13 @@ find() {
 }
 
 # Platform detection
+use_portaudio=false
 if [ "$(uname)" == "Darwin" ]; then
     echo "OSX detected."
     lib_ext="dylib"
     fluidlib="FluidSynth.framework"
     midifile_ext="dylib"
+    use_portaudio=true
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo "Linux detected."
     lib_ext="so*"
@@ -110,19 +112,27 @@ git clean -fdx
 cp -r include/CLI $inc_dir/.
 
 cecho "\nBuilding fluidsynth..."
+fluidsynth_opts="-Denable-portaudio=off"
+if [[ "$use_portaudio" = true ]]; then
+    cecho "With portaudio support!"
+    fluidsynth_opts="-Denable-portaudio=on"
+else
+    cecho "Without portaudio support."
+fi
+
 cd $ext_dir/fluidsynth
 git clean -fdx
 mkdir -p build
 cd build
 mkdir -p debug
 cd debug
-cmake ../.. -DCMAKE_BUILD_TYPE=Debug -Denable-portaudio=on
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug "$fluidsynth_opts"
 make
 cp -r src/$fluidlib $lib_debug_dir/.
 cd ..
 mkdir -p release
 cd release
-cmake ../.. -DCMAKE_BUILD_TYPE=Release -Denable-portaudio=on
+cmake ../.. -DCMAKE_BUILD_TYPE=Release "$fluidsynth_opts"
 make
 cp -r src/$fluidlib $lib_release_dir/.
 cp -r ../../include/fluidsynth $inc_dir
